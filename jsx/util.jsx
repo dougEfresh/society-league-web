@@ -1,4 +1,4 @@
-var $ = require('jquery');
+//var $ = require('jquery');
 var moment = require('moment');
 
 var sendData = function(data,url,callback,router) {
