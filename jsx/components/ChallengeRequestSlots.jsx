@@ -19,17 +19,24 @@ var ChallengeRequestSlots = React.createClass({
             available : {}
         }
     },
-    componentWillReceiveProps: function(props) {
-        console.log('SLOTS NEW PROPS : ' + JSON.stringify(props));
-    },
-    componentDidMount: function() {
-        Util.getData('/api/challenge/slots/' + this.props.date, function (slots) {
+    update: function(props) {
+        Util.getData('/api/challenge/slots/' + props.date, function (slots) {
             var available = {};
             slots.forEach(function(slot) {
                 available[slot.id] = slot;
             });
             this.setState({available: available});
         }.bind(this));
+    },
+    componentWillReceiveProps: function(props) {
+       if (props.date == this.props.date) {
+       return;
+       }
+        this.update(props);
+        
+    },
+    componentDidMount: function() {
+        this.update(this.props);
     },
     onChange: function() {
         var slots = [];

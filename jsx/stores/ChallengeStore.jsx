@@ -34,7 +34,8 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
     },
 
     changeDate : function(date) {
-        _challenge.date = date;
+        _challenge.date = date;        
+	_challenge.slots = [];
     },
 
     addSlots : function(slots) {
