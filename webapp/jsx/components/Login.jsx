@@ -57,7 +57,6 @@ var Login = React.createClass({
         var errors = this.state.error ? <p>Bad login information</p> : '';
         return (
             <div>
-                <SocietyNav anon={true}/>
                 <Label><Input type='text' ref='username' placeholder="username" defaultValue="login0"/></Label>
                 <Label><Input type='text' ref='password' placeholder="password" defaultValue="login0"/></Label>
                 <Button onClick={this.handleSubmit} type="submit">login</Button>

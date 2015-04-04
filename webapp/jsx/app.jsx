@@ -5,11 +5,16 @@ var Router = require('react-router')
     , DefaultRoute = Router.DefaultRoute;
 
 var ChallengeRequestApp = require('./components/ChallengeRequestApp.jsx');
-var SocietyNav = require('./Nav.jsx');
-var Login = require('./Login.jsx');
+var Nav = require('./components/Nav.jsx');
+var Login = require('./components/Login.jsx');
+var UserStore = require('./stores/UserStore.jsx');
 
 var App = React.createClass({
+     contextTypes: {
+        router: React.PropTypes.func
+    },
     render: function () {
+
         return (
             <div>
                 <RouteHandler/>
@@ -32,13 +37,12 @@ var Home = React.createClass({
         return (<div>Home</div>);
     }
 });
-//
-//<DefaultRoute handler={Home} />
+
 var routes = (
     <Route handler={App}>
-        <DefaultRoute handler={Home} />
-        <Route name="login" path="login" handler={Login} />
-        <Route name="nav" path="/" handler={SocietyNav}>
+        <DefaultRoute handler={Nav} />
+        <Route name="nav" path="/" handler={Nav}>
+            <Route name="login" path="login" handler={Login} />
             <Route name="home" path="home" handler={Home}/>
             <Route name="account" path=":userId/account" handler={Home}/>
             <Route name="challenge" path="challenge" handler={ChallengeRequestApp}>

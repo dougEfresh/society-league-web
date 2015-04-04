@@ -2,6 +2,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher.jsx');
 var RequestConstants = require('../constants/ChallengeConstants.jsx');
 
 var ChallengeActions = {
+
     /**
      * @param  {object} challenge
      */
@@ -36,7 +37,7 @@ var ChallengeActions = {
     },
 
     /**
-     * Add a time slot
+     * Remove a time slot
      * @param slot
      */
     removeSlot: function(slot) {
