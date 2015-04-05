@@ -2,14 +2,37 @@ var AppDispatcher = require('../dispatcher/AppDispatcher.jsx');
 var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/UserConstants.jsx');
 var assign = require('object-assign');
+var UserActions = require('../actions/UserAction.jsx');
 var CHANGE_EVENT = 'change';
+
 var _user = { id : 0 };
 var _viewUser = null;
-var Util = require('../util.jsx');
-var UserActions = require('../actions/UserAction.jsx');
+var checkingLogin = false;
 
-var UserStore =  assign({}, EventEmitter.prototype, {
+var UserStore = assign({}, EventEmitter.prototype, {
 
+    /**
+     * Constructor
+     */
+    checkLogin: function(router) {
+        checkingLogin = true;
+        $.ajax({
+        url:'/api/user',
+        dataType: 'json',
+        success: function (u) {
+            checkingLogin = false;
+            UserActions.set(u,router);
+
+        },
+        error: function (xhr, status, err) {
+            checkingLogin = false;
+            console.error(url, status, err.toString());
+        }.bind(this)
+    });
+    },
+    isCheckingLogin: function() {
+        return checkingLogin;
+    },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
@@ -28,9 +51,14 @@ var UserStore =  assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-    setUser : function(user,router) {
+    postAuth : function(user,router) {
         _user = user;
-        router.transitionTo('home');
+        if (router.getCurrentQuery() == null || router.getCurrentQuery() == undefined || router.getCurrentQuery().from == '/' ) {
+            router.transitionTo('home');
+        } else {
+            router.transitionTo(router.getCurrentQuery().from);
+        }
+
     },
 
     setViewUser : function(user) {
@@ -58,8 +86,7 @@ var UserStore =  assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action) {
      switch(action.actionType) {
-         case UserConstants.USER_SET:
-             UserStore.setUser(action.user,action.router);
+         case UserConstants.USER_POST_AUTH: UserStore.postAuth(action.user,action.router);
              UserStore.emitChange();
              break;
 
@@ -70,11 +97,10 @@ AppDispatcher.register(function(action) {
 
          case UserConstants.USER_AUTHENTICATED:
              UserStore.authenticated(action.router);
-             UserStore.emitChange();
              break;
 
          default:
-             console.log(JSON.stringify(action));
+             //console.log(JSON.stringify(action));
      }
 });
 

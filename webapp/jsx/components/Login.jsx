@@ -37,10 +37,6 @@ var Login = React.createClass({
                 );
                 UserActions.authenticated(router);
                 //this.props.callback();
-                //if (router.getCurrentQuery() == null || router.getCurrentQuery() == undefined || router.getCurrentQuery().from == '/' ) {
-
-                //} else {
-                  //  router.transitionTo(router.getCurrentQuery().from);
                 //}app/home.html
 
             }.bind(this),

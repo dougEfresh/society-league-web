@@ -45,27 +45,28 @@ var Navigator = React.createClass({
     },
     render: function() {
         var router = this.context.router;
+
         if (router.getCurrentPathname().indexOf('login') >= 0) {
             return (
                 <div>
                     <Navbar inverse brand="Society" toggleNavKey={this.state.key}>
                         <Nav bsStyle="pills" fluid fixedTop activeKey={this.state.key} toggleNavKey={this.state.key}></Nav>
                     </Navbar>
+                    <RouteHandler />
                 </div>
             );
         }
         if (this.props.user.id == 0) {
-            router.transitionTo('login');
+            router.transitionTo('login',null,{from: router.getCurrentPath()});
             return null;
         }
         return (
             <div>
             <Navbar inverse brand="Society" toggleNavKey={this.state.key}>
             <Nav bsStyle="pills" fluid fixedTop activeKey={this.state.key} toggleNavKey={this.state.key}>
-                <NavItemLink to='home' params={{userId: this.props.user.id}} eventKey={"home"}>Home</NavItemLink>
                 <NavItemLink to='stats' params={{userId: this.props.user.id}} eventKey={"Stats"}>Stats</NavItemLink>
                 <ChallengeNav user={this.props.user} />
-                <DropdownButton pullRight eventKey={"user"} title={name} navItem={true}>
+                <DropdownButton pullRight eventKey={"user"} title={this.props.user.name} navItem={true}>
                     <MenuItemLink  to='account' params={{userId: this.props.user.id}} eventKey={"account"}>Account</MenuItemLink>
                     <MenuItem href="/api/logout" eventKey={"logout"}>Logout</MenuItem>
                 </DropdownButton>
@@ -74,6 +75,7 @@ var Navigator = React.createClass({
                 </DropdownButton>
             </Nav>
             </Navbar>
+                <RouteHandler />
             </div>
         );
     }
@@ -114,16 +116,9 @@ var ChallengeNav = React.createClass({
             indicator = (<span>Challenges <Badge>{this.state.sent + this.state.pending}</Badge></span>);
         }
         return (
-            <DropdownButton  eventKey={"challenge"} title={indicator} navItem={true}>
-                <MenuItemLink  to='sent'    params={{userId: this.props.user.id}} eventKey={"sent"} >Sent <Badge>{this.state.sent}</Badge></MenuItemLink>
-                <MenuItemLink  to='pending' params={{userId: this.props.user.id}} eventKey={"pending"}>Pending <Badge>{this.state.pending}</Badge></MenuItemLink>
-                <MenuItemLink  to='request' params={{userId: this.props.user.id}} eventKey={"request"}>Make Request</MenuItemLink>
-                <MenuItemLink  to='history' params={{userId: this.props.user.id}} eventKey={"history"}>History</MenuItemLink>
-            </DropdownButton>
+            <NavItemLink to='challenge' eventKey={"challenge"} >{indicator}</NavItemLink>
         );
     }
-
-
 });
 
 module.exports = Navigator;

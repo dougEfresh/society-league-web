@@ -6,11 +6,22 @@ var Util = require('../util.jsx');
 
 var CHANGE_EVENT = 'change';
 
+/**
+ * Returns the default game type, which is neither 9 or 8
+ * @returns object
+ */
+function defaultGame() {
+    return {
+        nine:  {available: false, selected: false},
+        eight: {available: false, selected: false}
+    };
+};
+
 var _challenge = {
     date: Util.nextChallengeDate(),
-    opponent: null,
+    opponent: {user: {id: 0, name: '-----'}},
     slots: [],
-    game: {nine: false, eight: false}
+    game: defaultGame()
 };
 
 var ChallengeStore =  assign({}, EventEmitter.prototype, {
@@ -65,6 +76,18 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
 
     setOpponent: function(opponent) {
         _challenge.opponent = opponent;
+        var g = defaultGame();
+        if (opponent.nineBallPlayer) {
+            g.nine.available = true;
+        }
+        if (opponent.eightBallPlayer) {
+            g.eight.available = true;
+        }
+        _challenge.game = g;
+    },
+    setGame: function(game) {
+        _challenge.game.nine.selected  = game.nine.selected;
+        _challenge.game.eight.selected = game.eight.selected;
     },
 
     get: function() {
@@ -91,7 +114,12 @@ AppDispatcher.register(function(action) {
              break;
 
          case ChallengeConstants.CHALLENGE_OPPONENT_CHANGE:
-             ChallengeStore.setOpponent(action.slot);
+             ChallengeStore.setOpponent(action.opponent);
+             ChallengeStore.emitChange();
+             break;
+
+         case ChallengeConstants.CHALLENGE_GAME_CHANGE:
+             ChallengeStore.setGame(action.game);
              ChallengeStore.emitChange();
              break;
 

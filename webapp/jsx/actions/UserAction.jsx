@@ -18,7 +18,7 @@ var UserActions = {
      */
     set: function(user,router) {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USER_SET,
+            actionType: UserConstants.USER_POST_AUTH,
             user: user,
             router: router
         });

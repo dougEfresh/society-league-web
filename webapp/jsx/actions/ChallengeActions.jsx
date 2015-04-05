@@ -56,6 +56,17 @@ var ChallengeActions = {
             actionType: RequestConstants.CHALLENGE_OPPONENT_CHANGE,
             opponent: opponent
          });
+    },
+
+    /**
+     * Set the game type (8 or 9)
+     * @param game
+     */
+    setGame: function(game) {
+         AppDispatcher.dispatch({
+            actionType: RequestConstants.CHALLENGE_GAME_CHANGE,
+            game: game
+         });
     }
 };
 
