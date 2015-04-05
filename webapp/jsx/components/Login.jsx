@@ -4,12 +4,9 @@ var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input
     ,Label = Bootstrap.Label;
 
-var SocietyNav = require('./Nav.jsx');
+var UserActions = require('../actions/UserAction.jsx');
 
 var Login = React.createClass({
-    //propTypes: {
-        //callback:  React.PropTypes.func
-    //},
     contextTypes: {
         router: React.PropTypes.func
     },
@@ -38,13 +35,13 @@ var Login = React.createClass({
                     JSON.stringify(router.getCurrentParams()) + ' ---- ' +
                     JSON.stringify(router.getCurrentQuery())
                 );
-
+                UserActions.authenticated(router);
                 //this.props.callback();
-                if (router.getCurrentQuery() == null || router.getCurrentQuery() == undefined || router.getCurrentQuery().from == '/' ) {
-                    router.transitionTo('home');
-                } else {
-                    router.transitionTo(router.getCurrentQuery().from);
-                }
+                //if (router.getCurrentQuery() == null || router.getCurrentQuery() == undefined || router.getCurrentQuery().from == '/' ) {
+
+                //} else {
+                  //  router.transitionTo(router.getCurrentQuery().from);
+                //}app/home.html
 
             }.bind(this),
             error: function (xhr, status, err) {

@@ -6,8 +6,8 @@ var Bootstrap = require('react-bootstrap')
     ,ListGroup = Bootstrap.ListGroup
     ,ListGroupItem = Bootstrap.ListGroupItem;
 
-var Util = require('../util.jsx');
-var ChallengeActions = require('../actions/ChallengeActions.jsx');
+var Util = require('../../util.jsx');
+var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 
 var ChallengeRequestSlots = React.createClass({
     propTypes: {
@@ -30,10 +30,9 @@ var ChallengeRequestSlots = React.createClass({
     },
     componentWillReceiveProps: function(props) {
        if (props.date == this.props.date) {
-       return;
+           return;
        }
         this.update(props);
-        
     },
     componentDidMount: function() {
         this.update(this.props);

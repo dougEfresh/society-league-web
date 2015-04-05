@@ -4,10 +4,9 @@ var Router = require('react-router')
     , Route = Router.Route
     , DefaultRoute = Router.DefaultRoute;
 
-var ChallengeRequestApp = require('./components/ChallengeRequestApp.jsx');
-var Nav = require('./components/Nav.jsx');
+var ChallengeRequestApp = require('./components/challenge/ChallengeRequestApp.jsx');
+var NavApp = require('./components/NavApp.jsx');
 var Login = require('./components/Login.jsx');
-var UserStore = require('./stores/UserStore.jsx');
 
 var App = React.createClass({
      contextTypes: {
@@ -40,8 +39,8 @@ var Home = React.createClass({
 
 var routes = (
     <Route handler={App}>
-        <DefaultRoute handler={Nav} />
-        <Route name="nav" path="/" handler={Nav}>
+        <DefaultRoute handler={Home} />
+        <Route name="nav" path="/" handler={NavApp}>
             <Route name="login" path="login" handler={Login} />
             <Route name="home" path="home" handler={Home}/>
             <Route name="account" path=":userId/account" handler={Home}/>

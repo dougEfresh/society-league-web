@@ -1,4 +1,6 @@
 var React = require('react/addons');
+var ReactPropTypes = React.PropTypes;
+
 var Bootstrap = require('react-bootstrap')
     ,Navbar = Bootstrap.Navbar
     ,Nav = Bootstrap.Nav
@@ -16,7 +18,6 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler;
 
 var Util = require('./../util.jsx');
-var Login = require('./Login.jsx');
 
 var Home = React.createClass({
     contextTypes: {
@@ -27,31 +28,24 @@ var Home = React.createClass({
     }
 });
 
-var SocietyNav = React.createClass({
+var Navigator = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
-    getDefaultProps: function() {
-        return {
-            anon: true,
-            user: {id: 0, name: "Anon"}
-        }
+    propTypes: {
+        user: ReactPropTypes.object.isRequired
     },
     getInitialState: function() {
         return {
             key: 'home'
         }
     },
-    componentDidMount: function() {
-
-    },
     componentWillReceiveProps: function (nextProps) {
-        console.log(JSON.stringify(nextProps));
+        console.log('NEW ' + JSON.stringify( nextProps));
     },
     render: function() {
         var router = this.context.router;
-        debugger;
-        if (router.getCurrentPathName().indexOf('login') >= 0) {
+        if (router.getCurrentPathname().indexOf('login') >= 0) {
             return (
                 <div>
                     <Navbar inverse brand="Society" toggleNavKey={this.state.key}>
@@ -60,14 +54,15 @@ var SocietyNav = React.createClass({
                 </div>
             );
         }
-        if (this.props.user == undefined || this.props.user.id == 0) {
+        if (this.props.user.id == 0) {
             router.transitionTo('login');
+            return null;
         }
         return (
             <div>
             <Navbar inverse brand="Society" toggleNavKey={this.state.key}>
             <Nav bsStyle="pills" fluid fixedTop activeKey={this.state.key} toggleNavKey={this.state.key}>
-                <NavItemLink to='home' params={{userId: user.id}} eventKey={"home"}>Home</NavItemLink>
+                <NavItemLink to='home' params={{userId: this.props.user.id}} eventKey={"home"}>Home</NavItemLink>
                 <NavItemLink to='stats' params={{userId: this.props.user.id}} eventKey={"Stats"}>Stats</NavItemLink>
                 <ChallengeNav user={this.props.user} />
                 <DropdownButton pullRight eventKey={"user"} title={name} navItem={true}>
@@ -79,7 +74,6 @@ var SocietyNav = React.createClass({
                 </DropdownButton>
             </Nav>
             </Navbar>
-                <RouteHandler/>
             </div>
         );
     }
@@ -132,4 +126,4 @@ var ChallengeNav = React.createClass({
 
 });
 
-module.exports = SocietyNav;
+module.exports = Navigator;

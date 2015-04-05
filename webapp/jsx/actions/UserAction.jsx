@@ -1,8 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher.jsx');
 var UserConstants = require('../constants/UserConstants.jsx');
 
-
-
 var UserActions = {
 
     /**
@@ -18,10 +16,11 @@ var UserActions = {
     /**
      * @param  {object} user
      */
-    set: function(user) {
+    set: function(user,router) {
         AppDispatcher.dispatch({
             actionType: UserConstants.USER_SET,
-            user: user
+            user: user,
+            router: router
         });
     },
 
@@ -37,6 +36,16 @@ var UserActions = {
         });
     },
 
+    /**
+     * User as logged in and we need to redirect them react-router
+     * @param router
+     */
+    authenticated: function(router) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USER_AUTHENTICATED,
+            router: router
+        });
+    }
 };
 
 module.exports = UserActions;

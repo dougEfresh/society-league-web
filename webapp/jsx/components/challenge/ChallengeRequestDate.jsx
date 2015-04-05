@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var ChallengeActions = require('../actions/ChallengeActions.jsx');
-var Util  = require('../util.jsx');
+var ChallengeActions = require('../../actions/ChallengeActions.jsx');
+var Util  = require('../../util.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;
 var moment = require('moment');

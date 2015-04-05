@@ -35,7 +35,7 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
 
     changeDate : function(date) {
         _challenge.date = date;        
-	_challenge.slots = [];
+        _challenge.slots = [];
     },
 
     addSlots : function(slots) {
@@ -52,6 +52,7 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
             }
         });
     },
+
     removeSlot : function(slot) {
         var newSlots = [];
         _challenge.slots.forEach(function(s){
@@ -61,6 +62,11 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
         });
         _challenge.slots = newSlots;
     },
+
+    setOpponent: function(opponent) {
+        _challenge.opponent = opponent;
+    },
+
     get: function() {
         return _challenge;
     }
@@ -81,6 +87,11 @@ AppDispatcher.register(function(action) {
 
          case ChallengeConstants.CHALLENGE_SLOTS_REMOVE:
              ChallengeStore.removeSlot(action.slot);
+             ChallengeStore.emitChange();
+             break;
+
+         case ChallengeConstants.CHALLENGE_OPPONENT_CHANGE:
+             ChallengeStore.setOpponent(action.slot);
              ChallengeStore.emitChange();
              break;
 

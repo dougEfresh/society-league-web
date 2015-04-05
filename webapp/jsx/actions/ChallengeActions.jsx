@@ -45,6 +45,17 @@ var ChallengeActions = {
             actionType: RequestConstants.CHALLENGE_SLOTS_REMOVE,
             slot: slot
         });
+    },
+
+    /**
+     * Set the opponent from the list of potentials
+     * @param opponent
+     */
+    setOpponent: function(opponent) {
+         AppDispatcher.dispatch({
+            actionType: RequestConstants.CHALLENGE_OPPONENT_CHANGE,
+            opponent: opponent
+         });
     }
 };
 

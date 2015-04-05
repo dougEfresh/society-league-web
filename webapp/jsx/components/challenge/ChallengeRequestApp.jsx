@@ -1,5 +1,6 @@
 var React = require('react/addons');
-var ChallengeStore = require('../stores/ChallengeStore.jsx');
+var ChallengeStore = require('../../stores/ChallengeStore.jsx');
+var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeRequestDate = require('./ChallengeRequestDate.jsx');
 var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 
@@ -7,7 +8,8 @@ var ChallengeRequestApp = React.createClass({
 
     getInitialState: function() {
         return {
-            challenge: ChallengeStore.get()
+            challenge: ChallengeStore.get(),
+            user: UserStore.get()
         }
     },
 
@@ -20,14 +22,14 @@ var ChallengeRequestApp = React.createClass({
     },
 
     _onChange: function() {
-        this.setState(ChallengeStore.get());
+        this.setState({challenge: ChallengeStore.get(), user: UserStore.get()});
     },
 
     render: function(){
         return (
             <div>
-                <ChallengeRequestDate date={this.state.challenge.date} />
-                <ChallengeRequestSlots date={this.state.challenge.date} slots={this.state.challenge.slots} />
+                <ChallengeRequestDate  date={this.state.challenge.date} />
+                <ChallengeRequestSlotsc date={this.state.challenge.date} slots={this.state.challenge.slots} />
             </div>
         )
     }
