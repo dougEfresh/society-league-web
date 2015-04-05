@@ -16,7 +16,7 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler;
 
 var Util = require('./../util.jsx');
-var Login = require('Login.jsx');
+var Login = require('./Login.jsx');
 
 var Home = React.createClass({
     contextTypes: {
