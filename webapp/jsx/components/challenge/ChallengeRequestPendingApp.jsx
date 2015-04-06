@@ -18,7 +18,7 @@ var ChallengeRequestApp = React.createClass({
     getInitialState: function() {
         //TODO check router state
         return {
-            pending: ChallengeStore.getPending(),
+            pending: ChallengeStore.getPending(UserStore.get()),
             user: UserStore.get()
         }
     },
@@ -36,35 +36,13 @@ var ChallengeRequestApp = React.createClass({
     _onUserChange: function() {
         this.setState({user: UserStore.get()});
     },
-    getErrors: function() {
-        var errors = [];
-        var c = this.state.challenge;
-        if (c.opponent.user.id == 0)
-            errors.push('Need an opponent');
-        if (!c.game.nine.selected && !c.game.eight.selected)
-            errors.push('Please choose game type');
-        if (c.slots.length == 0)
-            errors.push('Please choose a time');
-        if (!c.date)
-            errors.push('Please choose a date');
-
-        return errors;
-    },
     isValid: function() {
         return this.getErrors().length == 0;
     },
     render: function(){
-        var c = this.state.challenge;
-        var submit = (
-            <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleClick}>Challenge</Button>
-        );
         return (
             <div>
-                <Panel header={'Request'} footer={submit}>
-                    <ChallengeRequestDate  date={c.date} />
-                    <ChallengeRequestSlots date={c.date} slots={c.slots} />
-                    <ChallengeRequestOpponent user={this.state.user} opponent={c.opponent} />
-                    <ChallengeRequestGame game={c.game} />
+                <Panel header={'Pending'}>
                 </Panel>
             </div>
         )

@@ -3,8 +3,10 @@ var EventEmitter = require('events').EventEmitter;
 var ChallengeConstants = require('../constants/ChallengeConstants.jsx');
 var assign = require('object-assign');
 var Util = require('../util.jsx');
+var UserStore = require('./UserStore.jsx');
 
 var CHANGE_EVENT = 'change';
+var ADD_EVENT = 'add';
 
 /**
  * Returns the default game type, which is neither 9 or 8
@@ -15,7 +17,7 @@ function defaultGame() {
         nine:  {available: false, selected: false},
         eight: {available: false, selected: false}
     };
-};
+}
 
 var _challenge = {
     date: Util.nextChallengeDate(),
@@ -24,10 +26,18 @@ var _challenge = {
     game: defaultGame()
 };
 
+var _pending = {
+
+};
+
 var ChallengeStore =  assign({}, EventEmitter.prototype, {
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
+    },
+
+    emitAdd: function() {
+        this.emit(ADD_EVENT);
     },
 
     /**
@@ -40,8 +50,27 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
     /**
      * @param {function} callback
      */
+    addListener: function(callback) {
+        this.on(ADD_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
+    },
+
+
+    /**
+     * @param {function} callback
+     */
+    removeAddListener: function(callback) {
+        this.removeListener(ADD_EVENT, callback);
+    },
+
+    create: function() {
+
     },
 
     changeDate : function(date) {
@@ -85,6 +114,7 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
         }
         _challenge.game = g;
     },
+
     setGame: function(game) {
         _challenge.game.nine.selected  = game.nine.selected;
         _challenge.game.eight.selected = game.eight.selected;
@@ -92,8 +122,11 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
 
     get: function() {
         return _challenge;
-    }
+    },
 
+    getPending: function() {
+        _pending = Util.getData('/api/challenges/pending/' + UserStore.get().id)
+    }
 });
 
 AppDispatcher.register(function(action) {
@@ -121,6 +154,11 @@ AppDispatcher.register(function(action) {
          case ChallengeConstants.CHALLENGE_GAME_CHANGE:
              ChallengeStore.setGame(action.game);
              ChallengeStore.emitChange();
+             break;
+
+         case ChallengeConstants.CHALLENGE_CREATE:
+             ChallengeStore.create();
+             ChallengeStore.emitAdd();
              break;
 
          default:
