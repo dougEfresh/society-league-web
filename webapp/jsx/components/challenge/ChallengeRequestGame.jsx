@@ -38,7 +38,8 @@ var ChallengeRequestGame = React.createClass({
                            ref={type}
                            type='checkbox'
                            label={this.getLabel(type)}
-                           onChange={this.props.onChange}/>
+                           onChange={this.onChange}
+                        />
                 );
             }
         }.bind(this));

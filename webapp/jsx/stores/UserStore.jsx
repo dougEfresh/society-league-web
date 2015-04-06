@@ -17,18 +17,24 @@ var UserStore = assign({}, EventEmitter.prototype, {
     checkLogin: function(router) {
         checkingLogin = true;
         $.ajax({
-        url:'/api/user',
-        dataType: 'json',
-        success: function (u) {
-            checkingLogin = false;
-            UserActions.set(u,router);
-
-        },
-        error: function (xhr, status, err) {
-            checkingLogin = false;
-            console.error(url, status, err.toString());
-        }.bind(this)
-    });
+            url:'/api/user',
+            dataType: 'json',
+            status: {
+                401: function() {
+                    router.transitionTo('login',null,{from: router.getCurrentPath()});
+                }
+            },
+            success: function (u) {
+                checkingLogin = false;
+                UserActions.set(u,router);
+            },
+            error: function (xhr, status, err) {
+                checkingLogin = false;
+                debugger;
+                router.transitionTo('login',null,{from: router.getCurrentPath()});
+                console.error('/api/user', status, err.toString());
+            }.bind(this)
+        });
     },
     isCheckingLogin: function() {
         return checkingLogin;
