@@ -56,7 +56,7 @@ var ChallengeRequestGame = React.createClass({
     },
     getTitle: function() {
         var g = this.props.game;
-        if (g.nine.selected && g.nine.selected ) {
+        if (g.nine.selected && g.eight.selected ) {
             return 'Game: 8 or 9'
         }
         if (g.nine.selected) {
