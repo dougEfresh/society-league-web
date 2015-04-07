@@ -7,7 +7,7 @@ var Bootstrap = require('react-bootstrap')
 
 var UserActions = require('../actions/UserAction.jsx');
 
-var Login = React.createClass({
+var LoginApp = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
@@ -25,7 +25,7 @@ var Login = React.createClass({
         console.log('Logging in: ' + user);
         $.ajax({
             async: true,
-            processData: false,
+            processData: true,
             url: '/api/authenticate',
             data: {username: user, password: password},
             method: 'post',
@@ -61,4 +61,4 @@ var Login = React.createClass({
 });
 
 
-module.exports = Login;
+module.exports = LoginApp;
