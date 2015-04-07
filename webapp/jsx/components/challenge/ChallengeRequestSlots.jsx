@@ -29,10 +29,10 @@ var ChallengeRequestSlots = React.createClass({
         }.bind(this));
     },
     componentWillReceiveProps: function(props) {
-       if (props.date == this.props.date) {
+       if (props.date != this.props.date) {
+           this.update(props);
            return;
        }
-        this.update(props);
     },
     componentDidMount: function() {
         this.update(this.props);

@@ -26,10 +26,6 @@ var _challenge = {
     game: defaultGame()
 };
 
-var _pending = {
-
-};
-
 var ChallengeStore =  assign({}, EventEmitter.prototype, {
 
     emitChange: function() {
@@ -95,6 +91,7 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
 
     removeSlot : function(slot) {
         var newSlots = [];
+        debugger;
         _challenge.slots.forEach(function(s){
             if (s.id != slot.id) {
                 newSlots.push(s);
@@ -122,11 +119,8 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
 
     get: function() {
         return _challenge;
-    },
-
-    getPending: function() {
-        _pending = Util.getData('/api/challenges/pending/' + UserStore.get().id)
     }
+
 });
 
 AppDispatcher.register(function(action) {
