@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var ReactPropTypes = React.PropTypes;
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Panel = Bootstrap.Panel;
@@ -6,40 +7,21 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var ChallengePendingApp = require('./ChallengePendingApp.jsx');
+var ChallengePendingApp = require('./ChallengeSentApp.jsx');
 var ChallengeRequestDate = require('./ChallengeRequestDate.jsx');
 var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
 var ChallengeRequestGame= require('./ChallengeRequestGame.jsx');
 
 var ChallengeRequestApp = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
+    propTypes: {
+        user: ReactPropTypes.object.isRequired,
+        challenge: ReactPropTypes.object.isRequired
     },
-    getInitialState: function() {
-        //TODO check router state
-        return {
-            user: UserStore.get(),
-            challenge: ChallengeStore.get()
-        }
-    },
-    componentDidMount: function() {
-        ChallengeStore.addChangeListener(this._onChallengeChange);
-        UserStore.addChangeListener(this._onUserChange);
-    },
-    componentWillUnmount: function() {
-        ChallengeStore.removeChangeListener(this._onChallengeChange);
-        UserStore.removeChangeListener(this._onUserChange);
-    },
-    _onChallengeChange: function() {
-        this.setState({challenge: ChallengeStore.get()});
-    },
-    _onUserChange: function() {
-        this.setState({user: UserStore.get()});
-    },
+
     getErrors: function() {
         var errors = [];
-        var c = this.state.challenge;
+        var c = this.props.challenge;
         if (c == undefined) {
             errors.push('Nothing Selected');
             return errors;
@@ -59,7 +41,7 @@ var ChallengeRequestApp = React.createClass({
         return this.getErrors().length == 0;
     },
     render: function(){
-        var c = this.state.challenge;
+        var c = this.props.challenge;
         var submit = (
             <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleClick}>Request Challenge</Button>
         );
@@ -69,7 +51,7 @@ var ChallengeRequestApp = React.createClass({
                 <Panel collapsable defaultExpanded header={'Request'} >
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots date={c.date} slots={c.slots} />
-                    <ChallengeRequestOpponent user={this.state.user} opponent={c.opponent} />
+                    <ChallengeRequestOpponent user={this.props.user} opponent={c.opponent} />
                     <ChallengeRequestGame game={c.game} />
                     {submit}
                 </Panel>

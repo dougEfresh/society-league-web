@@ -13,7 +13,6 @@ var Bootstrap = require('react-bootstrap')
 
 
 var ChallengePendingList = React.createClass({
-
     propTypes: {
         pending: ReactPropTypes.array.isRequired
     },

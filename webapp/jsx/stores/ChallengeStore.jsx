@@ -57,7 +57,6 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-
     /**
      * @param {function} callback
      */

@@ -5,40 +5,11 @@ var assign = require('object-assign');
 var UserActions = require('../actions/UserAction.jsx');
 var CHANGE_EVENT = 'change';
 
-var _user = { id : 0 };
+var _user = { id:0, name:""};
 var _viewUser = null;
-var checkingLogin = false;
 
 var UserStore = assign({}, EventEmitter.prototype, {
 
-    /**
-     * Constructor
-     */
-    checkLogin: function(router) {
-        checkingLogin = true;
-        $.ajax({
-            url:'/api/user',
-            dataType: 'json',
-            status: {
-                401: function() {
-                    router.transitionTo('login',null,{from: router.getCurrentPath()});
-                }
-            },
-            success: function (u) {
-                checkingLogin = false;
-                UserActions.set(u,router);
-            },
-            error: function (xhr, status, err) {
-                checkingLogin = false;
-                debugger;
-                router.transitionTo('login',null,{from: router.getCurrentPath()});
-                console.error('/api/user', status, err.toString());
-            }.bind(this)
-        });
-    },
-    isCheckingLogin: function() {
-        return checkingLogin;
-    },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
@@ -71,18 +42,8 @@ var UserStore = assign({}, EventEmitter.prototype, {
         _viewUser = user;
     },
 
-    authenticated: function(router) {
-        console.log('Getting user data from /api/user');
-        $.ajax({
-            url:'/api/user',
-            dataType: 'json',
-            success: function (u) {
-                UserActions.set(u,router);
-            },
-            error: function (xhr, status, err) {
-                console.error(url, status, err.toString());
-            }.bind(this)
-        });
+    set: function(user) {
+        _user = user;
     },
 
     get: function() {
@@ -92,17 +53,14 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action) {
      switch(action.actionType) {
-         case UserConstants.USER_POST_AUTH: UserStore.postAuth(action.user,action.router);
+         case UserConstants.USER_SET:
+             UserStore.set(action.user);
              UserStore.emitChange();
              break;
 
          case UserConstants.USER_VIEW_SET:
              UserStore.setViewUser(action.user);
              UserStore.emitChange();
-             break;
-
-         case UserConstants.USER_AUTHENTICATED:
-             UserStore.authenticated(action.router);
              break;
 
          default:

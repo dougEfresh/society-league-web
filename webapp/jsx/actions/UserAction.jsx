@@ -16,11 +16,10 @@ var UserActions = {
     /**
      * @param  {object} user
      */
-    set: function(user,router) {
+    set: function(user) {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USER_POST_AUTH,
-            user: user,
-            router: router
+            actionType: UserConstants.USER_SET,
+            user: user
         });
     },
 
@@ -33,17 +32,6 @@ var UserActions = {
         AppDispatcher.dispatch({
             actionType: UserConstants.USER_VIEW_SET,
             user: user
-        });
-    },
-
-    /**
-     * User as logged in and we need to redirect them react-router
-     * @param router
-     */
-    authenticated: function(router) {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USER_AUTHENTICATED,
-            router: router
         });
     }
 };

@@ -2,6 +2,7 @@ var React = require('react/addons');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Input = Bootstrap.Input
+    ,Panel = Bootstrap.Panel
     ,Label = Bootstrap.Label;
 
 var UserActions = require('../actions/UserAction.jsx');
@@ -24,7 +25,7 @@ var Login = React.createClass({
         console.log('Logging in: ' + user);
         $.ajax({
             async: true,
-            processData: true,
+            processData: false,
             url: '/api/authenticate',
             data: {username: user, password: password},
             method: 'post',
@@ -35,25 +36,26 @@ var Login = React.createClass({
                     JSON.stringify(router.getCurrentParams()) + ' ---- ' +
                     JSON.stringify(router.getCurrentQuery())
                 );
-                UserActions.authenticated(router);
-                //this.props.callback();
-                //}app/home.html
-
+                this.setState({error: false});
+                UserActions.set(d);
+                //TODO Do a Real route
+                router.transitionTo('home',null,{from: router.getCurrentPath()});
             }.bind(this),
             error: function (xhr, status, err) {
-                console.error('/authenticate', status, err.toString());
+                this.setState({error: true});
+                console.error('authenticate', status, err.toString());
             }.bind(this)
         });
 
     },
     render: function () {
         var errors = this.state.error ? <p>Bad login information</p> : '';
+        var button = (<Button onClick={this.handleSubmit} type="submit">login</Button>);
         return (
-            <div>
-                <Label><Input type='text' ref='username' placeholder="username" defaultValue="login0"/></Label>
-                <Label><Input type='text' ref='password' placeholder="password" defaultValue="login0"/></Label>
-                <Button onClick={this.handleSubmit} type="submit">login</Button>
-            </div>
+            <Panel header={'Login'} footer={button} >
+                <Input type='text' ref='username' placeholder="username" defaultValue="login0"/>
+                <Input type='text' ref='password' placeholder="password" defaultValue="login0"/>
+            </Panel>
         );
     }
 });

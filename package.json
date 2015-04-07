@@ -18,7 +18,7 @@
   "dependencies": {
     "react": "^0.13.1",
     "moment": "^2.9.0",
-    "react-bootstrap": "^0.20.1",
+    "react-bootstrap": "^0.20.2",
     "react-router": ">=0.13.1",
     "react-router-bootstrap": "0.12.1",
     "react-chartjs": "^0.6.0",
@@ -36,6 +36,8 @@
     "watchify": "^3.1.0",
     "uglify-js": "^2.4.10",
     "json-proxy": "0.3.1",
-    "morgan": "1.5.2"
+    "morgan": "1.5.2",
+    "casperjs": "1.1.0-beta3",
+    "phantomjs": "1.9.16"
   }
 }

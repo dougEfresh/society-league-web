@@ -44,22 +44,6 @@ var Navigator = React.createClass({
         console.log('NEW ' + JSON.stringify( nextProps));
     },
     render: function() {
-        var router = this.context.router;
-
-        if (router.getCurrentPathname().indexOf('login') >= 0) {
-            return (
-                <div>
-                    <Navbar inverse brand="Society" toggleNavKey={this.state.key}>
-                        <Nav bsStyle="pills" fluid fixedTop activeKey={this.state.key} toggleNavKey={this.state.key}></Nav>
-                    </Navbar>
-                    <RouteHandler />
-                </div>
-            );
-        }
-        if (this.props.user.id == 0) {
-            router.transitionTo('login',null,{from: router.getCurrentPath()});
-            return null;
-        }
         return (
             <div>
             <Navbar inverse brand="Society" toggleNavKey={this.state.key}>
@@ -82,11 +66,6 @@ var Navigator = React.createClass({
 });
 
 var ChallengeNav = React.createClass({
-    getDefaultProps: function() {
-        return {
-            user : {id: 0}
-        }
-    },
     getInitialState: function() {
         return {
             sent: 0,

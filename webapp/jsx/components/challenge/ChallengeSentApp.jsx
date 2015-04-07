@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var ReactPropTypes = React.PropTypes;
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Panel = Bootstrap.Panel
@@ -7,42 +8,29 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var ChallengePendingList = require('./ChallengePendingList.jsx');
-
+var ChallengePendingList = require('./ChallengeSentList.jsx');
 var Util = require('../../util.jsx');
 
-var ChallengePendingApp = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
+var ChallengeSentApp = React.createClass({
+    propTypes: {
+        user: ReactPropTypes.object.isRequired
     },
     getInitialState: function() {
-        return {
-            pending: null,
-            user: UserStore.get()
-        }
+        return {pending: []};
     },
     componentDidMount: function() {
-        ChallengeStore.addListener(this._onChallengeChange);
-        UserStore.addChangeListener(this._onUserChange);
-        Util.getData('/api/challenge/pending/' + this.state.user.id, function(p) {
+        if (this.props.user.id == 0) {
+            return;
+        }
+        Util.getData('/api/challenge/pending/' + this.props.user.id, function(p) {
              this.setState({pending: p});
          }.bind(this));
-    },
-    componentWillUnmount: function() {
-        ChallengeStore.removeAddListener(this._onChallengeChange);
-        UserStore.removeChangeListener(this._onUserChange);
-    },
-    _onChallengeChange: function() {
-        //this.setState({pending: ChallengeStore.getPending()});
-    },
-    _onUserChange: function() {
-        this.setState({user: UserStore.get()});
     },
     isValid: function() {
 
     },
     render: function(){
-        if (this.state.pending == null) {
+        if (this.state.pending == undefined || this.state.pending.length <= 0) {
             return null;
         }
         var title = (<div>Pending<span></span><Badge>{this.state.pending.length}</Badge></div>);
@@ -56,4 +44,4 @@ var ChallengePendingApp = React.createClass({
     }
 });
 
-module.exports = ChallengePendingApp;
+module.exports = ChallengeSentApp;
