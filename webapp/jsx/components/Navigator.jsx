@@ -91,8 +91,8 @@ var ChallengeNav = React.createClass({
     },
     render: function() {
         var indicator = 'Challenges';
-        if (this.state.sent + this.state.pending > 0) {
-            indicator = (<span>Challenges <Badge>{this.state.sent + this.state.pending}</Badge></span>);
+        if (this.state.sent + this.state.sent > 0) {
+            indicator = (<span>Challenges <Badge>{this.state.sent + this.state.sent}</Badge></span>);
         }
         return (
             <NavItemLink to='challenge' eventKey={"challenge"} >{indicator}</NavItemLink>

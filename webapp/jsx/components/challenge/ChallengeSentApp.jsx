@@ -8,7 +8,7 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var ChallengePendingList = require('./ChallengeSentList.jsx');
+var ChallengeSentList = require('./ChallengeSentList.jsx');
 var Util = require('../../util.jsx');
 
 var ChallengeSentApp = React.createClass({
@@ -16,28 +16,28 @@ var ChallengeSentApp = React.createClass({
         user: ReactPropTypes.object.isRequired
     },
     getInitialState: function() {
-        return {pending: []};
+        return {sent: []};
     },
     componentDidMount: function() {
         if (this.props.user.id == 0) {
             return;
         }
-        Util.getData('/api/challenge/pending/' + this.props.user.id, function(p) {
-             this.setState({pending: p});
+        Util.getData('/api/challenge/sent/' + this.props.user.id, function(p) {
+             this.setState({sent: p});
          }.bind(this));
     },
     isValid: function() {
 
     },
     render: function(){
-        if (this.state.pending == undefined || this.state.pending.length <= 0) {
+        if (this.state.sent == undefined || this.state.sent.length <= 0) {
             return null;
         }
-        var title = (<div>Pending<span></span><Badge>{this.state.pending.length}</Badge></div>);
+        var title = (<div>Pending<span></span><Badge>{this.state.sent.length}</Badge></div>);
         return (
             <div>
                 <Panel collapsable defaultCollapsed header={title}>
-                    <ChallengePendingList pending={this.state.pending}/>
+                    <ChallengeSentList pending={this.state.sent}/>
                 </Panel>
             </div>
         )

@@ -12,14 +12,14 @@ var Bootstrap = require('react-bootstrap')
     ,SplitButton = Bootstrap.SplitButton;
 
 
-var ChallengePendingList = React.createClass({
+var ChallengeSentList = React.createClass({
     propTypes: {
         pending: ReactPropTypes.array.isRequired
     },
 
     render: function() {
         var rows  = [];
-        this.props.pending.forEach(function(p) {
+        this.props.sent.forEach(function(p) {
             rows.push(<tr key={p.opponent.id}><PendingRow pending={p} /></tr>);
         });
         return (
@@ -29,7 +29,8 @@ var ChallengePendingList = React.createClass({
                             <th>Action</th>
                             <th>Date</th>
                             <th>Name</th>
-                            <th>Time</th>
+                            <th>Game</th>
+                            <th>Times</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -41,13 +42,13 @@ var ChallengePendingList = React.createClass({
     }
 });
 
-var PendingRow = React.createClass({
+var SentRow = React.createClass({
     propTypes: {
         pending: ReactPropTypes.object.isRequired
     },
     getTimes: function () {
         var times = [];
-        this.props.pending.challenges.forEach(function(c){
+        this.props.sent.challenges.forEach(function(c){
             times.push(<span key={c.id}>{c.slot.time}</span>)
         }.bind(this));
         return times;
@@ -55,12 +56,12 @@ var PendingRow = React.createClass({
     render: function() {
         return (
             <div>
-                <td><PendingAction challenges={this.props.pending.challenges}/>  </td>
+                <td><PendingAction challenges={this.props.sent.challenges}/>  </td>
             <td>
-                {this.props.pending.date}
+                {this.props.sent.date}
             </td>
                 <td>
-                    {this.props.pending.opponent.name}
+                    {this.props.sent.opponent.name}
                 </td>
                 <td>
                     {this.getTimes()}
@@ -70,22 +71,20 @@ var PendingRow = React.createClass({
     }
 });
 
-var PendingAction = React.createClass({
+var SentAction = React.createClass({
     propTypes: {
         challenges: ReactPropTypes.array.isRequired
     },
     render: function() {
         return (
             <SplitButton bsStyle={'primary'} title={'Actions'} key={'1'} >
-                <MenuItem eventKey='1'>A1</MenuItem>
-                <MenuItem eventKey='2'>A2</MenuItem>
-                <MenuItem eventKey='3'>A3</MenuItem>
-                <MenuItem divider />
-                <MenuItem eventKey='4'>A4</MenuItem>
+                <MenuItem eventKey='1'>Modify</MenuItem>
+                <MenuItem eventKey='2'>Add Calendar</MenuItem>
+                <MenuItem eventKey='3'>Cancel</MenuItem>
             </SplitButton>
         )
     }
 });
 
 
-module.exports = ChallengePendingList;
+module.exports = ChallengeSentList;

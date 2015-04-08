@@ -110,7 +110,7 @@ var PendingChallenges = React.createClass({
         if (this.props.userId  == 0) {
             return;
         }
-        Util.getData('/challenges/pending/' + this.props.userId, function(d){
+        Util.getData('/challenges/sent/' + this.props.userId, function(d){
             this.setState({challenges: d});
         }.bind(this))
     },
@@ -118,7 +118,7 @@ var PendingChallenges = React.createClass({
         if (nextProps.userId  == 0) {
             return;
         }
-        Util.getData('/challenges/pending/' + nextProps.userId, function(d){
+        Util.getData('/challenges/sent/' + nextProps.userId, function(d){
             this.setState({challenges: d});
         }.bind(this))
     },
