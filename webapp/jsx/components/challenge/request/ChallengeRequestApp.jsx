@@ -18,7 +18,6 @@ var ChallengeRequestApp = React.createClass({
         userId: ReactPropTypes.number.isRequired,
         challenge: ReactPropTypes.object.isRequired
     },
-
     getErrors: function() {
         var errors = [];
         var c = this.props.challenge;

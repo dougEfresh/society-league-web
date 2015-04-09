@@ -14,28 +14,27 @@ var DataFactory = require('../../../DataFactoryMixin.jsx');
 var ChallengeRequestedApp = React.createClass({
     mixins: [DataFactory],
     propTypes: {
-        userId: ReactPropTypes.number.isRequired
+        userId: ReactPropTypes.number.isRequired,
+        requests: ReactPropTypes.object.isRequired
     },
-    getInitialState: function() {
-        return {requested: []};
-    },
-    componentDidMount: function() {
-        this.getData('/api/challenge/' + this.props.userId, function(p) {
-             this.setState({requested: p});
-         }.bind(this));
-    },
-    isValid: function() {
-
+    getRequested: function() {
+        var requested = [];
+        if (this.props.requests.PENDING == undefined) {
+            return requested;
+        }
+        this.props.requests.PENDING.forEach(function(r) {
+            if (r.challenger.id == this.props.userId) {
+                requested.push(r);
+            }
+        }.bind(this));
+        return requested;
     },
     render: function(){
-        if (this.state.requested == undefined || this.state.requested.length <= 0) {
-            return null;
-        }
-        var title = (<div>Requested<span></span><Badge>{this.state.requested.length}</Badge></div>);
+        var title = (<div>Requested<span></span><Badge>{this.getRequested().length}</Badge></div>);
         return (
             <div>
                 <Panel collapsable defaultCollapsed header={title}>
-                    <ChallengeRequestedList requests={this.state.requested.PENDING}/>
+                    <ChallengeRequestedList requests={this.getRequested()}/>
                 </Panel>
             </div>
         )

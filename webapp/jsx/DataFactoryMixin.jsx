@@ -6,6 +6,9 @@ var DataFactory = {
     contextTypes: {
         router: React.PropTypes.func
     },
+    getUserId: function() {
+        return parseInt(this.context.router.getCurrentParams().userId);
+    },
     redirect: function (to) {
         this.context.router.transitionTo(to,null,{from: this.context.router.getCurrentPath()});
     },

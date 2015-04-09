@@ -36,7 +36,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
     },
 
     set: function(user) {
-        console.log('Setting userId : ' + user);
+        console.log('Setting userId : ' + JSON.stringify(user));
         _user = user;
         localStorage.setItem("_user",JSON.stringify(user));
     },
@@ -49,12 +49,12 @@ var UserStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
      switch(action.actionType) {
          case UserConstants.USER_SET:
-             UserStore.set(action.userId);
+             UserStore.set(action.user);
              UserStore.emitChange();
              break;
 
          case UserConstants.USER_VIEW_SET:
-             UserStore.setViewUser(action.userId);
+             UserStore.setViewUser(action.user);
              UserStore.emitChange();
              break;
 

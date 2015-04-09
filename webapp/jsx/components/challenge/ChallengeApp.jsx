@@ -8,19 +8,23 @@ var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeRequestedApp = require('./requested/ChallengeRequestedApp.jsx');
 var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
+var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');
+
+var DataFactory = require('../../DataFactoryMixin.jsx');
 
 var ChallengeApp = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
-    },
+    mixins: [DataFactory],
     getInitialState: function() {
         return {
             challenge: ChallengeStore.get(),
-            userId: parseInt(this.context.router.getCurrentParams().userId)
+            requests: {}
         }
     },
     componentDidMount: function() {
         ChallengeStore.addChangeListener(this._onChallengeChange);
+        this.getData('/api/challenge/' + this.getUserId(), function(p) {
+             this.setState({requests: p});
+         }.bind(this));
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
@@ -31,8 +35,9 @@ var ChallengeApp = React.createClass({
     render: function() {
         return (
             <div>
-                <ChallengeRequestedApp userId={this.state.userId}/>
-                <ChallengeRequestApp userId={this.state.userId} challenge={this.state.challenge}/>
+                <ChallengeRequestedApp userId={this.getUserId()} requests={this.state.requests} />
+                <ChallengePendingApp userId={this.getUserId()} requests={this.state.requests} />
+                <ChallengeRequestApp userId={this.getUserId()} challenge={this.state.challenge}/>
             </div>
         )
     }

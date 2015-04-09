@@ -79,7 +79,7 @@ var RequestedRow = React.createClass({
                     {this.props.request.date}
                 </td>
                 <td>
-                    {this.props.request.opponent.name}
+                    {this.props.request.challenger.name}
                 </td>
                 <td>
                     {this.getGames()}

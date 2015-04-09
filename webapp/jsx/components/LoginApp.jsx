@@ -41,7 +41,7 @@ var LoginApp = React.createClass({
                 this.setState({error: false});
                 UserActions.set(d);
                 //TODO Do a Real route
-                router.transitionTo('home',null,{from: router.getCurrentPath()});
+                router.transitionTo('home',{userId: d.id},{from: router.getCurrentPath()});
             }.bind(this),
             error: function (xhr, status, err) {
                 this.setState({error: true});
@@ -51,8 +51,7 @@ var LoginApp = React.createClass({
 
     },
     render: function () {
-        var errors = this.state.error ? <p>Bad login information</p> : '';
-        var button = (<Button onClick={this.handleSubmit} type="submit">login</Button>);
+         var button = (<Button onClick={this.handleSubmit} type="submit">login</Button>);
         return (
             <Panel header={'Login'} footer={button} >
                 <Input type='text' ref='username' placeholder="username" defaultValue="login0"/>
