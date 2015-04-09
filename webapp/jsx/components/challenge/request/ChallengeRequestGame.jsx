@@ -8,7 +8,7 @@ var Bootstrap = require('react-bootstrap')
     ,MenuItem = Bootstrap.MenuItem
     ,SplitButton = Bootstrap.SplitButton;
 
-var ChallengeActions = require('../../actions/ChallengeActions.jsx');
+var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 
 var ChallengeRequestGame = React.createClass({
     propTypes: {
@@ -73,7 +73,6 @@ var ChallengeRequestGame = React.createClass({
         var disp = g.nine.available && g.eight.available  ? 'inline' : 'none';
         var eight = g.eight.selected ? (<i className="fa fa-check">8</i>) :  (<i className="fa fa-times">8</i>);
         var nine = g.nine.selected ? (<i className="fa fa-check">9</i>) :  (<i className="fa fa-times">9</i>);
-        debugger;
         return (
             <div style={{display: disp}}>
                 <SplitButton bsStyle={'primary'} title={this.getTitle()} >

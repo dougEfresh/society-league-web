@@ -9,18 +9,18 @@ var Bootstrap = require('react-bootstrap')
     ,ButtonGroup = Bootstrap.ButtonGroup
     ,DropdownButton = Bootstrap.DropdownButton
     ,MenuItem = Bootstrap.MenuItem
+    ,Badge = Bootstrap.Badge
     ,SplitButton = Bootstrap.SplitButton;
 
 
-var ChallengeSentList = React.createClass({
+var ChallengeRequestedList = React.createClass({
     propTypes: {
-        pending: ReactPropTypes.array.isRequired
+        requests: ReactPropTypes.array.isRequired
     },
-
     render: function() {
         var rows  = [];
-        this.props.sent.forEach(function(p) {
-            rows.push(<tr key={p.opponent.id}><PendingRow pending={p} /></tr>);
+        this.props.requests.forEach(function(p) {
+            rows.push(<tr key={p.opponent.id}><RequestedRow request={p} /></tr>);
         });
         return (
               <Table striped bordered condensed hover>
@@ -42,26 +42,43 @@ var ChallengeSentList = React.createClass({
     }
 });
 
-var SentRow = React.createClass({
+var RequestedRow = React.createClass({
     propTypes: {
-        pending: ReactPropTypes.object.isRequired
+        request: ReactPropTypes.object.isRequired
     },
     getTimes: function () {
         var times = [];
-        this.props.sent.challenges.forEach(function(c){
+        this.props.request.challenges.forEach(function(c){
             times.push(<span key={c.id}>{c.slot.time}</span>)
         }.bind(this));
         return times;
     },
+    getGames: function() {
+        var games = [];
+        this.props.request.challenges.forEach(function(c) {
+            //todo move this to server
+            if (c.challenger.division.type == 'EIGHT_BALL_CHALLENGE') {
+                games.push(<Badge key={8}>8</Badge>);
+            } else {
+                games.push(<Badge key={9}>9</Badge>);
+            }
+        });
+        return games;
+    },
     render: function() {
         return (
             <div>
-                <td><PendingAction challenges={this.props.sent.challenges}/>  </td>
-            <td>
-                {this.props.sent.date}
-            </td>
                 <td>
-                    {this.props.sent.opponent.name}
+                    <RequestedAction challenges={this.props.request.challenges}/>
+                </td>
+                <td>
+                    {this.props.request.date}
+                </td>
+                <td>
+                    {this.props.request.opponent.name}
+                </td>
+                <td>
+                    {this.getGames()}
                 </td>
                 <td>
                     {this.getTimes()}
@@ -71,15 +88,15 @@ var SentRow = React.createClass({
     }
 });
 
-var SentAction = React.createClass({
+var RequestedAction = React.createClass({
     propTypes: {
         challenges: ReactPropTypes.array.isRequired
     },
     render: function() {
         return (
             <SplitButton bsStyle={'primary'} title={'Actions'} key={'1'} >
-                <MenuItem eventKey='1'>Modify</MenuItem>
-                <MenuItem eventKey='2'>Add Calendar</MenuItem>
+                <MenuItem eventKey='1'>Notify</MenuItem>
+                <MenuItem eventKey='3'>Modify</MenuItem>
                 <MenuItem eventKey='3'>Cancel</MenuItem>
             </SplitButton>
         )
@@ -87,4 +104,4 @@ var SentAction = React.createClass({
 });
 
 
-module.exports = ChallengeSentList;
+module.exports = ChallengeRequestedList;

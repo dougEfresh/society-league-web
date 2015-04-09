@@ -17,7 +17,7 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler;
 
-var Util = require('./../util.jsx');
+var DataFactory = require('./../DataFactoryMixin.jsx');
 
 var Home = React.createClass({
     contextTypes: {
@@ -66,6 +66,7 @@ var Navigator = React.createClass({
 });
 
 var ChallengeNav = React.createClass({
+    mixins: [DataFactory],
     getInitialState: function() {
         return {
             sent: 0,
@@ -83,7 +84,7 @@ var ChallengeNav = React.createClass({
 
      },
     update: function(user) {
-        Util.getData('/api/challenge/counters/' + user.id, function(d) {
+        this.getData('/api/challenge/counters/' + user.id, function(d) {
             this.setState(
                 {sent: d[0], pending:d[1]}
             );
@@ -91,8 +92,8 @@ var ChallengeNav = React.createClass({
     },
     render: function() {
         var indicator = 'Challenges';
-        if (this.state.sent + this.state.sent > 0) {
-            indicator = (<span>Challenges <Badge>{this.state.sent + this.state.sent}</Badge></span>);
+        if (this.state.requested + this.state.requested > 0) {
+            indicator = (<span>Challenges <Badge>{this.state.requested + this.state.requested}</Badge></span>);
         }
         return (
             <NavItemLink to='challenge' eventKey={"challenge"} >{indicator}</NavItemLink>

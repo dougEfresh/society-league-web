@@ -6,8 +6,8 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var ChallengeSentApp = require('./ChallengeSentApp.jsx');
-var ChallengeRequestApp = require('./ChallengeRequestApp.jsx');
+var ChallengeRequestedApp = require('./requested/ChallengeRequestedApp.jsx');
+var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 
 var ChallengeApp = React.createClass({
     contextTypes: {
@@ -45,8 +45,8 @@ var ChallengeApp = React.createClass({
         }
         return (
             <div>
-                <ChallengeSentApp user={this.state.user}/>
-                <ChallengeRequstApp user={this.state.user} challenge={this.state.challenge}/>
+                <ChallengeRequestedApp user={this.state.user}/>
+                <ChallengeRequestApp user={this.state.user} challenge={this.state.challenge}/>
             </div>
         )
     }

@@ -3,10 +3,11 @@ var ReactPropTypes = React.PropTypes;
 var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;
 
-var Util = require('../../util.jsx');
-var ChallengeActions = require('../../actions/ChallengeActions.jsx');
+var DataFactory = require('../../../DataFactoryMixin.jsx');
+var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 
 var ChallengeRequestOpponent = React.createClass({
+    mixins: [DataFactory],
     propTypes: {
         user: ReactPropTypes.object.isRequired,
         opponent: ReactPropTypes.object.isRequired
@@ -25,7 +26,7 @@ var ChallengeRequestOpponent = React.createClass({
         }
     },
     update: function(props) {
-        Util.getData('/api/challenge/potentials/' + props.user.id, function (potentials) {
+        this.getData('/api/challenge/potentials/' + props.user.id, function (potentials) {
             var opponents = {};
             potentials.forEach(function(p){
                 opponents[p.user.id] = p;

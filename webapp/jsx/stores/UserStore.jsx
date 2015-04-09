@@ -5,7 +5,10 @@ var assign = require('object-assign');
 var UserActions = require('../actions/UserAction.jsx');
 var CHANGE_EVENT = 'change';
 
-var _user = { id:0, name:""};
+var _user = localStorage.getItem("_user") == null
+|| localStorage.getItem("_user") == undefined
+? { id:0, name:""} : JSON.parse(localStorage.getItem("_user"));
+
 var _viewUser = null;
 
 var UserStore = assign({}, EventEmitter.prototype, {
@@ -43,7 +46,9 @@ var UserStore = assign({}, EventEmitter.prototype, {
     },
 
     set: function(user) {
+        console.log('Setting user : ' + user);
         _user = user;
+        localStorage.setItem("_user",JSON.stringify(user));
     },
 
     get: function() {

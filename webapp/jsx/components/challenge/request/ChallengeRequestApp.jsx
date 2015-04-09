@@ -4,10 +4,10 @@ var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Panel = Bootstrap.Panel;
 
-var ChallengeStore = require('../../stores/ChallengeStore.jsx');
-var ChallengeActions = require('../../actions/ChallengeActions.jsx');
-var UserStore = require('../../stores/UserStore.jsx');
-var ChallengePendingApp = require('./ChallengeSentApp.jsx');
+var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
+var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
+var UserStore = require('../../../stores/UserStore.jsx');
+
 var ChallengeRequestDate = require('./ChallengeRequestDate.jsx');
 var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
@@ -47,8 +47,7 @@ var ChallengeRequestApp = React.createClass({
         );
         return (
             <div>
-                <ChallengePendingApp />
-                <Panel collapsable defaultExpanded header={'Request'} >
+                <Panel collapsable defaultCollapsed header={'Request'} >
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots date={c.date} slots={c.slots} />
                     <ChallengeRequestOpponent user={this.props.user} opponent={c.opponent} />

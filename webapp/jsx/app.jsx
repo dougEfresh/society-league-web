@@ -7,6 +7,7 @@ var Router = require('react-router')
 var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
 var NavApp = require('./components/NavApp.jsx');
 var LoginApp = require('./components/LoginApp.jsx');
+var ErrorApp = require('./components/ErrorApp.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -36,6 +37,7 @@ var Home = React.createClass({
 var routes = (
     <Route handler={App}>
         <DefaultRoute handler={Home} />
+        <Route name="error" path="error" handler={ErrorApp} />
         <Route name="nav" path="/" handler={NavApp}>
             <Route name="login" path="login" handler={LoginApp} />
             <Route name="home" path="home" handler={Home}/>

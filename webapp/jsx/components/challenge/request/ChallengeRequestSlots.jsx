@@ -6,10 +6,11 @@ var Bootstrap = require('react-bootstrap')
     ,ListGroup = Bootstrap.ListGroup
     ,ListGroupItem = Bootstrap.ListGroupItem;
 
-var Util = require('../../util.jsx');
-var ChallengeActions = require('../../actions/ChallengeActions.jsx');
+var DataFactory = require('../../../DataFactoryMixin.jsx');
+var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 
 var ChallengeRequestSlots = React.createClass({
+    mixins: [DataFactory],
     propTypes: {
         slots: ReactPropTypes.array.isRequired,
         date: ReactPropTypes.string.isRequired
@@ -20,7 +21,7 @@ var ChallengeRequestSlots = React.createClass({
         }
     },
     update: function(props) {
-        Util.getData('/api/challenge/slots/' + props.date, function (slots) {
+        this.getData('/api/challenge/slots/' + props.date, function (slots) {
             var available = {};
             slots.forEach(function(slot) {
                 available[slot.id] = slot;
