@@ -29,11 +29,8 @@ var Home = React.createClass({
 });
 
 var Navigator = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
-    },
     propTypes: {
-        user: ReactPropTypes.object.isRequired
+        userId: ReactPropTypes.number.isRequired
     },
     getInitialState: function() {
         return {
@@ -48,14 +45,14 @@ var Navigator = React.createClass({
             <div>
             <Navbar inverse brand="Society" toggleNavKey={this.state.key}>
             <Nav bsStyle="pills" fluid fixedTop activeKey={this.state.key} toggleNavKey={this.state.key}>
-                <NavItemLink to='stats' params={{userId: this.props.user.id}} eventKey={"Stats"}>Stats</NavItemLink>
-                <ChallengeNav user={this.props.user} />
-                <DropdownButton pullRight eventKey={"user"} title={this.props.user.name} navItem={true}>
-                    <MenuItemLink  to='account' params={{userId: this.props.user.id}} eventKey={"account"}>Account</MenuItemLink>
+                <NavItemLink to='stats' params={{userId: this.props.userId}} eventKey={"Stats"}>Stats</NavItemLink>
+                <ChallengeNav userId={this.props.userId} />
+                <DropdownButton pullRight eventKey={"user"} title={'Get Name'} navItem={true}>
+                    <MenuItemLink  to='account' params={{userId: this.props.userId}} eventKey={"account"}>Account</MenuItemLink>
                     <MenuItem href="/api/logout" eventKey={"logout"}>Logout</MenuItem>
                 </DropdownButton>
                 <DropdownButton pullRight eventKey={"admin"} title={'Admin'} navItem={true}>
-                    <MenuItemLink  to='account' params={{userId: this.props.user.id}} eventKey={"account"}>Account</MenuItemLink>
+                    <MenuItemLink  to='account' params={{userId: this.props.userId}} eventKey={"account"}>Account</MenuItemLink>
                 </DropdownButton>
             </Nav>
             </Navbar>
@@ -66,7 +63,10 @@ var Navigator = React.createClass({
 });
 
 var ChallengeNav = React.createClass({
-    mixins: [DataFactory],
+    propTypes: {
+        userId: ReactPropTypes.number.isRequired
+    },
+     mixins: [DataFactory],
     getInitialState: function() {
         return {
             sent: 0,
@@ -74,17 +74,15 @@ var ChallengeNav = React.createClass({
         }
     },
     componentWillReceiveProps: function (nextProps) {
-        if (nextProps.user.id != this.props.user.id) {
-            this.update(nextProps.user);
+        if (nextProps.userId != this.props.userId) {
+            this.update(nextProps.userId);
         }
     },
     componentDidMount: function() {
-        if (this.props.user.id != 0)
-            this.update(this.props.user);
-
+        this.update(this.props.userId);
      },
     update: function(user) {
-        this.getData('/api/challenge/counters/' + user.id, function(d) {
+        this.getData('/api/challenge/counters/' + user, function(d) {
             this.setState(
                 {sent: d[0], pending:d[1]}
             );
@@ -96,7 +94,7 @@ var ChallengeNav = React.createClass({
             indicator = (<span>Challenges <Badge>{this.state.requested + this.state.requested}</Badge></span>);
         }
         return (
-            <NavItemLink to='challenge' eventKey={"challenge"} >{indicator}</NavItemLink>
+            <NavItemLink to='challenge' params={{userId: this.props.userId}} eventKey={"challenge"} >{indicator}</NavItemLink>
         );
     }
 });

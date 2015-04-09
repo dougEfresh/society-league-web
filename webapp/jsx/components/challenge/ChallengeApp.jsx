@@ -14,39 +14,25 @@ var ChallengeApp = React.createClass({
         router: React.PropTypes.func
     },
     getInitialState: function() {
-        //TODO check router state
         return {
-            user: UserStore.get(),
-            challenge: ChallengeStore.get()
+            challenge: ChallengeStore.get(),
+            userId: parseInt(this.context.router.getCurrentParams().userId)
         }
     },
     componentDidMount: function() {
         ChallengeStore.addChangeListener(this._onChallengeChange);
-        UserStore.addChangeListener(this._onUserChange);
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
-        UserStore.removeChangeListener(this._onUserChange);
     },
     _onChallengeChange: function() {
         this.setState({challenge: ChallengeStore.get()});
     },
-    _onUserChange: function() {
-        this.setState({user: UserStore.get()});
-    },
     render: function() {
-        if (this.state.user.id == 0) {
-            console.log('--- You need to be logged in ---');
-            this.context.router.transitionTo(
-                'login',null,
-                {from: this.context.router.getCurrentPath()}
-            );
-            return null;
-        }
         return (
             <div>
-                <ChallengeRequestedApp user={this.state.user}/>
-                <ChallengeRequestApp user={this.state.user} challenge={this.state.challenge}/>
+                <ChallengeRequestedApp userId={this.state.userId}/>
+                <ChallengeRequestApp userId={this.state.userId} challenge={this.state.challenge}/>
             </div>
         )
     }

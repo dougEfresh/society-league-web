@@ -9,7 +9,7 @@ var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeRequestOpponent = React.createClass({
     mixins: [DataFactory],
     propTypes: {
-        user: ReactPropTypes.object.isRequired,
+        userId: ReactPropTypes.number.isRequired,
         opponent: ReactPropTypes.object.isRequired
     },
     contextTypes: {
@@ -26,16 +26,16 @@ var ChallengeRequestOpponent = React.createClass({
         }
     },
     update: function(props) {
-        this.getData('/api/challenge/potentials/' + props.user.id, function (potentials) {
+        this.getData('/api/challenge/potentials/' + props.userId, function (potentials) {
             var opponents = {};
             potentials.forEach(function(p){
-                opponents[p.user.id] = p;
+                opponents[p.userId] = p;
             });
             this.setState({potentials: opponents});
         }.bind(this));
     },
     componentWillReceiveProps: function(props) {
-       if (props.user.id == this.props.user.id) {
+       if (props.userId == this.props.userId) {
            return;
        }
         this.update(props);
@@ -55,11 +55,8 @@ var ChallengeRequestOpponent = React.createClass({
         return options;
     },
     render: function() {
-        var disp = this.props.user.id == 0  ? 'none' : 'inline';
         return (
-            <div style={{display: disp}}>
-                <Input type='select' value={this.props.opponent.user.id} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
-            </div>
+            <Input type='select' value={this.props.opponent.user.id} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
         );
     }
 });

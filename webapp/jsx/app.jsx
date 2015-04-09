@@ -2,6 +2,7 @@ var React = require('react/addons');
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route
+    , NotFoundRoute = Router.NotFoundRoute
     , DefaultRoute = Router.DefaultRoute;
 
 var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
@@ -33,17 +34,26 @@ var Home = React.createClass({
         return (<div>Home</div>);
     }
 });
+var RouteNotFound = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func
+    },
+    render: function(){
+        return (<h1>Not Found Mo Fo</h1>);
+    }
+});
 
 var routes = (
     <Route handler={App}>
+        <NotFoundRoute handler={RouteNotFound}/>
         <DefaultRoute handler={Home} />
         <Route name="error" path="error" handler={ErrorApp} />
         <Route name="nav" path="/" handler={NavApp}>
             <Route name="login" path="login" handler={LoginApp} />
-            <Route name="home" path="home" handler={Home}/>
-            <Route name="account" path=":userId/account" handler={Home}/>
-            <Route name="challenge" path="challenge" handler={ChallengeApp}/>
-            <Route name="stats" path=":userId/stats" handler={Stats}/>
+            <Route name="home" path="home/:userId" handler={Home}/>
+            <Route name="account" path="account/:userId" handler={Home}/>
+            <Route name="challenge" path="challenge/:userId" handler={ChallengeApp}/>
+            <Route name="stats" path="stats/:userId" handler={Stats}/>
         </Route>
     </Route>
 );

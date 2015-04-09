@@ -8,19 +8,22 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var UserStore = require('../../../stores/UserStore.jsx');
-var ChallengeRequestedList = require('./ChallengeRequestedList.jsx');
+var ChallengeRequestedList = require('./ChallengePendingList.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 
 var ChallengeRequestedApp = React.createClass({
     mixins: [DataFactory],
     propTypes: {
-        userId: ReactPropTypes.number.isRequired
+        user: ReactPropTypes.object.isRequired
     },
     getInitialState: function() {
         return {requested: []};
     },
     componentDidMount: function() {
-        this.getData('/api/challenge/' + this.props.userId, function(p) {
+        if (this.props.user.id == 0) {
+            return;
+        }
+        this.getData('/api/challenge/' + this.props.user.id, function(p) {
              this.setState({requested: p});
          }.bind(this));
     },

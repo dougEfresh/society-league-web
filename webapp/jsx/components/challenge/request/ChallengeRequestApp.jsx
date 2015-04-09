@@ -15,7 +15,7 @@ var ChallengeRequestGame= require('./ChallengeRequestGame.jsx');
 
 var ChallengeRequestApp = React.createClass({
     propTypes: {
-        user: ReactPropTypes.object.isRequired,
+        userId: ReactPropTypes.number.isRequired,
         challenge: ReactPropTypes.object.isRequired
     },
 
@@ -50,7 +50,7 @@ var ChallengeRequestApp = React.createClass({
                 <Panel collapsable defaultCollapsed header={'Request'} >
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots date={c.date} slots={c.slots} />
-                    <ChallengeRequestOpponent user={this.props.user} opponent={c.opponent} />
+                    <ChallengeRequestOpponent userId={this.props.userId} opponent={c.opponent} />
                     <ChallengeRequestGame game={c.game} />
                     {submit}
                 </Panel>

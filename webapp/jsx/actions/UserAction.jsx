@@ -24,8 +24,8 @@ var UserActions = {
     },
 
     /**
-      * View the website wth this user instead of logged in user
-     * a param of null disable viewing user
+      * View the website wth this userId instead of logged in userId
+     * a param of null disable viewing userId
      * @param  {object} user
      */
     setViewer: function(user) {

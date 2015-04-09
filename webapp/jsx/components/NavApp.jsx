@@ -21,7 +21,7 @@ var NavApp = React.createClass({
     render: function() {
         return (
             <div>
-                <Navigator user={this.state.user} />
+                <Navigator userId={this.state.user.id} />
             </div>
         )
     }

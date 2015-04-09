@@ -26,7 +26,7 @@ var _challenge = {
     game: defaultGame()
 };
 
-var ChallengeStore =  assign({}, EventEmitter.prototype, {
+var ChallengeStore = assign({}, EventEmitter.prototype, {
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -123,6 +123,7 @@ var ChallengeStore =  assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action) {
+
      switch(action.actionType) {
          case ChallengeConstants.CHALLENGE_DATE_CHANGE:
              ChallengeStore.changeDate(action.date);

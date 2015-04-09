@@ -31,22 +31,12 @@ var UserStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-    postAuth : function(user,router) {
-        _user = user;
-        if (router.getCurrentQuery() == null || router.getCurrentQuery() == undefined || router.getCurrentQuery().from == '/' ) {
-            router.transitionTo('home');
-        } else {
-            router.transitionTo(router.getCurrentQuery().from);
-        }
-
-    },
-
     setViewUser : function(user) {
         _viewUser = user;
     },
 
     set: function(user) {
-        console.log('Setting user : ' + user);
+        console.log('Setting userId : ' + user);
         _user = user;
         localStorage.setItem("_user",JSON.stringify(user));
     },
@@ -59,12 +49,12 @@ var UserStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
      switch(action.actionType) {
          case UserConstants.USER_SET:
-             UserStore.set(action.user);
+             UserStore.set(action.userId);
              UserStore.emitChange();
              break;
 
          case UserConstants.USER_VIEW_SET:
-             UserStore.setViewUser(action.user);
+             UserStore.setViewUser(action.userId);
              UserStore.emitChange();
              break;
 
