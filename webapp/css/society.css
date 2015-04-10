@@ -1,3 +1,7 @@
+.navbar-collapse {
+  overflow: hidden;
+}
+
 header.page-header {
     background: #2d3e50;
     color: #eee;

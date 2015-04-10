@@ -8,6 +8,7 @@ var Bootstrap = require('react-bootstrap')
     ,DropdownMenu = Bootstrap.DropdownMenu
     ,Badge = Bootstrap.Badge
     ,NavItem = Bootstrap.NavItem
+    ,CollapsableNav = Bootstrap.CollapsableNav
     ,MenuItem = Bootstrap.MenuItem;
 
 var ReactRouterBootstrap = require('react-router-bootstrap')
@@ -30,7 +31,7 @@ var Home = React.createClass({
 
 var Navigator = React.createClass({
     propTypes: {
-        userId: ReactPropTypes.number.isRequired
+        user: ReactPropTypes.object.isRequired
     },
     getInitialState: function() {
         return {
@@ -41,21 +42,24 @@ var Navigator = React.createClass({
         console.log('NEW ' + JSON.stringify( nextProps));
     },
     render: function() {
+        //<CollapsableNav bsStyle="pills" fluid fixedTop activeKey={this.state.key} eventKey={'0'}>
         return (
             <div>
-            <Navbar inverse brand="Society" toggleNavKey={this.state.key}>
-            <Nav bsStyle="pills" fluid fixedTop activeKey={this.state.key} toggleNavKey={this.state.key}>
-                <NavItemLink to='stats' params={{userId: this.props.userId}} eventKey={"Stats"}>Stats</NavItemLink>
-                <ChallengeNav userId={this.props.userId} />
-                <DropdownButton pullRight eventKey={"user"} title={'Get Name'} navItem={true}>
-                    <MenuItemLink  to='account' params={{userId: this.props.userId}} eventKey={"account"}>Account</MenuItemLink>
-                    <MenuItem href="/api/logout" eventKey={"logout"}>Logout</MenuItem>
-                </DropdownButton>
-                <DropdownButton pullRight eventKey={"admin"} title={'Admin'} navItem={true}>
-                    <MenuItemLink  to='account' params={{userId: this.props.userId}} eventKey={"account"}>Account</MenuItemLink>
-                </DropdownButton>
-            </Nav>
-            </Navbar>
+                <Navbar left inverse brand="Society" toggleNavKey={'0'}>
+                    <CollapsableNav eventKey={'0'}>
+                        <Nav bsStyle="pills" fluid fixedTop navbar>
+                            <NavItemLink to='stats' params={{userId: this.props.user.id}} eventKey={"Stats"}>Stats</NavItemLink>
+                            <ChallengeNav userId={this.props.user.id} />
+                            <NavItemLink  to='admin' eventKey={"admin"}>Admin</NavItemLink>
+                        </Nav>
+                        <Nav navbar right>
+                            <DropdownButton pullRight eventKey={"user"} title={this.props.user.name} navItem={true}>
+                                <MenuItemLink  to='account' params={{userId: this.props.user.id}} eventKey={"account"}>Account</MenuItemLink>
+                                <MenuItem href="/api/logout" eventKey={"logout"}>Logout</MenuItem>
+                            </DropdownButton>
+                        </Nav>
+                </CollapsableNav>
+                </Navbar>
                 <RouteHandler />
             </div>
         );
@@ -66,7 +70,7 @@ var ChallengeNav = React.createClass({
     propTypes: {
         userId: ReactPropTypes.number.isRequired
     },
-     mixins: [DataFactory],
+    mixins: [DataFactory],
     getInitialState: function() {
         return {
             sent: 0,
@@ -89,10 +93,7 @@ var ChallengeNav = React.createClass({
         }.bind(this));
     },
     render: function() {
-        var indicator = 'Challenges';
-        if (this.state.requested + this.state.requested > 0) {
-            indicator = (<span>Challenges <Badge>{this.state.requested + this.state.requested}</Badge></span>);
-        }
+        var indicator = (<span>Challenges <Badge>{this.state.sent + this.state.pending}</Badge></span>);
         return (
             <NavItemLink to='challenge' params={{userId: this.props.userId}} eventKey={"challenge"} >{indicator}</NavItemLink>
         );

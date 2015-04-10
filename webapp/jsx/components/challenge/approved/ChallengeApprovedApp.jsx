@@ -9,7 +9,6 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var UserStore = require('../../../stores/UserStore.jsx');
-var ChallengePendingList = require('./ChallengePendingList.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 
 var ChallengePendingApp = React.createClass({
@@ -36,7 +35,6 @@ var ChallengePendingApp = React.createClass({
         return (
             <div>
                 <Panel collapsable defaultCollapsed header={title}>
-                    <ChallengePendingList requests={this.getPending()}/>
                 </Panel>
             </div>
         )

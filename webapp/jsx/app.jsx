@@ -52,6 +52,7 @@ var routes = (
             <Route name="login" path="login" handler={LoginApp} />
             <Route name="home" path="home/:userId" handler={Home}/>
             <Route name="account" path="account/:userId" handler={Home}/>
+            <Route name="admin" path="admin" handler={Home}/>
             <Route name="challenge" path="challenge/:userId" handler={ChallengeApp}/>
             <Route name="stats" path="stats/:userId" handler={Stats}/>
         </Route>
