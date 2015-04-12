@@ -54,8 +54,8 @@ var Navigator = React.createClass({
                         </Nav>
                         <Nav navbar right>
                             <DropdownButton pullRight eventKey={"user"} title={this.props.user.name} navItem={true}>
-                                <MenuItemLink  to='account' params={{userId: this.props.user.id}} eventKey={"account"}>Account</MenuItemLink>
-                                <MenuItem href="/api/logout" eventKey={"logout"}>Logout</MenuItem>
+                                <MenuItemLink to='account' params={{userId: this.props.user.id}} eventKey={"account"}>Account</MenuItemLink>
+                                <MenuItemLink to="logout" eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>
                         </Nav>
                 </CollapsableNav>
@@ -78,9 +78,8 @@ var ChallengeNav = React.createClass({
         }
     },
     componentWillReceiveProps: function (nextProps) {
-        if (nextProps.userId != this.props.userId) {
-            this.update(nextProps.userId);
-        }
+        //TODO listen for challenge changes
+        this.update(nextProps.userId);
     },
     componentDidMount: function() {
         this.update(this.props.userId);

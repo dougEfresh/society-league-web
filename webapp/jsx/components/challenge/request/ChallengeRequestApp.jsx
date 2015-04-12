@@ -13,9 +13,11 @@ var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
 var ChallengeRequestGame= require('./ChallengeRequestGame.jsx');
 
+var DataFactory = require('../../../DataFactoryMixin.jsx');
+
 var ChallengeRequestApp = React.createClass({
+    mixins: [DataFactory],
     propTypes: {
-        userId: ReactPropTypes.number.isRequired,
         challenge: ReactPropTypes.object.isRequired
     },
     getErrors: function() {
@@ -40,6 +42,7 @@ var ChallengeRequestApp = React.createClass({
         return this.getErrors().length == 0;
     },
     render: function(){
+        var userId = this.getUserId();
         var c = this.props.challenge;
         var submit = (
             <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleClick}>Request Challenge</Button>
@@ -49,7 +52,7 @@ var ChallengeRequestApp = React.createClass({
                 <Panel collapsable defaultCollapsed header={'Request'} >
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots date={c.date} slots={c.slots} />
-                    <ChallengeRequestOpponent userId={this.props.userId} opponent={c.opponent} />
+                    <ChallengeRequestOpponent userId={userId} opponent={c.opponent} />
                     <ChallengeRequestGame game={c.game} />
                     {submit}
                 </Panel>

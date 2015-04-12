@@ -10,31 +10,23 @@ var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var UserStore = require('../../../stores/UserStore.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
+var ChallengeAppMixin = require('../ChallengeAppMixin.jsx');
+var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 
 var ChallengePendingApp = React.createClass({
-    mixins: [DataFactory],
-    propTypes: {
-        userId: ReactPropTypes.number.isRequired,
-        requests: ReactPropTypes.object.isRequired
-    },
-    getPending: function() {
-        var requested = [];
-        if (this.props.requests.PENDING == undefined) {
-            return requested;
+    mixins: [DataFactory,ChallengeAppMixin],
+     getDefaultProps: function(){
+        return {
+            type:  ChallengeStatus.ACCEPTED
         }
-
-        this.props.requests.PENDING.forEach(function(r) {
-            if (r.challenger.id != this.props.userId) {
-                requested.push(r);
-            }
-        }.bind(this));
-        return requested;
     },
     render: function(){
-        var title = (<div>Pending Approval<span></span><Badge>{this.getPending().length}</Badge></div>);
+        if (!this.shouldRender()){
+            return null;
+        }
         return (
             <div>
-                <Panel collapsable defaultCollapsed header={title}>
+                <Panel collapsable defaultCollapsed header={this.getTitle()}>
                 </Panel>
             </div>
         )

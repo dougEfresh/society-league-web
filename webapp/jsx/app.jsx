@@ -8,6 +8,7 @@ var Router = require('react-router')
 var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
 var NavApp = require('./components/NavApp.jsx');
 var LoginApp = require('./components/LoginApp.jsx');
+var LogoutApp = require('./components/LogoutApp.jsx');
 var ErrorApp = require('./components/ErrorApp.jsx');
 
 var App = React.createClass({
@@ -50,6 +51,7 @@ var routes = (
         <Route name="error" path="error" handler={ErrorApp} />
         <Route name="nav" path="/" handler={NavApp}>
             <Route name="login" path="login" handler={LoginApp} />
+            <Route name="logout" path="logout" handler={LogoutApp} />
             <Route name="home" path="home/:userId" handler={Home}/>
             <Route name="account" path="account/:userId" handler={Home}/>
             <Route name="admin" path="admin" handler={Home}/>

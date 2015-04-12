@@ -6,18 +6,27 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var ChallengeRequestedApp = require('./requested/ChallengeRequestedApp.jsx');
 var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
+
+var ChallengeRequestedApp = require('./requested/ChallengeRequestedApp.jsx');
 var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');
+var ChallengeNotifyApp = require('./notify/ChallengeNotifyApp.jsx');
 
 var DataFactory = require('../../DataFactoryMixin.jsx');
+var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 
 var ChallengeApp = React.createClass({
     mixins: [DataFactory],
     getInitialState: function() {
+        var requests = {};
+        requests[ChallengeStatus.PENDING] = [];
+        requests[ChallengeStatus.NEEDS_NOTIFY] = [];
+        requests[ChallengeStatus.CANCELLED] = [];
+        requests[ChallengeStatus.REQUESTED] = [];
+        requests[ChallengeStatus.ACCEPTED] = [];
         return {
             challenge: ChallengeStore.get(),
-            requests: {}
+            requests : requests
         }
     },
     componentDidMount: function() {
@@ -35,9 +44,11 @@ var ChallengeApp = React.createClass({
     render: function() {
         return (
             <div>
-                <ChallengeRequestedApp userId={this.getUserId()} requests={this.state.requests} />
-                <ChallengePendingApp userId={this.getUserId()} requests={this.state.requests} />
-                <ChallengeRequestApp userId={this.getUserId()} challenge={this.state.challenge}/>
+                <ChallengeNotifyApp requests={this.state.requests} />
+                <ChallengeRequestedApp  requests={this.state.requests} />
+                <ChallengePendingApp  requests={this.state.requests} />
+
+                <ChallengeRequestApp  challenge={this.state.challenge}/>
             </div>
         )
     }

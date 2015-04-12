@@ -46,7 +46,9 @@ var DataFactory = {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    this.redirect('login');
+                    if (this.context.router.getCurrentPathname().indexOf('login') == -1) {
+                        this.redirect('login');
+                    }
                 }.bind(this)
             },
             success: function (d) {
@@ -54,7 +56,8 @@ var DataFactory = {
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
-                this.redirect('error');
+                console.log('Redirecting to error')
+                //this.redirect('error');
             }.bind(this)
         });
     }

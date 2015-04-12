@@ -8,30 +8,30 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var UserStore = require('../../../stores/UserStore.jsx');
-var ChallengePendingList = require('./ChallengePendingList.jsx');
+var ChallengeNotifyList = require('./ChallengeNotifyList.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 var ChallengeAppMixin = require('../ChallengeAppMixin.jsx');
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 
-var ChallengePendingApp = React.createClass({
+var ChallengeNotifyApp = React.createClass({
     mixins: [DataFactory,ChallengeAppMixin],
      getDefaultProps: function(){
         return {
-            type : ChallengeStatus.PENDING
+            type : ChallengeStatus.NEEDS_NOTIFY
         }
     },
     render: function(){
-          if (!this.shouldRender()) {
+        if (!this.shouldRender()) {
             return null;
         }
         return (
             <div>
-                <Panel bsStyle={'warning'} collapsable defaultCollapsed header={this.getTitle()}>
-                    <ChallengePendingList type={this.props.type} requests={this.getRequests()}/>
+                <Panel bsStyle="warning" collapsable defaultCollapsed header={this.getTitle()}>
+                    <ChallengeNotifyList type={this.props.type} requests={this.getRequests()}/>
                 </Panel>
             </div>
         )
     }
 });
 
-module.exports = ChallengePendingApp;
+module.exports = ChallengeNotifyApp;
