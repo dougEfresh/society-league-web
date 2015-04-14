@@ -52,7 +52,7 @@ var ChallengeRequestOpponent = React.createClass({
         var options = [];
         options.push(<option key={0} value={0}>{'------'}</option>);
         this.state.potentials.forEach(function(p) {
-            options.push(<option key={p.user.id} value={p.user.id}>{p.user.name}</option>);
+            options.push(<option key={p.user.id} value={p.user.id}>{p.user.name + ' --  W:20 L:10' }</option>);
         }.bind(this));
         return options;
     },

@@ -43,14 +43,16 @@ var Navigator = React.createClass({
     },
     render: function() {
         //<CollapsableNav bsStyle="pills" fluid fixedTop activeKey={this.state.key} eventKey={'0'}>
+        //<NavItemLink to='stats' params={{userId: this.props.user.id}} eventKey={"Stats"}>Stats</NavItemLink>
+        //<NavItemLink  to='admin' eventKey={"admin"}>Admin</NavItemLink>
         return (
             <div>
                 <Navbar left inverse brand="Society" toggleNavKey={'0'}>
                     <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
-                            <NavItemLink to='stats' params={{userId: this.props.user.id}} eventKey={"Stats"}>Stats</NavItemLink>
+
                             <ChallengeNav userId={this.props.user.id} />
-                            <NavItemLink  to='admin' eventKey={"admin"}>Admin</NavItemLink>
+
                         </Nav>
                         <Nav navbar right>
                             <DropdownButton pullRight eventKey={"user"} title={this.props.user.name} navItem={true}>

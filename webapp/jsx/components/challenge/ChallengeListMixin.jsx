@@ -12,6 +12,8 @@ var Bootstrap = require('react-bootstrap')
     ,Badge = Bootstrap.Badge
     ,SplitButton = Bootstrap.SplitButton;
 
+var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
+
 var ChallengeListMixin = {
     contextTypes: {
         router: React.PropTypes.func
@@ -75,7 +77,8 @@ var RequestRow = React.createClass({
     },
     getOpponent: function() {
         //return this.props.request[this.props.opponentField].name
-        if (this.props.type == 'SENT')
+        if (this.props.type == ChallengeStatus.SENT ||
+            this.props.type == ChallengeStatus.NEEDS_NOTIFY)
             return this.props.request.opponent.name;
 
         return this.props.request.challenger.name;
@@ -109,12 +112,37 @@ var RequestAction = React.createClass({
         type: ReactPropTypes.string.isRequired
     },
     render: function() {
+         if (this.props.type == ChallengeStatus.PENDING) {
+            return (
+                <ButtonGroup bsStyle={'primary'} title={'Actions'} key={'1'} >
+                    <Button bsStyle={'success'} eventKey='3'>Accept</Button>
+                    <Button bsStyle={'warning'} eventKey='3'>Deny</Button>
+                </ButtonGroup>
+            )
+        }
+        if (this.props.type == ChallengeStatus.SENT) {
+            return (
+                <ButtonGroup bsStyle={'primary'} title={'Actions'} key={'1'} >
+                    <Button bsStyle={'primary'} eventKey='3'>Modify</Button>
+                    <Button bsStyle={'warning'} eventKey='3'>Cancel</Button>
+                </ButtonGroup>
+            )
+        }
+        if (this.props.type == ChallengeStatus.NEEDS_NOTIFY) {
+            return (
+                <ButtonGroup bsStyle={'primary'} title={'Actions'} key={'1'} >
+                    <Button bsStyle={'success'} eventKey='3'>Notify</Button>
+                    <Button bsStyle={'primary'} eventKey='3'>Modify</Button>
+                    <Button bsStyle={'warning'} eventKey='3'>Cancel</Button>
+                </ButtonGroup>
+            )
+        }
         return (
-            <SplitButton bsStyle={'primary'} title={'Actions'} key={'1'} >
-                <MenuItem eventKey='1'>Notify</MenuItem>
-                <MenuItem eventKey='3'>Modify</MenuItem>
-                <MenuItem eventKey='3'>Cancel</MenuItem>
-            </SplitButton>
+            <ButtonGroup bsStyle={'primary'} title={'Actions'} key={'1'} >
+                <Button eventKey='1'>Notify</Button>
+                <Button eventKey='3'>Modify</Button>
+                <Button eventKey='3'>Cancel</Button>
+            </ButtonGroup>
         )
     }
 });

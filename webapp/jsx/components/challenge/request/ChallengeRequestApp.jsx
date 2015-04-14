@@ -49,7 +49,7 @@ var ChallengeRequestApp = React.createClass({
         );
         return (
             <div>
-                <Panel collapsable defaultCollapsed header={'Request'} >
+                <Panel collapsable defaultExpanded header={'Request Challenge'} >
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots date={c.date} slots={c.slots} />
                     <ChallengeRequestOpponent userId={userId} opponent={c.opponent} />

@@ -8,8 +8,8 @@ var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 
-var ChallengeRequestedApp = require('./sent/ChallengeSentApp.jsx');
-var ChallengeSentApp = require('./approvals/ChallengeApprovalApp.jsx');
+var ChallengeApprovalApp = require('./approvals/ChallengeApprovalApp.jsx');
+var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
 var ChallengeNotifyApp = require('./notify/ChallengeNotifyApp.jsx');
 
 var DataFactory = require('../../DataFactoryMixin.jsx');
@@ -44,11 +44,10 @@ var ChallengeApp = React.createClass({
     render: function() {
         return (
             <div>
-                <ChallengeNotifyApp requests={this.state.requests} />
-                <ChallengeRequestedApp  requests={this.state.requests} />
-                <ChallengeSentApp  requests={this.state.requests} />
-
                 <ChallengeRequestApp  challenge={this.state.challenge}/>
+                <ChallengeNotifyApp requests={this.state.requests} />
+                <ChallengeApprovalApp  requests={this.state.requests} />
+                <ChallengeSentApp  requests={this.state.requests} />
             </div>
         )
     }

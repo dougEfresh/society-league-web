@@ -3,6 +3,7 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route
     , NotFoundRoute = Router.NotFoundRoute
+    , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
 
 var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
@@ -32,7 +33,9 @@ var Home = React.createClass({
         router: React.PropTypes.func
     },
     render: function () {
-        return (<div>Home</div>);
+        return (
+            <div>
+        </div>);
     }
 });
 var RouteNotFound = React.createClass({
@@ -40,7 +43,7 @@ var RouteNotFound = React.createClass({
         router: React.PropTypes.func
     },
     render: function(){
-        return (<h1>Not Found Mo Fo</h1>);
+        return (<div><h1><Link to="challenge" params={{userId: 1000}} >Challenge Someone</Link></h1></div>);
     }
 });
 
