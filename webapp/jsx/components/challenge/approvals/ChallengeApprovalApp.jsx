@@ -8,30 +8,30 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var UserStore = require('../../../stores/UserStore.jsx');
-var ChallengeRequestedList = require('./ChallengeRequestedList.jsx');
+var ChallengeApprovatList = require('./ChallengeApprovalList.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 var ChallengeAppMixin = require('../ChallengeAppMixin.jsx');
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 
-var ChallengeRequestedApp = React.createClass({
+var ChallengeApprovalApp = React.createClass({
     mixins: [DataFactory,ChallengeAppMixin],
-    getDefaultProps: function(){
+     getDefaultProps: function(){
         return {
-            type : ChallengeStatus.REQUESTED
+            type : ChallengeStatus.PENDING
         }
     },
-    render: function() {
-        if (!this.shouldRender()) {
+    render: function(){
+          if (!this.shouldRender()) {
             return null;
         }
-         return (
+        return (
             <div>
-                <Panel collapsable defaultCollapsed header={this.getTitle()}>
-                    <ChallengeRequestedList type={this.props.type} requests={this.getRequests()}/>
+                <Panel bsStyle={'warning'} collapsable defaultCollapsed header={this.getTitle()}>
+                    <ChallengeApprovatList type={this.props.type} requests={this.getRequests()}/>
                 </Panel>
             </div>
         )
     }
 });
 
-module.exports = ChallengeRequestedApp;
+module.exports = ChallengeApprovalApp;

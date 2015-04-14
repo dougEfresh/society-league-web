@@ -4,6 +4,6 @@ module.exports = keyMirror({
     PENDING: null,
     NEEDS_NOTIFY: null,
     ACCEPTED: null,
-    REQUESTED: null,
+    SENT: null,
     CANCELLED: null
 });

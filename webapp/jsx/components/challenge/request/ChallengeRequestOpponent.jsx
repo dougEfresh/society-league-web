@@ -17,7 +17,7 @@ var ChallengeRequestOpponent = React.createClass({
     },
     getInitialState: function(){
         return {
-            potentials: {}
+            potentials: []
         }
     },
     getDefaultProps: function () {
@@ -27,11 +27,7 @@ var ChallengeRequestOpponent = React.createClass({
     },
     update: function(props) {
         this.getData('/api/challenge/potentials/' + props.userId, function (potentials) {
-            var opponents = {};
-            potentials.forEach(function(p){
-                opponents[p.userId] = p;
-            });
-            this.setState({potentials: opponents});
+            this.setState({potentials: potentials});
         }.bind(this));
     },
     componentWillReceiveProps: function(props) {
@@ -44,14 +40,20 @@ var ChallengeRequestOpponent = React.createClass({
         this.update(this.props);
     },
     onChange: function(e) {
-        ChallengeActions.setOpponent(this.state.potentials[e.target.value]);
+        this.state.potentials.forEach(function(p) {
+            if (p.user.id == e.target.value) {
+                ChallengeActions.setOpponent(
+                    p
+                );
+            }
+        }.bind(this));
     },
     getOptions: function() {
         var options = [];
         options.push(<option key={0} value={0}>{'------'}</option>);
-        for (var key in this.state.potentials) {
-            options.push(<option key={key} value={key}>{this.state.potentials[key].user.name}</option>);
-        }
+        this.state.potentials.forEach(function(p) {
+            options.push(<option key={p.user.id} value={p.user.id}>{p.user.name}</option>);
+        }.bind(this));
         return options;
     },
     render: function() {

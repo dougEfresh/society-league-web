@@ -6,6 +6,7 @@ var Bootstrap = require('react-bootstrap')
     ,ButtonGroup = Bootstrap.ButtonGroup
     ,DropdownButton = Bootstrap.DropdownButton
     ,MenuItem = Bootstrap.MenuItem
+    ,Button = Bootstrap.Button
     ,SplitButton = Bootstrap.SplitButton;
 
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
@@ -49,36 +50,24 @@ var ChallengeRequestGame = React.createClass({
         }.bind(this));
         return options;
     },
-    onSelect: function(type,h,t) {
+    onSelect: function(e) {
+        var type = e.target.textContent == '9' ? 'nine' : 'eight';
         var g = this.props.game;
         g[type].selected = !g[type].selected;
         ChallengeActions.setGame(g);
     },
-    getTitle: function() {
-        var g = this.props.game;
-        if (g.nine.selected && g.eight.selected ) {
-            return 'Game: 8 or 9'
-        }
-        if (g.nine.selected) {
-            return 'Game: 9'
-        }
-        if (g.eight.selected) {
-            return 'Game: 8'
-        }
-
-        return 'Choose Game';
-    },
     render: function() {
         var g = this.props.game;
-        var disp = g.nine.available && g.eight.available  ? 'inline' : 'none';
+        if (!g.nine.available && !g.eight.available) {
+            return null;
+        }
+
         var eight = g.eight.selected ? (<i className="fa fa-check">8</i>) :  (<i className="fa fa-times">8</i>);
         var nine = g.nine.selected ? (<i className="fa fa-check">9</i>) :  (<i className="fa fa-times">9</i>);
         return (
-            <div style={{display: disp}}>
-                <SplitButton bsStyle={'primary'} title={this.getTitle()} >
-                    <MenuItem eventKey='eight' onSelect={this.onSelect} >{eight}</MenuItem>
-                    <MenuItem eventKey='nine'  onSelect={this.onSelect} >{nine}</MenuItem>
-                </SplitButton>
+            <div >
+                <Button bsStyle={g.eight.selected ? 'success' : 'default'}  onClick={this.onSelect}>{eight}</Button>
+                <Button bsStyle={g.nine.selected  ? 'success' : 'default'}  onClick={this.onSelect}>{nine}</Button>
             </div>
         );
     }

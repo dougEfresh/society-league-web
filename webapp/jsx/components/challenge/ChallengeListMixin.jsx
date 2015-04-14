@@ -75,7 +75,7 @@ var RequestRow = React.createClass({
     },
     getOpponent: function() {
         //return this.props.request[this.props.opponentField].name
-        if (this.props.type == 'REQUESTED')
+        if (this.props.type == 'SENT')
             return this.props.request.opponent.name;
 
         return this.props.request.challenger.name;

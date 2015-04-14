@@ -8,8 +8,8 @@ var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 
-var ChallengeRequestedApp = require('./requested/ChallengeRequestedApp.jsx');
-var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');
+var ChallengeRequestedApp = require('./sent/ChallengeSentApp.jsx');
+var ChallengeSentApp = require('./approvals/ChallengeApprovalApp.jsx');
 var ChallengeNotifyApp = require('./notify/ChallengeNotifyApp.jsx');
 
 var DataFactory = require('../../DataFactoryMixin.jsx');
@@ -22,7 +22,7 @@ var ChallengeApp = React.createClass({
         requests[ChallengeStatus.PENDING] = [];
         requests[ChallengeStatus.NEEDS_NOTIFY] = [];
         requests[ChallengeStatus.CANCELLED] = [];
-        requests[ChallengeStatus.REQUESTED] = [];
+        requests[ChallengeStatus.SENT] = [];
         requests[ChallengeStatus.ACCEPTED] = [];
         return {
             challenge: ChallengeStore.get(),
@@ -46,7 +46,7 @@ var ChallengeApp = React.createClass({
             <div>
                 <ChallengeNotifyApp requests={this.state.requests} />
                 <ChallengeRequestedApp  requests={this.state.requests} />
-                <ChallengePendingApp  requests={this.state.requests} />
+                <ChallengeSentApp  requests={this.state.requests} />
 
                 <ChallengeRequestApp  challenge={this.state.challenge}/>
             </div>

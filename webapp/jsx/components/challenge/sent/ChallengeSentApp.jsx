@@ -8,30 +8,30 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var UserStore = require('../../../stores/UserStore.jsx');
-var ChallengePendingList = require('./ChallengePendingList.jsx');
+var ChallengeRequestedList = require('./ChallengeSentList.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 var ChallengeAppMixin = require('../ChallengeAppMixin.jsx');
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 
-var ChallengePendingApp = React.createClass({
+var ChallengeSentApp = React.createClass({
     mixins: [DataFactory,ChallengeAppMixin],
-     getDefaultProps: function(){
+    getDefaultProps: function(){
         return {
-            type : ChallengeStatus.PENDING
+            type : ChallengeStatus.SENT
         }
     },
-    render: function(){
-          if (!this.shouldRender()) {
+    render: function() {
+        if (!this.shouldRender()) {
             return null;
         }
-        return (
+         return (
             <div>
-                <Panel bsStyle={'warning'} collapsable defaultCollapsed header={this.getTitle()}>
-                    <ChallengePendingList type={this.props.type} requests={this.getRequests()}/>
+                <Panel collapsable defaultCollapsed header={this.getTitle()}>
+                    <ChallengeRequestedList type={this.props.type} requests={this.getRequests()}/>
                 </Panel>
             </div>
         )
     }
 });
 
-module.exports = ChallengePendingApp;
+module.exports = ChallengeSentApp;

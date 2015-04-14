@@ -1,8 +1,8 @@
 var React = require('react/addons');
 var ChallengeListMixin = require('../ChallengeListMixin.jsx');
 
-var ChallengePendingList = React.createClass({
+var ChallengeApprovedList = React.createClass({
     mixins : [ChallengeListMixin]
 });
 
-module.exports = ChallengePendingList;
+module.exports = ChallengeApprovedList;
