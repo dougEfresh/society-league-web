@@ -12,8 +12,9 @@ var UserStore = require('../../../stores/UserStore.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 var ChallengeAppMixin = require('../ChallengeAppMixin.jsx');
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
+var ChallengeAcceptedList = require('./ChallengeApprovedList.jsx');
 
-var ChallengePendingApp = React.createClass({
+var ChallengeAccepted = React.createClass({
     mixins: [DataFactory,ChallengeAppMixin],
      getDefaultProps: function(){
         return {
@@ -26,10 +27,9 @@ var ChallengePendingApp = React.createClass({
         }
         return (
             <div>
-                <Panel collapsable defaultCollapsed header={this.getTitle()}>
-                </Panel>
+                    <ChallengeAcceptedList type={this.props.type} requests={this.getRequests()}/>
             </div>
         )
     }
 });
-module.exports = ChallengePendingApp;
+module.exports = ChallengeAccepted;

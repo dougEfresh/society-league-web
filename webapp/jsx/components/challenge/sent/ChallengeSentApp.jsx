@@ -26,9 +26,7 @@ var ChallengeSentApp = React.createClass({
         }
          return (
             <div>
-                <Panel collapsable defaultCollapsed header={this.getTitle()}>
-                    <ChallengeRequestedList type={this.props.type} requests={this.getRequests()}/>
-                </Panel>
+                <ChallengeRequestedList type={this.props.type} requests={this.getRequests()}/>
             </div>
         )
     }

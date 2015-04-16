@@ -19,11 +19,12 @@ function defaultGame() {
 }
 
 var _default = {
-    date: Util.nextChallengeDate(),
+    date: undefined,
     opponent: {user: {id: 0, name: '-----'}},
     slots: [],
     game: defaultGame()
 };
+
 
 var _challenge = _default;
 
@@ -40,28 +41,28 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     /**
      * @param {function} callback
      */
-    addChangeListener: function(callback) {
+    addRequestListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
 
     /**
      * @param {function} callback
      */
-    addListener: function(callback) {
+    addChangeListener: function(callback) {
         this.on(ADD_EVENT, callback);
     },
 
     /**
      * @param {function} callback
      */
-    removeChangeListener: function(callback) {
+    removeRequestListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
     /**
      * @param {function} callback
      */
-    removeAddListener: function(callback) {
+    removeChangeListener: function(callback) {
         this.removeListener(ADD_EVENT, callback);
     },
 
@@ -97,6 +98,33 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     changeDate : function(date) {
         _challenge.date = date;        
         _challenge.slots = [];
+        this.getSlots();
+    },
+
+    getSlots: function() {
+        console.log("Getting data from " + window.location.origin + '/api/challenge/slot/');
+        $.ajax({
+            url: '/api/challenge/slots/' + _challenge.date,
+            dataType: 'json',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                }.bind(this)
+            },
+            success: function (d) {
+                console.log("Got " + JSON.stringify(d) + " back from server");
+                d.forEach(function(s){
+                    s.selected = false;
+                });
+                _challenge.slots = d;
+                ChallengeStore.emitChange();
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error('slots', status, err.toString());
+                console.log('Redirecting to error');
+                //this.redirect('error');
+            }.bind(this)
+        });
     },
 
     addSlots : function(slots) {
@@ -147,11 +175,11 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
 
     changeStatus: function(status) {
         console.log('Sending ' + JSON.stringify(status));
-            //TODO Move this to lib
+        //TODO Move this to lib
         $.ajax({
             async: true,
             processData: false,
-            url: '/api/challenge/cancel',
+            url: '/api/challenge/status/' + status.status,
             contentType: 'application/json',
             dataType: 'json',
             data: JSON.stringify(status),
@@ -172,14 +200,21 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
                 //this.redirect('error');
             }.bind(this)
         });
-    }
+    },
 
+    changeSlotStatus: function(slot) {
+        _challenge.slots.forEach(function(s) {
+            if (s.id == slot.id) {
+                s.selected = slot.selected;
+            }
+        });
+    }
 });
 
 AppDispatcher.register(function(action) {
 
      switch(action.actionType) {
-         case ChallengeConstants.CHALLENGE_DATE_CHANGE:
+         case ChallengeConstants.DATE_CHANGE:
              ChallengeStore.changeDate(action.date);
              ChallengeStore.emitChange();
              break;
@@ -210,6 +245,11 @@ AppDispatcher.register(function(action) {
 
          case ChallengeConstants.CHANGE_STATUS:
              ChallengeStore.changeStatus(action.status);
+             break;
+
+         case ChallengeConstants.SLOT_CHANGE:
+             ChallengeStore.changeSlotStatus(action.slot);
+             ChallengeStore.emitChange();
              break;
 
          default:

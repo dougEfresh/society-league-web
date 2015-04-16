@@ -20,7 +20,7 @@ var ChallengeActions = {
      */
     changeDate: function(date) {
         AppDispatcher.dispatch({
-            actionType: RequestConstants.CHALLENGE_DATE_CHANGE,
+            actionType: RequestConstants.DATE_CHANGE,
             date: date
         });
     },
@@ -89,6 +89,13 @@ var ChallengeActions = {
             actionType: RequestConstants.CHANGE_STATUS,
             status: status
         });
+    },
+
+    changeSlotState: function(slot){
+         AppDispatcher.dispatch({
+            actionType: RequestConstants.SLOT_CHANGE,
+            slot: slot
+         });
     }
 };
 

@@ -21,13 +21,13 @@ var ChallengeRequestDate = React.createClass({
             dates.push(moment(nextChallengeDate).add(i,'weeks').format('YYYY-MM-DD'));
         });
         var found = false;
-        dates.forEach(function(d) {
-
-            if (d == this.props.date) {
-                found = true;
-            }
-        }.bind(this));
-        //Add the prop date if it isn't found
+        dates.forEach(function (d) {
+                if (d == this.props.date) {
+                    found = true;
+                }
+            }.bind(this)
+        );
+            //Add the prop date if it isn't found
         if (!found) {
             dates.push(this.props.date);
         }
@@ -37,15 +37,20 @@ var ChallengeRequestDate = React.createClass({
         });
         return dateOptions;
     },
+    componentDidMount: function() {
+        //Init the date
+        ChallengeActions.changeDate(Util.nextChallengeDate());
+    },
     onChange: function() {
         ChallengeActions.changeDate(this.refs.date.getValue());
     },
     render: function() {
-        return (
-            <Input type='select' ref='date' value={this.props.date} label={'Choose Date'} onChange={this.onChange} >{this.getOptions()}</Input>
-        );
+        if (this.props.date)
+            return (
+                <Input type='select' ref='date' value={this.props.date} label={'Choose Date'} onChange={this.onChange} >{this.getOptions()}</Input>
+            );
+        return null;
     }
 });
-
 
 module.exports = ChallengeRequestDate;

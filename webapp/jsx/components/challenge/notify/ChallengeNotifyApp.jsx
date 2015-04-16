@@ -26,10 +26,10 @@ var ChallengeNotifyApp = React.createClass({
         }
     },
     componentDidMount: function() {
-        ChallengeStore.addListener(this._onAdd);
+        ChallengeStore.addChangeListener(this._onAdd);
     },
     componentWillUnmount: function() {
-        ChallengeStore.removeAddListener(this._onAdd);
+        ChallengeStore.removeChangeListener(this._onAdd);
     },
     _onAdd: function(){
         this.setState({expanded: true});
@@ -43,9 +43,7 @@ var ChallengeNotifyApp = React.createClass({
         }
         return (
             <div>
-                <Panel bsStyle="danger" onClick={this.handleClick} collapsable expanded={this.state.expanded} header={this.getTitle()}>
-                    <ChallengeNotifyList type={this.props.type} requests={this.getRequests()}/>
-                </Panel>
+                <ChallengeNotifyList type={this.props.type} requests={this.getRequests()}/>
             </div>
         )
     }

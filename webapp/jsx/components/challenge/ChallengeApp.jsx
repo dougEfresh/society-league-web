@@ -1,6 +1,9 @@
 var React = require('react/addons');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
+    ,Badge = Bootstrap.Badge
+    ,TabbedArea = Bootstrap.TabbedArea
+    ,TabPane = Bootstrap.TabPane
     ,Alert = Bootstrap.Alert
     ,Panel = Bootstrap.Panel;
 
@@ -10,6 +13,7 @@ var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 
 var ChallengeApprovalApp = require('./approvals/ChallengeApprovalApp.jsx');
+var ChallengeApprovedApp = require('./approved/ChallengeApprovedApp.jsx');
 var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
 var ChallengeNotifyApp = require('./notify/ChallengeNotifyApp.jsx');
 
@@ -32,15 +36,15 @@ var ChallengeApp = React.createClass({
         }
     },
     componentDidMount: function() {
-        ChallengeStore.addChangeListener(this._onRequestChange);
-        ChallengeStore.addListener(this._onChange);
+        ChallengeStore.addRequestListener(this._onRequestChange);
+        ChallengeStore.addChangeListener(this._onChange);
         this.getData('/api/challenge/' + this.getUserId(), function(p) {
              this.setState({requests: p});
          }.bind(this));
     },
     componentWillUnmount: function() {
-        ChallengeStore.removeChangeListener(this._onRequestChange);
-        ChallengeStore.removeAddListener(this._onChange);
+        ChallengeStore.removeRequestListener(this._onRequestChange);
+        ChallengeStore.removeChangeListener(this._onChange);
     },
     _onRequestChange: function() {
         this.setState({challenge: ChallengeStore.get()});
@@ -53,27 +57,69 @@ var ChallengeApp = React.createClass({
     handleDismiss: function(){
         this.setState({submitted :false});
     },
+    getTitle: function(type) {
+        var r = this.state.requests[type];
+
+        switch (type) {
+            case ChallengeStatus.NEEDS_NOTIFY:
+                return (<div>Needs Notification<span></span><Badge>{r.length}</Badge></div>);
+            case ChallengeStatus.PENDING:
+                return (<div>Approval Required<span></span><Badge>{r.length}</Badge></div>);
+            case ChallengeStatus.SENT:
+                return (<div>Sent Request<span></span><Badge>{r.length}</Badge></div>);
+            case ChallengeStatus.ACCEPTED:
+                return (<div>Upcoming Challenges<span></span><Badge>{r.length}</Badge></div>);
+            default:
+                return (<div>{type} <span></span></div>);
+        };
+    },
+    shouldRender: function(type) {
+        return this.state.requests[type].length > 0;
+    },
     render: function() {
         var alert = null;
+        var tabs = [];
+        tabs.push(
+            <TabPane key={'request'} eventKey={'Request'} tab={this.getTitle('Request')}>
+            <ChallengeRequestApp  submiited={this.state.submitted ? true : false} challenge={this.state.challenge}/>
+        </TabPane>);
+        if (this.shouldRender(ChallengeStatus.NEEDS_NOTIFY)) {
+            tabs.push(<TabPane key='notify' eventKey={'Notify'} tab={this.getTitle(ChallengeStatus.NEEDS_NOTIFY)}>
+                <ChallengeNotifyApp requests={this.state.requests} />
+            </TabPane>);
+        }
+
+        if (this.shouldRender(ChallengeStatus.PENDING)) {
+            tabs.push(<TabPane key='pending' eventKey={'Pending'} tab={this.getTitle(ChallengeStatus.PENDING)}>
+                <ChallengeApprovalApp requests={this.state.requests} />
+            </TabPane>);
+        }
+
+        if (this.shouldRender(ChallengeStatus.SENT)) {
+            tabs.push(<TabPane key='sent' eventKey={'Sent'} tab={this.getTitle(ChallengeStatus.SENT)}>
+                <ChallengeSentApp requests={this.state.requests} />
+            </TabPane>);
+        }
+
+        if (this.shouldRender(ChallengeStatus.ACCEPTED)) {
+            tabs.push(<TabPane key='accepted' eventKey={'Accepted'} tab={this.getTitle(ChallengeStatus.ACCEPTED)}>
+                <ChallengeApprovedApp requests={this.state.requests} />
+            </TabPane>);
+        }
         if (this.state.submitted) {
-            alert = (
-                <Alert bsStyle='success' >
-                    Successfully Sent Request
-                     <Button onClick={this.handleDismiss}>Hide</Button>
-                </Alert>
-            );
+            this.state.submitted = false;
         }
 
         return (
-            <div>
-                {alert}
-                <ChallengeNotifyApp requests={this.state.requests} />
-                <ChallengeApprovalApp  requests={this.state.requests} />
-                <ChallengeRequestApp  challenge={this.state.challenge}/>
-                <ChallengeSentApp  requests={this.state.requests} />
+        <div>
+            {alert}
+            <TabbedArea defaultActiveKey={'Request'}>
+                {tabs}
+            </TabbedArea>
             </div>
         )
     }
 });
 
 module.exports = ChallengeApp;
+

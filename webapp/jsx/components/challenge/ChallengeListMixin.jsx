@@ -53,6 +53,9 @@ var ChallengeListMixin = {
 };
 
 var RequestRow = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     propTypes: {
         request: ReactPropTypes.object.isRequired,
         type:  ReactPropTypes.string.isRequired
@@ -92,8 +95,13 @@ var RequestRow = React.createClass({
     getOpponent: function() {
         //return this.props.request[this.props.opponentField].name
         if (this.props.type == ChallengeStatus.SENT ||
-            this.props.type == ChallengeStatus.NEEDS_NOTIFY)
+            this.props.type == ChallengeStatus.NEEDS_NOTIFY) {
             return this.props.request.opponent.name;
+	}	    
+	
+ 	if (this.props.type == ChallengeStatus.ACCEPTED) {
+	   return this.props.request.challenger.id == parseInt(this.context.router.getCurrentParams().userId) ? this.props.request.opponent.name :  this.props.request.challenger.name;
+	}
 
         return this.props.request.challenger.name;
     },
@@ -125,28 +133,38 @@ var RequestAction = React.createClass({
         challenges: ReactPropTypes.array.isRequired,
         type: ReactPropTypes.string.isRequired
     },
-    onCancel: function() {
-        var cancel = {
+    sendStatus: function(s) {
+        var status = {
+            status : s,
             challenger: {id: 0},
             opponent:  {id: 0},
             challenges: []
         };
-        cancel.challenger.id = this.props.challenges[0].challenger.id;
-        cancel.challenger.id = this.props.challenges[0].opponent.id;
+        status.challenger.id = this.props.challenges[0].challenger.id;
+        status.challenger.id = this.props.challenges[0].opponent.id;
         this.props.challenges.forEach(function(c) {
-            cancel.challenges.push({id: c.id});
+            status.challenges.push({id: c.id});
         });
-        ChallengeActions.status(cancel);
-        console.log('Cancel: ' + JSON.stringify(cancel));
+        ChallengeActions.status(status);
+        console.log('Status: ' + JSON.stringify(status));
+    },
+    cancel: function() {
+        return this.sendStatus(ChallengeStatus.CANCELLED);
+    },
+    notify: function() {
+        return this.sendStatus(ChallengeStatus.PENDING);
+    },
+    accept: function() {
+        return this.sendStatus(ChallengeStatus.ACCEPTED);
     },
     render: function() {
         var buttons = {
-            accept:   <Button key={'accept'} bsStyle={'success'} >Accept</Button>,
-            deny:     <Button onClick={this.onCancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
+            accept:   <Button onClick={this.accept} key={'accept'} bsStyle={'success'} >Accept</Button>,
+            deny:     <Button onClick={this.cancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,
-            cancel:   <Button onClick={this.onCancel} key={'cancel'}  bsStyle={'warning'} >Cancel</Button>,
-            notify:   <Button key={'notify'}  bsStyle={'success'} >Notify</Button>,
+            cancel:   <Button onClick={this.cancel} key={'cancel'}  bsStyle={'warning'} >Cancel</Button>,
+            notify:   <Button onClick={this.notify} key={'notify'}  bsStyle={'success'} >Notify</Button>,
             calender: <Button key={'calendar'}  bsStyle={'success'} >Calendar</Button>
         };
 
@@ -155,33 +173,33 @@ var RequestAction = React.createClass({
         switch(this.props.type) {
             case ChallengeStatus.PENDING:
                 actions =
-                    (<ButtonGroup bsStyle={'primary'} title={'Actions'} >
+                    (<div>
                         {buttons.accept}
                         {buttons.deny}
-                    </ButtonGroup>);
+                    </div>);
                 break;
             case ChallengeStatus.SENT:
                 actions =
-                    (<ButtonGroup bsStyle={'primary'} title={'Actions'} >
+                    (<div >
+                        {buttons.calender}
                         {buttons.change}
                         {buttons.cancel}
-                        {buttons.calender}
-                    </ButtonGroup>);
+                    </div>);
                 break;
             case ChallengeStatus.NEEDS_NOTIFY:
                 actions =
-                    (<ButtonGroup bsStyle={'primary'} title={'Actions'} >
+                    (<div >
                         {buttons.notify}
                         {buttons.change}
                         {buttons.cancel}
-                    </ButtonGroup>);
+                    </div>);
                 break;
             case ChallengeStatus.ACCEPTED:
                 actions =
-                    (<ButtonGroup bsStyle={'primary'} title={'Actions'} >
+                    (<div >
                         {buttons.change}
                         {buttons.cancel}
-                    </ButtonGroup>);
+                    </div>);
                 break;
             default:
         }

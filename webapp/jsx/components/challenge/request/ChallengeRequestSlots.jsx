@@ -12,31 +12,12 @@ var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeRequestSlots = React.createClass({
     mixins: [DataFactory],
     propTypes: {
-        slots: ReactPropTypes.array.isRequired,
-        date: ReactPropTypes.string.isRequired
+        slots: ReactPropTypes.array.isRequired
     },
     getInitialState: function () {
         return {
             available : {}
         }
-    },
-    update: function(props) {
-        this.getData('/api/challenge/slots/' + props.date, function (slots) {
-            var available = {};
-            slots.forEach(function(slot) {
-                available[slot.id] = slot;
-            });
-            this.setState({available: available});
-        }.bind(this));
-    },
-    componentWillReceiveProps: function(props) {
-       if (props.date != this.props.date) {
-           this.update(props);
-           return;
-       }
-    },
-    componentDidMount: function() {
-        this.update(this.props);
     },
     onChange: function() {
         var slots = [];
@@ -57,13 +38,18 @@ var ChallengeRequestSlots = React.createClass({
         ChallengeActions.removeSlot(this.state.available[item.target.textContent]);
     },
     render: function() {
+        var buttons = [];
+        this.props.slots.forEach(function(s) {
+            buttons.push(<SlotButton key={s.id} slot={s} > </SlotButton>);
+        });
         var chosen = [];
         this.props.slots.forEach(function(s) {
             var removeIcon = (
                 <i className="fa fa-times" >
                     <div style={{display: 'none'}}>{s.id}</div>
                 </i>);
-            chosen.push(<ListGroupItem  key={s.id}><Button onClick={this.onRemove}>{removeIcon}</Button>{s.time}</ListGroupItem>);
+            chosen.push(<ListGroupItem  key={s.id}>
+                <Button onClick={this.onRemove}>{removeIcon}</Button>{s.time}</ListGroupItem>);
         }.bind(this));
 
         var disp = this.props.slots.length == 0  ? 'none' : 'inline';
@@ -73,14 +59,44 @@ var ChallengeRequestSlots = React.createClass({
                 {chosen}
             </ListGroup>
             </div>);
+        //<Input type='select' multiple ref='slots' label={'Choose Time'} onChange={this.onChange} >{this.getOptions()}</Input>
         return (
             <div>
-                {chosenGroup}
-                <Input type='select' multiple ref='slots' label={'Choose Time'} onChange={this.onChange} >{this.getOptions()}</Input>
+                {buttons}
             </div>
         );
     }
 });
+
+var SlotButton = React.createClass({
+    mixins: [DataFactory],
+    propTypes: {
+        slot: ReactPropTypes.object.isRequired
+    },
+    onClick: function(){
+        this.props.slot.selected = !this.props.slot.selected;
+        ChallengeActions.changeSlotState(this.props.slot);
+    },
+    render: function() {
+        if (!this.props.slot.selected) {
+            return (
+                <Button onClick={this.onClick}>
+                    <i className="fa fa-times">
+                        {this.props.slot.time}
+                    </i>
+                </Button>
+            );
+        }
+        return (
+            <Button bsStyle='success' onClick={this.onClick}>
+                <i className="fa fa-check">
+                    {this.props.slot.time}
+                </i>
+            </Button>
+        );
+    }
+});
+
 
 
 module.exports = ChallengeRequestSlots;

@@ -20,15 +20,13 @@ var ChallengeApprovalApp = React.createClass({
             type : ChallengeStatus.PENDING
         }
     },
-    render: function(){
+        render: function(){
           if (!this.shouldRender()) {
             return null;
         }
         return (
             <div>
-                <Panel bsStyle={'warning'} collapsable defaultCollapsed header={this.getTitle()}>
                     <ChallengeApprovatList type={this.props.type} requests={this.getRequests()}/>
-                </Panel>
             </div>
         )
     }

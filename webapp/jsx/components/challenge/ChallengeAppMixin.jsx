@@ -16,16 +16,18 @@ var ChallengeAppMixin = {
         return this.props.requests[this.props.type];
     },
     getTitle: function() {
-        if (this.props.type == ChallengeStatus.NEEDS_NOTIFY) {
-            return (<div>Needs Notification<span></span><Badge>{this.getRequests().length}</Badge></div>);
+        switch(this.props.type) {
+            case ChallengeStatus.NEEDS_NOTIFY:
+                return (<div>Needs Notification<span></span><Badge>{this.getRequests().length}</Badge></div>);
+            case ChallengeStatus.PENDING:
+                return (<div>Approval Required<span></span><Badge>{this.getRequests().length}</Badge></div>);
+            case ChallengeStatus.SENT:
+                return (<div>Sent Request<span></span><Badge>{this.getRequests().length}</Badge></div>);
+            case ChallengeStatus.ACCEPTED:
+                return (<div>Upcoming Challenges<span></span><Badge>{this.getRequests().length}</Badge></div>);
+            default:
+                return (<div>{this.props.type} <span></span><Badge>{this.getRequests().length}</Badge></div>);
         }
-        if (this.props.type == ChallengeStatus.PENDING) {
-            return (<div>Approval Required<span></span><Badge>{this.getRequests().length}</Badge></div>);
-        }
-        if (this.props.type == ChallengeStatus.SENT) {
-            return (<div>Sent Request<span></span><Badge>{this.getRequests().length}</Badge></div>);
-        }
-        return (<div>{this.props.type} <span></span><Badge>{this.getRequests().length}</Badge></div>);
     }
 };
 
