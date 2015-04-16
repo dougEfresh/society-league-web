@@ -4,7 +4,6 @@ var ChallengeConstants = require('../constants/ChallengeConstants.jsx');
 var assign = require('object-assign');
 var Util = require('../util.jsx');
 var UserStore = require('./UserStore.jsx');
-
 var CHANGE_EVENT = 'change';
 var ADD_EVENT = 'add';
 
@@ -19,12 +18,14 @@ function defaultGame() {
     };
 }
 
-var _challenge = {
+var _default = {
     date: Util.nextChallengeDate(),
     opponent: {user: {id: 0, name: '-----'}},
     slots: [],
     game: defaultGame()
 };
+
+var _challenge = _default;
 
 var ChallengeStore = assign({}, EventEmitter.prototype, {
 
@@ -64,8 +65,33 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         this.removeListener(ADD_EVENT, callback);
     },
 
-    create: function() {
-
+    create: function(request) {
+        _challenge = _default;
+        //TODO Move this to lib
+        $.ajax({
+            async: true,
+            processData: false,
+            url: '/api/challenge/request',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(request),
+            method: 'post',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                    //this.redirect('login');
+                }
+            },
+            success: function (d) {
+                console.log("Got " + JSON.stringify(d) + " back from server");
+                ChallengeStore.emitAdd();
+                ChallengeStore.emitChange();
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(url, status, err.toString());
+                //this.redirect('error');
+            }.bind(this)
+        });
     },
 
     changeDate : function(date) {
@@ -90,7 +116,6 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
 
     removeSlot : function(slot) {
         var newSlots = [];
-        debugger;
         _challenge.slots.forEach(function(s){
             if (s.id != slot.id) {
                 newSlots.push(s);
@@ -118,6 +143,35 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
 
     get: function() {
         return _challenge;
+    },
+
+    changeStatus: function(status) {
+        console.log('Sending ' + JSON.stringify(status));
+            //TODO Move this to lib
+        $.ajax({
+            async: true,
+            processData: false,
+            url: '/api/challenge/cancel',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(status),
+            method: 'post',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                    //this.redirect('login');
+                }
+            },
+            success: function (d) {
+                console.log("Got " + JSON.stringify(d) + " back from server");
+                ChallengeStore.emitAdd();
+                ChallengeStore.emitChange();
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(url, status, err.toString());
+                //this.redirect('error');
+            }.bind(this)
+        });
     }
 
 });
@@ -140,7 +194,7 @@ AppDispatcher.register(function(action) {
              ChallengeStore.emitChange();
              break;
 
-         case ChallengeConstants.CHALLENGE_OPPONENT_CHANGE:
+         case ChallengeConstants.OPPONENT_CHANGE:
              ChallengeStore.setOpponent(action.opponent);
              ChallengeStore.emitChange();
              break;
@@ -150,9 +204,12 @@ AppDispatcher.register(function(action) {
              ChallengeStore.emitChange();
              break;
 
-         case ChallengeConstants.CHALLENGE_CREATE:
-             ChallengeStore.create();
-             ChallengeStore.emitAdd();
+         case ChallengeConstants.CREATE:
+             ChallengeStore.create(action.request);
+             break;
+
+         case ChallengeConstants.CHANGE_STATUS:
+             ChallengeStore.changeStatus(action.status);
              break;
 
          default:

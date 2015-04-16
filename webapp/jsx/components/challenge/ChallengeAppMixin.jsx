@@ -23,7 +23,7 @@ var ChallengeAppMixin = {
             return (<div>Approval Required<span></span><Badge>{this.getRequests().length}</Badge></div>);
         }
         if (this.props.type == ChallengeStatus.SENT) {
-            return (<div>Sent Request(s)<span></span><Badge>{this.getRequests().length}</Badge></div>);
+            return (<div>Sent Request<span></span><Badge>{this.getRequests().length}</Badge></div>);
         }
         return (<div>{this.props.type} <span></span><Badge>{this.getRequests().length}</Badge></div>);
     }

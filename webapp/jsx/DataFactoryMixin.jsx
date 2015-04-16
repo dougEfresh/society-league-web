@@ -25,16 +25,16 @@ var DataFactory = {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    this.redirect('login');
+                    //this.redirect('login');
                 }
-            }.bind(this),
+            },
             success: function (d) {
                 console.log("Got " + JSON.stringify(d) + " back from server");
                 callback(d);
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
-                this.redirect('error');
+                //this.redirect('error');
             }.bind(this)
         })
     },
@@ -56,7 +56,7 @@ var DataFactory = {
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
-                console.log('Redirecting to error')
+                console.log('Redirecting to error');
                 //this.redirect('error');
             }.bind(this)
         });

@@ -38,6 +38,27 @@ var ChallengeRequestApp = React.createClass({
 
         return errors;
     },
+    handleClick: function() {
+        var opponent = { id: 0};
+        var c = this.props.challenge;
+        opponent.id = c.opponent.user.id;
+        var slots = [];
+        c.slots.forEach(function(s) {
+            var slot = { id: 0 };
+            slot.id = s.id;
+            slots.push(slot);
+        });
+        var request = {
+            challenger: {id : this.getUserId()},
+            opponent: opponent,
+            nine: c.game.nine.selected,
+            eight: c.game.eight.selected,
+            slots: slots
+        };
+
+        ChallengeActions.request(request);
+        console.log(JSON.stringify(request));
+    },
     isValid: function() {
         return this.getErrors().length == 0;
     },
@@ -49,7 +70,7 @@ var ChallengeRequestApp = React.createClass({
         );
         return (
             <div>
-                <Panel collapsable defaultExpanded header={'Request Challenge'} >
+                <Panel  bsStyle="primary" collapsable defaultExpanded header={'Request Challenge'} >
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots date={c.date} slots={c.slots} />
                     <ChallengeRequestOpponent userId={userId} opponent={c.opponent} />

@@ -4,8 +4,10 @@ var Router = require('react-router')
 
 var Navigator = require('./Navigator.jsx');
 var UserStore = require('../stores/UserStore.jsx');
+var DataFactory = require('../DataFactoryMixin.jsx');
 
 var NavApp = React.createClass({
+    mixins: [DataFactory],
     getInitialState: function() {
         return { user : UserStore.get() };
     },

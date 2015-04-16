@@ -9,7 +9,7 @@ var ChallengeActions = {
         /*
     create: function(challenge) {
         AppDispatcher.dispatch({
-            actionType: RequestConstants.CHALLENGE_CREATE,
+            actionType: RequestConstants.CREATE,
             challenge: challenge
         });
     },
@@ -53,7 +53,7 @@ var ChallengeActions = {
      */
     setOpponent: function(opponent) {
          AppDispatcher.dispatch({
-            actionType: RequestConstants.CHALLENGE_OPPONENT_CHANGE,
+            actionType: RequestConstants.OPPONENT_CHANGE,
             opponent: opponent
          });
     },
@@ -67,6 +67,28 @@ var ChallengeActions = {
             actionType: RequestConstants.CHALLENGE_GAME_CHANGE,
             game: game
          });
+    },
+
+    /**
+     * Send Challenge request
+     * @param request
+     */
+    request: function(request) {
+        AppDispatcher.dispatch({
+            actionType: RequestConstants.CREATE,
+            request: request
+        });
+    },
+
+    /**
+     * Change the state of a challenge(s)
+     * @param status
+     */
+    status: function(status) {
+        AppDispatcher.dispatch({
+            actionType: RequestConstants.CHANGE_STATUS,
+            status: status
+        });
     }
 };
 

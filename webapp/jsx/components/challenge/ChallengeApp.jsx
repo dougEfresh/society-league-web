@@ -1,6 +1,7 @@
 var React = require('react/addons');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
+    ,Alert = Bootstrap.Alert
     ,Panel = Bootstrap.Panel;
 
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
@@ -26,27 +27,49 @@ var ChallengeApp = React.createClass({
         requests[ChallengeStatus.ACCEPTED] = [];
         return {
             challenge: ChallengeStore.get(),
-            requests : requests
+            requests : requests,
+            submitted: false
         }
     },
     componentDidMount: function() {
-        ChallengeStore.addChangeListener(this._onChallengeChange);
+        ChallengeStore.addChangeListener(this._onRequestChange);
+        ChallengeStore.addListener(this._onChange);
         this.getData('/api/challenge/' + this.getUserId(), function(p) {
              this.setState({requests: p});
          }.bind(this));
     },
     componentWillUnmount: function() {
-        ChallengeStore.removeChangeListener(this._onChallengeChange);
+        ChallengeStore.removeChangeListener(this._onRequestChange);
+        ChallengeStore.removeAddListener(this._onChange);
     },
-    _onChallengeChange: function() {
+    _onRequestChange: function() {
         this.setState({challenge: ChallengeStore.get()});
     },
+    _onChange: function() {
+        this.getData('/api/challenge/' + this.getUserId(), function(p) {
+            this.setState({requests: p, submitted: true});
+        }.bind(this));
+    },
+    handleDismiss: function(){
+        this.setState({submitted :false});
+    },
     render: function() {
+        var alert = null;
+        if (this.state.submitted) {
+            alert = (
+                <Alert bsStyle='success' >
+                    Successfully Sent Request
+                     <Button onClick={this.handleDismiss}>Hide</Button>
+                </Alert>
+            );
+        }
+
         return (
             <div>
-                <ChallengeRequestApp  challenge={this.state.challenge}/>
+                {alert}
                 <ChallengeNotifyApp requests={this.state.requests} />
                 <ChallengeApprovalApp  requests={this.state.requests} />
+                <ChallengeRequestApp  challenge={this.state.challenge}/>
                 <ChallengeSentApp  requests={this.state.requests} />
             </div>
         )

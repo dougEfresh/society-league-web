@@ -13,6 +13,7 @@ var Bootstrap = require('react-bootstrap')
     ,SplitButton = Bootstrap.SplitButton;
 
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
+var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 
 var ChallengeListMixin = {
     contextTypes: {
@@ -57,22 +58,35 @@ var RequestRow = React.createClass({
         type:  ReactPropTypes.string.isRequired
     },
     getTimes: function () {
+        var slots = {};
         var times = [];
         this.props.request.challenges.forEach(function(c){
-            times.push(<span key={c.id}>{c.slot.time}</span>)
+            slots[c.slot.time] = (<span key={c.slot.id + c.id}>{c.slot.time}</span>)
         }.bind(this));
+        for (var s in slots) {
+            times.push(s);
+        }
         return times;
     },
     getGames: function() {
         var games = [];
+        var nine = false;
+        var eight = false;
         this.props.request.challenges.forEach(function(c) {
             //TODO create a method/property on the server
             if (c.challenger.division.type == 'EIGHT_BALL_CHALLENGE') {
-                games.push(<Badge key={8}>8</Badge>);
-            } else {
-                games.push(<Badge key={9}>9</Badge>);
+                eight = true;
+            }
+            if (c.challenger.division.type == 'NINE_BALL_CHALLENGE') {
+                nine = true;
             }
         });
+        if (nine)
+            games.push(<Badge key={9}>9</Badge>);
+
+        if (eight)
+            games.push(<Badge key={8}>8</Badge>);
+
         return games;
     },
     getOpponent: function() {
@@ -111,39 +125,68 @@ var RequestAction = React.createClass({
         challenges: ReactPropTypes.array.isRequired,
         type: ReactPropTypes.string.isRequired
     },
+    onCancel: function() {
+        var cancel = {
+            challenger: {id: 0},
+            opponent:  {id: 0},
+            challenges: []
+        };
+        cancel.challenger.id = this.props.challenges[0].challenger.id;
+        cancel.challenger.id = this.props.challenges[0].opponent.id;
+        this.props.challenges.forEach(function(c) {
+            cancel.challenges.push({id: c.id});
+        });
+        ChallengeActions.status(cancel);
+        console.log('Cancel: ' + JSON.stringify(cancel));
+    },
     render: function() {
-         if (this.props.type == ChallengeStatus.PENDING) {
-            return (
-                <ButtonGroup bsStyle={'primary'} title={'Actions'} key={'1'} >
-                    <Button bsStyle={'success'} eventKey='3'>Accept</Button>
-                    <Button bsStyle={'warning'} eventKey='3'>Deny</Button>
-                </ButtonGroup>
-            )
+        var buttons = {
+            accept:   <Button key={'accept'} bsStyle={'success'} >Accept</Button>,
+            deny:     <Button onClick={this.onCancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
+            //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
+            change:   null,
+            cancel:   <Button onClick={this.onCancel} key={'cancel'}  bsStyle={'warning'} >Cancel</Button>,
+            notify:   <Button key={'notify'}  bsStyle={'success'} >Notify</Button>,
+            calender: <Button key={'calendar'}  bsStyle={'success'} >Calendar</Button>
+        };
+
+        var actions = null;
+
+        switch(this.props.type) {
+            case ChallengeStatus.PENDING:
+                actions =
+                    (<ButtonGroup bsStyle={'primary'} title={'Actions'} >
+                        {buttons.accept}
+                        {buttons.deny}
+                    </ButtonGroup>);
+                break;
+            case ChallengeStatus.SENT:
+                actions =
+                    (<ButtonGroup bsStyle={'primary'} title={'Actions'} >
+                        {buttons.change}
+                        {buttons.cancel}
+                        {buttons.calender}
+                    </ButtonGroup>);
+                break;
+            case ChallengeStatus.NEEDS_NOTIFY:
+                actions =
+                    (<ButtonGroup bsStyle={'primary'} title={'Actions'} >
+                        {buttons.notify}
+                        {buttons.change}
+                        {buttons.cancel}
+                    </ButtonGroup>);
+                break;
+            case ChallengeStatus.ACCEPTED:
+                actions =
+                    (<ButtonGroup bsStyle={'primary'} title={'Actions'} >
+                        {buttons.change}
+                        {buttons.cancel}
+                    </ButtonGroup>);
+                break;
+            default:
         }
-        if (this.props.type == ChallengeStatus.SENT) {
-            return (
-                <ButtonGroup bsStyle={'primary'} title={'Actions'} key={'1'} >
-                    <Button bsStyle={'primary'} eventKey='3'>Modify</Button>
-                    <Button bsStyle={'warning'} eventKey='3'>Cancel</Button>
-                </ButtonGroup>
-            )
-        }
-        if (this.props.type == ChallengeStatus.NEEDS_NOTIFY) {
-            return (
-                <ButtonGroup bsStyle={'primary'} title={'Actions'} key={'1'} >
-                    <Button bsStyle={'success'} eventKey='3'>Notify</Button>
-                    <Button bsStyle={'primary'} eventKey='3'>Modify</Button>
-                    <Button bsStyle={'warning'} eventKey='3'>Cancel</Button>
-                </ButtonGroup>
-            )
-        }
-        return (
-            <ButtonGroup bsStyle={'primary'} title={'Actions'} key={'1'} >
-                <Button eventKey='1'>Notify</Button>
-                <Button eventKey='3'>Modify</Button>
-                <Button eventKey='3'>Cancel</Button>
-            </ButtonGroup>
-        )
+
+        return actions;
     }
 });
 
