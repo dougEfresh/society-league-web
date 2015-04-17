@@ -18,6 +18,7 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler;
 
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
+var UserStore = require('../stores/UserStore.jsx');
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
 var DataFactory = require('./../DataFactoryMixin.jsx');
@@ -36,6 +37,7 @@ var Navigator = React.createClass({
      getInitialState: function() {
         return {
             challenges: ChallengeStore.getAllChallenges(),
+            user: UserStore.get(),
             key: 'home'
         }
     },
@@ -60,7 +62,7 @@ var Navigator = React.createClass({
                             <ChallengeNav challenges={this.state.challenges}/>
                         </Nav>
                         <Nav navbar right>
-                            <DropdownButton pullRight eventKey={"user"} title={'name'} navItem={true}>
+                            <DropdownButton pullRight eventKey={"user"} title={this.state.user.name} navItem={true}>
                                 <MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
                                 <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>
@@ -100,7 +102,7 @@ var ChallengeNav = React.createClass({
     render: function() {
         var indicator = (<span>Challenges <Badge>{this.state.counter}</Badge></span>);
         return (
-            <NavItemLink to='challenge' params={{userId: this.getUserId()}} eventKey={"challenge"} >{indicator}</NavItemLink>
+            <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} eventKey={"challenge"} >{indicator}</NavItemLink>
         );
     }
 });

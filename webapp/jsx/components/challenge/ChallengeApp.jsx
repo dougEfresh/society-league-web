@@ -33,19 +33,24 @@ var ChallengeApp = React.createClass({
     mixins: [DataFactory],
     getInitialState: function() {
         return {
-            requests: ChallengeStore.getAllChallenges()
+            requests: ChallengeStore.getAllChallenges(),
+            added: false
         }
     },
     componentDidMount: function() {
-        ChallengeStore.addRequestListener(this._onChange);
+        ChallengeStore.addRequestListener(this._onAdd);
         ChallengeStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function() {
+        ChallengeStore.removeRequestListener(this._onAdd);
         ChallengeStore.removeChangeListener(this._onChange);
-        ChallengeStore.removeRequestListener(this._onChange);
     },
     _onChange: function() {
         this.setState({requests: ChallengeStore.getAllChallenges()});
+    },
+    _onAdd: function() {
+        this.setState({requests: ChallengeStore.getAllChallenges()});
+        this.context.router.transitionTo('needs_notify',{userId: this.getUserId()},null);
     },
     getTitle: function(type) {
         var r = this.state.requests[type];
@@ -94,6 +99,7 @@ var ChallengeApp = React.createClass({
     },
     render: function() {
         var tabs = [];
+
         tabs.push(
             <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} key={'request'} eventKey={ChallengeStatus.REQUEST} >
                 {this.getTitle('Request')}
@@ -104,15 +110,25 @@ var ChallengeApp = React.createClass({
         this.genTab(ChallengeStatus.PENDING,tabs);
         this.genTab(ChallengeStatus.ACCEPTED,tabs);
         this.genTab(ChallengeStatus.SENT,tabs);
-
-        return (
-        <div>
-            <Nav bsStyle='pills' defaultActiveKey={ChallengeStatus.REQUEST} >
-                {tabs}
-            </Nav>
-            <RouteHandler />
-        </div>
-        )
+        if (this.context.router.getCurrentPath().indexOf('/challenge/') == -1) {
+            return (
+                <div>
+                    <Nav bsStyle='pills' activeKey={ChallengeStatus.REQUEST}>
+                        {tabs}
+                    </Nav>
+                    <RouteHandler />
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <Nav bsStyle='pills'>
+                        {tabs}
+                    </Nav>
+                    <RouteHandler />
+                </div>
+            )
+        }
     }
 });
 

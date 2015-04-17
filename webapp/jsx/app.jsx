@@ -57,7 +57,7 @@ var routes = (
         <Route name="error" path="error" handler={ErrorApp} />
         <Route name="login" path="/" handler={LoginApp} />
         <Route name="logout" path="logout" handler={LogoutApp} />
-        <Route name="nav" path="/:userId" handler={NavApp}>
+        <Route name="nav" path="/app/:userId" handler={NavApp}>
             <Route name="home" path="home" handler={Home}/>
             <Route name="account" path="account" handler={Home}/>
             <Route name="admin" path="admin" handler={Home}/>

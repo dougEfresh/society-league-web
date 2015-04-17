@@ -50,13 +50,6 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addRequestListener: function(callback) {
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function(callback) {
         this.on(ADD_EVENT, callback);
     },
 
@@ -64,14 +57,21 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     removeRequestListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
+        this.removeListener(ADD_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    addChangeListener: function(callback) {
+        this.on(CHANGE_EVENT, callback);
     },
 
     /**
      * @param {function} callback
      */
     removeChangeListener: function(callback) {
-        this.removeListener(ADD_EVENT, callback);
+        this.removeListener(CHANGE_EVENT, callback);
     },
 
     create: function(request) {
@@ -195,7 +195,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
             },
             success: function (d) {
                 _challenges = d;
-                ChallengeStore.emitAdd();
+                ChallengeStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('slots', status, err.toString());

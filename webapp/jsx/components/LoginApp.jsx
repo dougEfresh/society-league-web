@@ -7,6 +7,7 @@ var Bootstrap = require('react-bootstrap')
 
 var UserActions = require('../actions/UserAction.jsx');
 var DataFactory = require('./../DataFactoryMixin.jsx');
+var UserStore = require('../stores/UserStore.jsx');
 
 var LoginApp = React.createClass({
     mixins: [DataFactory],
@@ -32,10 +33,11 @@ var LoginApp = React.createClass({
                 }.bind(this)
             },
             success: function (d) {
-                   this.context.router.transitionTo('nav',{userId: d.id},null);
+                UserStore.set(d);
+                this.context.router.transitionTo('request',{userId: d.id},null);
             }.bind(this),
             error: function (xhr, status, err) {
-                console.error(url, status, err.toString());
+                console.error('login', status, err.toString());
                 console.log('Redirecting to error');
                 //this.redirect('error');
             }.bind(this)
@@ -62,8 +64,7 @@ var LoginApp = React.createClass({
                 );
                 this.setState({error: false});
                 UserActions.set(d);
-                //TODO Do a Real route
-                router.transitionTo('home',{userId: d.id},{from: router.getCurrentPath()});
+                router.transitionTo('request',{userId: d.id},null);
             }.bind(this),
             error: function (xhr, status, err) {
                 this.setState({error: true});
@@ -73,7 +74,10 @@ var LoginApp = React.createClass({
 
     },
     render: function () {
-         var button = (<Button onClick={this.handleSubmit} type="submit">login</Button>);
+        if (this.state.loggedIn){
+          return <h2>Work</h2>
+        }
+        var button = (<Button onClick={this.handleSubmit} type="submit">login</Button>);
         return (
             <Panel header={'Login'} footer={button} >
                 <Input type='text' ref='username' placeholder="username" defaultValue="login0"/>

@@ -5,9 +5,7 @@ var assign = require('object-assign');
 var UserActions = require('../actions/UserAction.jsx');
 var CHANGE_EVENT = 'change';
 
-var _user = localStorage.getItem("_user") == null
-|| localStorage.getItem("_user") == undefined
-? { id:0, name:""} : JSON.parse(localStorage.getItem("_user"));
+var _user = { id:0, name:""};
 
 var _viewUser = null;
 

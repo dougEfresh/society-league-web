@@ -5,7 +5,7 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
     ,Label = Bootstrap.Label;
 
-var UserActions = require('../actions/UserAction.jsx');
+var UserStore = require('../stores/UserStore.jsx');
 var DataFactory = require('./../DataFactoryMixin.jsx');
 
 var LoginApp = React.createClass({
@@ -23,9 +23,8 @@ var LoginApp = React.createClass({
          $.ajax({
             url: '/api/logout',
             success: function (d) {
-                UserActions.set({id: 0, name: "unknown"});
-                //TODO Do a Real route
-                //router.transitionTo('home',{userId: d.id},{from: router.getCurrentPath()});
+                UserStore.set({id: 0, name: ""});
+                this.context.router.transitionTo('login',null,null);
             }.bind(this),
             error: function (xhr, status, err) {
                 this.setState({error: true});
