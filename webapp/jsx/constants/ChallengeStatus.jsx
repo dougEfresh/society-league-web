@@ -5,5 +5,6 @@ module.exports = keyMirror({
     NEEDS_NOTIFY: null,
     ACCEPTED: null,
     SENT: null,
-    CANCELLED: null
+    CANCELLED: null,
+    REQUEST: null
 });

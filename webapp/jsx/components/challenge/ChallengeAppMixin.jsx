@@ -5,15 +5,11 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 
 var ChallengeAppMixin = {
-    propTypes: {
-        requests: ReactPropTypes.object.isRequired,
-        type: ReactPropTypes.string.isRequired
-    },
     shouldRender: function() {
         return this.props.requests[this.props.type].length > 0;
     },
     getRequests: function() {
-        return this.props.requests[this.props.type];
+        return this.state.requests[this.props.type];
     },
     getTitle: function() {
         switch(this.props.type) {

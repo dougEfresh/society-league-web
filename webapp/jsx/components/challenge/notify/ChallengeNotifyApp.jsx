@@ -17,8 +17,8 @@ var ChallengeNotifyApp = React.createClass({
     mixins: [DataFactory,ChallengeAppMixin],
     getInitialState: function() {
         return {
-            expanded : false
-        };
+            requests: ChallengeStore.getAllChallenges()
+        }
     },
     getDefaultProps: function(){
         return {
@@ -26,24 +26,20 @@ var ChallengeNotifyApp = React.createClass({
         }
     },
     componentDidMount: function() {
-        ChallengeStore.addChangeListener(this._onAdd);
+        ChallengeStore.addChangeListener(this._onChange);
+        ChallengeStore.addRequestListener(this._onChange);
     },
     componentWillUnmount: function() {
-        ChallengeStore.removeChangeListener(this._onAdd);
+        ChallengeStore.removeRequestListener(this._onChange);
+        ChallengeStore.removeChangeListener(this._onChange);
     },
-    _onAdd: function(){
-        this.setState({expanded: true});
-    },
-    handleClick: function() {
-        this.setState({expanded: !this.state.expanded});
+    _onChange: function() {
+        this.setState({requests: ChallengeStore.getAllChallenges()});
     },
     render: function(){
-        if (!this.shouldRender()) {
-            return null;
-        }
         return (
             <div>
-                <ChallengeNotifyList type={this.props.type} requests={this.getRequests()}/>
+                <ChallengeNotifyList type={this.props.type}/>
             </div>
         )
     }

@@ -1,11 +1,13 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher.jsx');
 var EventEmitter = require('events').EventEmitter;
 var ChallengeConstants = require('../constants/ChallengeConstants.jsx');
+var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
 var assign = require('object-assign');
 var Util = require('../util.jsx');
 var UserStore = require('./UserStore.jsx');
 var CHANGE_EVENT = 'change';
 var ADD_EVENT = 'add';
+var ChallengeActions = require('../actions/ChallengeActions.jsx');
 
 /**
  * Returns the default game type, which is neither 9 or 8
@@ -25,8 +27,14 @@ var _default = {
     game: defaultGame()
 };
 
+var _challenges = {};
+_challenges[ChallengeStatus.PENDING] = [];
+_challenges[ChallengeStatus.NEEDS_NOTIFY] = [];
+_challenges[ChallengeStatus.CANCELLED] = [];
+_challenges[ChallengeStatus.SENT] = [];
+_challenges[ChallengeStatus.ACCEPTED] = [];
 
-var _challenge = _default;
+var _request = _default;
 
 var ChallengeStore = assign({}, EventEmitter.prototype, {
 
@@ -67,7 +75,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     },
 
     create: function(request) {
-        _challenge = _default;
+        _request = _default;
         //TODO Move this to lib
         $.ajax({
             async: true,
@@ -84,9 +92,8 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
                 }
             },
             success: function (d) {
-                console.log("Got " + JSON.stringify(d) + " back from server");
+                _challenges = d;
                 ChallengeStore.emitAdd();
-                ChallengeStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
@@ -96,15 +103,15 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     },
 
     changeDate : function(date) {
-        _challenge.date = date;        
-        _challenge.slots = [];
+        _request.date = date;
+        _request.slots = [];
         this.getSlots();
     },
 
     getSlots: function() {
         console.log("Getting data from " + window.location.origin + '/api/challenge/slot/');
         $.ajax({
-            url: '/api/challenge/slots/' + _challenge.date,
+            url: '/api/challenge/slots/' + _request.date,
             dataType: 'json',
             statusCode: {
                 401: function () {
@@ -112,11 +119,10 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
                 }.bind(this)
             },
             success: function (d) {
-                console.log("Got " + JSON.stringify(d) + " back from server");
                 d.forEach(function(s){
                     s.selected = false;
                 });
-                _challenge.slots = d;
+                _request.slots = d;
                 ChallengeStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -131,29 +137,29 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         //TODO Optimize
         slots.forEach(function(newSlot) {
             var found = false;
-            _challenge.slots.forEach(function(s) {
+            _request.slots.forEach(function(s) {
                 if (s.id == newSlot.id) {
                     found = true;
                 }
             });
             if (!found) {
-                _challenge.slots.push(newSlot);
+                _request.slots.push(newSlot);
             }
         });
     },
 
     removeSlot : function(slot) {
         var newSlots = [];
-        _challenge.slots.forEach(function(s){
+        _request.slots.forEach(function(s){
             if (s.id != slot.id) {
                 newSlots.push(s);
             }
         });
-        _challenge.slots = newSlots;
+        _request.slots = newSlots;
     },
 
     setOpponent: function(opponent) {
-        _challenge.opponent = opponent;
+        _request.opponent = opponent;
         var g = defaultGame();
         if (opponent.nineBallPlayer) {
             g.nine.available = true;
@@ -161,16 +167,42 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         if (opponent.eightBallPlayer) {
             g.eight.available = true;
         }
-        _challenge.game = g;
+        _request.game = g;
     },
 
     setGame: function(game) {
-        _challenge.game.nine.selected  = game.nine.selected;
-        _challenge.game.eight.selected = game.eight.selected;
+        _request.game.nine.selected  = game.nine.selected;
+        _request.game.eight.selected = game.eight.selected;
     },
 
     get: function() {
-        return _challenge;
+        return _request;
+    },
+
+    getAllChallenges: function() {
+        return _challenges;
+    },
+
+    setChallenges: function(userId) {
+        console.log("Getting data from " + window.location.origin + '/api/challenge/' + userId);
+         $.ajax({
+            url: '/api/challenge/' + userId,
+            dataType: 'json',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                }.bind(this)
+            },
+            success: function (d) {
+                _challenges = d;
+                ChallengeStore.emitAdd();
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error('slots', status, err.toString());
+                console.log('Redirecting to error');
+                //this.redirect('error');
+            }.bind(this)
+        });
     },
 
     changeStatus: function(status) {
@@ -179,7 +211,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         $.ajax({
             async: true,
             processData: false,
-            url: '/api/challenge/status/' + status.status,
+            url: '/api/challenge/status/' + status.userId + '/' +  status.status,
             contentType: 'application/json',
             dataType: 'json',
             data: JSON.stringify(status),
@@ -191,8 +223,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
                 }
             },
             success: function (d) {
-                console.log("Got " + JSON.stringify(d) + " back from server");
-                ChallengeStore.emitAdd();
+                _challenges = d;
                 ChallengeStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -203,7 +234,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     },
 
     changeSlotStatus: function(slot) {
-        _challenge.slots.forEach(function(s) {
+        _request.slots.forEach(function(s) {
             if (s.id == slot.id) {
                 s.selected = slot.selected;
             }
@@ -250,6 +281,10 @@ AppDispatcher.register(function(action) {
          case ChallengeConstants.SLOT_CHANGE:
              ChallengeStore.changeSlotStatus(action.slot);
              ChallengeStore.emitChange();
+             break;
+
+         case ChallengeConstants.CHALLENGES:
+             ChallengeStore.setChallenges(action.userId);
              break;
 
          default:

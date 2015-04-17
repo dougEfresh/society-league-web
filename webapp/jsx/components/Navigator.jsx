@@ -14,10 +14,12 @@ var Bootstrap = require('react-bootstrap')
 var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
-
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler;
 
+var ChallengeStore = require('../stores/ChallengeStore.jsx');
+var ChallengeActions = require('../actions/ChallengeActions.jsx');
+var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
 var DataFactory = require('./../DataFactoryMixin.jsx');
 
 var Home = React.createClass({
@@ -30,34 +32,37 @@ var Home = React.createClass({
 });
 
 var Navigator = React.createClass({
-    propTypes: {
-        user: ReactPropTypes.object.isRequired
-    },
-    getInitialState: function() {
+    mixins: [DataFactory],
+     getInitialState: function() {
         return {
+            challenges: ChallengeStore.getAllChallenges(),
             key: 'home'
         }
     },
-    componentWillReceiveProps: function (nextProps) {
-        console.log('NEW ' + JSON.stringify( nextProps));
+    componentDidMount: function() {
+        ChallengeStore.addRequestListener(this._onChange);
+        ChallengeStore.addChangeListener(this._onChange);
+        ChallengeActions.setChallenges(this.getUserId());
+    },
+    componentWillUnmount: function() {
+        ChallengeStore.removeChangeListener(this._onChange);
+        ChallengeStore.removeRequestListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState({challenges: ChallengeStore.getAllChallenges()});
     },
     render: function() {
-        //<CollapsableNav bsStyle="pills" fluid fixedTop activeKey={this.state.key} eventKey={'0'}>
-        //<NavItemLink to='stats' params={{userId: this.props.user.id}} eventKey={"Stats"}>Stats</NavItemLink>
-        //<NavItemLink  to='admin' eventKey={"admin"}>Admin</NavItemLink>
         return (
             <div>
                 <Navbar left inverse brand="Society" toggleNavKey={'0'}>
                     <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
-
-                            <ChallengeNav userId={this.props.user.id} />
-
+                            <ChallengeNav challenges={this.state.challenges}/>
                         </Nav>
                         <Nav navbar right>
-                            <DropdownButton pullRight eventKey={"user"} title={this.props.user.name} navItem={true}>
-                                <MenuItemLink to='account' params={{userId: this.props.user.id}} eventKey={"account"}>Account</MenuItemLink>
-                                <MenuItemLink to="logout" eventKey={"logout"}>Logout</MenuItemLink>
+                            <DropdownButton pullRight eventKey={"user"} title={'name'} navItem={true}>
+                                <MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
+                                <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>
                         </Nav>
                 </CollapsableNav>
@@ -69,34 +74,33 @@ var Navigator = React.createClass({
 });
 
 var ChallengeNav = React.createClass({
-    propTypes: {
-        userId: ReactPropTypes.number.isRequired
-    },
     mixins: [DataFactory],
     getInitialState: function() {
         return {
-            sent: 0,
-            pending: 0
+            counter: 0
         }
     },
-    componentWillReceiveProps: function (nextProps) {
-        //TODO listen for challenge changes
-        this.update(nextProps.userId);
-    },
     componentDidMount: function() {
-        this.update(this.props.userId);
+        this.update(this.props);
      },
-    update: function(user) {
-        this.getData('/api/challenge/counters/' + user, function(d) {
-            this.setState(
-                {sent: d[0], pending:d[1]}
-            );
-        }.bind(this));
+    componentWillReceiveProps: function (nextProps) {
+        this.update(nextProps);
+    },
+    update: function(props) {
+        this.setState({
+            counter: props.challenges[ChallengeStatus.SENT].length
+            +
+            props.challenges[ChallengeStatus.PENDING].length
+            +
+            props.challenges[ChallengeStatus.NEEDS_NOTIFY].length
+            +
+            props.challenges[ChallengeStatus.ACCEPTED].length
+        });
     },
     render: function() {
-        var indicator = (<span>Challenges <Badge>{this.state.sent + this.state.pending}</Badge></span>);
+        var indicator = (<span>Challenges <Badge>{this.state.counter}</Badge></span>);
         return (
-            <NavItemLink to='challenge' params={{userId: this.props.userId}} eventKey={"challenge"} >{indicator}</NavItemLink>
+            <NavItemLink to='challenge' params={{userId: this.getUserId()}} eventKey={"challenge"} >{indicator}</NavItemLink>
         );
     }
 });

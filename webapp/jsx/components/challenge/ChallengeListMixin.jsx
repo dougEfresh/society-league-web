@@ -14,18 +14,33 @@ var Bootstrap = require('react-bootstrap')
 
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
+var ChallengeStore = require('../../stores/ChallengeStore.jsx');
+var DataFactory = require('../../DataFactoryMixin.jsx');
 
 var ChallengeListMixin = {
-    contextTypes: {
-        router: React.PropTypes.func
-    },
+    mixins: [DataFactory],
     propTypes: {
-        requests: ReactPropTypes.array.isRequired,
         type:  ReactPropTypes.string.isRequired
+    },
+    getInitialState: function() {
+        return {
+            requests: ChallengeStore.getAllChallenges()
+        }
+    },
+    componentDidMount: function() {
+        ChallengeStore.addChangeListener(this._onChange);
+        ChallengeStore.addRequestListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        ChallengeStore.removeRequestListener(this._onChange);
+        ChallengeStore.removeChangeListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState({requests: ChallengeStore.getAllChallenges()});
     },
     render: function() {
           var rows = [];
-          this.props.requests.forEach(function (p) {
+          this.state.requests[this.props.type].forEach(function (p) {
               rows.push
               (<tr key={p.challenges[0].id}>
                       <RequestRow type={this.props.type} request={p}/>
@@ -53,9 +68,7 @@ var ChallengeListMixin = {
 };
 
 var RequestRow = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
-    },
+    mixins: [DataFactory],
     propTypes: {
         request: ReactPropTypes.object.isRequired,
         type:  ReactPropTypes.string.isRequired
@@ -129,12 +142,14 @@ var RequestRow = React.createClass({
 });
 
 var RequestAction = React.createClass({
+    mixins: [DataFactory],
     propTypes: {
         challenges: ReactPropTypes.array.isRequired,
         type: ReactPropTypes.string.isRequired
     },
     sendStatus: function(s) {
         var status = {
+            userId: this.getUserId(),
             status : s,
             challenger: {id: 0},
             opponent:  {id: 0},

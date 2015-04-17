@@ -19,6 +19,28 @@ var LoginApp = React.createClass({
             loggedIn: false
         };
     },
+    componentDidMount: function() {
+        $.ajax({
+            url: '/api/user',
+            dataType: 'json',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                    if (this.context.router.getCurrentPathname().indexOf('login') == -1) {
+                        this.redirect('login');
+                    }
+                }.bind(this)
+            },
+            success: function (d) {
+                   this.context.router.transitionTo('nav',{userId: d.id},null);
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(url, status, err.toString());
+                console.log('Redirecting to error');
+                //this.redirect('error');
+            }.bind(this)
+        });
+    },
     handleSubmit: function(e){
         var router = this.context.router;
         e.preventDefault();

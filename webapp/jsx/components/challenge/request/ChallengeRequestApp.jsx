@@ -4,6 +4,8 @@ var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Alert = Bootstrap.Alert
     ,Panel = Bootstrap.Panel;
+var Router = require('react-router')
+    , RouteHandler = Router.RouteHandler;
 
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
@@ -18,17 +20,14 @@ var DataFactory = require('../../../DataFactoryMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
     mixins: [DataFactory],
-    propTypes: {
-        challenge: ReactPropTypes.object.isRequired
-    },
     getInitialState: function() {
         return {
-            submitted : false
+            challenge : ChallengeStore.get()
         };
     },
     getErrors: function() {
         var errors = [];
-        var c = this.props.challenge;
+        var c = this.state.challenge;
         if (c == undefined) {
             errors.push('Nothing Selected');
             return errors;
@@ -46,7 +45,7 @@ var ChallengeRequestApp = React.createClass({
     },
     handleClick: function() {
         var opponent = { id: 0};
-        var c = this.props.challenge;
+        var c = this.state.challenge;
         opponent.id = c.opponent.user.id;
         var slots = [];
         c.slots.forEach(function(s) {
@@ -70,19 +69,10 @@ var ChallengeRequestApp = React.createClass({
     },
     render: function(){
         var userId = this.getUserId();
-        var c = this.props.challenge;
+        var c = this.state.challenge;
         var submit = (
             <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleClick}>Request Challenge</Button>
         );
-        var alert = null;
-        if (this.props.submitted ) {
-            alert = (
-                <Alert bsStyle='success' >
-                    Successfully Sent Request. See 'Notify Tab' to send notification
-                     <Button onClick={this.handleDismiss}>Hide</Button>
-                </Alert>
-            );
-        }
         return (
             <div>
                 {alert}

@@ -6,7 +6,10 @@ var Router = require('react-router')
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
 
+var ChallengeStatus = require('./constants/ChallengeStatus.jsx');
 var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
+var ChallengeRequestApp = require('./components/challenge/request/ChallengeRequestApp.jsx');
+var ChallengeNotifyApp = require('./components/challenge/notify/ChallengeNotifyApp.jsx');
 var NavApp = require('./components/NavApp.jsx');
 var LoginApp = require('./components/LoginApp.jsx');
 var LogoutApp = require('./components/LogoutApp.jsx');
@@ -50,16 +53,22 @@ var RouteNotFound = React.createClass({
 var routes = (
     <Route handler={App}>
         <NotFoundRoute handler={RouteNotFound}/>
-        <DefaultRoute handler={Home} />
+        <DefaultRoute handler={LoginApp} />
         <Route name="error" path="error" handler={ErrorApp} />
-        <Route name="nav" path="/" handler={NavApp}>
-            <Route name="login" path="login" handler={LoginApp} />
-            <Route name="logout" path="logout" handler={LogoutApp} />
-            <Route name="home" path="home/:userId" handler={Home}/>
-            <Route name="account" path="account/:userId" handler={Home}/>
+        <Route name="login" path="/" handler={LoginApp} />
+        <Route name="logout" path="logout" handler={LogoutApp} />
+        <Route name="nav" path="/:userId" handler={NavApp}>
+            <Route name="home" path="home" handler={Home}/>
+            <Route name="account" path="account" handler={Home}/>
             <Route name="admin" path="admin" handler={Home}/>
-            <Route name="challenge" path="challenge/:userId" handler={ChallengeApp}/>
-            <Route name="stats" path="stats/:userId" handler={Stats}/>
+            <Route name="challenge" path="challenge" handler={ChallengeApp}>
+                <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
+                <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeRequestApp}/>
+                <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeRequestApp}/>
+                <Route name={ChallengeStatus.NEEDS_NOTIFY.toLowerCase()} path={ChallengeStatus.NEEDS_NOTIFY.toLowerCase()} handler={ChallengeNotifyApp}/>
+                <Route name={ChallengeStatus.SENT.toLowerCase()} path={ChallengeStatus.SENT.toLowerCase()} handler={ChallengeRequestApp}/>
+            </Route>
+            <Route name="stats" path="stats" handler={Stats}/>
         </Route>
     </Route>
 );

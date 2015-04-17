@@ -4,18 +4,6 @@ var RequestConstants = require('../constants/ChallengeConstants.jsx');
 var ChallengeActions = {
 
     /**
-     * @param  {object} challenge
-     */
-        /*
-    create: function(challenge) {
-        AppDispatcher.dispatch({
-            actionType: RequestConstants.CREATE,
-            challenge: challenge
-        });
-    },
-    */
-
-    /**
      * @param  {date} string
      */
     changeDate: function(date) {
@@ -95,6 +83,13 @@ var ChallengeActions = {
          AppDispatcher.dispatch({
             actionType: RequestConstants.SLOT_CHANGE,
             slot: slot
+         });
+    },
+
+    setChallenges: function(userId) {
+         AppDispatcher.dispatch({
+            actionType: RequestConstants.CHALLENGES,
+            userId: userId
          });
     }
 };
