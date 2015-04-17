@@ -42,20 +42,26 @@ var Navigator = React.createClass({
         }
     },
     componentDidMount: function() {
-        ChallengeStore.addRequestListener(this._onChange);
-        ChallengeStore.addChangeListener(this._onChange);
+        ChallengeStore.addRequestListener(this._onChallengeChange);
+        ChallengeStore.addChangeListener(this._onChallengeChange);
+        UserStore.addChangeListener(this._onUserChange);
         ChallengeActions.setChallenges(this.getUserId());
         this.setState({
             user: UserStore.get()
         })
     },
     componentWillUnmount: function() {
-        ChallengeStore.removeChangeListener(this._onChange);
-        ChallengeStore.removeRequestListener(this._onChange);
+        ChallengeStore.removeChangeListener(this._onChallengeChange);
+        ChallengeStore.removeRequestListener(this._onChallengeChange);
+        UserStore.removeChangeListener(this._onUserChange);
     },
-    _onChange: function() {
+    _onChallengeChange: function() {
         this.setState(
-            {challenges: ChallengeStore.getAllChallenges()},
+            {challenges: ChallengeStore.getAllChallenges()}
+        );
+    },
+    _onUserChange: function() {
+        this.setState(
             {user: UserStore.get()}
         );
     },
