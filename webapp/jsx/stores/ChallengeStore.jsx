@@ -19,13 +19,16 @@ function defaultGame() {
         eight: {available: false, selected: false}
     };
 }
+function defaultRequest() {
+    var _default = {
+        date: undefined,
+        opponent: {user: {id: 0, name: '-----'}},
+        slots: [],
+        game: defaultGame()
+    };
 
-var _default = {
-    date: undefined,
-    opponent: {user: {id: 0, name: '-----'}},
-    slots: [],
-    game: defaultGame()
-};
+    return _default;
+}
 
 var _challenges = {};
 _challenges[ChallengeStatus.PENDING] = [];
@@ -34,7 +37,7 @@ _challenges[ChallengeStatus.CANCELLED] = [];
 _challenges[ChallengeStatus.SENT] = [];
 _challenges[ChallengeStatus.ACCEPTED] = [];
 
-var _request = _default;
+var _request = defaultRequest;
 
 var ChallengeStore = assign({}, EventEmitter.prototype, {
 

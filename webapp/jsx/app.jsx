@@ -10,6 +10,8 @@ var ChallengeStatus = require('./constants/ChallengeStatus.jsx');
 var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
 var ChallengeRequestApp = require('./components/challenge/request/ChallengeRequestApp.jsx');
 var ChallengeNotifyApp = require('./components/challenge/notify/ChallengeNotifyApp.jsx');
+var ChallengeApprovalApp = require('./components/challenge/approvals/ChallengeApprovalApp.jsx');
+
 var NavApp = require('./components/NavApp.jsx');
 var LoginApp = require('./components/LoginApp.jsx');
 var LogoutApp = require('./components/LogoutApp.jsx');
@@ -63,7 +65,7 @@ var routes = (
             <Route name="admin" path="admin" handler={Home}/>
             <Route name="challenge" path="challenge" handler={ChallengeApp}>
                 <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
-                <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeRequestApp}/>
+                <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeApprovalApp}/>
                 <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeRequestApp}/>
                 <Route name={ChallengeStatus.NEEDS_NOTIFY.toLowerCase()} path={ChallengeStatus.NEEDS_NOTIFY.toLowerCase()} handler={ChallengeNotifyApp}/>
                 <Route name={ChallengeStatus.SENT.toLowerCase()} path={ChallengeStatus.SENT.toLowerCase()} handler={ChallengeRequestApp}/>
