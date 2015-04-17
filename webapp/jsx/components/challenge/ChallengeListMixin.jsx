@@ -174,13 +174,13 @@ var RequestAction = React.createClass({
     },
     render: function() {
         var buttons = {
-            accept:   <Button onClick={this.accept} key={'accept'} bsStyle={'success'} >Accept</Button>,
-            deny:     <Button onClick={this.cancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
+            accept:   <Button bsSize='xsmall' onClick={this.accept} key={'accept'} bsStyle={'success'} >Accept</Button>,
+            deny:     <Button bsSize='xsmall'  onClick={this.cancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,
-            cancel:   <Button onClick={this.cancel} key={'cancel'}  bsStyle={'warning'} >Cancel</Button>,
-            notify:   <Button onClick={this.notify} key={'notify'}  bsStyle={'success'} >Notify</Button>,
-            calender: <Button key={'calendar'}  bsStyle={'success'} >Calendar</Button>
+            cancel:   <Button bsSize='xsmall'  onClick={this.cancel} key={'cancel'}  bsStyle={'warning'} >Cancel</Button>,
+            notify:   <Button bsSize='xsmall'  onClick={this.notify} key={'notify'}  bsStyle={'success'} >Notify</Button>,
+            calender: <Button disabled bsSize='xsmall'  key={'calendar'}  bsStyle={'success'} >Calendar</Button>
         };
 
         var actions = null;

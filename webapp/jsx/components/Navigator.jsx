@@ -41,14 +41,14 @@ var Navigator = React.createClass({
             key: 'home'
         }
     },
-    componentDidMount: function() {
+    componentWillMount: function() {
         ChallengeStore.addRequestListener(this._onChallengeChange);
         ChallengeStore.addChangeListener(this._onChallengeChange);
         UserStore.addChangeListener(this._onUserChange);
+    },
+    componentDidMount: function() {
         ChallengeActions.setChallenges(this.getUserId());
-        this.setState({
-            user: UserStore.get()
-        })
+        UserStore.getFromServer();
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
@@ -65,21 +65,17 @@ var Navigator = React.createClass({
             {user: UserStore.get()}
         );
     },
+    //<MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
     render: function() {
         return (
             <div>
                 <Navbar left inverse brand="Society" toggleNavKey={'0'}>
-                    <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
                             <ChallengeNav challenges={this.state.challenges}/>
-                        </Nav>
-                        <Nav navbar right>
-                            <DropdownButton pullRight eventKey={"user"} title={this.state.user.name} navItem={true}>
-                                <MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
+                            <DropdownButton eventKey={"user"} title={this.state.user.name} navItem={true}>
                                 <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>
                         </Nav>
-                </CollapsableNav>
                 </Navbar>
                 <RouteHandler />
             </div>

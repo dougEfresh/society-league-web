@@ -4,8 +4,11 @@ var UserConstants = require('../constants/UserConstants.jsx');
 var assign = require('object-assign');
 var UserActions = require('../actions/UserAction.jsx');
 var CHANGE_EVENT = 'change';
+var DataFactoryMixin = require('../DataFactoryMixin.jsx');
 
-var _user = { id:0, name:""};
+var _user = localStorage.getItem("_user") == null
+|| localStorage.getItem("_user") == undefined
+? { id:0, name:""} : JSON.parse(localStorage.getItem("_user"));
 
 var _viewUser = null;
 
@@ -22,6 +25,13 @@ var UserStore = assign({}, EventEmitter.prototype, {
         this.on(CHANGE_EVENT, callback);
     },
 
+    getFromServer: function() {
+        DataFactoryMixin.getData('/api/user', function(d) {
+            _user = d;
+            UserStore.emitChange();
+        }.bind(this));
+    },
+
     /**
      * @param {function} callback
      */
@@ -36,33 +46,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
     set: function(user) {
         console.log('Setting userId : ' + JSON.stringify(user));
         _user = user;
-        localStorage.setItem("_user",JSON.stringify(user));
     },
 
     get: function() {
         return _viewUser != null ? _viewUser : _user;
-    },
-
-    getInfo: function() {
-         console.log("Getting data from " + window.location.origin + '/user');
-        $.ajax({
-            url: '/api/user',
-            dataType: 'json',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                }.bind(this)
-            },
-            success: function (d) {
-                _user = d;
-                UserStore.emitChange();
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('user', status, err.toString());
-                console.log('Redirecting to error');
-                //this.redirect('error');
-            }.bind(this)
-        });
     }
 });
 
@@ -76,10 +63,6 @@ AppDispatcher.register(function(action) {
          case UserConstants.USER_VIEW_SET:
              UserStore.setViewUser(action.user);
              UserStore.emitChange();
-             break;
-
-         case UserConstants.INFO:
-             UserStore.getInfo();
              break;
 
          default:
