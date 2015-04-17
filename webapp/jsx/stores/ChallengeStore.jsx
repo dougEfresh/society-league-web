@@ -3,7 +3,6 @@ var EventEmitter = require('events').EventEmitter;
 var ChallengeConstants = require('../constants/ChallengeConstants.jsx');
 var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
 var assign = require('object-assign');
-var Util = require('../util.jsx');
 var UserStore = require('./UserStore.jsx');
 var CHANGE_EVENT = 'change';
 var ADD_EVENT = 'add';
@@ -19,6 +18,7 @@ function defaultGame() {
         eight: {available: false, selected: false}
     };
 }
+
 function defaultRequest() {
     var _default = {
         date: undefined,
@@ -37,7 +37,7 @@ _challenges[ChallengeStatus.CANCELLED] = [];
 _challenges[ChallengeStatus.SENT] = [];
 _challenges[ChallengeStatus.ACCEPTED] = [];
 
-var _request = defaultRequest;
+var _request = defaultRequest();
 
 var ChallengeStore = assign({}, EventEmitter.prototype, {
 
@@ -78,8 +78,8 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     },
 
     create: function(request) {
-        _request = _default;
         //TODO Move this to lib
+        //TODO ADD UserId to URL
         $.ajax({
             async: true,
             processData: false,
@@ -96,10 +96,11 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
             },
             success: function (d) {
                 _challenges = d;
+                _request = defaultRequest();
                 ChallengeStore.emitAdd();
             }.bind(this),
             error: function (xhr, status, err) {
-                console.error(url, status, err.toString());
+                console.error('/api/challenge/request', status, err.toString());
                 //this.redirect('error');
             }.bind(this)
         });

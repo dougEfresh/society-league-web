@@ -45,13 +45,19 @@ var Navigator = React.createClass({
         ChallengeStore.addRequestListener(this._onChange);
         ChallengeStore.addChangeListener(this._onChange);
         ChallengeActions.setChallenges(this.getUserId());
+        this.setState({
+            user: UserStore.get()
+        })
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChange);
         ChallengeStore.removeRequestListener(this._onChange);
     },
     _onChange: function() {
-        this.setState({challenges: ChallengeStore.getAllChallenges()});
+        this.setState(
+            {challenges: ChallengeStore.getAllChallenges()},
+            {user: UserStore.get()}
+        );
     },
     render: function() {
         return (

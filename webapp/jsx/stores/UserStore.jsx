@@ -41,6 +41,28 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
     get: function() {
         return _viewUser != null ? _viewUser : _user;
+    },
+
+    getInfo: function() {
+         console.log("Getting data from " + window.location.origin + '/user');
+        $.ajax({
+            url: '/api/user',
+            dataType: 'json',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                }.bind(this)
+            },
+            success: function (d) {
+                _user = d;
+                UserStore.emitChange();
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error('user', status, err.toString());
+                console.log('Redirecting to error');
+                //this.redirect('error');
+            }.bind(this)
+        });
     }
 });
 
@@ -54,6 +76,10 @@ AppDispatcher.register(function(action) {
          case UserConstants.USER_VIEW_SET:
              UserStore.setViewUser(action.user);
              UserStore.emitChange();
+             break;
+
+         case UserConstants.INFO:
+             UserStore.getInfo();
              break;
 
          default:

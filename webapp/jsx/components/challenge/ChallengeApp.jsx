@@ -46,7 +46,25 @@ var ChallengeApp = React.createClass({
         ChallengeStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
+        var requests = ChallengeStore.getAllChallenges();
         this.setState({requests: ChallengeStore.getAllChallenges()});
+        //var types = [ChallengeStatus.NEEDS_NOTIFY,ChallengeStatus.SENT,ChallengeStatus.PENDING,ChallengeStatus.ACCEPTED];
+        for (var t in ChallengeStatus) {
+
+            if (t == ChallengeStatus.REQUEST) {
+                return;
+            }
+            if (this.context.router.isActive(t.toLowerCase())) {
+                if (requests[t].length==0) {
+                    this.context.router.transitionTo(
+                        ChallengeStatus.REQUEST.toLowerCase(),
+                        {userId: this.getUserId()},null
+                    );
+                    return;
+                }
+            }
+
+        }
     },
     _onAdd: function() {
         this.setState({requests: ChallengeStore.getAllChallenges()});
@@ -71,9 +89,6 @@ var ChallengeApp = React.createClass({
     shouldRender: function(type) {
         return this.state.requests[type].length > 0;
     },
-    handleSelect: function(key){
-        this.setState({activeKey: key});
-    },
     getApp: function(type) {
         switch(type) {
             case ChallengeStatus.NEEDS_NOTIFY:
@@ -91,7 +106,7 @@ var ChallengeApp = React.createClass({
     genTab: function(type,tabs) {
         if (this.shouldRender(type)) {
             tabs.push(
-                    <NavItemLink to={type.toLowerCase()} params={{userId: this.getUserId()}} key={type}  key={type} eventKey={type} >
+                    <NavItemLink to={type.toLowerCase()} params={{userId: this.getUserId()}}  key={type} eventKey={type} >
                         {this.getTitle(type)}
                     </NavItemLink>
             );
@@ -101,7 +116,7 @@ var ChallengeApp = React.createClass({
         var tabs = [];
 
         tabs.push(
-            <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} key={'request'} eventKey={ChallengeStatus.REQUEST} >
+            <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} key={ChallengeStatus.REQUEST} eventKey={ChallengeStatus.REQUEST} >
                 {this.getTitle('Request')}
             </NavItemLink>
                 );
@@ -110,19 +125,21 @@ var ChallengeApp = React.createClass({
         this.genTab(ChallengeStatus.PENDING,tabs);
         this.genTab(ChallengeStatus.ACCEPTED,tabs);
         this.genTab(ChallengeStatus.SENT,tabs);
-        if (this.context.router.getCurrentPath().indexOf('/challenge/') == -1) {
+        if (this.context.router.getCurrentPath().endsWith('/challenge')) {
             return (
                 <div>
                     <Nav bsStyle='pills' activeKey={ChallengeStatus.REQUEST}>
                         {tabs}
                     </Nav>
+                    <ChallengeRequestApp />
                     <RouteHandler />
                 </div>
             );
         } else {
+
             return (
                 <div>
-                    <Nav bsStyle='pills'>
+                    <Nav bsStyle='pills' >
                         {tabs}
                     </Nav>
                     <RouteHandler />

@@ -16,6 +16,15 @@ var UserActions = {
     /**
      * @param  {object} user
      */
+    getInfo: function() {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.INFO
+        });
+    },
+
+        /**
+     * @param  {object} user
+     */
     set: function(user) {
         AppDispatcher.dispatch({
             actionType: UserConstants.USER_SET,
