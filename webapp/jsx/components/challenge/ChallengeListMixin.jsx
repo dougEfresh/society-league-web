@@ -116,51 +116,14 @@ var RequestRow = React.createClass({
 
         return <Input ref='time' onChange={this.onSelectTime} value={this.state.slot} type={'select'}> {times}</Input>;
     },
-    onSelectGame: function(e) {
-        this.setState({game: e.target.textContent});
-    },
     resolveGameNumber: function(type) {
         if (type == 'EIGHT_BALL_CHALLENGE') {
             return '8';
         }
         return '9';
     },
-    getGames: function() {
-        var games = [];
-        if (this.props.type == ChallengeStatus.NEEDS_NOTIFY || this.props.type == ChallengeStatus.SENT) {
-            this.props.request.games.forEach(function(g) {
-                if (g == 'EIGHT_BALL_CHALLENGE')
-                    games.push(<Button disabled key={8} bsStyle={'success'}><i className="fa fa-check">8</i></Button>);
-                else
-                    games.push(<Button disabled key={9} bsStyle={'success'}><i className="fa fa-check">9</i></Button>);
-            }.bind(this));
-            return games;
-        }
-
-        this.props.request.games.forEach(function(g) {
-            var gameType = this.resolveGameNumber(g);
-            if (this.state.game == null ) {
-                games.push(
-                    <Button onClick={this.onSelectGame} key={gameType} bsStyle={'default'}>
-                        <i className="fa fa-times">{gameType}</i>
-                    </Button>);
-            } else if (this.state.game == gameType) {
-                    games.push(
-                        <Button onClick={this.onSelectGame} key={gameType} bsStyle={'success'}>
-                            <i className="fa fa-check">{gameType}</i>
-                        </Button>
-                    );
-            } else {
-                games.push(
-                    <Button onClick={this.onSelectGame} key={gameType} bsStyle={'default'}>
-                    <i className="fa fa-times">{gameType}</i>
-                </Button>);
-            }
-        }.bind(this));
-        return games;
-    },
     isValid: function() {
-        return this.state.game != null && this.state.slot > 0;
+        return this.refs.game != undefined && this.refs.game.isValid() && this.state.slot > 0;
     },
     getOpponent: function() {
         //return this.props.request[this.props.opponentField].name
@@ -188,13 +151,104 @@ var RequestRow = React.createClass({
                     {this.getOpponent()}
                 </td>
                 <td>
-                    {this.getGames()}
+                    <div>game</div>
                 </td>
                 <td>
-                    {this.getTimes()}
+                    <div>times</div>
+
                 </td>
             </div>
         )
+    }
+});
+// <RequestGameButtons ref='game' request={this.props.request} type={this.props.type} />
+//{this.getTimes()}
+var RequestGameButtons = React.createClass({
+    mixins: [DataFactory],
+    getInitialState: function() {
+        return {
+            game: null
+        }
+    },
+    componentDidMount: function() {
+        if (this.props.request.challenges.length == 1) {
+            var game = this.resolveGameNumber(this.props.request.games[0]);
+            this.setState({
+                game: game
+            });
+        }
+    },
+    propTypes: {
+        request: ReactPropTypes.object.isRequired,
+        type:  ReactPropTypes.string.isRequired
+    },
+    resolveGameNumber: function(type) {
+        if (type == 'EIGHT_BALL_CHALLENGE') {
+            return '8';
+        }
+        return '9';
+    },
+     onSelectGame: function(e) {
+        this.setState({game: e.target.textContent});
+    },
+    isValid: function() {
+        return this.state.game != null;
+    },
+    getButton: function(g) {
+        /*
+        if (this.state.game == null) {
+            return ( <Button onClick={this.onSelectGame} key={this.resolveGameNumber(g)} bsStyle={'default'}>
+                        <i className="fa fa-times">{this.resolveGameNumber(g)}</i>
+                    </Button>);
+        }
+*/
+        return (<Button disabled key={this.resolveGameNumber(g)} bsStyle={'success'}><i className="fa fa-check">{this.resolveGameNumber(g)}</i></Button>);
+    },
+    render: function() {
+         var games = [];
+
+        if (this.props.type == ChallengeStatus.NEEDS_NOTIFY || this.props.type == ChallengeStatus.SENT) {
+            this.props.request.games.forEach(function(g) {
+                if (g == 'EIGHT_BALL_CHALLENGE')
+                    games.push(<Button disabled key={8} bsStyle={'success'}><i className="fa fa-check">8</i></Button>);
+                else
+                    games.push(<Button disabled key={9} bsStyle={'success'}><i className="fa fa-check">9</i></Button>);
+            }.bind(this));
+            return (<div>{games}</div>);
+        }
+        return (
+            <div>
+                {this.getButton(this.props.request.games[0])}
+                {this.getButton(this.props.request.games[1])}
+            </div>
+        );
+        //var eight = this.resolveGameNumber(this.props.requests.games[0]) == '8' ?
+        /*
+        this.props.request.games.forEach(function(g) {
+            console.log(JSON.stringify(this.state));
+            var gameType = this.resolveGameNumber(g);
+            if (this.state.game == null ) {
+                games.push(
+                    <Button onClick={this.onSelectGame} key={gameType} bsStyle={'default'}>
+                        <i className="fa fa-times">{gameType}</i>
+                    </Button>);
+            } else if (this.state.game == gameType) {
+                    games.push(
+                        <Button onClick={this.onSelectGame} key={gameType} bsStyle={'success'}>
+                            <i className="fa fa-check">{gameType}</i>
+                        </Button>
+                    );
+            } else {
+                games.push(
+                    <Button onClick={this.onSelectGame} key={gameType} bsStyle={'default'}>
+                    <i className="fa fa-times">{gameType}</i>
+                </Button>);
+            }
+        }.bind(this));
+        */
+        if (games.length > 0)
+            return (<div>{games}</div>);
+        return null;
     }
 });
 
