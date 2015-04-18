@@ -19,6 +19,7 @@ var NavApp = require('./components/NavApp.jsx');
 var LoginApp = require('./components/LoginApp.jsx');
 var LogoutApp = require('./components/LogoutApp.jsx');
 var ErrorApp = require('./components/ErrorApp.jsx');
+var AdminApp = require('./components/AdminApp.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -65,7 +66,7 @@ var routes = (
         <Route name="nav" path="/app/:userId" handler={NavApp}>
             <Route name="home" path="home" handler={Home}/>
             <Route name="account" path="account" handler={Home}/>
-            <Route name="admin" path="admin" handler={Home}/>
+            <Route name="admin" path="admin" handler={AdminApp}/>
             <Route name="challenge" path="challenge" handler={ChallengeApp}>
                 <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
                 <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeApprovalApp}/>

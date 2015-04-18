@@ -75,99 +75,92 @@ var RequestRow = React.createClass({
     getInitialState: function() {
         return {
             game: null,
-            time: null
+            slot: 0
         }
     },
     propTypes: {
         request: ReactPropTypes.object.isRequired,
         type:  ReactPropTypes.string.isRequired
     },
+    componentDidMount: function() {
+        if (this.props.request.challenges.length == 1) {
+            var game = this.resolveGameNumber(this.props.request.games[0]);
+            var slot = this.props.request.slots[0].id;
+            this.setState({
+                game: game,
+                slot: slot
+            });
+        }
+    },
+    onSelectTime: function(e) {
+        this.setState({slot: this.refs.time.getValue()});
+    },
     getTimes: function () {
-        var slots = {};
         var times = [];
+
         if (this.props.type == ChallengeStatus.NEEDS_NOTIFY || this.props.type == ChallengeStatus.SENT) {
-            this.props.request.challenges.forEach(function (c) {
-                slots[c.slot.time] = (<Label key={c.slot.id + c.id}>{c.slot.time}</Label>)
+            this.props.request.slots.forEach(function (s) {
+                times.push(<Label key={s.id}>{s.time}</Label>);
             }.bind(this));
-            for (var s in slots) {
-                times.push(slots[s]);
-            }
             return times;
         }
+        if (this.props.request.slots.length == 1) {
+            return <Label>{this.props.request.slots[0].time}</Label>;
+        }
 
-        this.props.request.challenges.forEach(function(c){
-            slots[c.slot.time] = (<option key={c.slot.id + c.id} value={c.slot.id}>{c.slot.time}</option>)
+        times.push(<option key={0} value={0}>{'choose'}</option>);
+        this.props.request.slots.forEach(function (s) {
+            times.push(<option key={s.id} value={s.id}>{s.time}</option>);
         }.bind(this));
-        for (var s in slots) {
-            times.push(slots[s]);
-        }
-        if (times.length ==1) {
-            return <Label>{this.props.request.challenges[0].slot.time}</Label>;
-        }
 
-        return <Input value={ this.props.request.challenges[0].slot.id} type={'select'}> {times}</Input>;
 
+        return <Input ref='time' onChange={this.onSelectTime} value={this.state.slot} type={'select'}> {times}</Input>;
     },
     onSelectGame: function(e) {
         this.setState({game: e.target.textContent});
     },
+    resolveGameNumber: function(type) {
+        if (type == 'EIGHT_BALL_CHALLENGE') {
+            return '8';
+        }
+        return '9';
+    },
     getGames: function() {
         var games = [];
-        var nine = false;
-        var eight = false;
-        this.props.request.challenges.forEach(function(c) {
-            //TODO create a method/property on the server
-            if (c.challenger.division.type == 'EIGHT_BALL_CHALLENGE') {
-                eight = true;
-            }
-            if (c.challenger.division.type == 'NINE_BALL_CHALLENGE') {
-                nine = true;
-            }
-        });
-          if (this.props.type == ChallengeStatus.NEEDS_NOTIFY || this.props.type == ChallengeStatus.SENT) {
-              if (eight) {
-                  games.push(<Button disabled key={9} bsStyle={'success'}><i className="fa fa-check">9</i></Button>);
-              }
-              if (nine) {
-                  games.push(<Button disabled key={8} bsStyle={'success'}><i className="fa fa-check">8</i></Button>);
-              }
-          }
-        if (nine && eight) {
-            if (this.state.game == null) {
-                games.push(<Button onClick={this.onSelectGame} key={9} bsStyle={'default'}><i
-                    className="fa fa-times">9</i></Button>);
-                games.push(<Button onClick={this.onSelectGame} key={8} bsStyle={'default'}><i
-                    className="fa fa-times">8</i></Button>);
-            } else if (this.state.game == '9') {
-                games.push(
-                    <Button onClick={this.onSelectGame} key={9} bsStyle={'success'}>
-                        <i className="fa fa-check">9</i>
-                    </Button>
-                );
-                games.push(
-                    <Button onClick={this.onSelectGame} key={8} bsStyle={'default'}>
-                        <i className="fa fa-times">8</i>
-                    </Button>);
-            } else {
-                games.push(
-                    <Button onClick={this.onSelectGame} key={9} bsStyle={'default'}>
-                        <i className="fa fa-times">9</i>
-                    </Button>
-                );
-                games.push(
-                    <Button onClick={this.onSelectGame} key={8} bsStyle={'success'}>
-                        <i className="fa fa-check">8</i>
-                    </Button>
-                );
-            }
-
-        } else if (eight) {
-            games.push(<Button disabled key={9} bsStyle={'success'}><i className="fa fa-check">9</i></Button>);
-        } else if (nine) {
-            games.push(<Button disabled key={8} bsStyle={'success'}><i className="fa fa-check">8</i></Button>);
+        if (this.props.type == ChallengeStatus.NEEDS_NOTIFY || this.props.type == ChallengeStatus.SENT) {
+            this.props.request.games.forEach(function(g) {
+                if (g == 'EIGHT_BALL_CHALLENGE')
+                    games.push(<Button disabled key={8} bsStyle={'success'}><i className="fa fa-check">8</i></Button>);
+                else
+                    games.push(<Button disabled key={9} bsStyle={'success'}><i className="fa fa-check">9</i></Button>);
+            }.bind(this));
+            return games;
         }
 
+        this.props.request.games.forEach(function(g) {
+            var gameType = this.resolveGameNumber(g);
+            if (this.state.game == null ) {
+                games.push(
+                    <Button onClick={this.onSelectGame} key={gameType} bsStyle={'default'}>
+                        <i className="fa fa-times">{gameType}</i>
+                    </Button>);
+            } else if (this.state.game == gameType) {
+                    games.push(
+                        <Button onClick={this.onSelectGame} key={gameType} bsStyle={'success'}>
+                            <i className="fa fa-check">{gameType}</i>
+                        </Button>
+                    );
+            } else {
+                games.push(
+                    <Button onClick={this.onSelectGame} key={gameType} bsStyle={'default'}>
+                    <i className="fa fa-times">{gameType}</i>
+                </Button>);
+            }
+        }.bind(this));
         return games;
+    },
+    isValid: function() {
+        return this.state.game != null && this.state.slot > 0;
     },
     getOpponent: function() {
         //return this.props.request[this.props.opponentField].name
@@ -186,7 +179,7 @@ var RequestRow = React.createClass({
         return (
             <div>
                 <td>
-                    <RequestAction type={this.props.type} challenges={this.props.request.challenges}/>
+                    <RequestAction disabled={!this.isValid()} type={this.props.type} challenges={this.props.request.challenges}/>
                 </td>
                 <td>
                     {dateFormat(this.props.request.date)}
@@ -238,7 +231,7 @@ var RequestAction = React.createClass({
     },
     render: function() {
         var buttons = {
-            accept:   <Button bsSize='xsmall' onClick={this.accept} key={'accept'} bsStyle={'success'} >Accept</Button>,
+            accept:   <Button bsSize='xsmall'  disabled={this.props.disabled}  onClick={this.accept} key={'accept'} bsStyle={this.props.disabled ? 'danger' : 'success'} >Accept</Button>,
             deny:     <Button bsSize='xsmall'  onClick={this.cancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,
@@ -248,7 +241,6 @@ var RequestAction = React.createClass({
         };
 
         var actions = null;
-
         switch(this.props.type) {
             case ChallengeStatus.PENDING:
                 actions =

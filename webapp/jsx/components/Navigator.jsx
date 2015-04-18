@@ -48,7 +48,7 @@ var Navigator = React.createClass({
     },
     componentDidMount: function() {
         ChallengeActions.setChallenges(this.getUserId());
-        UserStore.getFromServer();
+        //UserStore.getFromServer();
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
@@ -66,13 +66,14 @@ var Navigator = React.createClass({
         );
     },
     //<MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
+    //<NavItemLink to='admin' params={{userId: this.getUserId()}} eventKey={"admin"}>Admin</NavItemLink>
     render: function() {
         return (
             <div>
                 <Navbar left inverse brand="Society" toggleNavKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
                             <ChallengeNav challenges={this.state.challenges}/>
-                            <DropdownButton eventKey={"user"} title={this.state.user.name} navItem={true}>
+                            <DropdownButton eventKey={"user"} title={UserStore.get().name} navItem={true}>
                                 <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>
                         </Nav>

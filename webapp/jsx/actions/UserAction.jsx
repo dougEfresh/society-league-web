@@ -22,7 +22,7 @@ var UserActions = {
         });
     },
 
-        /**
+    /**
      * @param  {object} user
      */
     set: function(user) {

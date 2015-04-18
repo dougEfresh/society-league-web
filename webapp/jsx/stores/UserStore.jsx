@@ -6,10 +6,8 @@ var UserActions = require('../actions/UserAction.jsx');
 var CHANGE_EVENT = 'change';
 var DataFactoryMixin = require('../DataFactoryMixin.jsx');
 
-var _user = localStorage.getItem("_user") == null
-|| localStorage.getItem("_user") == undefined
-? { id:0, name:""} : JSON.parse(localStorage.getItem("_user"));
-
+var _user = { id:0, name:""};
+var _users = [];
 var _viewUser = null;
 
 var UserStore = assign({}, EventEmitter.prototype, {
@@ -26,12 +24,26 @@ var UserStore = assign({}, EventEmitter.prototype, {
     },
 
     getFromServer: function() {
-        DataFactoryMixin.getData('/api/user', function(d) {
-            _user = d;
+        if (_user.id = 0) {
+            DataFactoryMixin.getData('/api/user' + function (d) {
+                _user = d;
+                UserStore.emitChange();
+            }.bind(this));
+        } else {
+            return _user;
+        }
+    },
+
+    getAll: function(){
+        return _users;
+    },
+
+    getAllFromServer: function() {
+         DataFactoryMixin.getData('/api/users', function(d) {
+            _users = d;
             UserStore.emitChange();
         }.bind(this));
     },
-
     /**
      * @param {function} callback
      */

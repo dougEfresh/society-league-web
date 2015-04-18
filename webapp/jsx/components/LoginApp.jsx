@@ -17,12 +17,17 @@ var LoginApp = React.createClass({
     getInitialState: function () {
         return {
             error: false,
-            loggedIn: false
+            loggedIn: false,
+            users: []
         };
     },
     componentDidMount: function() {
+        var user = UserStore.get();
+        //if (user.id == 0) {
+//            return;
+  //      }
         $.ajax({
-            url: '/api/user',
+            url: '/api/user/' + user.id,
             dataType: 'json',
             statusCode: {
                 401: function () {
@@ -33,11 +38,26 @@ var LoginApp = React.createClass({
                 }.bind(this)
             },
             success: function (d) {
-                UserStore.set(d);
-                this.context.router.transitionTo('request',{userId: d.id},null);
+                if (d.id = 0) {
+                    UserStore.set(d);
+                    this.context.router.transitionTo('request', {userId: d.id}, null);
+                }
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('login', status, err.toString());
+                console.log('Redirecting to error');
+                //this.redirect('error');
+            }.bind(this)
+        });
+
+         $.ajax({
+            url: '/api/users',
+            dataType: 'json',
+            success: function (d) {
+                this.setState({users: d});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error('users', status, err.toString());
                 console.log('Redirecting to error');
                 //this.redirect('error');
             }.bind(this)
@@ -73,10 +93,44 @@ var LoginApp = React.createClass({
         });
 
     },
+    onClick: function() {
+        var newUser = {};
+        this.state.users.forEach(function(u) {
+            if (u.id == this.refs.newUser.getValue()) {
+                newUser = u;
+            }
+        }.bind(this));
+        console.log('Login ' + newUser.login);
+         $.ajax({
+            async: true,
+            processData: true,
+            url: '/api/authenticate',
+            data: {username: newUser.login, password: newUser.login},
+            method: 'post',
+            success: function (d) {
+                UserActions.set(d);
+                this.context.router.transitionTo('request',{userId: d.id},null);
+            }.bind(this),
+            error: function (xhr, status, err) {
+                this.setState({error: true});
+                console.error('authenticate', status, err.toString());
+            }.bind(this)
+        });
+    },
     render: function () {
-        if (this.state.loggedIn){
-          return <h2>Work</h2>
-        }
+        var users = [];
+        this.state.users.forEach(function(u) {
+            users.push(<option key={u.id} value={u.id}>{u.name}</option>);
+        });
+        var button = (<Button onClick={this.onClick} >Login</Button>);
+        //{linkSwitch}
+        return (
+            <Panel bsStyle='primary' header={'Select User'} title={'Select User'} footer={button} >
+                <Input ref='newUser' type='select' >{users} </Input>
+            </Panel>
+        );
+    }
+/*
         var button = (<Button onClick={this.handleSubmit} type="submit">login</Button>);
         return (
             <Panel header={'Login'} footer={button} >
@@ -85,6 +139,7 @@ var LoginApp = React.createClass({
             </Panel>
         );
     }
+    */
 });
 
 
