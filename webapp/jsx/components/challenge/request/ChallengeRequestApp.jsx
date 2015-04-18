@@ -49,6 +49,9 @@ var ChallengeRequestApp = React.createClass({
         opponent.id = c.opponent.user.id;
         var slots = [];
         c.slots.forEach(function(s) {
+            if (!s.selected){
+                return
+            }
             var slot = { id: 0 };
             slot.id = s.id;
             slots.push(slot);

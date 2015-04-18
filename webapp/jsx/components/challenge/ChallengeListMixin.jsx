@@ -9,6 +9,9 @@ var Bootstrap = require('react-bootstrap')
     ,ButtonGroup = Bootstrap.ButtonGroup
     ,DropdownButton = Bootstrap.DropdownButton
     ,MenuItem = Bootstrap.MenuItem
+    ,Input = Bootstrap.Input
+    ,Label = Bootstrap.Label
+    ,Well = Bootstrap.Well
     ,Badge = Bootstrap.Badge
     ,SplitButton = Bootstrap.SplitButton;
 
@@ -69,6 +72,12 @@ var ChallengeListMixin = {
 
 var RequestRow = React.createClass({
     mixins: [DataFactory],
+    getInitialState: function() {
+        return {
+            game: null,
+            time: null
+        }
+    },
     propTypes: {
         request: ReactPropTypes.object.isRequired,
         type:  ReactPropTypes.string.isRequired
@@ -76,13 +85,31 @@ var RequestRow = React.createClass({
     getTimes: function () {
         var slots = {};
         var times = [];
+        if (this.props.type == ChallengeStatus.NEEDS_NOTIFY || this.props.type == ChallengeStatus.SENT) {
+            this.props.request.challenges.forEach(function (c) {
+                slots[c.slot.time] = (<Label key={c.slot.id + c.id}>{c.slot.time}</Label>)
+            }.bind(this));
+            for (var s in slots) {
+                times.push(slots[s]);
+            }
+            return times;
+        }
+
         this.props.request.challenges.forEach(function(c){
-            slots[c.slot.time] = (<span key={c.slot.id + c.id}>{c.slot.time}</span>)
+            slots[c.slot.time] = (<option key={c.slot.id + c.id} value={c.slot.id}>{c.slot.time}</option>)
         }.bind(this));
         for (var s in slots) {
-            times.push(s);
+            times.push(slots[s]);
         }
-        return times;
+        if (times.length ==1) {
+            return <Label>{this.props.request.challenges[0].slot.time}</Label>;
+        }
+
+        return <Input value={ this.props.request.challenges[0].slot.id} type={'select'}> {times}</Input>;
+
+    },
+    onSelectGame: function(e) {
+        this.setState({game: e.target.textContent});
     },
     getGames: function() {
         var games = [];
@@ -97,11 +124,48 @@ var RequestRow = React.createClass({
                 nine = true;
             }
         });
-        if (nine)
-            games.push(<Badge key={9}>9</Badge>);
+          if (this.props.type == ChallengeStatus.NEEDS_NOTIFY || this.props.type == ChallengeStatus.SENT) {
+              if (eight) {
+                  games.push(<Button disabled key={9} bsStyle={'success'}><i className="fa fa-check">9</i></Button>);
+              }
+              if (nine) {
+                  games.push(<Button disabled key={8} bsStyle={'success'}><i className="fa fa-check">8</i></Button>);
+              }
+          }
+        if (nine && eight) {
+            if (this.state.game == null) {
+                games.push(<Button onClick={this.onSelectGame} key={9} bsStyle={'default'}><i
+                    className="fa fa-times">9</i></Button>);
+                games.push(<Button onClick={this.onSelectGame} key={8} bsStyle={'default'}><i
+                    className="fa fa-times">8</i></Button>);
+            } else if (this.state.game == '9') {
+                games.push(
+                    <Button onClick={this.onSelectGame} key={9} bsStyle={'success'}>
+                        <i className="fa fa-check">9</i>
+                    </Button>
+                );
+                games.push(
+                    <Button onClick={this.onSelectGame} key={8} bsStyle={'default'}>
+                        <i className="fa fa-times">8</i>
+                    </Button>);
+            } else {
+                games.push(
+                    <Button onClick={this.onSelectGame} key={9} bsStyle={'default'}>
+                        <i className="fa fa-times">9</i>
+                    </Button>
+                );
+                games.push(
+                    <Button onClick={this.onSelectGame} key={8} bsStyle={'success'}>
+                        <i className="fa fa-check">8</i>
+                    </Button>
+                );
+            }
 
-        if (eight)
-            games.push(<Badge key={8}>8</Badge>);
+        } else if (eight) {
+            games.push(<Button disabled key={9} bsStyle={'success'}><i className="fa fa-check">9</i></Button>);
+        } else if (nine) {
+            games.push(<Button disabled key={8} bsStyle={'success'}><i className="fa fa-check">8</i></Button>);
+        }
 
         return games;
     },
