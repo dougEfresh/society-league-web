@@ -16,17 +16,20 @@ var Bootstrap = require('react-bootstrap')
     ,SplitButton = Bootstrap.SplitButton;
 
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
-var ChallengeListMixin = require('../ChallengeListMixin.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
-var RequestRow = require('./../RequestRow.jsx');
+var GroupRow = require('./GroupRow.jsx');
 
-var ChallengeNotifyList = React.createClass({
+var GroupList = React.createClass({
+    propTypes: {
+        challengeGroups:   ReactPropTypes.array.isRequired,
+        noSelect:  ReactPropTypes.bool.isRequired
+    },
     render: function() {
           var rows = [];
-          this.props.requests.forEach(function (p) {
+          this.props.challengeGroups.forEach(function (g) {
               rows.push
               (
-                  <RequestRow key={p.challenges[0].id} noSelect={true} challengeGroup={p}/>
+                  <GroupRow key={g.challenges[0].id} noSelect={this.props.noSelect} challengeGroup={g}/>
               );
           }.bind(this));
           return (
@@ -48,4 +51,4 @@ var ChallengeNotifyList = React.createClass({
       }
 });
 
-module.exports = ChallengeNotifyList;
+module.exports = GroupList;

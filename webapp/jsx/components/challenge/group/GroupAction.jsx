@@ -15,15 +15,15 @@ var Bootstrap = require('react-bootstrap')
     ,Badge = Bootstrap.Badge
     ,SplitButton = Bootstrap.SplitButton;
 
-var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
-var ChallengeConstants = require('../../constants/ChallengeConstants.jsx');
-var ChallengeActions = require('../../actions/ChallengeActions.jsx');
-var ChallengeStore = require('../../stores/ChallengeStore.jsx');
-var DataFactory = require('../../DataFactoryMixin.jsx');
-var RequestMixin = require('./RequestMixin.jsx');
+var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
+var ChallengeConstants = require('../../../constants/ChallengeConstants.jsx');
+var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
+var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
+var DataFactory = require('../../../DataFactoryMixin.jsx');
+var GroupMixin = require('./GroupMixin.jsx');
 
-var RequestAction = React.createClass({
-    mixins: [RequestMixin],
+var GroupAction = React.createClass({
+    mixins: [GroupMixin],
     sendStatus: function(s) {
         /*
         var status = {
@@ -63,7 +63,7 @@ var RequestAction = React.createClass({
         };
 
         var actions = null;
-        switch(this.props.request.status) {
+        switch(this.props.challengeGroup.status) {
             case ChallengeStatus.PENDING:
                 actions =
                     (<div>
@@ -101,4 +101,4 @@ var RequestAction = React.createClass({
     }
 });
 
-module.exports = RequestAction;
+module.exports = GroupAction;

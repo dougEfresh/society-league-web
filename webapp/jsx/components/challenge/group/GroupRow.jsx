@@ -15,19 +15,19 @@ var Bootstrap = require('react-bootstrap')
     ,Badge = Bootstrap.Badge
     ,SplitButton = Bootstrap.SplitButton;
 
-var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
-var ChallengeActions = require('../../actions/ChallengeActions.jsx');
-var ChallengeStore = require('../../stores/ChallengeStore.jsx');
-var DataFactory = require('../../DataFactoryMixin.jsx');
-var RequestAction = require('./RequestAction.jsx');
-var RequestGame = require('./RequestGame.jsx');
-var RequestSlot = require('./RequestSlot.jsx');
+var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
+var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
+var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
+var DataFactory = require('../../../DataFactoryMixin.jsx');
+var GroupAction = require('./GroupAction.jsx');
+var GroupGame = require('./GroupGame.jsx');
+var GroupSlot = require('./GroupSlot.jsx');
 
 function dateFormat(date) {
     return date.substr(5,10).replace('-','/');
 }
 
-var RequestRow = React.createClass({
+var GroupRow = React.createClass({
     mixins: [DataFactory],
     propTypes: {
         challengeGroup: ReactPropTypes.object.isRequired,
@@ -39,7 +39,7 @@ var RequestRow = React.createClass({
         }
         return this.props.challengeGroup.opponent.name;
     },
-    //<RequestGame request={this.props.challengeGroup} noSelect={this.props.noSelect} />
+    //<GroupGame request={this.props.challengeGroup} noSelect={this.props.noSelect} />
     //
     //
 
@@ -47,7 +47,7 @@ var RequestRow = React.createClass({
         return (
             <tr>
                 <td>
-                    <RequestAction request={this.props.challengeGroup} noSelect={this.props.noSelect} />
+                    <GroupAction challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
                 </td>
                 <td>
                     {dateFormat(this.props.challengeGroup.date)}
@@ -56,15 +56,14 @@ var RequestRow = React.createClass({
                     {this.getOpponent()}
                 </td>
                 <td>
-                    <RequestGame request={this.props.challengeGroup} noSelect={this.props.noSelect} />
+                    <GroupGame challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
                 </td>
                 <td>
-                    <RequestSlot request={this.props.challengeGroup} noSelect={this.props.noSelect} />
+                    <GroupSlot challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
                 </td>
             </tr>
         )
     }
 });
 
-
-module.exports = RequestRow;
+module.exports = GroupRow;
