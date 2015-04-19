@@ -1,30 +1,14 @@
 var React = require('react/addons');
 var GroupList = require('../group/GroupList.jsx');
-var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
-var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
-var DataFactory = require('../../../DataFactoryMixin.jsx');
+var GroupAppMixin = require('../group/GroupAppMixin.jsx');
+var ChallengeStatus  = require('../../../constants/ChallengeStatus.jsx');
 
 var ChallengePendingApp = React.createClass({
-    mixins: [DataFactory],
-    getInitialState: function() {
-        return {
-            challengeGroups: ChallengeStore.getChallenges(ChallengeStatus.PENDING)
-        }
-    },
-    componentWillMount: function() {
-        ChallengeStore.addChangeListener(this._onChange);
-        ChallengeStore.addRequestListener(this._onChange);
-    },
-    componentWillUnmount: function() {
-        ChallengeStore.removeRequestListener(this._onChange);
-        ChallengeStore.removeChangeListener(this._onChange);
-    },
-    componentDidMount: function() {
-        console.log('Pending  mounted');
-        this.setState({challengeGroups: ChallengeStore.getChallenges(ChallengeStatus.PENDING)});
-    },
-    _onChange: function() {
-        this.setState({challengeGroups: ChallengeStore.getChallenges(ChallengeStatus.PENDING)});
+    mixins: [GroupAppMixin],
+    getDefaultProps: function () {
+        return  {
+            type: ChallengeStatus.PENDING
+        };
     },
     render: function(){
         return (
@@ -36,3 +20,4 @@ var ChallengePendingApp = React.createClass({
 });
 
 module.exports = ChallengePendingApp;
+

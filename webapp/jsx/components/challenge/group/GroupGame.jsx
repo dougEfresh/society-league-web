@@ -1,5 +1,5 @@
 var React = require('react/addons');
-var GroupMixin = require('./GroupMixin.jsx');
+var GroupMixin = require('./GroupListMixin.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Panel = Bootstrap.Panel

@@ -140,6 +140,14 @@ var ChallengeActions = {
             userId: userId,
             challengeGroup: challengeGroup
         });
+    },
+
+    acceptChallenge: function(userId,challengeGroup) {
+        AppDispatcher.dispatch({
+            actionType: RequestConstants.ACCEPT,
+            userId: userId,
+            challengeGroup: challengeGroup
+        });
     }
 };
 

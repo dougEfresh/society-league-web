@@ -20,7 +20,7 @@ var ChallengeConstants = require('../../../constants/ChallengeConstants.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
-var GroupMixin = require('./GroupMixin.jsx');
+var GroupMixin = require('./GroupListMixin.jsx');
 
 var GroupAction = React.createClass({
     mixins: [GroupMixin],
@@ -41,7 +41,7 @@ var GroupAction = React.createClass({
         ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
     },
     accept: function() {
-        return this.sendStatus(ChallengeStatus.ACCEPTED);
+        ChallengeActions.acceptChallenge(this.getUserId(),this.props.challengeGroup);
     },
     disable: function() {
         return this.props.challengeGroup.selectedGame == null || this.props.challengeGroup.selectedSlot < 1;
@@ -54,7 +54,7 @@ var GroupAction = React.createClass({
             change:   null,
             cancel:   <Button bsSize='xsmall'  onClick={this.cancel} key={'cancel'}  bsStyle={'warning'} >Cancel</Button>,
             notify:   <Button bsSize='xsmall'  onClick={this.notify} key={'notify'}  bsStyle={'success'} >Notify</Button>,
-            calender: <Button disabled bsSize='xsmall'  key={'calendar'}  bsStyle={'success'} >Calendar</Button>
+            calender: null //<Button disabled bsSize='xsmall'  key={'calendar'}  bsStyle={'success'} >Calendar</Button>
         };
 
         var actions = null;

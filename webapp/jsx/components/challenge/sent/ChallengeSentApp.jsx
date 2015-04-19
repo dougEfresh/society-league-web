@@ -1,31 +1,19 @@
 var React = require('react/addons');
-var RequestList = require('../group/GroupList.jsx');
-var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
-var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
-var DataFactory = require('../../../DataFactoryMixin.jsx');
+var GroupList = require('../group/GroupList.jsx');
+var GroupAppMixin = require('../group/GroupAppMixin.jsx');
+var ChallengeStatus  = require('../../../constants/ChallengeStatus.jsx');
 
 var ChallengeSentApp = React.createClass({
-    mixins: [DataFactory],
-    getInitialState: function() {
-        return {
-            challengeGroups: ChallengeStore.getChallenges(ChallengeStatus.SENT)
-        }
-    },
-    componentWillMount: function() {
-        ChallengeStore.addChangeListener(this._onChange);
-        ChallengeStore.addRequestListener(this._onChange);
-    },
-    componentWillUnmount: function() {
-        ChallengeStore.removeRequestListener(this._onChange);
-        ChallengeStore.removeChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        this.setState({challengeGroups: ChallengeStore.getChallenges(ChallengeStatus.SENT)});
+    mixins: [GroupAppMixin],
+    getDefaultProps: function () {
+        return  {
+            type: ChallengeStatus.SENT
+        };
     },
     render: function(){
         return (
             <div>
-                <RequestList noSelect={true} challengeGroups={this.state.challengeGroups}/>
+                <GroupList noSelect={true} challengeGroups={this.state.challengeGroups}/>
             </div>
         )
     }

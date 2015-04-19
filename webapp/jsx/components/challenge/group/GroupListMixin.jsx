@@ -4,7 +4,7 @@ var ReactPropTypes = React.PropTypes;
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 var BallIcon = require('../../../BallMixin.jsx');
 
-var GroupMixin = {
+var GroupListMixin = {
     mixins: [DataFactory,BallIcon],
     propTypes: {
         challengeGroup:   ReactPropTypes.object.isRequired,
@@ -12,4 +12,4 @@ var GroupMixin = {
     }
 };
 
-module.exports = GroupMixin;
+module.exports = GroupListMixin;

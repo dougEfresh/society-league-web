@@ -6,6 +6,7 @@ var assign = require('object-assign');
 var UserStore = require('./UserStore.jsx');
 var CHANGE_EVENT = 'change';
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
+var ChallengeStore = require('../stores/ChallengeStore.jsx');
 
 var _challengeGroup = [];
 var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
@@ -21,17 +22,21 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         _challengeGroup = [];
         this.removeListener(CHANGE_EVENT, callback);
     },
-
+    get: function() {
+        return _challengeGroup;
+    } ,
     setChallengeGroups: function(challengeGroups) {
         _challengeGroup = challengeGroups;
     },
 
-    acceptChallenge: function(challengeGroup) {
-
+    acceptChallenge: function(userId,challengeGroup) {
+        console.log(JSON.stringify(challengeGroup));
     },
 
     _cancelOrNotifyChallenge: function(type,userId,challengeGroup) {
            //TODO Move this to lib
+        var originalStatus = challengeGroup.status;
+
         var request = {
             challenger: null,
             opponent: null,
@@ -44,7 +49,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         $.ajax({
             async: true,
             processData: false,
-            url: '/api/challenge/' + type + '/' + userId,
+            url: '/api/challenge/' + type.toLowerCase() + '/' + userId,
             contentType: 'application/json',
             dataType: 'json',
             data: JSON.stringify(request),
@@ -58,6 +63,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
             success: function (d) {
                 _challengeGroup = d;
                 ChallengeActions.setChallenges(d);
+                ChallengeGroupStore.setChallengeGroups(ChallengeStore.getChallenges(originalStatus));
                 ChallengeGroupStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -68,11 +74,11 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     },
 
    cancelChallenge: function(userId,challengeGroup) {
-        this._cancelOrNotifyChallenge('cancel',userId,challengeGroup);
+        this._cancelOrNotifyChallenge(ChallengeStatus.CANCELLED,userId,challengeGroup);
     },
 
     notifyChallenge: function(userId,challengeGroup) {
-        this._cancelOrNotifyChallenge('notify',userId,challengeGroup);
+        this._cancelOrNotifyChallenge(ChallengeStatus.NOTIFY,userId,challengeGroup);
     },
 
     modifyChallenge: function() {
@@ -81,27 +87,25 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
 
     selectChallengeGroupGame: function(challengeGroup,game) {
         var id =  challengeGroup.challenges[0].id;
-        for (var type in _challengeGroup) {
-            _challengeGroup[type].forEach(function(group) {
-                group.challenges.forEach(function(c) {
-                    if (c.id == id) {
-                        group.selectedGame = game;
-                    }
-                });
-            });
-        }
+        _challengeGroup.forEach(function(g) {
+            g.challenges.forEach(function(c) {
+                if (c.id == id) {
+                    g.selectedGame = game;
+                }
+            })
+        });
+
     },
 
-    selectChallengeGroupSlot: function(id,slot) {
-        for (var type in _challengeGroup) {
-            _challengeGroup[type].forEach(function(group) {
-                group.challenges.forEach(function(c) {
-                    if (c.id == id) {
-                        group.selectedSlot = slot;
-                    }
-                });
-            });
-        }
+    selectChallengeGroupSlot: function(challengeGroup,slot) {
+        var id =  challengeGroup.challenges[0].id;
+        _challengeGroup.forEach(function(g) {
+            g.challenges.forEach(function(c) {
+                if (c.id == id) {
+                    g.selectedSlot = slot;
+                }
+            })
+        });
     }
 });
 
@@ -127,7 +131,7 @@ AppDispatcher.register(function(action) {
              break;
 
          case ChallengeConstants.ACCEPT:
-             ChallengeGroupStore.notifyChallenge(action.userId,action.challengeGroup);
+             ChallengeGroupStore.acceptChallenge(action.userId,action.challengeGroup);
              break;
 
          default:

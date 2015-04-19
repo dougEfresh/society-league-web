@@ -5,7 +5,7 @@ var Bootstrap = require('react-bootstrap')
     ,Alert = Bootstrap.Alert
     ,Panel = Bootstrap.Panel;
 var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler;
+    ,RouteHandler = Router.RouteHandler;
 
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
@@ -21,7 +21,7 @@ var DataFactory = require('../../../DataFactoryMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
     mixins: [DataFactory],
-     componentWillMount: function() {
+    componentWillMount: function() {
         ChallengeStore.addRequestListener(this._onAdd);
         ChallengeStore.addChangeListener(this._onChange);
     },
