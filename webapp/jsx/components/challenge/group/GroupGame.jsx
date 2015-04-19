@@ -12,10 +12,15 @@ var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input
     ,Label = Bootstrap.Label;
 
+var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
+
 var GroupGame = React.createClass({
     mixins: [GroupMixin],
     onSelectGame: function() {
-
+        ChallengeActions.selectChallengeGroupGame(
+            this.props.challengeGroup,
+            this.refs.game.getValue()
+        );
     },
     renderNoSelect: function() {
         var games = [];
@@ -29,10 +34,11 @@ var GroupGame = React.createClass({
             return (<div>{this.getBall(this.props.challengeGroup.selectedGame)}</div>);
         }
         var games = [];
+        games.push(<option key={0} value={0}>{'choose'}</option>);
         this.props.challengeGroup.games.forEach(function(g) {
             games.push(<option key={g} value={g}>{this.getBall(g)}</option>);
         }.bind(this));
-        return (<Input onChange={this.onSelectGame} value={this.props.challengeGroup.selectedGame} type='select' >{games}</Input>);
+        return (<Input ref='game'onChange={this.onSelectGame} value={this.props.challengeGroup.selectedGame} type='select' >{games}</Input>);
     },
     render: function() {
         if (this.props.noSelect)

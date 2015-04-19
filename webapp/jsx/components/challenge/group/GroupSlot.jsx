@@ -11,11 +11,15 @@ var Bootstrap = require('react-bootstrap')
     ,MenuItem = Bootstrap.MenuItem
     ,Input = Bootstrap.Input
     ,Label = Bootstrap.Label;
+var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 
 var GroupSlot = React.createClass({
     mixins: [GroupMixin],
     onSelectSlot: function() {
-
+        ChallengeActions.selectChallengeGroupSlot(
+            this.props.challengeGroup.challenges,
+            this.refs.slot.getValue()
+        );
     },
     renderNoSelect: function() {
         var slots = [];
@@ -33,7 +37,7 @@ var GroupSlot = React.createClass({
         this.props.challengeGroup.slots.forEach(function (s) {
             slots.push(<option key={s.id} value={s.id}>{s.time}</option>);
         }.bind(this));
-        return (<Input onChange={this.onSelectSlot} value={this.props.challengeGroup.selectedSlot} type={'select'}> {slots}</Input>);
+        return (<Input ref='slot' onChange={this.onSelectSlot} value={this.props.challengeGroup.selectedSlot} type={'select'}> {slots}</Input>);
     },
     render: function() {
         if (this.props.noSelect)

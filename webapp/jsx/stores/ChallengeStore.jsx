@@ -317,6 +317,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     },
 
     changeSlotStatus: function(slot) {
+        var id =  challengeGroup.challenges[0].id;
         _request.slots.forEach(function(s) {
             if (s.id == slot.id) {
                 s.selected = slot.selected;
@@ -324,7 +325,8 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         });
     },
 
-    selectRequestGame: function(id,game) {
+    selectChallengeGroupGame: function(challengeGroup,game) {
+        var id =  challengeGroup.challenges[0].id;
         for (var type in _challenges) {
             _challenges[type].forEach(function(group) {
                 group.challenges.forEach(function(c) {
@@ -336,7 +338,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         }
     },
 
-    selectRequestSlot: function(id,slot) {
+    selectChallengeGroupSlot: function(id,slot) {
         for (var type in _challenges) {
             _challenges[type].forEach(function(group) {
                 group.challenges.forEach(function(c) {
@@ -395,12 +397,12 @@ AppDispatcher.register(function(action) {
              break;
 
          case ChallengeConstants.SELECT_REQUEST_GAME:
-             ChallengeStore.selectRequestGame(action.id,action.game);
+             ChallengeStore.selectChallengeGroupGame(action.challengeGroup,action.game);
              ChallengeStore.emitChange();
              break;
 
           case ChallengeConstants.SELECT_REQUEST_SLOT:
-              ChallengeStore.selectRequestSlot(action.id,action.slot);
+              ChallengeStore.selectChallengeGroupSlot(action.challengeGroup,action.slot);
               ChallengeStore.emitChange();
              break;
 

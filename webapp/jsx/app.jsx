@@ -11,7 +11,7 @@ var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
 
 var ChallengeRequestApp = require('./components/challenge/request/ChallengeRequestApp.jsx');
 var ChallengeNotifyApp = require('./components/challenge/notify/ChallengeNotifyApp.jsx');
-var ChallengeApprovalApp = require('./components/challenge/approvals/ChallengeApprovalApp.jsx');
+var ChallengeApprovalApp = require('./components/challenge/pending/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('./components/challenge/approved/ChallengeApprovedApp.jsx');
 var ChallengeSentApp = require('./components/challenge/sent/ChallengeSentApp.jsx');
 

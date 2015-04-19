@@ -23,6 +23,7 @@ var GroupAction = require('./GroupAction.jsx');
 var GroupGame = require('./GroupGame.jsx');
 var GroupSlot = require('./GroupSlot.jsx');
 
+
 function dateFormat(date) {
     return date.substr(5,10).replace('-','/');
 }
@@ -35,7 +36,7 @@ var GroupRow = React.createClass({
     },
     getOpponent: function() {
         if (this.getUserId() == this.props.challengeGroup.opponent.id) {
-            return this.props.challengeGroups.challenger.name;
+            return this.props.challengeGroup.challenger.name;
         }
         return this.props.challengeGroup.opponent.name;
     },

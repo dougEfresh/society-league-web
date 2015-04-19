@@ -14,7 +14,7 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler;
+    ,RouteHandler = Router.RouteHandler;
 
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
@@ -111,17 +111,16 @@ var ChallengeApp = React.createClass({
                     <RouteHandler />
                 </div>
             );
-        } else {
-
-            return (
-                <div>
-                    <Nav bsStyle='pills' >
-                        {tabs}
-                    </Nav>
-                    <RouteHandler />
-                </div>
-            )
         }
+
+        return (
+            <div>
+                <Nav bsStyle='pills' >
+                    {tabs}
+                    </Nav>
+                <RouteHandler />
+            </div>
+        )
     }
 });
 

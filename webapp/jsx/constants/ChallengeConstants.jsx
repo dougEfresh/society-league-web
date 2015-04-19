@@ -17,5 +17,6 @@ module.exports = keyMirror({
   SELECT_REQUEST_GAME: null,
   SELECT_REQUEST_SLOT: null,
   CANCEL:null,
-  NOTIFY:null
+  NOTIFY:null,
+  ACCEPT: null
 });
