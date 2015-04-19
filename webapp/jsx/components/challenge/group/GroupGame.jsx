@@ -35,7 +35,7 @@ var GroupGame = React.createClass({
         return (<Input onChange={this.onSelectGame} value={this.props.challengeGroup.selectedGame} type='select' >{games}</Input>);
     },
     render: function() {
-        if (this.noSelect)
+        if (this.props.noSelect)
             return (<div>{this.renderNoSelect()}</div>);
 
         return (<div>{this.renderSelectOptions()}</div>);
