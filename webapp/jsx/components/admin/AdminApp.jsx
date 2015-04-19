@@ -1,9 +1,9 @@
 var React = require('react/addons');
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
-var DataFactory = require('./../DataFactoryMixin.jsx');
-var UserStore = require('../stores/UserStore.jsx');
-var UserActions = require('../actions/UserAction.jsx');
+var DataFactory = require('./../../DataFactoryMixin.jsx');
+var UserStore = require('../../stores/UserStore.jsx');
+var UserActions = require('../../actions/UserAction.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Badge = Bootstrap.Badge
@@ -19,16 +19,12 @@ var Bootstrap = require('react-bootstrap')
 
 var AdminApp = React.createClass({
     mixins: [DataFactory],
-
     getInitialState: function() {
         return {
             user: UserStore.get(),
             users: UserStore.getAll(),
             switch : false
         }
-    },
-    componentDidMount: function() {
-        UserStore.getAllFromServer();
     },
     componentWillMount: function() {
         UserStore.addChangeListener(this._onChange);
@@ -38,12 +34,8 @@ var AdminApp = React.createClass({
     },
     _onChange: function() {
         var oldUser = this.state.user;
-        this.setState({
-                user: UserStore.get(),
-                users: UserStore.getAll()
-            });
         if (oldUser.id !== 0 && oldUser.id !== UserStore.get().id) {
-            this.context.router.transitionTo('/',{userId: UserStore.get()}, null);
+            this.context.router.transitionTo('request',{userId: UserStore.get().id}, null);
         }
     },
     onClick: function(e) {

@@ -6,7 +6,7 @@ var ChallengeApprovalApp = React.createClass({
     render: function(){
         return (
             <div>
-                <ChallengeApprovalList type={ChallengeStatus.PENDING} />
+                Needs Approval
             </div>
         )
     }

@@ -48,7 +48,7 @@ var ChallengeApp = React.createClass({
     _onChange: function() {
         var requests = ChallengeStore.getAllChallenges();
         this.setState({requests: ChallengeStore.getAllChallenges()});
-        //var types = [ChallengeStatus.NEEDS_NOTIFY,ChallengeStatus.SENT,ChallengeStatus.PENDING,ChallengeStatus.ACCEPTED];
+        //var types = [ChallengeStatus.NOTIFY,ChallengeStatus.SENT,ChallengeStatus.PENDING,ChallengeStatus.ACCEPTED];
         for (var t in ChallengeStatus) {
 
             if (t == ChallengeStatus.REQUEST) {
@@ -74,7 +74,7 @@ var ChallengeApp = React.createClass({
         var r = this.state.requests[type];
 
         switch (type) {
-            case ChallengeStatus.NEEDS_NOTIFY:
+            case ChallengeStatus.NOTIFY:
                 return (<div>Notify<span></span><Badge>{r.length}</Badge></div>);
             case ChallengeStatus.PENDING:
                 return (<div>Approval Required<span></span><Badge>{r.length}</Badge></div>);
@@ -91,7 +91,7 @@ var ChallengeApp = React.createClass({
     },
     getApp: function(type) {
         switch(type) {
-            case ChallengeStatus.NEEDS_NOTIFY:
+            case ChallengeStatus.NOTIFY:
                 return <ChallengeNotifyApp requests={this.state.requests} />;
             case ChallengeStatus.SENT:
                 return <ChallengeSentApp requests={this.state.requests} />;
@@ -121,7 +121,7 @@ var ChallengeApp = React.createClass({
             </NavItemLink>
                 );
 
-        this.genTab(ChallengeStatus.NEEDS_NOTIFY,tabs);
+        this.genTab(ChallengeStatus.NOTIFY,tabs);
         this.genTab(ChallengeStatus.PENDING,tabs);
         this.genTab(ChallengeStatus.ACCEPTED,tabs);
         this.genTab(ChallengeStatus.SENT,tabs);

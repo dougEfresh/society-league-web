@@ -6,7 +6,7 @@ var ChallengeSentApp = React.createClass({
     render: function(){
         return (
             <div>
-                <ChallengeSentList type={ChallengeStatus.SENT}/>
+                Sent
             </div>
         )
     }

@@ -79,6 +79,32 @@ var ChallengeActions = {
         });
     },
 
+    /**
+     * select the game type for Requests
+     * @param id
+     * @param game
+     */
+    selectRequestGame: function(id,game) {
+        AppDispatcher.dispatch({
+            actionType: RequestConstants.SELECT_REQUEST_GAME,
+            id: id,
+            game: game
+        });
+    },
+
+    /**
+     * select the slot for a Requests
+     * @param id
+     * @param game
+     */
+    selectRequestSlot: function(id,slot) {
+        AppDispatcher.dispatch({
+            actionType: RequestConstants.SELECT_REQUEST_SLOT,
+            id: id,
+            slot: slot
+        });
+    },
+
     changeSlotState: function(slot){
          AppDispatcher.dispatch({
             actionType: RequestConstants.SLOT_CHANGE,

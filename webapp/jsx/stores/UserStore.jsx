@@ -55,6 +55,16 @@ var UserStore = assign({}, EventEmitter.prototype, {
         _viewUser = user;
     },
 
+    getName: function(userId) {
+        var user = {id: 0, name: 'unknown'};
+        _users.forEach(function(u) {
+            if (u.id == userId) {
+                user = u;
+            }
+        });
+        return user.name;
+    },
+
     set: function(user) {
         console.log('Setting userId : ' + JSON.stringify(user));
         _user = user;

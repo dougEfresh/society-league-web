@@ -8,10 +8,14 @@ var Bootstrap = require('react-bootstrap')
     ,MenuItem = Bootstrap.MenuItem
     ,Button = Bootstrap.Button
     ,SplitButton = Bootstrap.SplitButton;
+var FontAwesome = require('../../../FontAwesome.jsx')
+    ,Icon = FontAwesome.Icon;
+var BallIcon = require('../../../BallMixin.jsx');
 
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 
 var ChallengeRequestGame = React.createClass({
+    mixins: [BallIcon],
     propTypes: {
         game: ReactPropTypes.object.isRequired
     },
@@ -62,12 +66,14 @@ var ChallengeRequestGame = React.createClass({
             return null;
         }
 
-        var eight = g.eight.selected ? (<i className="fa fa-check">8</i>) :  (<i className="fa fa-times">8</i>);
-        var nine = g.nine.selected ? (<i className="fa fa-check">9</i>) :  (<i className="fa fa-times">9</i>);
+        var eight = this.getEightButton(g.eight.selected); //g.eight.selected ? (<i className="fa fa-check">8</i>) :  (<i className="fa fa-times">8</i>);
+        var nine = this.getNineButton(g.nine.selected); //g.nine.selected ? (<i className="fa fa-check">9</i>) :  (<i className="fa fa-times">9</i>);
+        //<Button bsStyle={g.eight.selected ? 'success' : 'default'}  onClick={this.onSelect}>{eight}</Button>
+        //<Button bsStyle={g.nine.selected  ? 'success' : 'default'}  onClick={this.onSelect}>{nine}</Button>
         return (
             <div >
-                <Button bsStyle={g.eight.selected ? 'success' : 'default'}  onClick={this.onSelect}>{eight}</Button>
-                <Button bsStyle={g.nine.selected  ? 'success' : 'default'}  onClick={this.onSelect}>{nine}</Button>
+                {eight}
+                {nine}
             </div>
         );
     }

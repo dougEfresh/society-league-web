@@ -32,7 +32,7 @@ function defaultRequest() {
 
 var _challenges = {};
 _challenges[ChallengeStatus.PENDING] = [];
-_challenges[ChallengeStatus.NEEDS_NOTIFY] = [];
+_challenges[ChallengeStatus.NOTIFY] = [];
 _challenges[ChallengeStatus.CANCELLED] = [];
 _challenges[ChallengeStatus.SENT] = [];
 _challenges[ChallengeStatus.ACCEPTED] = [];
@@ -187,6 +187,14 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         return _challenges;
     },
 
+    getChallenges: function(type) {
+        return _challenges[type];
+    },
+
+    /**
+     *
+     * @param userId
+     */
     setChallenges: function(userId) {
         console.log("Getting data from " + window.location.origin + '/api/challenge/' + userId);
          $.ajax({
@@ -198,7 +206,20 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
                 }.bind(this)
             },
             success: function (d) {
+                // Set the selected game and slot to a default value
                 _challenges = d;
+                for (var type in _challenges) {
+                    _challenges[type].forEach(function(group) {
+                        var game = null;
+                        var slot = 0;
+                        if (group.challenges.length == 1) {
+                            game = group.games[0];
+                            slot = group.slots[0].id;
+                        }
+                        group.selectedGame = game;
+                        group.selectedSlot = slot;
+                    });
+                }
                 ChallengeStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -243,6 +264,30 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
                 s.selected = slot.selected;
             }
         });
+    },
+
+    selectRequestGame: function(id,game) {
+        for (var type in _challenges) {
+            _challenges[type].forEach(function(group) {
+                group.challenges.forEach(function(c) {
+                    if (c.id == id) {
+                        group.selectedGame = game;
+                    }
+                });
+            });
+        }
+    },
+
+    selectRequestSlot: function(id,slot) {
+        for (var type in _challenges) {
+            _challenges[type].forEach(function(group) {
+                group.challenges.forEach(function(c) {
+                    if (c.id == id) {
+                        group.selectedSlot = slot;
+                    }
+                });
+            });
+        }
     }
 });
 
@@ -289,6 +334,16 @@ AppDispatcher.register(function(action) {
 
          case ChallengeConstants.CHALLENGES:
              ChallengeStore.setChallenges(action.userId);
+             break;
+
+         case ChallengeConstants.SELECT_REQUEST_GAME:
+             ChallengeStore.selectRequestGame(action.id,action.game);
+             ChallengeStore.emitChange();
+             break;
+
+          case ChallengeConstants.SELECT_REQUEST_SLOT:
+              ChallengeStore.selectRequestSlot(action.id,action.slot);
+              ChallengeStore.emitChange();
              break;
 
          default:

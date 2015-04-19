@@ -13,7 +13,7 @@ var ChallengeAppMixin = {
     },
     getTitle: function() {
         switch(this.props.type) {
-            case ChallengeStatus.NEEDS_NOTIFY:
+            case ChallengeStatus.NOTIFY:
                 return (<div>Needs Notification<span></span><Badge>{this.getRequests().length}</Badge></div>);
             case ChallengeStatus.PENDING:
                 return (<div>Approval Required<span></span><Badge>{this.getRequests().length}</Badge></div>);

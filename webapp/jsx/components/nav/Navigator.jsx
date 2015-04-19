@@ -17,11 +17,11 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler;
 
-var ChallengeStore = require('../stores/ChallengeStore.jsx');
-var UserStore = require('../stores/UserStore.jsx');
-var ChallengeActions = require('../actions/ChallengeActions.jsx');
-var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
-var DataFactory = require('./../DataFactoryMixin.jsx');
+var ChallengeStore = require('../../stores/ChallengeStore.jsx');
+var UserStore = require('../../stores/UserStore.jsx');
+var ChallengeActions = require('../../actions/ChallengeActions.jsx');
+var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
+var DataFactory = require('./../../DataFactoryMixin.jsx');
 
 var Home = React.createClass({
     contextTypes: {
@@ -48,13 +48,14 @@ var Navigator = React.createClass({
     },
     componentDidMount: function() {
         ChallengeActions.setChallenges(this.getUserId());
-        //UserStore.getFromServer();
+        UserStore.getAllFromServer();
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
         ChallengeStore.removeRequestListener(this._onChallengeChange);
         UserStore.removeChangeListener(this._onUserChange);
     },
+
     _onChallengeChange: function() {
         this.setState(
             {challenges: ChallengeStore.getAllChallenges()}
@@ -66,17 +67,20 @@ var Navigator = React.createClass({
         );
     },
     //<MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
-    //<NavItemLink to='admin' params={{userId: this.getUserId()}} eventKey={"admin"}>Admin</NavItemLink>
+    //
     render: function() {
         return (
             <div>
                 <Navbar left inverse brand="Society" toggleNavKey={'0'}>
+                     <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
                             <ChallengeNav challenges={this.state.challenges}/>
-                            <DropdownButton eventKey={"user"} title={UserStore.get().name} navItem={true}>
+                            <NavItemLink to='admin' params={{userId: this.getUserId()}} eventKey={"admin"}>Admin</NavItemLink>
+                            <DropdownButton eventKey={"user"} title={UserStore.getName(this.getUserId())} navItem={true}>
                                 <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>
                         </Nav>
+                     </CollapsableNav>
                 </Navbar>
                 <RouteHandler />
             </div>
@@ -86,30 +90,17 @@ var Navigator = React.createClass({
 
 var ChallengeNav = React.createClass({
     mixins: [DataFactory],
-    getInitialState: function() {
-        return {
-            counter: 0
-        }
-    },
-    componentDidMount: function() {
-        this.update(this.props);
-     },
-    componentWillReceiveProps: function (nextProps) {
-        this.update(nextProps);
-    },
-    update: function(props) {
-        this.setState({
-            counter: props.challenges[ChallengeStatus.SENT].length
-            +
-            props.challenges[ChallengeStatus.PENDING].length
-            +
-            props.challenges[ChallengeStatus.NEEDS_NOTIFY].length
-            +
-            props.challenges[ChallengeStatus.ACCEPTED].length
-        });
-    },
     render: function() {
-        var indicator = (<span>Challenges <Badge>{this.state.counter}</Badge></span>);
+        var counter =  this.props.challenges[ChallengeStatus.SENT].length
+            +
+            this.props.challenges[ChallengeStatus.PENDING].length
+            +
+            this.props.challenges[ChallengeStatus.NOTIFY].length
+            +
+            this.props.challenges[ChallengeStatus.ACCEPTED].length;
+
+        var indicator = (<span>Challenges <Badge>{counter}</Badge></span>);
+
         return (
             <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} eventKey={"challenge"} >{indicator}</NavItemLink>
         );

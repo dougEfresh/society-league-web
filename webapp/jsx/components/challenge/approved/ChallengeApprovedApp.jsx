@@ -6,7 +6,7 @@ var ChallengeAcceptedApp = React.createClass({
     render: function(){
         return (
             <div>
-                <ChallengeAcceptedList type={ChallengeStatus.ACCEPTED}/>
+                Approved
             </div>
         )
     }
