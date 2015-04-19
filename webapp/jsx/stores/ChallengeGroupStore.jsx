@@ -29,30 +29,16 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         _challengeGroup = challengeGroups;
     },
 
-    acceptChallenge: function(userId,challengeGroup) {
-        console.log(JSON.stringify(challengeGroup));
-    },
-
-    _cancelOrNotifyChallenge: function(type,userId,challengeGroup) {
-           //TODO Move this to lib
-        var originalStatus = challengeGroup.status;
-
-        var request = {
-            challenger: null,
-            opponent: null,
-            challenges: []
-        };
-        challengeGroup.challenges.forEach(function(c) {
-            request.challenges.push({id: c.id});
-        });
-
-        $.ajax({
+    _sendRequest: function(url,data,status) {
+        console.log('Sending to ' + url);
+        console.log('Sending  data: ' + JSON.stringify(data));
+         $.ajax({
             async: true,
             processData: false,
-            url: '/api/challenge/' + type.toLowerCase() + '/' + userId,
+            url: url,
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify(request),
+            data: JSON.stringify(data),
             method: 'post',
             statusCode: {
                 401: function () {
@@ -61,16 +47,46 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
                 }
             },
             success: function (d) {
-                _challengeGroup = d;
                 ChallengeActions.setChallenges(d);
-                ChallengeGroupStore.setChallengeGroups(ChallengeStore.getChallenges(originalStatus));
+                ChallengeGroupStore.setChallengeGroups(ChallengeStore.getChallenges(status));
                 ChallengeGroupStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
-                console.error('cancel', status, err.toString());
+                console.error(url, status, err.toString());
                 //this.redirect('error');
             }.bind(this)
         });
+    },
+
+    acceptChallenge: function(userId,challengeGroup) {
+        var originalStatus = challengeGroup.status;
+        var challenge = {id : 0};
+        challengeGroup.challenges.forEach(function(c) {
+            if (c.slot.id == challengeGroup.selectedSlot &&
+                    c.opponent.division.type == challengeGroup.selectedGame) {
+                challenge = {id: c.id};
+            }
+        });
+        if (challenge.id == 0) {
+            console.error('!!Could not find Challenge!!');
+            return;
+        }
+
+        this._sendRequest('/api/challenge/accepted/' + userId,challenge,originalStatus);
+    },
+
+    _cancelOrNotifyChallenge: function(type,userId,challengeGroup) {
+        //TODO Move this to lib
+        var originalStatus = challengeGroup.status;
+        var request = {
+            challenger: null,
+            opponent: null,
+            challenges: []
+        };
+        challengeGroup.challenges.forEach(function(c) {
+            request.challenges.push({id: c.id});
+        });
+        this._sendRequest('/api/challenge/' + type.toLowerCase() + '/' + userId,request,originalStatus);
     },
 
    cancelChallenge: function(userId,challengeGroup) {
