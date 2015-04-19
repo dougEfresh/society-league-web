@@ -8,7 +8,8 @@ var CHANGE_EVENT = 'change';
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
 
-var _challengeGroup = [];
+var _type = null; //ChallengeStatus tytpe
+
 var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
 
     emitChange: function() {
@@ -17,18 +18,12 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
-
     removeChangeListener: function(callback) {
-        _challengeGroup = [];
         this.removeListener(CHANGE_EVENT, callback);
     },
-    get: function() {
-        return _challengeGroup;
-    } ,
-    setChallengeGroups: function(challengeGroups) {
-        _challengeGroup = challengeGroups;
+    setType: function(type) {
+        _type = type;
     },
-
     _sendRequest: function(url,data,status) {
         console.log('Sending to ' + url);
         console.log('Sending  data: ' + JSON.stringify(data));
@@ -89,7 +84,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         this._sendRequest('/api/challenge/' + type.toLowerCase() + '/' + userId,request,originalStatus);
     },
 
-   cancelChallenge: function(userId,challengeGroup) {
+    cancelChallenge: function(userId,challengeGroup) {
         this._cancelOrNotifyChallenge(ChallengeStatus.CANCELLED,userId,challengeGroup);
     },
 
@@ -100,10 +95,9 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     modifyChallenge: function() {
 
     },
-
     selectChallengeGroupGame: function(challengeGroup,game) {
         var id =  challengeGroup.challenges[0].id;
-        _challengeGroup.forEach(function(g) {
+        ChallengeStore.getChallenges(_type).forEach(function(g) {
             g.challenges.forEach(function(c) {
                 if (c.id == id) {
                     g.selectedGame = game;
@@ -115,13 +109,14 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
 
     selectChallengeGroupSlot: function(challengeGroup,slot) {
         var id =  challengeGroup.challenges[0].id;
-        _challengeGroup.forEach(function(g) {
+        ChallengeStore.getChallenges(_type).forEach(function(g) {
             g.challenges.forEach(function(c) {
                 if (c.id == id) {
                     g.selectedSlot = slot;
                 }
             })
         });
+        debugger;
     }
 });
 
