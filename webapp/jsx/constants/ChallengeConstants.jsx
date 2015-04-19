@@ -15,5 +15,7 @@ module.exports = keyMirror({
   EIGHT_BALL_CHALLENGE: null,
   NINE_BALL_CHALLENGE: null,
   SELECT_REQUEST_GAME: null,
-  SELECT_REQUEST_SLOT: null
+  SELECT_REQUEST_SLOT: null,
+  CANCEL:null,
+  NOTIFY:null
 });

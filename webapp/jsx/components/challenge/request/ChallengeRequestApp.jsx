@@ -8,6 +8,7 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler;
 
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
+var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var UserStore = require('../../../stores/UserStore.jsx');
 
@@ -20,6 +21,22 @@ var DataFactory = require('../../../DataFactoryMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
     mixins: [DataFactory],
+     componentWillMount: function() {
+        ChallengeStore.addRequestListener(this._onAdd);
+        ChallengeStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        ChallengeStore.removeRequestListener(this._onAdd);
+        ChallengeStore.removeChangeListener(this._onChange);
+    },
+    _onAdd: function() {
+        this.context.router.transitionTo(ChallengeStatus.NOTIFY.toLowerCase(),{userId: this.getUserId()},null);
+    },
+    _onChange: function() {
+        this.setState({
+            challenge : ChallengeStore.get()
+        })
+    },
     getInitialState: function() {
         return {
             challenge : ChallengeStore.get()
@@ -63,7 +80,6 @@ var ChallengeRequestApp = React.createClass({
             eight: c.game.eight.selected,
             slots: slots
         };
-        this.setState({submitted : true});
         ChallengeActions.request(request);
         console.log(JSON.stringify(request));
     },

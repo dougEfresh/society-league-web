@@ -19,6 +19,10 @@ var ChallengeNotifyApp = React.createClass({
         ChallengeStore.removeRequestListener(this._onChange);
         ChallengeStore.removeChangeListener(this._onChange);
     },
+    componentDidMount: function() {
+      console.log('Notify mounted');
+        this.setState({challengeGroups: ChallengeStore.getChallenges(ChallengeStatus.NOTIFY)});
+    },
     _onChange: function() {
         this.setState({challengeGroups: ChallengeStore.getChallenges(ChallengeStatus.NOTIFY)});
     },

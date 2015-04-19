@@ -117,6 +117,22 @@ var ChallengeActions = {
             actionType: RequestConstants.CHALLENGES,
             userId: userId
          });
+    },
+
+    notifyChallenge: function(userId,challengeGroup) {
+        AppDispatcher.dispatch({
+            actionType: RequestConstants.NOTIFY,
+            userId: userId,
+            challengeGroup: challengeGroup
+        });
+    },
+
+    cancelChallenge: function(userId,challengeGroup) {
+        AppDispatcher.dispatch({
+            actionType: RequestConstants.CANCEL,
+            userId: userId,
+            challengeGroup: challengeGroup
+        });
     }
 };
 

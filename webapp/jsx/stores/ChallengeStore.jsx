@@ -77,7 +77,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-    create: function(request) {
+    newChallenge: function(request) {
         //TODO Move this to lib
         //TODO ADD UserId to URL
         $.ajax({
@@ -230,8 +230,66 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         });
     },
 
+    acceptChallenge: function(challengeGroup) {
+
+    },
+    _cancelOrNotifyChallenge: function(type,userId,challengeGroup) {
+           //TODO Move this to lib
+        var request = {
+            challenger: null,
+            opponent: null,
+            challenges: []
+        };
+        challengeGroup.challenges.forEach(function(c) {
+            request.challenges.push({id: c.id});
+        });
+
+        $.ajax({
+            async: true,
+            processData: false,
+            url: '/api/challenge/' + type + '/' + userId,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(request),
+            method: 'post',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                    //this.redirect('login');
+                }
+            },
+            success: function (d) {
+                _challenges = d;
+                ChallengeStore.emitChange();
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error('cancel', status, err.toString());
+                //this.redirect('error');
+            }.bind(this)
+        });
+    },
+    cancelChallenge: function(userId,challengeGroup) {
+        this._cancelOrNotifyChallenge('cancel',userId,challengeGroup);
+    },
+
+    notifyChallenge: function(userId,challengeGroup) {
+         //TODO Move this to lib
+        this._cancelOrNotifyChallenge('notify',userId,challengeGroup);
+    },
+
+    modifyChallenge: function() {
+
+    },
     changeStatus: function(status) {
         console.log('Sending ' + JSON.stringify(status));
+        var challengeGroup = status.group;
+        switch(challengeGroup.status){
+            case ChallengeStatus.NOTIFY:
+
+                break;
+            default:
+
+        }
         //TODO Move this to lib
         $.ajax({
             async: true,
@@ -320,7 +378,7 @@ AppDispatcher.register(function(action) {
              break;
 
          case ChallengeConstants.CREATE:
-             ChallengeStore.create(action.request);
+             ChallengeStore.newChallenge(action.request);
              break;
 
          case ChallengeConstants.CHANGE_STATUS:
@@ -345,6 +403,15 @@ AppDispatcher.register(function(action) {
               ChallengeStore.selectRequestSlot(action.id,action.slot);
               ChallengeStore.emitChange();
              break;
+
+         case ChallengeConstants.CANCEL:
+             ChallengeStore.cancelChallenge(action.userId,action.challengeGroup);
+             break;
+
+         case ChallengeConstants.NOTIFY:
+             ChallengeStore.notifyChallenge(action.userId,action.challengeGroup);
+             break;
+
 
          default:
      }

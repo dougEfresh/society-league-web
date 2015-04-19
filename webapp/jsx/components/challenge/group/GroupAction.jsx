@@ -25,35 +25,30 @@ var GroupMixin = require('./GroupMixin.jsx');
 var GroupAction = React.createClass({
     mixins: [GroupMixin],
     sendStatus: function(s) {
-        /*
+
         var status = {
             userId: this.getUserId(),
             status : s,
-            challenger: {id: 0},
-            opponent:  {id: 0},
-            challenges: []
+            group: this.props.challengeGroup
         };
-        status.challenger.id = this.props.challenges[0].challenger.id;
-        status.challenger.id = this.props.challenges[0].opponent.id;
-        this.props.challenges.forEach(function(c) {
-            status.challenges.push({id: c.id});
-        });
         ChallengeActions.status(status);
-        console.log('Status: ' + JSON.stringify(status));
-        */
+
+    },
+    notify: function(){
+        ChallengeActions.notifyChallenge(this.getUserId(),this.props.challengeGroup);
     },
     cancel: function() {
-        return this.sendStatus(ChallengeStatus.CANCELLED);
-    },
-    notify: function() {
-        return this.sendStatus(ChallengeStatus.PENDING);
+        ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
     },
     accept: function() {
         return this.sendStatus(ChallengeStatus.ACCEPTED);
     },
+    disable: function() {
+        return this.props.challengeGroup.selectedGame == null || this.props.challengeGroup.selectedSlot < 1;
+    },
     render: function() {
         var buttons = {
-            accept:   <Button bsSize='xsmall'  disabled={this.props.disabled}  onClick={this.accept} key={'accept'} bsStyle={this.props.disabled ? 'danger' : 'success'} >Accept</Button>,
+            accept:   <Button bsSize='xsmall'  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'danger' : 'success'} >Accept</Button>,
             deny:     <Button bsSize='xsmall'  onClick={this.cancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,

@@ -21,23 +21,12 @@ var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 
-var ChallengeApprovalApp = require('./approvals/ChallengeApprovalApp.jsx');
-var ChallengeAcceptedApp = require('./approved/ChallengeApprovedApp.jsx');
-var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
-var ChallengeNotifyApp = require('./notify/ChallengeNotifyApp.jsx');
-
 var DataFactory = require('../../DataFactoryMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 
 var ChallengeApp = React.createClass({
     mixins: [DataFactory],
-    getInitialState: function() {
-        return {
-            requests: ChallengeStore.getAllChallenges(),
-            added: false
-        }
-    },
-    componentDidMount: function() {
+    componentWillMount: function() {
         ChallengeStore.addRequestListener(this._onAdd);
         ChallengeStore.addChangeListener(this._onChange);
     },
@@ -45,12 +34,13 @@ var ChallengeApp = React.createClass({
         ChallengeStore.removeRequestListener(this._onAdd);
         ChallengeStore.removeChangeListener(this._onChange);
     },
+    _onAdd: function() {
+        this.forceUpdate();
+    },
     _onChange: function() {
         var requests = ChallengeStore.getAllChallenges();
-        this.setState({requests: ChallengeStore.getAllChallenges()});
         //var types = [ChallengeStatus.NOTIFY,ChallengeStatus.SENT,ChallengeStatus.PENDING,ChallengeStatus.ACCEPTED];
         for (var t in ChallengeStatus) {
-
             if (t == ChallengeStatus.REQUEST) {
                 return;
             }
@@ -63,15 +53,13 @@ var ChallengeApp = React.createClass({
                     return;
                 }
             }
-
         }
-    },
-    _onAdd: function() {
-        this.setState({requests: ChallengeStore.getAllChallenges()});
-        this.context.router.transitionTo('needs_notify',{userId: this.getUserId()},null);
+        this.forceUpdate();
     },
     getTitle: function(type) {
-        var r = this.state.requests[type];
+        var r = ChallengeStore.getAllChallenges()[type];
+        if (r == null || r == undefined)
+            return null;
 
         switch (type) {
             case ChallengeStatus.NOTIFY:
@@ -87,21 +75,7 @@ var ChallengeApp = React.createClass({
         }
     },
     shouldRender: function(type) {
-        return this.state.requests[type].length > 0;
-    },
-    getApp: function(type) {
-        switch(type) {
-            case ChallengeStatus.NOTIFY:
-                return <ChallengeNotifyApp requests={this.state.requests} />;
-            case ChallengeStatus.SENT:
-                return <ChallengeSentApp requests={this.state.requests} />;
-            case ChallengeStatus.ACCEPTED:
-                return <ChallengeAcceptedApp requests={this.state.requests} />;
-            case ChallengeStatus.PENDING:
-                return <ChallengeApprovalApp requests={this.state.requests} />;
-            default:
-                return null;
-        }
+        return ChallengeStore.getChallenges(type).length > 0;
     },
     genTab: function(type,tabs) {
         if (this.shouldRender(type)) {
@@ -117,14 +91,16 @@ var ChallengeApp = React.createClass({
 
         tabs.push(
             <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} key={ChallengeStatus.REQUEST} eventKey={ChallengeStatus.REQUEST} >
-                {this.getTitle('Request')}
+                {'Request'}
             </NavItemLink>
-                );
+        );
 
         this.genTab(ChallengeStatus.NOTIFY,tabs);
         this.genTab(ChallengeStatus.PENDING,tabs);
         this.genTab(ChallengeStatus.ACCEPTED,tabs);
         this.genTab(ChallengeStatus.SENT,tabs);
+
+        //TODO Router should do this...not me
         if (this.context.router.getCurrentPath().endsWith('/challenge')) {
             return (
                 <div>
