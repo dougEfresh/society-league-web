@@ -195,7 +195,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
      *
      * @param userId
      */
-    setChallenges: function(userId) {
+    initChallenges: function(userId) {
         console.log("Getting data from " + window.location.origin + '/api/challenge/' + userId);
          $.ajax({
             url: '/api/challenge/' + userId,
@@ -230,94 +230,11 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         });
     },
 
-    acceptChallenge: function(challengeGroup) {
-
-    },
-    _cancelOrNotifyChallenge: function(type,userId,challengeGroup) {
-           //TODO Move this to lib
-        var request = {
-            challenger: null,
-            opponent: null,
-            challenges: []
-        };
-        challengeGroup.challenges.forEach(function(c) {
-            request.challenges.push({id: c.id});
-        });
-
-        $.ajax({
-            async: true,
-            processData: false,
-            url: '/api/challenge/' + type + '/' + userId,
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(request),
-            method: 'post',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                    //this.redirect('login');
-                }
-            },
-            success: function (d) {
-                _challenges = d;
-                ChallengeStore.emitChange();
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('cancel', status, err.toString());
-                //this.redirect('error');
-            }.bind(this)
-        });
-    },
-    cancelChallenge: function(userId,challengeGroup) {
-        this._cancelOrNotifyChallenge('cancel',userId,challengeGroup);
-    },
-
-    notifyChallenge: function(userId,challengeGroup) {
-         //TODO Move this to lib
-        this._cancelOrNotifyChallenge('notify',userId,challengeGroup);
-    },
-
-    modifyChallenge: function() {
-
-    },
-    changeStatus: function(status) {
-        console.log('Sending ' + JSON.stringify(status));
-        var challengeGroup = status.group;
-        switch(challengeGroup.status){
-            case ChallengeStatus.NOTIFY:
-
-                break;
-            default:
-
-        }
-        //TODO Move this to lib
-        $.ajax({
-            async: true,
-            processData: false,
-            url: '/api/challenge/status/' + status.userId + '/' +  status.status,
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(status),
-            method: 'post',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                    //this.redirect('login');
-                }
-            },
-            success: function (d) {
-                _challenges = d;
-                ChallengeStore.emitChange();
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error(url, status, err.toString());
-                //this.redirect('error');
-            }.bind(this)
-        });
+    setChallenges: function(challenges) {
+        _challenges = challenges;
     },
 
     changeSlotStatus: function(slot) {
-        var id =  challengeGroup.challenges[0].id;
         _request.slots.forEach(function(s) {
             if (s.id == slot.id) {
                 s.selected = slot.selected;
@@ -325,34 +242,9 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         });
     },
 
-    selectChallengeGroupGame: function(challengeGroup,game) {
-        var id =  challengeGroup.challenges[0].id;
-        for (var type in _challenges) {
-            _challenges[type].forEach(function(group) {
-                group.challenges.forEach(function(c) {
-                    if (c.id == id) {
-                        group.selectedGame = game;
-                    }
-                });
-            });
-        }
-    },
-
-    selectChallengeGroupSlot: function(id,slot) {
-        for (var type in _challenges) {
-            _challenges[type].forEach(function(group) {
-                group.challenges.forEach(function(c) {
-                    if (c.id == id) {
-                        group.selectedSlot = slot;
-                    }
-                });
-            });
-        }
-    }
 });
 
 AppDispatcher.register(function(action) {
-
      switch(action.actionType) {
          case ChallengeConstants.DATE_CHANGE:
              ChallengeStore.changeDate(action.date);
@@ -383,38 +275,19 @@ AppDispatcher.register(function(action) {
              ChallengeStore.newChallenge(action.request);
              break;
 
-         case ChallengeConstants.CHANGE_STATUS:
-             ChallengeStore.changeStatus(action.status);
-             break;
-
          case ChallengeConstants.SLOT_CHANGE:
              ChallengeStore.changeSlotStatus(action.slot);
              ChallengeStore.emitChange();
              break;
 
-         case ChallengeConstants.CHALLENGES:
-             ChallengeStore.setChallenges(action.userId);
-             break;
-
-         case ChallengeConstants.SELECT_REQUEST_GAME:
-             ChallengeStore.selectChallengeGroupGame(action.challengeGroup,action.game);
+         case ChallengeConstants.SET_CHALLENGES:
+             ChallengeStore.setChallenges(action.challenges);
              ChallengeStore.emitChange();
              break;
 
-          case ChallengeConstants.SELECT_REQUEST_SLOT:
-              ChallengeStore.selectChallengeGroupSlot(action.challengeGroup,action.slot);
-              ChallengeStore.emitChange();
+          case ChallengeConstants.CHALLENGES:
+             ChallengeStore.initChallenges(action.userId);
              break;
-
-         case ChallengeConstants.CANCEL:
-             ChallengeStore.cancelChallenge(action.userId,action.challengeGroup);
-             break;
-
-         case ChallengeConstants.NOTIFY:
-             ChallengeStore.notifyChallenge(action.userId,action.challengeGroup);
-             break;
-
-
          default:
      }
 });

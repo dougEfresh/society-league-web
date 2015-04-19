@@ -18,6 +18,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     },
 
     removeChangeListener: function(callback) {
+        _challengeGroup = [];
         this.removeListener(CHANGE_EVENT, callback);
     },
 
@@ -56,6 +57,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
             },
             success: function (d) {
                 _challengeGroup = d;
+                ChallengeActions.setChallenges(d);
                 ChallengeGroupStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -123,7 +125,6 @@ AppDispatcher.register(function(action) {
          case ChallengeConstants.NOTIFY:
              ChallengeGroupStore.notifyChallenge(action.userId,action.challengeGroup);
              break;
-
 
          case ChallengeConstants.ACCEPT:
              ChallengeGroupStore.notifyChallenge(action.userId,action.challengeGroup);

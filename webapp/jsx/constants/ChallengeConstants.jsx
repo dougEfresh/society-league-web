@@ -12,6 +12,7 @@ module.exports = keyMirror({
   SLOT_CHANGE: null,
   DELETE: null,
   CHALLENGES: null,
+  SET_CHALLENGES: null,
   EIGHT_BALL_CHALLENGE: null,
   NINE_BALL_CHALLENGE: null,
   SELECT_REQUEST_GAME: null,

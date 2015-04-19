@@ -47,7 +47,7 @@ var Navigator = React.createClass({
         UserStore.addChangeListener(this._onUserChange);
     },
     componentDidMount: function() {
-        ChallengeActions.setChallenges(this.getUserId());
+        ChallengeActions.initChallenges(this.getUserId());
         UserStore.getAllFromServer();
     },
     componentWillUnmount: function() {

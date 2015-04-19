@@ -112,10 +112,17 @@ var ChallengeActions = {
          });
     },
 
-    setChallenges: function(userId) {
+    initChallenges: function(userId) {
          AppDispatcher.dispatch({
             actionType: RequestConstants.CHALLENGES,
             userId: userId
+         });
+    },
+
+    setChallenges: function(challenges) {
+         AppDispatcher.dispatch({
+            actionType: RequestConstants.SET_CHALLENGES,
+            challenges: challenges
          });
     },
 

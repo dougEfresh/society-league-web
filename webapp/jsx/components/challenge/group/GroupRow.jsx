@@ -40,10 +40,6 @@ var GroupRow = React.createClass({
         }
         return this.props.challengeGroup.opponent.name;
     },
-    //<GroupGame request={this.props.challengeGroup} noSelect={this.props.noSelect} />
-    //
-    //
-
     render: function() {
         return (
             <tr>
