@@ -24,7 +24,8 @@ function defaultRequest() {
         date: undefined,
         opponent: {user: {id: 0, name: '-----'}},
         slots: [],
-        game: defaultGame()
+        game: defaultGame(),
+        anySlot: false
     };
 }
 
@@ -135,6 +136,10 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         });
     },
 
+    anySlot: function(anySlot) {
+        _request.anySlot = anySlot;
+    },
+
     addSlots : function(slots) {
         //TODO Optimize
         slots.forEach(function(newSlot) {
@@ -218,19 +223,25 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     setChallenges: function(challenges) {
         this._processChallenges(challenges);
     },
+
     _processChallenges: function(challenges) {
         // Set the selected game and slot to a default value
         _challenges = challenges;
         for (var t in _challenges) {
             _challenges[t].forEach(function(group) {
-                var game = null;
-                var slot = 0;
-                if (group.challenges.length == 1) {
+                //Set the Seleted Game
+                var game =  group.selectedGame == undefined ? null : group.selectedGame;
+                var slot = group.selectedSlot == null ||  group.selectedSlot == undefined ? 0 : group.selectedSlot;
+                var anyTime = group.anyTime == null ||  group.anyTime == undefined ? false : group.anyTime;
+                if (group.games.length == 1) {
                     game = group.games[0];
+                }
+                if (group.slots.length == 1) {
                     slot = group.slots[0].id;
                 }
                 group.selectedGame = game;
                 group.selectedSlot = slot;
+                group.anyTime = anyTime;
             });
         }
     },
@@ -276,6 +287,11 @@ AppDispatcher.register(function(action) {
 
          case ChallengeConstants.SLOT_CHANGE:
              ChallengeStore.changeSlotStatus(action.slot);
+             ChallengeStore.emitChange();
+             break;
+
+         case ChallengeConstants.SLOT_ANY:
+             ChallengeStore.anySlot(action.anySlot);
              ChallengeStore.emitChange();
              break;
 

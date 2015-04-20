@@ -20,6 +20,7 @@ var LoginApp = require('./components/LoginApp.jsx');
 var LogoutApp = require('./components/LogoutApp.jsx');
 var ErrorApp = require('./components/ErrorApp.jsx');
 var AdminApp = require('./components/admin/AdminApp.jsx');
+var StatApp = require('./components/stats/StatApp.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -30,13 +31,6 @@ var App = React.createClass({
         );
     }
 });
-
-var Stats = React.createClass({
-    render: function () {
-        return (<div>Stats</div>);
-    }
-});
-
 var Home = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
@@ -67,6 +61,7 @@ var routes = (
             <Route name="home" path="home" handler={Home}/>
             <Route name="account" path="account" handler={Home}/>
             <Route name="admin" path="admin" handler={AdminApp}/>
+            <Route name="stats" path="stats" handler={StatApp}/>
             <Route name="challenge" path="challenge" handler={ChallengeApp}>
                 <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
                 <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeApprovalApp}/>
@@ -75,7 +70,6 @@ var routes = (
                 <Route name={ChallengeStatus.SENT.toLowerCase()} path={ChallengeStatus.SENT.toLowerCase()} handler={ChallengeSentApp}/>
                 <Route name={ChallengeStatus.CANCELLED.toLowerCase()} path={ChallengeStatus.CANCELLED.toLowerCase()} handler={ChallengeSentApp}/>
             </Route>
-            <Route name="stats" path="stats" handler={Stats}/>
         </Route>
     </Route>
 );

@@ -31,7 +31,7 @@ var GroupGame = React.createClass({
     },
     renderSelectOptions: function(){
         if (this.props.challengeGroup.games.length == 1) {
-            return (<div>{this.getBall(this.props.challengeGroup.selectedGame)}</div>);
+            return (<div>{this.getBall(this.props.challengeGroup.games[0])}</div>);
         }
         var games = [];
         games.push(<option key={0} value={0}>{'choose'}</option>);

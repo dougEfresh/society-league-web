@@ -10,6 +10,7 @@ module.exports = keyMirror({
   CHALLENGE_SLOTS_REMOVE: null,
   MODIFY: null,
   SLOT_CHANGE: null,
+  SLOT_ANY: null,
   DELETE: null,
   CHALLENGES: null,
   SET_CHALLENGES: null,

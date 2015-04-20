@@ -43,7 +43,6 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
             },
             success: function (d) {
                 ChallengeActions.setChallenges(d);
-                ChallengeGroupStore.setChallengeGroups(ChallengeStore.getChallenges(status));
                 ChallengeGroupStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -116,7 +115,6 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
                 }
             })
         });
-        debugger;
     }
 });
 

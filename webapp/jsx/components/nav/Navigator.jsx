@@ -21,6 +21,8 @@ var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
+var StatActions = require('../../actions/StatActions.jsx');
+var StatStore = require('../../stores/StatsStore.jsx');
 var DataFactory = require('./../../DataFactoryMixin.jsx');
 
 var Home = React.createClass({
@@ -49,6 +51,7 @@ var Navigator = React.createClass({
     componentDidMount: function() {
         ChallengeActions.initChallenges(this.getUserId());
         UserStore.getAllFromServer();
+        StatStore.get();
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
@@ -67,7 +70,7 @@ var Navigator = React.createClass({
         );
     },
     //<MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
-    //
+    //<NavItemLink to='admin' params={{userId: this.getUserId()}} eventKey={"admin"}>Admin</NavItemLink>
     render: function() {
         return (
             <div>
@@ -75,7 +78,7 @@ var Navigator = React.createClass({
                      <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
                             <ChallengeNav challenges={this.state.challenges}/>
-                            <NavItemLink to='admin' params={{userId: this.getUserId()}} eventKey={"admin"}>Admin</NavItemLink>
+                            <NavItemLink to="stats" params={{userId: this.getUserId()}}>Stats</NavItemLink>
                             <DropdownButton eventKey={"user"} title={UserStore.getName(this.getUserId())} navItem={true}>
                                 <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>

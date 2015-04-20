@@ -8,8 +8,6 @@ var Bootstrap = require('react-bootstrap')
     ,MenuItem = Bootstrap.MenuItem
     ,Button = Bootstrap.Button
     ,SplitButton = Bootstrap.SplitButton;
-var FontAwesome = require('../../../FontAwesome.jsx')
-    ,Icon = FontAwesome.Icon;
 var BallIcon = require('../../../BallMixin.jsx');
 
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
