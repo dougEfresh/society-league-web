@@ -29,7 +29,7 @@ var BallIcon = {
         }
         //<i className={this.getStyle(selected)}><div style={{display: 'none'}}>{t}</div></i>
         return (
-            <Button bsSize='small' bsStyle={selected ? 'default' : 'danger'} onClick={this.onSelect}>
+            <Button bsSize='small' bsStyle={selected ? 'success' : 'default'} onClick={this.onSelect}>
                 {this.getBall(type)}
             </Button>
         );
