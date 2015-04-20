@@ -105,10 +105,11 @@ var ChallengeActions = {
         });
     },
 
-    anySlot: function(anySlot) {
+    anySlot: function(anySlot,slots) {
            AppDispatcher.dispatch({
-            actionType: RequestConstants.SLOT_ANY,
-            anySlot: anySlot
+               actionType: RequestConstants.SLOT_ANY,
+               anySlot: anySlot,
+               slots: slots
            });
     },
     changeSlotState: function(slot){

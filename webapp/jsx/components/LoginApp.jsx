@@ -22,7 +22,7 @@ var LoginApp = React.createClass({
         };
     },
     componentDidMount: function() {
-        var user = UserStore.get();
+        var user = UserStore.getFromServer();
         //if (user.id == 0) {
 //            return;
   //      }
@@ -109,7 +109,7 @@ var LoginApp = React.createClass({
             method: 'post',
             success: function (d) {
                 UserActions.set(d);
-                this.context.router.transitionTo('request',{userId: d.id},null);
+                this.context.router.transitionTo('home',{userId: d.id},null);
             }.bind(this),
             error: function (xhr, status, err) {
                 this.setState({error: true});

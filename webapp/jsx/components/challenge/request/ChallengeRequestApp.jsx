@@ -34,12 +34,12 @@ var ChallengeRequestApp = React.createClass({
     },
     _onChange: function() {
         this.setState({
-            challenge : ChallengeStore.get()
+            challenge : ChallengeStore.getFromServer()
         })
     },
     getInitialState: function() {
         return {
-            challenge : ChallengeStore.get()
+            challenge : ChallengeStore.getFromServer()
         };
     },
     getErrors: function() {
@@ -53,7 +53,12 @@ var ChallengeRequestApp = React.createClass({
             errors.push('Need an opponent');
         if (!c.game.nine.selected && !c.game.eight.selected)
             errors.push('Please choose game type');
-        if (c.slots.length == 0)
+        var slotChosen = false;
+        c.slots.forEach(function(s){
+            if (s.selected)
+                slotChosen = true;
+        });
+        if (!slotChosen)
             errors.push('Please choose a time');
         if (!c.date)
             errors.push('Please choose a date');

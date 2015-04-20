@@ -136,8 +136,11 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         });
     },
 
-    anySlot: function(anySlot) {
+    anySlot: function(anySlot,slots) {
         _request.anySlot = anySlot;
+        slots.forEach(function(s) {
+            s.selected = anySlot;
+        })
     },
 
     addSlots : function(slots) {
@@ -291,7 +294,7 @@ AppDispatcher.register(function(action) {
              break;
 
          case ChallengeConstants.SLOT_ANY:
-             ChallengeStore.anySlot(action.anySlot);
+             ChallengeStore.anySlot(action.anySlot,action.slots);
              ChallengeStore.emitChange();
              break;
 

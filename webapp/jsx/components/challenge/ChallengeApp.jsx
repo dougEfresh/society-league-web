@@ -78,9 +78,15 @@ var ChallengeApp = React.createClass({
         return ChallengeStore.getChallenges(type).length > 0;
     },
     genTab: function(type,tabs) {
+
+        var disable = false;
+        if (type != ChallengeStatus.NOTIFY) {
+            disable = this.shouldRender(ChallengeStatus.NOTIFY);
+        }
+
         if (this.shouldRender(type)) {
             tabs.push(
-                    <NavItemLink to={type.toLowerCase()} params={{userId: this.getUserId()}}  key={type} eventKey={type} >
+                    <NavItemLink disabled={disable} to={type.toLowerCase()} params={{userId: this.getUserId()}}  key={type} eventKey={type} >
                         {this.getTitle(type)}
                     </NavItemLink>
             );

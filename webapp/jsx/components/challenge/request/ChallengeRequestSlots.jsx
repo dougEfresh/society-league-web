@@ -31,7 +31,7 @@ var ChallengeRequestSlots = React.createClass({
         return options;
     },
     onClickAny: function() {
-        ChallengeActions.anySlot(!this.props.any);
+        ChallengeActions.anySlot(!this.props.any,this.props.slots);
     },
     getAnyTime: function() {
         if (!this.props.any) {
@@ -78,7 +78,7 @@ var SlotButton = React.createClass({
     },
     render: function() {
         if (this.props.any){
-            return (<Button bsStyle='success' onClick={this.onClick}>
+            return (<Button bsStyle='success' disabled onClick={this.onClick}>
                 <i className="fa fa-check">
                     {this.props.slot.time}
                 </i>

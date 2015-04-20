@@ -15,6 +15,7 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 var Router = require('react-router')
+    , Link = Router.Link
     , RouteHandler = Router.RouteHandler;
 
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
@@ -36,10 +37,10 @@ var Home = React.createClass({
 
 var Navigator = React.createClass({
     mixins: [DataFactory],
-     getInitialState: function() {
+    getInitialState: function() {
         return {
             challenges: ChallengeStore.getAllChallenges(),
-            user: UserStore.get(),
+            user: UserStore.getFromServer(),
             key: 'home'
         }
     },
@@ -51,7 +52,7 @@ var Navigator = React.createClass({
     componentDidMount: function() {
         ChallengeActions.initChallenges(this.getUserId());
         UserStore.getAllFromServer();
-        StatStore.get();
+        StatStore.getFromServer();
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
@@ -66,19 +67,20 @@ var Navigator = React.createClass({
     },
     _onUserChange: function() {
         this.setState(
-            {user: UserStore.get()}
+            {user: UserStore.getFromServer()}
         );
     },
     //<MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
     //<NavItemLink to='admin' params={{userId: this.getUserId()}} eventKey={"admin"}>Admin</NavItemLink>
+//<NavItemLink to="stats" params={{userId: this.getUserId(), userStatId: this.getUserId()}}>Stats</NavItemLink>
     render: function() {
+        var homeLink = (<Link to='home' params={{userId: this.getUserId()}}>Society</Link>);
         return (
             <div>
-                <Navbar left inverse brand="Society" toggleNavKey={'0'}>
+                <Navbar left inverse brand={homeLink} toggleNavKey={'0'}>
                      <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
                             <ChallengeNav challenges={this.state.challenges}/>
-                            <NavItemLink to="stats" params={{userId: this.getUserId()}}>Stats</NavItemLink>
                             <DropdownButton eventKey={"user"} title={UserStore.getName(this.getUserId())} navItem={true}>
                                 <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>

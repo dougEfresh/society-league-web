@@ -21,6 +21,7 @@ var LogoutApp = require('./components/LogoutApp.jsx');
 var ErrorApp = require('./components/ErrorApp.jsx');
 var AdminApp = require('./components/admin/AdminApp.jsx');
 var StatApp = require('./components/stats/StatApp.jsx');
+var HomeApp = require('./components/HomeApp.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -31,16 +32,7 @@ var App = React.createClass({
         );
     }
 });
-var Home = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
-    },
-    render: function () {
-        return (
-            <div>
-        </div>);
-    }
-});
+
 var RouteNotFound = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
@@ -58,8 +50,8 @@ var routes = (
         <Route name="login" path="/" handler={LoginApp} />
         <Route name="logout" path="logout" handler={LogoutApp} />
         <Route name="nav" path="/app/:userId" handler={NavApp}>
-            <Route name="home" path="home" handler={Home}/>
-            <Route name="account" path="account" handler={Home}/>
+            <Route name="home" path="home" handler={HomeApp}/>
+            <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>
             <Route name="stats" path="stats" handler={StatApp}/>
             <Route name="challenge" path="challenge" handler={ChallengeApp}>

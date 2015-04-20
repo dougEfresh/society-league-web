@@ -21,7 +21,7 @@ var AdminApp = React.createClass({
     mixins: [DataFactory],
     getInitialState: function() {
         return {
-            user: UserStore.get(),
+            user: UserStore.getFromServer(),
             users: UserStore.getAll(),
             switch : false
         }
@@ -34,8 +34,8 @@ var AdminApp = React.createClass({
     },
     _onChange: function() {
         var oldUser = this.state.user;
-        if (oldUser.id !== 0 && oldUser.id !== UserStore.get().id) {
-            this.context.router.transitionTo('request',{userId: UserStore.get().id}, null);
+        if (oldUser.id !== 0 && oldUser.id !== UserStore.getFromServer().id) {
+            this.context.router.transitionTo('request',{userId: UserStore.getFromServer().id}, null);
         }
     },
     onClick: function(e) {
@@ -50,7 +50,7 @@ var AdminApp = React.createClass({
     },
     render: function() {
         var users = [];
-        var currentUser = UserStore.get();
+        var currentUser = UserStore.getFromServer();
         users.push(<option key={currentUser.id} value={currentUser.id}>{currentUser.name}</option>);
         this.state.users.forEach(function(u) {
             if (currentUser.id != u.id)

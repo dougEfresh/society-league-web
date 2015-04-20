@@ -4,7 +4,7 @@ var UserConstants = require('../constants/UserConstants.jsx');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
-var _stats = null;
+var _stats = {};
 
 var StatStore = assign({}, EventEmitter.prototype, {
 
@@ -18,7 +18,7 @@ var StatStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-    get: function() {
+    getFromServer: function() {
          $.ajax({
             url: '/api/stats',
             dataType: 'json',
@@ -49,7 +49,7 @@ AppDispatcher.register(function(action) {
 
      switch(action.actionType) {
          case UserConstants.STATS:
-             StatStore.get();
+             StatStore.getFromServer();
              break;
          default:
      }
