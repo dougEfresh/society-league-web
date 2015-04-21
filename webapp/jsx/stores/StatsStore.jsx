@@ -5,6 +5,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
 var _stats = {};
+var _viewing = 0;
 
 var StatStore = assign({}, EventEmitter.prototype, {
 
@@ -14,6 +15,7 @@ var StatStore = assign({}, EventEmitter.prototype, {
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
+
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     },
@@ -46,6 +48,22 @@ var StatStore = assign({}, EventEmitter.prototype, {
 
     get: function() {
         return _stats;
+    },
+    getViewingStats: function(id) {
+        var s = {};
+        if (_viewing == 0) {
+            s.stats = _stats[id];
+            s.id = id;
+        }
+        else {
+            s.stats = _stats[_viewing];
+            s.id = _viewing;
+        }
+
+        return s;
+    },
+    changeView: function(id){
+        _viewing = id;
     }
 });
 
@@ -57,6 +75,14 @@ AppDispatcher.register(function(action) {
              break;
          default:
      }
+       switch(action.actionType) {
+         case UserConstants.CHANGE_STAT_VIEW:
+             StatStore.changeView(action.id);
+             StatStore.emitChange();
+             break;
+         default:
+     }
+
 });
 
 module.exports = StatStore;

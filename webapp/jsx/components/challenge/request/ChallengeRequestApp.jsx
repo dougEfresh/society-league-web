@@ -102,7 +102,7 @@ var ChallengeRequestApp = React.createClass({
                 {alert}
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots any={c.anySlot} date={c.date} slots={c.slots} />
-                    <ChallengeRequestOpponent userId={userId} opponent={c.opponent} />
+                    <ChallengeRequestOpponent opponent={c.opponent} />
                     <ChallengeRequestGame game={c.game} />
                     {submit}
             </div>

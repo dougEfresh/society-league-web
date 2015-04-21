@@ -7,5 +7,6 @@ module.exports = keyMirror({
   USER_VIEW_SET: null,
   USER_AUTHENTICATED: null,
   INFO: null,
-  STATS: null
+  STATS: null,
+  CHANGE_STAT_VIEW: null
 });

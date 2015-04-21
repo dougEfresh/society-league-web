@@ -9,8 +9,8 @@ var DataFactory = {
     getUserId: function() {
         return parseInt(this.context.router.getCurrentParams().userId);
     },
-    redirect: function (to) {
-        this.context.router.transitionTo(to,null,{from: this.context.router.getCurrentPath()});
+    redirect: function (to,params) {
+        this.context.router.transitionTo(to,params,{from: this.context.router.getCurrentPath()});
     },
     sendData: function (data, url, callback) {
         console.log("Sending data: " + JSON.stringify(data));

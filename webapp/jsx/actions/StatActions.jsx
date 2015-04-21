@@ -7,6 +7,13 @@ var StatActions = {
         AppDispatcher.dispatch({
             actionType: UserConstants.STATS
         });
+    },
+
+    changeView: function(id){
+         AppDispatcher.dispatch({
+            actionType: UserConstants.CHANGE_STAT_VIEW,
+             id: id
+        })
     }
 };
 

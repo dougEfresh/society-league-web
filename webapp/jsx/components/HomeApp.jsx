@@ -36,6 +36,7 @@ var Home = React.createClass({
         ChallengeStore.addChangeListener(this._onChallengeChange);
         StatStore.addChangeListener(this._onStatsChange);
         UserStore.addChangeListener(this._onUserChange);
+
     },
     componentDidMount: function() {
         this.setState({stats:StatStore.getStats(this.getUserId())});
@@ -72,7 +73,7 @@ var Home = React.createClass({
         for(var status in ChallengeStatus) {
             if (status == ChallengeStatus.CANCELLED
                 || (ChallengeStore.getChallenges(status) == undefined)) {
-                continue;
+
             }
 
             var c = ChallengeStore.getChallenges(status);

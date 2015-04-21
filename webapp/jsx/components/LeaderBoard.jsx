@@ -28,6 +28,18 @@ var LeaderBoard = React.createClass({
     propTypes: {
         stats: ReactPropTypes.object.isRequired
     },
+    challenge: function(e) {
+        ChallengeActions.setOpponent({
+            user: {
+                id: e.target.textContent
+            }
+        });
+        this.context.router.transitionTo('request',{userId: this.getUserId()},null);
+    },
+    stats: function(e) {
+        StatStore.changeView(e.target.textContent);
+        this.context.router.transitionTo('stats',{userId: this.getUserId()},null);
+    },
     render: function() {
         if ( this.props.stats == undefined || this.props.stats == null){
             return null;
@@ -39,8 +51,15 @@ var LeaderBoard = React.createClass({
                 id: id,
                 name: UserStore.getName(id),
                 actions: (<div>
-                    <Button><Link to='request' params={{userId: this.getUserId()}}> Challenge</Link></Button>
-                    <Button><Link to='stats' params={{userId: this.getUserId(), userStatId: id}}>Stats</Link></Button>
+                    <Button onClick={this.challenge}>
+                        <i className='fa fa-fighter-jet'>
+                            <div style={{display: 'none'}}>{id}</div></i>
+                    </Button>
+                    <Button onClick={this.stats}>
+                            <i className='fa fa-bar-chart'>
+                                <div style={{display: 'none'}}>{id}</div>
+                            </i>
+                    </Button>
                     </div>),
                 points: this.props.stats[id].all.points
             };

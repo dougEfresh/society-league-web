@@ -81,7 +81,9 @@ var Navigator = React.createClass({
                      <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
                             <ChallengeNav challenges={this.state.challenges}/>
-                            <NavItemLink to="stats" params={{userId: this.getUserId(), userStatId: this.getUserId()}}>Stats</NavItemLink>
+                            <NavItemLink to="stats" params={{userId: this.getUserId(), userStatId: this.getUserId()}}>
+                                <i className='fa fa-bar-chart'></i>
+                            </NavItemLink>
                             <DropdownButton eventKey={"user"} title={UserStore.getName(this.getUserId())} navItem={true}>
                                 <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>
@@ -105,7 +107,7 @@ var ChallengeNav = React.createClass({
             +
             this.props.challenges[ChallengeStatus.ACCEPTED].length;
 
-        var indicator = (<span>Challenges <Badge>{counter}</Badge></span>);
+        var indicator = (<i className='fa fa-fighter-jet'><Badge>{counter}</Badge></i>);
 
         return (
             <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} eventKey={"challenge"} >{indicator}</NavItemLink>

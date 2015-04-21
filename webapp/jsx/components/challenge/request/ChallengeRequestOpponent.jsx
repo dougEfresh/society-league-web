@@ -5,11 +5,11 @@ var Bootstrap = require('react-bootstrap')
 
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
+var StatStore = require('../../../stores/StatsStore.jsx');
 
 var ChallengeRequestOpponent = React.createClass({
     mixins: [DataFactory],
     propTypes: {
-        userId: ReactPropTypes.number.isRequired,
         opponent: ReactPropTypes.object.isRequired
     },
     contextTypes: {
@@ -22,11 +22,11 @@ var ChallengeRequestOpponent = React.createClass({
     },
     getDefaultProps: function () {
         return {
-            opponent : {id: 0}
+            opponent : {user: {id:0}}
         }
     },
     update: function(props) {
-        this.getData('/api/challenge/potentials/' + props.userId, function (potentials) {
+        this.getData('/api/challenge/potentials/' + this.getUserId(), function (potentials) {
             this.setState({potentials: potentials});
         }.bind(this));
     },
@@ -52,7 +52,7 @@ var ChallengeRequestOpponent = React.createClass({
         var options = [];
         options.push(<option key={0} value={0}>{'------'}</option>);
         this.state.potentials.forEach(function(p) {
-            options.push(<option key={p.user.id} value={p.user.id}>{p.user.name + ' --  W:20 L:10' }</option>);
+            options.push(<option key={p.user.id} value={p.user.id}>{p.user.name}</option>);
         }.bind(this));
         return options;
     },
