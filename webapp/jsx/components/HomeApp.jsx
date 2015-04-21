@@ -58,6 +58,8 @@ var Home = React.createClass({
     _onUserChange: function() {
     },
     getNotifications: function() {
+        return (<p> Click  <Link to={ChallengeStatus.NOTIFY.toLowerCase()} params={{userId: this.getUserId()}}>Here</Link> to Challenge Someone</p>);_
+        /*
         var counter = 0;
         for(var status in ChallengeStatus) {
             if (status == ChallengeStatus.CANCELLED
@@ -83,7 +85,7 @@ var Home = React.createClass({
         }
         return (<p>
             You have {notifications[ChallengeStatus.NOTIFY]}
-            <Link to={ChallengeStatus.NOTIFY.toLowerCase()} params={{userId: this.getUserId()}}>requests</Link> to send,
+
             {notifications[ChallengeStatus.ACCEPTED]}
             <Link to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}}>scheduled</Link> matches,
             {notifications[ChallengeStatus.PENDING]}
@@ -92,6 +94,7 @@ var Home = React.createClass({
             {notifications[ChallengeStatus.SENT]}
             <Link to={ChallengeStatus.SENT.toLowerCase()} params={{userId: this.getUserId()}}>challenges</Link>
         </p>);
+        */
     },
     render: function () {
         return (
