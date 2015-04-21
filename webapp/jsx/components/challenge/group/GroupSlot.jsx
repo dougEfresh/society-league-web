@@ -34,6 +34,7 @@ var GroupSlot = React.createClass({
         }
         var slots = [];
         slots.push(<option key={0} value={0}>{'choose'}</option>);
+        this.props.challengeGroup.slots.sort();
         this.props.challengeGroup.slots.forEach(function (s) {
             slots.push(<option key={s.id} value={s.id}>{s.time}</option>);
         }.bind(this));

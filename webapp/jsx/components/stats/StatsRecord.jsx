@@ -35,9 +35,10 @@ var StatsRecord = React.createClass({
         if (this.props.stats == null || this.props.stats == undefined) {
             return null;
         }
+
         rows.push(
             <tr key={'all'}>
-                <td>All</td>
+                <td><div>{this.getEight()}</div><div>{this.getNine()}</div></td>
                 <td>{this.props.stats.all.points}</td>
                 <td>{format(this.props.stats.all.percentage)}</td>
                 <td>{this.props.stats.all.wins}</td>

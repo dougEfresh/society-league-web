@@ -86,7 +86,7 @@ var ChallengeApp = React.createClass({
 
         if (this.shouldRender(type)) {
             tabs.push(
-                    <NavItemLink disabled={disable} to={type.toLowerCase()} params={{userId: this.getUserId()}}  key={type} eventKey={type} >
+                    <NavItemLink className="innerNav" disabled={disable} to={type.toLowerCase()} params={{userId: this.getUserId()}}  key={type} eventKey={type} >
                         {this.getTitle(type)}
                     </NavItemLink>
             );
@@ -96,7 +96,7 @@ var ChallengeApp = React.createClass({
         var tabs = [];
 
         tabs.push(
-            <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} key={ChallengeStatus.REQUEST} eventKey={ChallengeStatus.REQUEST} >
+            <NavItemLink  className="innerNav" to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} key={ChallengeStatus.REQUEST} eventKey={ChallengeStatus.REQUEST} >
                 {'Request'}
             </NavItemLink>
         );

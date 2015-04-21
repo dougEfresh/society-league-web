@@ -54,3 +54,20 @@ a.logout:hover {
 .modal-container .modal, .modal-container .modal-backdrop {
   position: absolute;
 }
+
+/*
+.li.active {
+    background-color: black;
+}
+.nav-pills>li.active>a {
+    background-color: black;
+}
+
+.innerNav {
+    background-color: black;
+}
+
+.nav>li>a {
+    color: white;
+}
+*/

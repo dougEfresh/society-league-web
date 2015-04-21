@@ -52,10 +52,10 @@ var StatsDisplay = React.createClass({
         }
         return (
             <div>
-                <Nav bsStyle='pills' activeKey={this.state.navView} onSelect={this.onSelectView}>
-                    <NavItem eventKey={'chart'}>Charts</NavItem>
-                    <NavItem eventKey={'handicap'}>Handicap</NavItem>
-                    <NavItem eventKey={'record'}>Record</NavItem>
+                <Nav inverse bsStyle='pills' activeKey={this.state.navView} onSelect={this.onSelectView}>
+                    <NavItem className="innerNav" eventKey={'chart'}>Charts</NavItem>
+                    <NavItem className="innerNav" eventKey={'handicap'}>Handicap Stats</NavItem>
+                    <NavItem className="innerNav" eventKey={'record'}>Record</NavItem>
                 </Nav>
                 {this.getView()}
             </div>
