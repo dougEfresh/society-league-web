@@ -171,12 +171,13 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
     setOpponent: function(opponent) {
         _request.opponent = opponent;
         var g = defaultGame();
-        if (opponent.nineBallPlayer) {
+        //TODO FIX ME
+        //if (opponent.nineBallPlayer) {
             g.nine.available = true;
-        }
-        if (opponent.eightBallPlayer) {
+        //}
+        //if (opponent.eightBallPlayer) {
             g.eight.available = true;
-        }
+        //}
         _request.game = g;
     },
 
