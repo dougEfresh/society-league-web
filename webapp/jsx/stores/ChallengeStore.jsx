@@ -248,6 +248,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
             });
         }
     },
+
     changeSlotStatus: function(slot) {
         _request.slots.forEach(function(s) {
             if (s.id == slot.id) {

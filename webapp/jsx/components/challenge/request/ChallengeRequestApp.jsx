@@ -34,12 +34,12 @@ var ChallengeRequestApp = React.createClass({
     },
     _onChange: function() {
         this.setState({
-            challenge : ChallengeStore.getFromServer()
+            challenge : ChallengeStore.get()
         })
     },
     getInitialState: function() {
         return {
-            challenge : ChallengeStore.getFromServer()
+            challenge : ChallengeStore.get()
         };
     },
     getErrors: function() {

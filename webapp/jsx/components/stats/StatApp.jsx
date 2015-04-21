@@ -29,13 +29,18 @@ var StatApp = React.createClass({
         StatStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
-        this.setState({userId: this.getUserId()});
+        this.setState(
+            {
+                userId: this.getUserId(),
+                stats: StatStore.getStats(this.state.userId)
+            }
+        );
     },
     _onChange: function() {
         this.setState({stats: StatStore.getStats(this.state.userId)});
     },
     render: function() {
-        return (<StatsDisplay /> );
+        return (<StatsDisplay stats={this.state.stats} /> );
     }
 });
 

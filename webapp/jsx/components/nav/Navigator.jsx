@@ -72,7 +72,7 @@ var Navigator = React.createClass({
     },
     //<MenuItemLink to='account' params={{userId: this.getUserId()}} eventKey={"account"}>Account</MenuItemLink>
     //<NavItemLink to='admin' params={{userId: this.getUserId()}} eventKey={"admin"}>Admin</NavItemLink>
-//<NavItemLink to="stats" params={{userId: this.getUserId(), userStatId: this.getUserId()}}>Stats</NavItemLink>
+//
     render: function() {
         var homeLink = (<Link to='home' params={{userId: this.getUserId()}}>Society</Link>);
         return (
@@ -81,6 +81,7 @@ var Navigator = React.createClass({
                      <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
                             <ChallengeNav challenges={this.state.challenges}/>
+                            <NavItemLink to="stats" params={{userId: this.getUserId(), userStatId: this.getUserId()}}>Stats</NavItemLink>
                             <DropdownButton eventKey={"user"} title={UserStore.getName(this.getUserId())} navItem={true}>
                                 <MenuItemLink to="logout" params={{userId: this.getUserId()}} eventKey={"logout"}>Logout</MenuItemLink>
                             </DropdownButton>

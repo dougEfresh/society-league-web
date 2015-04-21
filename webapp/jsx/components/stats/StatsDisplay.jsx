@@ -44,7 +44,7 @@ var StatsDisplay = React.createClass({
                 <Panel collapsable defaultExpanded  header={'Handicap Stats'}>
                     <StatsBar stats={this.props.stats} />
                 </Panel>
-                <Panel collapsable defaultExpanded  header={'Record'}>
+                <Panel collapsable defaultCollapsed  header={'Record'}>
                     <h3>Record</h3>
                 </Panel>
             </div>
@@ -108,15 +108,14 @@ var StatsPie = React.createClass({
 
         return (
             <div>
-                <Label bsStyle={'success'}>Wins:<Badge  bsStyle={'default'}>{this.props.stats.all.wins}</Badge></Label>
-                <Label bsStyle={'danger'}>Loses:<Badge  bsStyle={'default'}>{this.props.stats.all.loses}</Badge></Label>
+                <Label bsStyle={'success'}>Wins:{this.props.stats.all.wins}</Label>
+                <Label bsStyle={'danger'}>Loses:{this.props.stats.all.loses}</Label>
                 <Pie chartOptions={this.getChartOptions()} data={this.getChartData('all',false)} />
                 <div>
-                    <Label bsStyle={'success'}>Racks Won:<Badge  bsStyle={'default'}>{this.props.stats.all.racksWon}</Badge></Label>
-                    <Label bsStyle={'danger'}>Racks Lost:<Badge  bsStyle={'default'}>{this.props.stats.all.racksLost}</Badge></Label>
+                    <Label bsStyle={'success'}>Racks Won:{this.props.stats.all.racksWon}</Label>
+                    <Label bsStyle={'danger'}>Racks Lost:{this.props.stats.all.racksLost}</Label>
                     <Pie chartOptions={this.getChartOptions()} data={this.getChartData('all',true)} />
                 </div>
-
             </div>);
     }
 });
@@ -131,9 +130,13 @@ var StatsBar = React.createClass({
          var lost = [];
          for(var hc in this.props.stats[type]) {
              labels.push(hc);
-             wins.push(this.props.stats[type][hc].wins);
-             lost.push(this.props.stats[type][hc].loses);
          }
+        labels.sort();
+        labels.forEach(function(hc){
+            wins.push(this.props.stats[type][hc].wins);
+            lost.push(this.props.stats[type][hc].loses);
+        }.bind(this));
+
          var data = {
              labels: labels,
              datasets: [

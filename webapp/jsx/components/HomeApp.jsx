@@ -20,6 +20,7 @@ var StatActions = require('../actions/StatActions.jsx');
 var StatStore = require('../stores/StatsStore.jsx');
 var DataFactory = require('../DataFactoryMixin.jsx');
 var StatsDisplay = require('../components/stats/StatsDisplay.jsx');
+var LeaderBoard = require('./LeaderBoard.jsx');
 
 var Home = React.createClass({
     mixins: [DataFactory],
@@ -37,6 +38,7 @@ var Home = React.createClass({
         UserStore.addChangeListener(this._onUserChange);
     },
     componentDidMount: function() {
+        this.setState({stats:StatStore.getStats(this.getUserId())});
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
@@ -87,18 +89,18 @@ var Home = React.createClass({
             <Link to={ChallengeStatus.PENDING.toLowerCase()} params={{userId: this.getUserId()}}>pending</Link> requests,
             and you sent
             {notifications[ChallengeStatus.SENT]}
-            <Link to={ChallengeStatus.SENT.toLowerCase()} params={{userId: this.getUserId()}}>requests</Link>
+            <Link to={ChallengeStatus.SENT.toLowerCase()} params={{userId: this.getUserId()}}>challenges</Link>
         </p>);
     },
     render: function () {
         return (
             <div>
                 <h3>Welcome! {UserStore.getName(this.getUserId())}</h3>
-                <p>
-                    Click <Link to='request' params={{userId: this.getUserId()}}>here</Link> to challenge someone
-                </p>
                 {this.getNotifications()}
                 <StatsDisplay stats={this.state.stats}/>
+                <Panel collapsable defaultExpanded  header={'Leaders'}>
+                    <LeaderBoard stats={StatStore.get()} />
+                </Panel>
             </div>
         );
     }

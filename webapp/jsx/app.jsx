@@ -53,7 +53,7 @@ var routes = (
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>
-            <Route name="stats" path="stats" handler={StatApp}/>
+            <Route name="stats" path="stats/:userStatId"  handler={StatApp}/>
             <Route name="challenge" path="challenge" handler={ChallengeApp}>
                 <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
                 <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeApprovalApp}/>

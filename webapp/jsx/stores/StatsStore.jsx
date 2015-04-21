@@ -42,6 +42,10 @@ var StatStore = assign({}, EventEmitter.prototype, {
 
     getStats: function(id) {
         return _stats[id];
+    },
+
+    get: function() {
+        return _stats;
     }
 });
 
