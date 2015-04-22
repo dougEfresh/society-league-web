@@ -55,12 +55,12 @@ var routes = (
             <Route name="admin" path="admin" handler={AdminApp}/>
             <Route name="stats" path="stats"  handler={StatApp}/>
             <Route name="challenge" path="challenge" handler={ChallengeApp}>
-                <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
-                <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeApprovalApp}/>
-                <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>
-                <Route name={ChallengeStatus.NOTIFY.toLowerCase()} path={ChallengeStatus.NOTIFY.toLowerCase()} handler={ChallengeNotifyApp}/>
-                <Route name={ChallengeStatus.SENT.toLowerCase()} path={ChallengeStatus.SENT.toLowerCase()} handler={ChallengeSentApp}/>
-                <Route name={ChallengeStatus.CANCELLED.toLowerCase()} path={ChallengeStatus.CANCELLED.toLowerCase()} handler={ChallengeSentApp}/>
+                <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeApp}/>
+                <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeApp}/>
+                <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeApp}/>
+                <Route name={ChallengeStatus.NOTIFY.toLowerCase()} path={ChallengeStatus.NOTIFY.toLowerCase()} handler={ChallengeApp}/>
+                <Route name={ChallengeStatus.SENT.toLowerCase()} path={ChallengeStatus.SENT.toLowerCase()} handler={ChallengeApp}/>
+                <Route name={ChallengeStatus.CANCELLED.toLowerCase()} path={ChallengeStatus.CANCELLED.toLowerCase()} handler={ChallengeApp}/>
             </Route>
         </Route>
     </Route>

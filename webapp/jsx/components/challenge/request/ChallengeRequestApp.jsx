@@ -21,30 +21,13 @@ var DataFactory = require('../../../DataFactoryMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
     mixins: [DataFactory],
-    componentWillMount: function() {
-        ChallengeStore.addRequestListener(this._onAdd);
-        ChallengeStore.addChangeListener(this._onChange);
+    propTypes: {
+        challenge: ReactPropTypes.string.isRequired
     },
-    componentWillUnmount: function() {
-        ChallengeStore.removeRequestListener(this._onAdd);
-        ChallengeStore.removeChangeListener(this._onChange);
-    },
-    _onAdd: function() {
-        this.context.router.transitionTo(ChallengeStatus.NOTIFY.toLowerCase(),{userId: this.getUserId()},null);
-    },
-    _onChange: function() {
-        this.setState({
-            challenge : ChallengeStore.get()
-        })
-    },
-    getInitialState: function() {
-        return {
-            challenge : ChallengeStore.get()
-        };
-    },
+
     getErrors: function() {
         var errors = [];
-        var c = this.state.challenge;
+        var c = this.props.challenge;
         if (c == undefined) {
             errors.push('Nothing Selected');
             return errors;
@@ -67,7 +50,7 @@ var ChallengeRequestApp = React.createClass({
     },
     handleClick: function() {
         var opponent = { id: 0};
-        var c = this.state.challenge;
+        var c = this.props.challenge;
         opponent.id = c.opponent.user.id;
         var slots = [];
         c.slots.forEach(function(s) {
@@ -92,8 +75,7 @@ var ChallengeRequestApp = React.createClass({
         return this.getErrors().length == 0;
     },
     render: function(){
-        var userId = this.getUserId();
-        var c = this.state.challenge;
+        var c = this.props.challenge;
         var submit = (
             <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleClick}>Request Challenge</Button>
         );

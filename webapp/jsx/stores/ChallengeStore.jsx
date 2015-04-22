@@ -257,6 +257,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
             }
         });
     }
+
 });
 
 AppDispatcher.register(function(action) {

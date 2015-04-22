@@ -9,6 +9,8 @@ var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
 
 var _type = null; //ChallengeStatus tytpe
+var _lastStatusChange = null;
+var _lastStatusAction = null;
 
 var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
 
@@ -24,9 +26,10 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     setType: function(type) {
         _type = type;
     },
-    _sendRequest: function(url,data,status) {
+
+    _sendRequest: function(url,data,newStatus,status) {
         console.log('Sending to ' + url);
-        console.log('Sending  data: ' + JSON.stringify(data));
+        console.log('Sending data: ' + JSON.stringify(data));
          $.ajax({
             async: true,
             processData: false,
@@ -43,6 +46,8 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
             },
             success: function (d) {
                 ChallengeActions.setChallenges(d);
+                _lastStatusChange = status;
+                _lastStatusAction = newStatus;
                 ChallengeGroupStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -66,7 +71,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
             return;
         }
 
-        this._sendRequest('/api/challenge/accepted/' + userId,challenge,originalStatus);
+        this._sendRequest('/api/challenge/accepted/' + userId,challenge,ChallengeStatus.ACCEPTED,originalStatus);
     },
 
     _cancelOrNotifyChallenge: function(type,userId,challengeGroup) {
@@ -80,7 +85,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         challengeGroup.challenges.forEach(function(c) {
             request.challenges.push({id: c.id});
         });
-        this._sendRequest('/api/challenge/' + type.toLowerCase() + '/' + userId,request,originalStatus);
+        this._sendRequest('/api/challenge/' + type.toLowerCase() + '/' + userId,request,type,originalStatus);
     },
 
     cancelChallenge: function(userId,challengeGroup) {
@@ -91,9 +96,6 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         this._cancelOrNotifyChallenge(ChallengeStatus.NOTIFY,userId,challengeGroup);
     },
 
-    modifyChallenge: function() {
-
-    },
     selectChallengeGroupGame: function(challengeGroup,game) {
         var id =  challengeGroup.challenges[0].id;
         ChallengeStore.getChallenges(_type).forEach(function(g) {
@@ -115,6 +117,14 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
                 }
             })
         });
+    },
+
+    lastStatusChange: function() {
+        return _lastStatusChange;
+    },
+
+    lastStatusAction: function() {
+        return _lastStatusAction;
     }
 });
 

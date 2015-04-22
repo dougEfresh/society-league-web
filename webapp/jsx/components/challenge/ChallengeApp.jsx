@@ -14,14 +14,15 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler;
+    ,RouteHandler = Router.RouteHandler;
 
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
+var ChallengeGroupStore = require('../../stores/ChallengeGroupStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 
-var ChallengeApprovalApp = require('./approvals/ChallengeApprovalApp.jsx');
+var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('./approved/ChallengeApprovedApp.jsx');
 var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
 var ChallengeNotifyApp = require('./notify/ChallengeNotifyApp.jsx');
@@ -34,40 +35,70 @@ var ChallengeApp = React.createClass({
     getInitialState: function() {
         return {
             requests: ChallengeStore.getAllChallenges(),
-            added: false,
             activeKey: ChallengeStatus.REQUEST
         }
     },
-    componentDidMount: function() {
+    componentWillMount: function() {
         ChallengeStore.addRequestListener(this._onAdd);
         ChallengeStore.addChangeListener(this._onChange);
+        ChallengeGroupStore.addChangeListener(this._onStatusChange);
+    },
+    componentDidMount: function() {
+        this._onChange();
     },
     componentWillUnmount: function() {
         ChallengeStore.removeRequestListener(this._onAdd);
         ChallengeStore.removeChangeListener(this._onChange);
+        ChallengeGroupStore.removeChangeListener(this._onStatusChange);
     },
-    _onChange: function() {
-        var requests = ChallengeStore.getAllChallenges();
-        this.setState({requests: ChallengeStore.getAllChallenges()});
-        //var types = [ChallengeStatus.NEEDS_NOTIFY,ChallengeStatus.SENT,ChallengeStatus.PENDING,ChallengeStatus.ACCEPTED];
-        for (var t in ChallengeStatus) {
-
-            if (t == ChallengeStatus.REQUEST) {
-                return;
-            }
-            if (this.context.router.isActive(t.toLowerCase())) {
-                if (requests[t].length==0) {
-                    this.context.router.transitionTo(
-                        ChallengeStatus.REQUEST.toLowerCase(),
-                        {userId: this.getUserId()},null
-                    );
-                    return;
+    _onStatusChange: function() {
+        var statusChange = ChallengeGroupStore.lastStatusChange();
+        var newStatus = ChallengeGroupStore.lastStatusAction();
+        var challenges = ChallengeStore.getAllChallenges();
+        console.log('Status Change: ' + statusChange + ' ' + newStatus);
+        var key = this.state.activeKey;
+        if (challenges[key].length > 0) {
+            this.setState({
+                    requests: challenges,
+                    key: key
                 }
-            }
-
+            );
+            return ;
         }
+
+        switch (newStatus) {
+            case ChallengeStatus.NOTIFY:
+                key = ChallengeStatus.SENT;
+                break;
+            case ChallengeStatus.ACCEPTED:
+                key = ChallengeStatus.ACCEPTED;
+                break;
+            default:
+                key = ChallengeStatus.REQUEST;
+        }
+        console.log('Setting state to '+ key);
+        this.setState({
+                requests: challenges,
+                activeKey: key
+            }
+        );
+    },
+
+    _onChange: function() {
+
+        var key = this.state.activeKey;
+        var c =  ChallengeStore.getAllChallenges();
+        if (c[ChallengeStatus.NOTIFY].length > 0) {
+            key = ChallengeStatus.NOTIFY;
+        }
+        console.log("onChange " + key);
+        this.setState({
+            requests: c,
+            activeKey: key
+        });
     },
     _onAdd: function() {
+        console.log('onAdd ' + ChallengeStatus.NOTIFY);
         this.setState({
             requests: ChallengeStore.getAllChallenges(),
             activeKey: ChallengeStatus.NOTIFY
@@ -77,7 +108,7 @@ var ChallengeApp = React.createClass({
         var r = this.state.requests[type];
 
         switch (type) {
-            case ChallengeStatus.NEEDS_NOTIFY:
+            case ChallengeStatus.NOTIFY:
                 return (<div>Notify<span></span><Badge>{r.length}</Badge></div>);
             case ChallengeStatus.PENDING:
                 return (<div>Approval Required<span></span><Badge>{r.length}</Badge></div>);
@@ -92,36 +123,23 @@ var ChallengeApp = React.createClass({
     shouldRender: function(type) {
         return this.state.requests[type].length > 0;
     },
-    getApp: function(type) {
-        switch(type) {
-            case ChallengeStatus.NEEDS_NOTIFY:
-                return <ChallengeNotifyApp requests={this.state.requests} />;
-            case ChallengeStatus.SENT:
-                return <ChallengeSentApp requests={this.state.requests} />;
-            case ChallengeStatus.ACCEPTED:
-                return <ChallengeAcceptedApp requests={this.state.requests} />;
-            case ChallengeStatus.PENDING:
-                return <ChallengeApprovalApp requests={this.state.requests} />;
-            default:
-                return null;
-        }
-    },
-    genTab: function(type,tabs) {
-        if (this.shouldRender(type)) {
-            tabs.push(
-                    <NavItemLink to={type.toLowerCase()} params={{userId: this.getUserId()}}  key={type} eventKey={type} >
-                        {this.getTitle(type)}
-                    </NavItemLink>
-            );
-        }
-    },
     onSelect: function(key) {
         this.setState({activeKey: key})
     },
+    genNav: function(type,tabs) {
+        if (this.shouldRender(type)) {
+            tabs.push(
+                    <NavItem key={type} eventKey={type} >
+                        {this.getTitle(type)}
+                    </NavItem>
+            );
+        }
+    },
     getApp: function() {
+        console.log('ActiveState: ' + this.state.activeKey);
         switch(this.state.activeKey) {
             case ChallengeStatus.REQUEST:
-                return (<ChallengeRequestApp requests={this.state.requests} />);
+                return (<ChallengeRequestApp challenge={ChallengeStore.get()} />);
                 break;
             case ChallengeStatus.NOTIFY:
                 return (<ChallengeNotifyApp requests={this.state.requests} />);
@@ -136,28 +154,28 @@ var ChallengeApp = React.createClass({
                 return (<ChallengeSentApp requests={this.state.requests} />);
                 break;
             default:
-                return (<ChallengeRequestApp requests={this.state.requests} />);
+                return (<ChallengeRequestApp challenge={this.state.requests} />);
         }
     },
     render: function() {
         var tabs = [];
         tabs.push (
-            <NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} key={ChallengeStatus.REQUEST} eventKey={ChallengeStatus.REQUEST} >
+            <NavItem key={ChallengeStatus.REQUEST} eventKey={ChallengeStatus.REQUEST} >
                 {this.getTitle('Request')}
-            </NavItemLink>
+            </NavItem>
         );
-        this.genTab(ChallengeStatus.NEEDS_NOTIFY,tabs);
-        this.genTab(ChallengeStatus.PENDING,tabs);
-        this.genTab(ChallengeStatus.ACCEPTED,tabs);
-        this.genTab(ChallengeStatus.SENT,tabs);
+        this.genNav(ChallengeStatus.NOTIFY,tabs);
+        this.genNav(ChallengeStatus.PENDING,tabs);
+        this.genNav(ChallengeStatus.ACCEPTED,tabs);
+        this.genNav(ChallengeStatus.SENT,tabs);
         return (
-                <div>
-                    <Nav bsStyle='pills' activeKey={this.state.activeKey} onSelect{this.onSelect}>
-                        {tabs}
-                    </Nav>
-                    {this.getApp()}
-                </div>
-            );
+            <div>
+                <Nav bsStyle='pills' activeKey={this.state.activeKey} onSelect={this.onSelect}>
+                    {tabs}
+                </Nav>
+                {this.getApp()}
+            </div>
+        );
     }
 });
 
