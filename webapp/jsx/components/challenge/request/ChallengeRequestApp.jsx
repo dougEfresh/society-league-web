@@ -104,6 +104,9 @@ var ChallengeRequestApp = React.createClass({
             isModalOpen: !this.state.isModalOpen
         });
     },
+    handleClose: function() {
+      this.setState({submitted: false, isModalOpen: !this.state.isModalOpen});
+    },
     isValid: function() {
         return this.getErrors().length == 0;
     },
@@ -131,8 +134,8 @@ var ChallengeRequestApp = React.createClass({
         if (this.state.submitted) {
             body = (<div>
                 <Alert>Request Sent. See Sent tab for details</Alert>
-                <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
-            </div>)
+                <Button bsStyle={'success'} onClick={this.handleClose}>Close</Button>
+            </div>);
         }
         return (
             <Modal bsStyle={this.state.submitted ? 'success' : 'warning'} title={title} onRequestHide={this.handleToggle}>
