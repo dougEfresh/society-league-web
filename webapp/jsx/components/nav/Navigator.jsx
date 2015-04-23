@@ -77,7 +77,7 @@ var Navigator = React.createClass({
         var homeLink = (<Link to='home' params={{userId: this.getUserId()}}>Society</Link>);
         return (
             <div>
-                <Navbar left inverse brand={homeLink} toggleNavKey={'0'}>
+                <Navbar id={'custom-bootstrap-menu'} style={{}} left inverse brand={homeLink} toggleNavKey={'0'}>
                      <CollapsableNav eventKey={'0'}>
                         <Nav bsStyle="pills" fluid fixedTop navbar>
                             <ChallengeNav challenges={this.state.challenges}/>
