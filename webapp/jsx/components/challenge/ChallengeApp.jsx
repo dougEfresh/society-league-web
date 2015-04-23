@@ -25,7 +25,6 @@ var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('./approved/ChallengeApprovedApp.jsx');
 var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
-var ChallengeNotifyApp = require('./notify/ChallengeNotifyApp.jsx');
 
 var DataFactory = require('../../DataFactoryMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
@@ -39,17 +38,16 @@ var ChallengeApp = React.createClass({
         }
     },
     componentWillMount: function() {
-        ChallengeStore.addRequestListener(this._onAdd);
-        ChallengeStore.addChangeListener(this._onChange);
         ChallengeGroupStore.addChangeListener(this._onStatusChange);
     },
     componentDidMount: function() {
         this._onChange();
     },
     componentWillUnmount: function() {
-        ChallengeStore.removeRequestListener(this._onAdd);
-        ChallengeStore.removeChangeListener(this._onChange);
         ChallengeGroupStore.removeChangeListener(this._onStatusChange);
+    },
+    _onAdd: function() {
+
     },
     _onStatusChange: function() {
         var statusChange = ChallengeGroupStore.lastStatusChange();
@@ -57,7 +55,7 @@ var ChallengeApp = React.createClass({
         var challenges = ChallengeStore.getAllChallenges();
         console.log('Status Change: ' + statusChange + ' ' + newStatus);
         var key = this.state.activeKey;
-        if (challenges[key].length > 0) {
+        if (key != ChallengeStatus.REQUEST && challenges[key].length > 0) {
             this.setState({
                     requests: challenges,
                     key: key
@@ -65,31 +63,18 @@ var ChallengeApp = React.createClass({
             );
             return ;
         }
-
-        switch (newStatus) {
-            case ChallengeStatus.NOTIFY:
-                key = ChallengeStatus.SENT;
-                break;
-            case ChallengeStatus.ACCEPTED:
-                key = ChallengeStatus.ACCEPTED;
-                break;
-            default:
-                key = ChallengeStatus.REQUEST;
-        }
-        console.log('Setting state to '+ key);
         this.setState({
                 requests: challenges,
-                activeKey: key
+                activeKey: ChallengeStatus.REQUEST
             }
         );
     },
 
     _onChange: function() {
-
         var key = this.state.activeKey;
         var c =  ChallengeStore.getAllChallenges();
-        if (c[ChallengeStatus.NOTIFY].length > 0) {
-            key = ChallengeStatus.NOTIFY;
+        if (c[key] != undefined && c[key].length <= 0) {
+            key = ChallengeStatus.REQUEST;
         }
         console.log("onChange " + key);
         this.setState({
@@ -97,19 +82,10 @@ var ChallengeApp = React.createClass({
             activeKey: key
         });
     },
-    _onAdd: function() {
-        console.log('onAdd ' + ChallengeStatus.NOTIFY);
-        this.setState({
-            requests: ChallengeStore.getAllChallenges(),
-            activeKey: ChallengeStatus.NOTIFY
-        });
-    },
     getTitle: function(type) {
         var r = this.state.requests[type];
 
         switch (type) {
-            case ChallengeStatus.NOTIFY:
-                return (<div>Notify<span></span><Badge>{r.length}</Badge></div>);
             case ChallengeStatus.PENDING:
                 return (<div>Approval Required<span></span><Badge>{r.length}</Badge></div>);
             case ChallengeStatus.SENT:
@@ -139,10 +115,9 @@ var ChallengeApp = React.createClass({
         console.log('ActiveState: ' + this.state.activeKey);
         switch(this.state.activeKey) {
             case ChallengeStatus.REQUEST:
-                return (<ChallengeRequestApp challenge={ChallengeStore.get()} />);
+                return (<ChallengeRequestApp />);
                 break;
             case ChallengeStatus.NOTIFY:
-                return (<ChallengeNotifyApp requests={this.state.requests} />);
                 break;
             case ChallengeStatus.ACCEPTED:
                 return (<ChallengeAcceptedApp requests={this.state.requests} />);
@@ -154,7 +129,7 @@ var ChallengeApp = React.createClass({
                 return (<ChallengeSentApp requests={this.state.requests} />);
                 break;
             default:
-                return (<ChallengeRequestApp challenge={this.state.requests} />);
+                return (<ChallengeRequestApp />);
         }
     },
     render: function() {
@@ -164,7 +139,6 @@ var ChallengeApp = React.createClass({
                 {this.getTitle('Request')}
             </NavItem>
         );
-        this.genNav(ChallengeStatus.NOTIFY,tabs);
         this.genNav(ChallengeStatus.PENDING,tabs);
         this.genNav(ChallengeStatus.ACCEPTED,tabs);
         this.genNav(ChallengeStatus.SENT,tabs);
@@ -178,6 +152,8 @@ var ChallengeApp = React.createClass({
         );
     }
 });
+
+
 
 module.exports = ChallengeApp;
 

@@ -125,7 +125,14 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
 
     lastStatusAction: function() {
         return _lastStatusAction;
-    }
+    },
+
+   newStatus: function() {
+       console.log('New Status');
+       _lastStatusChange = ChallengeStatus.REQUEST;
+       _lastStatusAction = ChallengeStatus.SENT;
+       ChallengeGroupStore.emitChange();
+   }
 });
 
 AppDispatcher.register(function(action) {
@@ -152,6 +159,11 @@ AppDispatcher.register(function(action) {
          case ChallengeConstants.ACCEPT:
              ChallengeGroupStore.acceptChallenge(action.userId,action.challengeGroup);
              break;
+
+         case ChallengeConstants.NEW:
+             ChallengeGroupStore.newStatus();
+             break;
+
 
          default:
      }

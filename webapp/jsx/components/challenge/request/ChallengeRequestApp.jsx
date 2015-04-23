@@ -3,11 +3,16 @@ var ReactPropTypes = React.PropTypes;
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Alert = Bootstrap.Alert
+    ,Modal = Bootstrap.Modal
+    ,OverlayMixin = Bootstrap.OverlayMixin
+    ,ModalTrigger = Bootstrap.ModalTrigger
     ,Panel = Bootstrap.Panel;
+
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
+var ChallengeGroupStore = require('../../../stores/ChallengeGroupStore.jsx');
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var UserStore = require('../../../stores/UserStore.jsx');
@@ -20,14 +25,36 @@ var ChallengeRequestGame= require('./ChallengeRequestGame.jsx');
 var DataFactory = require('../../../DataFactoryMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
-    mixins: [DataFactory],
-    propTypes: {
-        challenge: ReactPropTypes.string.isRequired
+    mixins: [DataFactory,OverlayMixin],
+    getInitialState: function() {
+        return {
+            isModalOpen: false,
+            submitted: false,
+            challenge: ChallengeStore.get()
+        };
     },
-
+    componentWillMount: function() {
+        ChallengeStore.addChangeListener(this._onChange);
+        ChallengeStore.addRequestListener(this._onAdd);
+    },
+    componentWillUnmount: function() {
+        ChallengeStore.removeChangeListener(this._onChange);
+        ChallengeStore.removeRequestListener(this._onAdd);
+    },
+    _onAdd: function() {
+        console.log('onAdd ');
+        this.setState({
+            submitted: true,
+            challenge:  ChallengeStore.get()
+        });
+        ChallengeActions.newChallenge();
+    },
+    _onChange: function() {
+        this.setState({challenge: ChallengeStore.get()});
+    },
     getErrors: function() {
         var errors = [];
-        var c = this.props.challenge;
+        var c = this.state.challenge;
         if (c == undefined) {
             errors.push('Nothing Selected');
             return errors;
@@ -48,9 +75,10 @@ var ChallengeRequestApp = React.createClass({
 
         return errors;
     },
-    handleClick: function() {
+
+    send: function() {
         var opponent = { id: 0};
-        var c = this.props.challenge;
+        var c = this.state.challenge;
         opponent.id = c.opponent.user.id;
         var slots = [];
         c.slots.forEach(function(s) {
@@ -71,17 +99,54 @@ var ChallengeRequestApp = React.createClass({
         ChallengeActions.request(request);
         console.log(JSON.stringify(request));
     },
+    handleToggle: function() {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    },
     isValid: function() {
         return this.getErrors().length == 0;
     },
+    renderOverlay: function () {
+        if (!this.state.isModalOpen) {
+            return <span/>;
+        }
+        var c = this.state.challenge;
+        var msg = 'Send request to '
+            + UserStore.getName(c.opponent.user.id) + ' for' +
+            ' a match on ' + c.date ;
+        var title = 'Notify Opponent?';
+        if (this.state.submitted) {
+            title = 'Sucess';
+        }
+        var body = (
+            <div>
+                <div className='modal-body'>
+                    {msg}
+                </div>
+                <div className='modal-footer'>
+                    <Button bsStyle={'success'} onClick={this.send}>Send Request</Button>
+                </div>
+            </div>);
+        if (this.state.submitted) {
+            body = (<div>
+                <Alert>Request Sent. See Sent tab for details</Alert>
+                <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
+            </div>)
+        }
+        return (
+            <Modal bsStyle={this.state.submitted ? 'success' : 'warning'} title={title} onRequestHide={this.handleToggle}>
+                {body}
+            </Modal>
+        );
+  },
     render: function(){
-        var c = this.props.challenge;
+        var c = this.state.challenge;
         var submit = (
-            <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleClick}>Request Challenge</Button>
+            <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleToggle}>Request Challenge</Button>
         );
         return (
             <div>
-                {alert}
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots any={c.anySlot} date={c.date} slots={c.slots} />
                     <ChallengeRequestOpponent opponent={c.opponent} />

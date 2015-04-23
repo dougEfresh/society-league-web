@@ -20,5 +20,6 @@ module.exports = keyMirror({
   SELECT_REQUEST_SLOT: null,
   CANCEL:null,
   NOTIFY:null,
-  ACCEPT: null
+  ACCEPT: null,
+  NEW: null
 });

@@ -7,6 +7,7 @@ var UserStore = require('./UserStore.jsx');
 var CHANGE_EVENT = 'change';
 var ADD_EVENT = 'add';
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
+var ChallengeGroupStore = require('./ChallengeGroupStore.jsx');
 
 /**
  * Returns the default game type, which is neither 9 or 8
@@ -18,11 +19,11 @@ function defaultGame() {
         eight: {available: false, selected: false}
     };
 }
-
+function defaultOpponent() {return {user: {id: 0, name: '-----'}}}
 function defaultRequest() {
     return  {
         date: undefined,
-        opponent: {user: {id: 0, name: '-----'}},
+        opponent: defaultOpponent(),
         slots: [],
         game: defaultGame(),
         anySlot: false
@@ -95,7 +96,12 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
             },
             success: function (d) {
                 _challenges = d;
-                _request = defaultRequest();
+                _request.opponent = defaultOpponent();
+                _request.anySlot = false;
+                _request.slots.forEach(function(s) {
+                    s.selected = false;
+                });
+                _request.game = defaultGame();
                 ChallengeStore.emitAdd();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -198,10 +204,6 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         return _challenges[type];
     },
 
-    /**
-     *
-     * @param userId
-     */
     initChallenges: function(userId) {
         console.log("Getting data from " + window.location.origin + '/api/challenge/' + userId);
          $.ajax({
@@ -215,6 +217,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
             success: function (d) {
                 this._processChallenges(d);
                 ChallengeStore.emitChange();
+                ChallengeGroupStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('slots', status, err.toString());
@@ -309,6 +312,7 @@ AppDispatcher.register(function(action) {
           case ChallengeConstants.CHALLENGES:
              ChallengeStore.initChallenges(action.userId);
              break;
+
          default:
      }
 });

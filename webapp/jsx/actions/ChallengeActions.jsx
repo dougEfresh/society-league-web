@@ -155,6 +155,12 @@ var ChallengeActions = {
             userId: userId,
             challengeGroup: challengeGroup
         });
+    },
+
+    newChallenge: function() {
+        AppDispatcher.dispatch({
+            actionType: RequestConstants.NEW
+        });
     }
 };
 

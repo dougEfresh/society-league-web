@@ -37,6 +37,7 @@ var ChallengeRequestDate = React.createClass({
         });
         return dateOptions;
     },
+
     componentDidMount: function() {
         //Init the date
         ChallengeActions.changeDate(Util.nextChallengeDate());
