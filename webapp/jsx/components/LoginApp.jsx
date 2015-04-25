@@ -22,34 +22,6 @@ var LoginApp = React.createClass({
         };
     },
     componentDidMount: function() {
-        var user = UserStore.getFromServer();
-        //if (user.id == 0) {
-//            return;
-  //      }
-        $.ajax({
-            url: '/api/user/' + user.id,
-            dataType: 'json',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                    if (this.context.router.getCurrentPathname().indexOf('login') == -1) {
-                        this.redirect('login');
-                    }
-                }.bind(this)
-            },
-            success: function (d) {
-                if (d.id = 0) {
-                    UserStore.set(d);
-                    this.context.router.transitionTo('request', {userId: d.id}, null);
-                }
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('login', status, err.toString());
-                console.log('Redirecting to error');
-                //this.redirect('error');
-            }.bind(this)
-        });
-
          $.ajax({
             url: '/api/users',
             dataType: 'json',
@@ -64,6 +36,7 @@ var LoginApp = React.createClass({
         });
     },
     handleSubmit: function(e){
+        debugger;
         var router = this.context.router;
         e.preventDefault();
         var user = this.refs.username.getValue();
@@ -108,7 +81,7 @@ var LoginApp = React.createClass({
             data: {username: newUser.login, password: newUser.login},
             method: 'post',
             success: function (d) {
-                UserActions.set(d);
+                console.log('Redirect to home ' + d.id);
                 this.context.router.transitionTo('home',{userId: d.id},null);
             }.bind(this),
             error: function (xhr, status, err) {
@@ -124,14 +97,21 @@ var LoginApp = React.createClass({
         });
         var button = (<Button onClick={this.onClick} >Login</Button>);
         //{linkSwitch}
+        // <Panel bsStyle='primary' header={'Select User'} title={'Select User'} footer={button} >
         return (
-            <Panel bsStyle='primary' header={'Select User'} title={'Select User'} footer={button} >
-                <Input ref='newUser' type='select' >{users} </Input>
-            </Panel>
+            <div className="login-container well col-lg-5 col-md-5 col-sm-6">
+                <form className="login-form form-signin">
+                        <h2 className="form-signin-heading">Please Log In</h2>
+                        <div className="form-field form-group">
+                            <Input ref='newUser' type='select' >{users} </Input>
+                        </div>
+                    {button}
+                </form>
+            </div>
         );
     }
 /*
-        var button = (<Button onClick={this.handleSubmit} type="submit">login</Button>);
+
         return (
             <Panel header={'Login'} footer={button} >
                 <Input type='text' ref='username' placeholder="username" defaultValue="login0"/>

@@ -7,49 +7,140 @@ var Router = require('react-router')
     , DefaultRoute = Router.DefaultRoute;
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
+    ,ButtonGroup = Bootstrap.ButtonGroup
     ,PanelGroup = Bootstrap.PanelGroup
     ,Badge = Bootstrap.Badge
     ,Table = Bootstrap.Table
+    ,Nav = Bootstrap.Nav
+    ,MenuItem = Bootstrap.MenuItem
+    ,Accordion = Bootstrap.Accordion
+    ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
 
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
 var UserStore = require('../stores/UserStore.jsx');
-var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
-var StatActions = require('../actions/StatActions.jsx');
-var StatStore = require('../stores/StatsStore.jsx');
 var DataFactory = require('../DataFactoryMixin.jsx');
-var StatsDisplay = require('../components/stats/StatsDisplay.jsx');
-var LeaderBoard = require('./LeaderBoard.jsx');
 
-var Home = React.createClass({
+var HomeApp = React.createClass({
     mixins: [DataFactory],
     getInitialState: function() {
         return {
-            challenges: null,
-            stats: null,
-            results: null
+            challenges: ChallengeStore.getAllChallenges()
+        }
+    },
+    componentWillMount: function() {
+        UserStore.addChangeListener(this._onUserChange);
+        ChallengeStore.addRequestListener(this._onChallengeChange);
+        ChallengeStore.addChangeListener(this._onChallengeChange);
+    },
+    componentDidMount: function() {
+        ChallengeStore.initChallenges(this.getUserId());
+        UserStore.getAllFromServer()
+    },
+    componentWillUnmount: function() {
+        UserStore.removeChangeListener(this._onUserChange);
+        ChallengeStore.removeChangeListener(this._onChallengeChange);
+        ChallengeStore.removeRequestListener(this._onChallengeChange);
+    },
+    _onUserChange: function() {
+        this.forceUpdate();
+    },
+    _onChallengeChange: function() {
+        this.setState(
+            {challenges: ChallengeStore.getAllChallenges()}
+        );
+    },
+    render: function () {
+        return (
+            <div>
+                <HomeNav challenges={this.state.challenges}/>
+                <RouteHandler />
+            </div>
+        );
+    }
+});
+
+var HomeNav = React.createClass({
+    mixins: [DataFactory],
+    render: function() {
+        var counter =  this.props.challenges[ChallengeStatus.SENT].length
+            +
+            this.props.challenges[ChallengeStatus.PENDING].length
+            +
+            this.props.challenges[ChallengeStatus.NOTIFY].length
+            +
+            this.props.challenges[ChallengeStatus.ACCEPTED].length;
+
+        var indicator = (<i className='fa fa-fighter-jet'><Badge>{counter}</Badge></i>);
+        //<NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} eventKey={"challenge"} >{indicator}</NavItemLink>
+        if (this.getUserId() == undefined || this.getUserId() == 0) {
+            return null;
+        }
+        var header = (
+            <div>
+                <Glyphicon glyph='cog' />
+                Challenges
+                <Badge>{counter}</Badge>
+            </div>
+        );
+        var status = (
+            <div>
+                <Glyphicon glyph='alert' />
+                Pending
+                <Badge>{this.props.challenges[ChallengeStatus.PENDING].length}</Badge>
+                <Glyphicon glyph='calendar' />
+                Scheduled
+                <Badge>{this.props.challenges[ChallengeStatus.ACCEPTED].length}</Badge>
+                <Glyphicon glyph='ok' />
+                Sent
+                <Badge>{this.props.challenges[ChallengeStatus.SENT].length}</Badge>
+            </div>
+        );
+        return (
+                <Nav>
+                    <ButtonGroup vertical className="col-lg-2 col-xs-12" role="group" aria-label="...">
+                        <Button className={'active'}>
+                            <Link to='home' params={{userId: this.getUserId()}}>
+                                <Glyphicon glyph='home' />
+                                {' ' + UserStore.get(this.getUserId()).name}
+                            </Link>
+                        </Button>
+                        <Accordion >
+                            <Panel header={header} eventKey='1' >
+                                {status}
+                            </Panel>
+                        </Accordion>
+                    </ButtonGroup>
+                </Nav>
+        );
+    }
+});
+
+//                        <div className="btn-group dropdown">
+/*
+ <a type="button" className="btn btn-default"  aria-expanded="false">
+ <span className="glyphicon glyphicon-cog" aria-hidden="true"></span>
+ Pending
+ <Badge>{counter}</Badge>
+ </a>
+
+    getInitialState: function() {
+        return {
+            challenges: ChallengeStore.getAllChallenges()
         }
     },
     componentWillMount: function() {
         ChallengeStore.addRequestListener(this._onChallengeChange);
         ChallengeStore.addChangeListener(this._onChallengeChange);
-        StatStore.addChangeListener(this._onStatsChange);
         UserStore.addChangeListener(this._onUserChange);
-
-    },
-    componentDidMount: function() {
-        this.setState({stats:StatStore.getStats(this.getUserId())});
     },
     componentWillUnmount: function() {
         ChallengeStore.removeChangeListener(this._onChallengeChange);
         ChallengeStore.removeRequestListener(this._onChallengeChange);
-        StatStore.removeChangeListener(this._onStatsChange);
         UserStore.removeChangeListener(this._onUserChange);
     },
-    _onStatsChange: function(){
-        this.setState({stats: StatStore.getStats(this.getUserId())});
-    },
+
     _onChallengeChange: function() {
         this.setState(
             {challenges: ChallengeStore.getAllChallenges()}
@@ -57,57 +148,5 @@ var Home = React.createClass({
     },
     _onUserChange: function() {
     },
-    getNotifications: function() {
-        return (<p> Click  <Link to={ChallengeStatus.NOTIFY.toLowerCase()} params={{userId: this.getUserId()}}>Here</Link> to Challenge Someone</p>);_
-        /*
-        var counter = 0;
-        for(var status in ChallengeStatus) {
-            if (status == ChallengeStatus.CANCELLED
-                || (ChallengeStore.getChallenges(status) == undefined)) {
-                continue;
-            }
-            counter += ChallengeStore.getChallenges(status).length;
-        }
-        if (counter == 0) {
-            return null;
-        }
-        var notifications = {};
-        for(var status in ChallengeStatus) {
-            if (status == ChallengeStatus.CANCELLED
-                || (ChallengeStore.getChallenges(status) == undefined)) {
-
-            }
-
-            var c = ChallengeStore.getChallenges(status);
-            if (c.length > 0) {
-                notifications[status] = (<Badge key={status}>{c.length}</Badge>);
-            }
-        }
-        return (<p>
-            You have {notifications[ChallengeStatus.NOTIFY]}
-
-            {notifications[ChallengeStatus.ACCEPTED]}
-            <Link to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}}>scheduled</Link> matches,
-            {notifications[ChallengeStatus.PENDING]}
-            <Link to={ChallengeStatus.PENDING.toLowerCase()} params={{userId: this.getUserId()}}>pending</Link> requests,
-            and you sent
-            {notifications[ChallengeStatus.SENT]}
-            <Link to={ChallengeStatus.SENT.toLowerCase()} params={{userId: this.getUserId()}}>challenges</Link>
-        </p>);
-        */
-    },
-    render: function () {
-        return (
-            <div>
-                <h3>Welcome! {UserStore.getName(this.getUserId())}</h3>
-                {this.getNotifications()}
-                <StatsDisplay stats={this.state.stats}/>
-                <Panel collapsable defaultExpanded  header={'Leaders'}>
-                    <LeaderBoard stats={StatStore.get()} />
-                </Panel>
-            </div>
-        );
-    }
-});
-
-module.exports = Home;
+ */
+module.exports = HomeApp;
