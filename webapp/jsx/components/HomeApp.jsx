@@ -138,36 +138,4 @@ var HomeNav = React.createClass({
     }
 });
 
-//                        <div className="btn-group dropdown">
-/*
- <a type="button" className="btn btn-default"  aria-expanded="false">
- <span className="glyphicon glyphicon-cog" aria-hidden="true"></span>
- Pending
- <Badge>{counter}</Badge>
- </a>
-
-    getInitialState: function() {
-        return {
-            challenges: ChallengeStore.getAllChallenges()
-        }
-    },
-    componentWillMount: function() {
-        ChallengeStore.addRequestListener(this._onChallengeChange);
-        ChallengeStore.addChangeListener(this._onChallengeChange);
-        UserStore.addChangeListener(this._onUserChange);
-    },
-    componentWillUnmount: function() {
-        ChallengeStore.removeChangeListener(this._onChallengeChange);
-        ChallengeStore.removeRequestListener(this._onChallengeChange);
-        UserStore.removeChangeListener(this._onUserChange);
-    },
-
-    _onChallengeChange: function() {
-        this.setState(
-            {challenges: ChallengeStore.getAllChallenges()}
-        );
-    },
-    _onUserChange: function() {
-    },
- */
 module.exports = HomeApp;
