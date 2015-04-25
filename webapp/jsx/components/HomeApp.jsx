@@ -16,6 +16,9 @@ var Bootstrap = require('react-bootstrap')
     ,Accordion = Bootstrap.Accordion
     ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
+var ReactRouterBootstrap = require('react-router-bootstrap')
+    ,NavItemLink = ReactRouterBootstrap.NavItemLink
+    ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
 var UserStore = require('../stores/UserStore.jsx');
@@ -64,13 +67,14 @@ var HomeApp = React.createClass({
 var HomeNav = React.createClass({
     mixins: [DataFactory],
     render: function() {
-        var counter =  this.props.challenges[ChallengeStatus.SENT].length
+        var c = this.props.challenges;
+        var counter =  c[ChallengeStatus.SENT].length
             +
-            this.props.challenges[ChallengeStatus.PENDING].length
+            c[ChallengeStatus.PENDING].length
             +
-            this.props.challenges[ChallengeStatus.NOTIFY].length
+            c[ChallengeStatus.NOTIFY].length
             +
-            this.props.challenges[ChallengeStatus.ACCEPTED].length;
+            c[ChallengeStatus.ACCEPTED].length;
 
         var indicator = (<i className='fa fa-fighter-jet'><Badge>{counter}</Badge></i>);
         //<NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} eventKey={"challenge"} >{indicator}</NavItemLink>
@@ -86,15 +90,27 @@ var HomeNav = React.createClass({
         );
         var status = (
             <div>
-                <Glyphicon glyph='alert' />
-                Pending
-                <Badge>{this.props.challenges[ChallengeStatus.PENDING].length}</Badge>
-                <Glyphicon glyph='calendar' />
-                Scheduled
-                <Badge>{this.props.challenges[ChallengeStatus.ACCEPTED].length}</Badge>
-                <Glyphicon glyph='ok' />
-                Sent
-                <Badge>{this.props.challenges[ChallengeStatus.SENT].length}</Badge>
+                 <MenuItemLink className='challengeStatus pendingNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
+                        <Glyphicon glyph='alert' />
+                        Scheduled
+                        <Badge>
+                            {c[ChallengeStatus.PENDING].length}
+                        </Badge>
+                 </MenuItemLink>
+                <MenuItemLink className='challengeStatus acceptedNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
+                        <Glyphicon glyph='calendar' />
+                        Scheduled
+                        <Badge>
+                            {c[ChallengeStatus.ACCEPTED].length}
+                        </Badge>
+                    </MenuItemLink>
+                  <MenuItemLink className='challengeStatus sentNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
+                        <Glyphicon glyph='ok' />
+                        Scheduled
+                        <Badge>
+                            {c[ChallengeStatus.SENT].length}
+                        </Badge>
+                    </MenuItemLink>
             </div>
         );
         return (
@@ -106,11 +122,16 @@ var HomeNav = React.createClass({
                                 {' ' + UserStore.get(this.getUserId()).name}
                             </Link>
                         </Button>
-                        <Accordion >
+                        <Accordion className='challengePanel' style={{marginBottom: '0px'}}>
                             <Panel header={header} eventKey='1' >
                                 {status}
                             </Panel>
                         </Accordion>
+                         <Button>
+                             <Link className='statsNav' to='stats' params={{userId: this.getUserId()}}>
+                                <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
+                            </Link>
+                         </Button>
                     </ButtonGroup>
                 </Nav>
         );
