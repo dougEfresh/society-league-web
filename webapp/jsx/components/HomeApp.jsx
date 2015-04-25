@@ -76,8 +76,6 @@ var HomeNav = React.createClass({
             +
             c[ChallengeStatus.ACCEPTED].length;
 
-        var indicator = (<i className='fa fa-fighter-jet'><Badge>{counter}</Badge></i>);
-        //<NavItemLink to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} eventKey={"challenge"} >{indicator}</NavItemLink>
         if (this.getUserId() == undefined || this.getUserId() == 0) {
             return null;
         }
@@ -90,26 +88,30 @@ var HomeNav = React.createClass({
         );
         var status = (
             <div>
-                 <MenuItemLink className='challengeStatus pendingNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
+                 <MenuItemLink className='challengeStatus pendingNav' to={ChallengeStatus.PENDING.toLowerCase()} params={{userId: this.getUserId()}} >
                         <Glyphicon glyph='alert' />
-                        Scheduled
+                        Pending
                         <Badge>
                             {c[ChallengeStatus.PENDING].length}
                         </Badge>
                  </MenuItemLink>
                 <MenuItemLink className='challengeStatus acceptedNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
                         <Glyphicon glyph='calendar' />
-                        Scheduled
+                        Accepted
                         <Badge>
                             {c[ChallengeStatus.ACCEPTED].length}
                         </Badge>
                     </MenuItemLink>
-                  <MenuItemLink className='challengeStatus sentNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
+                  <MenuItemLink className='challengeStatus sentNav' to={ChallengeStatus.SENT.toLowerCase()} params={{userId: this.getUserId()}} >
                         <Glyphicon glyph='ok' />
-                        Scheduled
+                        Sent
                         <Badge>
                             {c[ChallengeStatus.SENT].length}
                         </Badge>
+                    </MenuItemLink>
+                <MenuItemLink className='challengeStatus requestNav' to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} >
+                        <Glyphicon glyph='flash' />
+                        Request
                     </MenuItemLink>
             </div>
         );
