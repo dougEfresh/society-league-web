@@ -22,11 +22,11 @@ var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
-var StatStore = require('../../stores/StatsStore.jsx');
 var DataFactory = require('./../../DataFactoryMixin.jsx');
+var LeagueNav = require('./LeagueNav.jsx');
 
 
-var Navigator = React.createClass({
+var SocietyNav = React.createClass({
     mixins: [DataFactory],
     renderLoginNav: function() {
         var homeLink = (<Link className="logo" to='home' params={{userId: this.getUserId()}}></Link>);
@@ -55,14 +55,10 @@ var Navigator = React.createClass({
                         {this.renderLoginNav()}
                     </div>
                 </div>
-                <div className="container" style={{'maxWidth': '1000px',padding: '0px 0px'}} >
-                    <div className="account-wrapper">
-                        <RouteHandler />
-                    </div>
-                </div>
+                <LeagueNav />
             </div>
         );
     }
 });
 
-module.exports = Navigator;
+module.exports = SocietyNav;

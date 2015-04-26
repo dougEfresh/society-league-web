@@ -29,17 +29,9 @@ function defaultRequest() {
         anySlot: false
     };
 }
-
-var _challenges = {};
-_challenges[ChallengeStatus.PENDING] = [];
-_challenges[ChallengeStatus.NOTIFY] = [];
-_challenges[ChallengeStatus.CANCELLED] = [];
-_challenges[ChallengeStatus.SENT] = [];
-_challenges[ChallengeStatus.ACCEPTED] = [];
-
 var _request = defaultRequest();
 
-var ChallengeStore = assign({}, EventEmitter.prototype, {
+var RequestStore = assign({}, EventEmitter.prototype, {
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -102,7 +94,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
                     s.selected = false;
                 });
                 _request.game = defaultGame();
-                ChallengeStore.emitAdd();
+                RequestStore.emitAdd();
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('/api/challenge/request', status, err.toString());
@@ -132,7 +124,7 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
                     s.selected = false;
                 });
                 _request.slots = d;
-                ChallengeStore.emitChange();
+                RequestStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('slots', status, err.toString());
@@ -149,63 +141,28 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
         })
     },
 
-    getAllChallenges: function() {
-        return _challenges;
+    setOpponent: function(opponent) {
+        _request.opponent = opponent;
+        var g = defaultGame();
+        //TODO FIX ME
+        //if (opponent.nineBallPlayer) {
+            g.nine.available = true;
+        //}
+        //if (opponent.eightBallPlayer) {
+            g.eight.available = true;
+        //}
+        _request.game = g;
     },
 
-    getChallenges: function(type) {
-        return _challenges[type];
+    setGame: function(game) {
+        _request.game.nine.selected  = game.nine.selected;
+        _request.game.eight.selected = game.eight.selected;
     },
 
-    initChallenges: function(userId) {
-        console.log("Getting data from " + window.location.origin + '/api/challenge/' + userId);
-         $.ajax({
-            url: '/api/challenge/' + userId,
-            dataType: 'json',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                }.bind(this)
-            },
-            success: function (d) {
-                this._processChallenges(d);
-                ChallengeStore.emitChange();
-                //ChallengeGroupStore.emitChange();
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('slots', status, err.toString());
-                console.log('Redirecting to error');
-                //this.redirect('error');
-            }.bind(this)
-        });
+    get: function() {
+        return _request;
     },
-
-    setChallenges: function(challenges) {
-        this._processChallenges(challenges);
-    },
-
-    _processChallenges: function(challenges) {
-        // Set the selected game and slot to a default value
-        _challenges = challenges;
-        for (var t in _challenges) {
-            _challenges[t].forEach(function(group) {
-                //Set the Seleted Game
-                var game =  group.selectedGame == undefined ? null : group.selectedGame;
-                var slot = group.selectedSlot == null ||  group.selectedSlot == undefined ? 0 : group.selectedSlot;
-                var anyTime = group.anyTime == null ||  group.anyTime == undefined ? false : group.anyTime;
-                if (group.games.length == 1) {
-                    game = group.games[0];
-                }
-                if (group.slots.length == 1) {
-                    slot = group.slots[0].id;
-                }
-                group.selectedGame = game;
-                group.selectedSlot = slot;
-                group.anyTime = anyTime;
-            });
-        }
-    },
-
+    
     changeSlotStatus: function(slot) {
         _request.slots.forEach(function(s) {
             if (s.id == slot.id) {
@@ -219,55 +176,36 @@ var ChallengeStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
      switch(action.actionType) {
          case ChallengeConstants.DATE_CHANGE:
-             ChallengeStore.changeDate(action.date);
-             ChallengeStore.emitChange();
-             break;
-
-         case ChallengeConstants.CHALLENGE_SLOTS_ADD:
-             ChallengeStore.addSlots(action.slots);
-             ChallengeStore.emitChange();
-             break;
-
-         case ChallengeConstants.CHALLENGE_SLOTS_REMOVE:
-             ChallengeStore.removeSlot(action.slot);
-             ChallengeStore.emitChange();
+             RequestStore.changeDate(action.date);
+             RequestStore.emitChange();
              break;
 
          case ChallengeConstants.OPPONENT_CHANGE:
-             ChallengeStore.setOpponent(action.opponent);
-             ChallengeStore.emitChange();
+             RequestStore.setOpponent(action.opponent);
+             RequestStore.emitChange();
              break;
 
          case ChallengeConstants.CHALLENGE_GAME_CHANGE:
-             ChallengeStore.setGame(action.game);
-             ChallengeStore.emitChange();
+             RequestStore.setGame(action.game);
+             RequestStore.emitChange();
              break;
 
          case ChallengeConstants.CREATE:
-             ChallengeStore.newChallenge(action.request);
+             RequestStore.newChallenge(action.request);
              break;
 
          case ChallengeConstants.SLOT_CHANGE:
-             ChallengeStore.changeSlotStatus(action.slot);
-             ChallengeStore.emitChange();
+             RequestStore.changeSlotStatus(action.slot);
+             RequestStore.emitChange();
              break;
 
          case ChallengeConstants.SLOT_ANY:
-             ChallengeStore.anySlot(action.anySlot,action.slots);
-             ChallengeStore.emitChange();
-             break;
-
-         case ChallengeConstants.SET_CHALLENGES:
-             ChallengeStore.setChallenges(action.challenges);
-             ChallengeStore.emitChange();
-             break;
-
-          case ChallengeConstants.CHALLENGES:
-             ChallengeStore.initChallenges(action.userId);
+             RequestStore.anySlot(action.anySlot,action.slots);
+             RequestStore.emitChange();
              break;
 
          default:
      }
 });
 
-module.exports = ChallengeStore;
+module.exports = RequestStore;

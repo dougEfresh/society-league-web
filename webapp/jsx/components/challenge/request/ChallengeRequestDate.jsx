@@ -1,6 +1,6 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
+var RequestActions = require('../../../actions/RequestActions.jsx');
 var DataFactory  = require('../../../DataFactoryMixin.jsx');
 var Util  = require('../../../util.jsx');
 var Bootstrap = require('react-bootstrap')
@@ -9,10 +9,6 @@ var moment = require('moment');
 
 var ChallengeRequestDate = React.createClass({
     mixins: [DataFactory],
-    propTypes: {
-        date: ReactPropTypes.string.isRequired
-    },
-
     getOptions: function(){
         var nextChallengeDate = Util.nextChallengeDate();
         var dates = [];
@@ -40,10 +36,10 @@ var ChallengeRequestDate = React.createClass({
 
     componentDidMount: function() {
         //Init the date
-        ChallengeActions.changeDate(Util.nextChallengeDate());
+        RequestActions.changeDate(Util.nextChallengeDate());
     },
     onChange: function() {
-        ChallengeActions.changeDate(this.refs.date.getValue());
+        RequestActions.changeDate(this.refs.date.getValue());
     },
     render: function() {
         if (this.props.date)

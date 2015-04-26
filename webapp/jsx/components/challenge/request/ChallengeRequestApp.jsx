@@ -11,7 +11,7 @@ var Bootstrap = require('react-bootstrap')
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 
-var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
+var RequestStore = require('../../../stores/RequestStore.jsx');
 var ChallengeGroupStore = require('../../../stores/ChallengeGroupStore.jsx');
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
@@ -30,27 +30,25 @@ var ChallengeRequestApp = React.createClass({
         return {
             isModalOpen: false,
             submitted: false,
-            challenge: ChallengeStore.get()
+            challenge: RequestStore.get()
         };
     },
     componentWillMount: function() {
-        ChallengeStore.addChangeListener(this._onChange);
-        ChallengeStore.addRequestListener(this._onAdd);
+        RequestStore.addChangeListener(this._onChange);
+        RequestStore.addRequestListener(this._onAdd);
     },
     componentWillUnmount: function() {
-        ChallengeStore.removeChangeListener(this._onChange);
-        ChallengeStore.removeRequestListener(this._onAdd);
+        RequestStore.removeChangeListener(this._onChange);
+        RequestStore.removeRequestListener(this._onAdd);
     },
     _onAdd: function() {
         console.log('onAdd ');
-        this.setState({
-            submitted: true,
-            challenge:  ChallengeStore.get()
-        });
+        this.state.submitted = true;
+        this.state.challenge = RequestStore.get();
         ChallengeActions.newChallenge();
     },
     _onChange: function() {
-        this.setState({challenge: ChallengeStore.get()});
+        this.setState({challenge: RequestStore.get()});
     },
     getErrors: function() {
         var errors = [];
@@ -116,7 +114,7 @@ var ChallengeRequestApp = React.createClass({
         }
         var c = this.state.challenge;
         var msg = 'Send request to '
-            + UserStore.getName(c.opponent.user.id) + ' for' +
+            + UserStore.get(c.opponent.user.id).name + ' for' +
             ' a match on ' + c.date ;
         var title = 'Notify Opponent?';
         if (this.state.submitted) {

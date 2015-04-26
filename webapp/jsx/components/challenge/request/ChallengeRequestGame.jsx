@@ -10,19 +10,12 @@ var Bootstrap = require('react-bootstrap')
     ,SplitButton = Bootstrap.SplitButton;
 var BallIcon = require('../../../BallMixin.jsx');
 
-var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
+var RequestActions = require('../../../actions/RequestActions.jsx');
 
 var ChallengeRequestGame = React.createClass({
     mixins: [BallIcon],
     propTypes: {
         game: ReactPropTypes.object.isRequired
-    },
-    update: function(props) {
-    },
-    componentWillReceiveProps: function(props) {
-      // console.log(JSON.stringify(props));
-    },
-    componentDidMount: function() {
     },
     onChange: function() {
         var g = this.props.game;
@@ -30,7 +23,7 @@ var ChallengeRequestGame = React.createClass({
                 g[type].selected = this.refs[type] ? this.refs[type].getChecked() : false;
             }.bind(this)
         );
-        ChallengeActions.setGame(g);
+        RequestActions.setGame(g);
     },
     getLabel: function(type) {
         return (<Badge>{type == 'nine' ? '9' : '8'}</Badge>);
@@ -56,7 +49,7 @@ var ChallengeRequestGame = React.createClass({
         var type = e.target.textContent == '9' ? 'nine' : 'eight';
         var g = this.props.game;
         g[type].selected = !g[type].selected;
-        ChallengeActions.setGame(g);
+        RequestActions.setGame(g);
     },
     render: function() {
         var g = this.props.game;
@@ -64,10 +57,9 @@ var ChallengeRequestGame = React.createClass({
             return null;
         }
 
-        var eight = this.getEightButton(g.eight.selected); //g.eight.selected ? (<i className="fa fa-check">8</i>) :  (<i className="fa fa-times">8</i>);
-        var nine = this.getNineButton(g.nine.selected); //g.nine.selected ? (<i className="fa fa-check">9</i>) :  (<i className="fa fa-times">9</i>);
-        //<Button bsStyle={g.eight.selected ? 'success' : 'default'}  onClick={this.onSelect}>{eight}</Button>
-        //<Button bsStyle={g.nine.selected  ? 'success' : 'default'}  onClick={this.onSelect}>{nine}</Button>
+        var eight = this.getEightButton(g.eight.selected);
+        var nine = this.getNineButton(g.nine.selected);
+
         return (
             <div >
                 {eight}

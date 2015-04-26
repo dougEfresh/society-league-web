@@ -4,8 +4,8 @@ var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;
 
 var DataFactory = require('../../../DataFactoryMixin.jsx');
-var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
-var StatStore = require('../../../stores/StatsStore.jsx');
+var RequestActions = require('../../../actions/RequestActions.jsx');
+
 
 var ChallengeRequestOpponent = React.createClass({
     mixins: [DataFactory],
@@ -25,7 +25,7 @@ var ChallengeRequestOpponent = React.createClass({
             opponent : {user: {id:0}}
         }
     },
-    update: function(props) {
+    update: function() {
         this.getData('/api/challenge/potentials/' + this.getUserId(), function (potentials) {
             this.setState({potentials: potentials});
         }.bind(this));
@@ -34,7 +34,7 @@ var ChallengeRequestOpponent = React.createClass({
        if (props.userId == this.props.userId) {
            return;
        }
-        this.update(props);
+        this.update();
     },
     componentDidMount: function() {
         this.update(this.props);
@@ -42,7 +42,7 @@ var ChallengeRequestOpponent = React.createClass({
     onChange: function(e) {
         this.state.potentials.forEach(function(p) {
             if (p.user.id == e.target.value) {
-                ChallengeActions.setOpponent(
+                RequestActions.setOpponent(
                     p
                 );
             }

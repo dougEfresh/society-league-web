@@ -142,7 +142,10 @@ var ChallengeApp = React.createClass({
         this.genNav(ChallengeStatus.PENDING,tabs);
         this.genNav(ChallengeStatus.ACCEPTED,tabs);
         this.genNav(ChallengeStatus.SENT,tabs);
+        return null;
+        /*
         return (
+
             <div>
                 <Nav bsStyle='pills' activeKey={this.state.activeKey} onSelect={this.onSelect}>
                     {tabs}
@@ -150,6 +153,7 @@ var ChallengeApp = React.createClass({
                 {this.getApp()}
             </div>
         );
+        */
     }
 });
 

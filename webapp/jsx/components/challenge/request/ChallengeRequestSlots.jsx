@@ -15,14 +15,6 @@ var ChallengeRequestSlots = React.createClass({
         slots: ReactPropTypes.array.isRequired,
         any:  ReactPropTypes.bool.isRequired
     },
-    onChange: function() {
-        var slots = [];
-        this.refs.slots.getValue().forEach(function(s) {
-                slots.push(this.state.available[s]);
-            }.bind(this)
-        );
-        ChallengeActions.addSlots(slots);
-    },
     getOptions: function() {
         var options = [];
         for (var key in this.state.available) {
