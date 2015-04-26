@@ -2,7 +2,12 @@
 /* CSS Document */
 
 .nineBall {
-	background-color: yellow;
+	background-color: yellow; !important;
+}
+
+.panel-default>.panel-heading .badge {
+  color: #f5f5f5;
+  background-color: #9c302d;
 }
 
 body {

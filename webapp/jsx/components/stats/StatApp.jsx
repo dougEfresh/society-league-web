@@ -36,6 +36,7 @@ var StatApp = React.createClass({
         StatStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
+
         this.setState(
             {
                 userId: this.getUserId(),
@@ -79,7 +80,7 @@ var StatApp = React.createClass({
         }
         return (
             <div>
-                <h3>Stats for {UserStore.getName(this.state.viewing.id)}</h3>
+                <h3>Stats for {UserStore.get(this.state.viewing.id).name}</h3>
                 <Input type='select' value={this.state.viewing.id} ref='viewer' label={'Switch View'}
                        onChange={this.onSelect} >{this.getOptions()}
                 </Input>

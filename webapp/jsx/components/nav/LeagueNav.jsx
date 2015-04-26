@@ -25,6 +25,7 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
+var StatsStore = require('../../stores/StatsStore.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var DataFactory = require('../../DataFactoryMixin.jsx');
 
@@ -39,10 +40,11 @@ var LeagueNav = React.createClass({
         UserStore.addChangeListener(this._onUserChange);
         ChallengeStore.addRequestListener(this._onChallengeChange);
         ChallengeStore.addChangeListener(this._onChallengeChange);
+        StatsStore.getFromServer();
     },
     componentDidMount: function() {
         ChallengeStore.initChallenges(this.getUserId());
-        UserStore.getAllFromServer()
+        UserStore.getAllFromServer();
     },
     componentWillUnmount: function() {
         UserStore.removeChangeListener(this._onUserChange);
@@ -89,7 +91,7 @@ var HomeNav = React.createClass({
             </div>
         );
         var status = (
-            <div>
+            <div className="challengeStatusMenu">
                  <MenuItemLink className='challengeStatus pendingNav' to={ChallengeStatus.PENDING.toLowerCase()} params={{userId: this.getUserId()}} >
                         <Glyphicon glyph='alert' />
                         Pending
@@ -132,7 +134,7 @@ var HomeNav = React.createClass({
                                     </Link>
                                 </Button>
                                 <Accordion className='challengeNav' style={{marginBottom: '0px'}}>
-                                    <Panel header={header} eventKey='1' >
+                                    <Panel className='challengeStatus' header={header} eventKey='1' >
                                         {status}
                                     </Panel>
                                 </Accordion>

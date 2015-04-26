@@ -10,8 +10,7 @@ var ChallengeStatus = require('./constants/ChallengeStatus.jsx');
 var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
 
 var ChallengeRequestApp = require('./components/challenge/request/ChallengeRequestApp.jsx');
-var ChallengeNotifyApp = require('./components/challenge/notify/ChallengeNotifyApp.jsx');
-var ChallengeApprovalApp = require('./components/challenge/pending/ChallengePendingApp.jsx');
+var ChallengePendingApp = require('./components/challenge/pending/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('./components/challenge/approved/ChallengeApprovedApp.jsx');
 var ChallengeSentApp = require('./components/challenge/sent/ChallengeSentApp.jsx');
 
@@ -55,13 +54,10 @@ var routes = (
             <Route name="admin" path="admin" handler={AdminApp}/>
             <Route name="stats" path="stats"  handler={StatApp}/>
             <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={'challenge/' + ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
-            <Route name="challenge" path="challenge" handler={ChallengeRequestApp}>
-                <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengeApp}/>
-                <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeApp}/>
-                <Route name={ChallengeStatus.NOTIFY.toLowerCase()} path={ChallengeStatus.NOTIFY.toLowerCase()} handler={ChallengeApp}/>
-                <Route name={ChallengeStatus.SENT.toLowerCase()} path={ChallengeStatus.SENT.toLowerCase()} handler={ChallengeApp}/>
-                <Route name={ChallengeStatus.CANCELLED.toLowerCase()} path={ChallengeStatus.CANCELLED.toLowerCase()} handler={ChallengeApp}/>
-            </Route>
+            <Route name={ChallengeStatus.PENDING.toLowerCase()} path={'challenge/' + ChallengeStatus.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
+            <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={'challenge/' + ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>
+            <Route name={ChallengeStatus.SENT.toLowerCase()} path={'challenge/' + ChallengeStatus.SENT.toLowerCase()} handler={ChallengeSentApp}/>
+            <Route name={ChallengeStatus.CANCELLED.toLowerCase()} path={'challenge/' + ChallengeStatus.CANCELLED.toLowerCase()} handler={ChallengeApp}/>
         </Route>
     </Route>
 );

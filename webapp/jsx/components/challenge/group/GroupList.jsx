@@ -33,7 +33,7 @@ var GroupList = React.createClass({
               );
           }.bind(this));
           return (
-              <Table striped bordered condensed hover>
+              <Table striped >
                   <thead>
                   <tr>
                       <th>Action</th>
