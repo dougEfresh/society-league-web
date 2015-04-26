@@ -61,7 +61,6 @@ var LeagueNav = React.createClass({
         return (
             <div>
                 <HomeNav challenges={this.state.challenges}/>
-                <RouteHandler />
             </div>
         );
     }
