@@ -76,8 +76,6 @@ var HomeNav = React.createClass({
             +
             c[ChallengeStatus.PENDING].length
             +
-            c[ChallengeStatus.NOTIFY].length
-            +
             c[ChallengeStatus.ACCEPTED].length;
 
         if (this.getUserId() == undefined || this.getUserId() == 0) {
@@ -128,7 +126,7 @@ var HomeNav = React.createClass({
                               <Nav>
                                   <ButtonGroup vertical className="homeNav" role="group" aria-label="...">
                                       <Button className={'active'}>
-                                    <Link to='home' params={{userId: this.getUserId()}}>
+                                    <Link className='navName' to='home' params={{userId: this.getUserId()}}>
                                         <Glyphicon glyph='home' />
                                         {' ' + UserStore.get(this.getUserId()).name}
                                     </Link>

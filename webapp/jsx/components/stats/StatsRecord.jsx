@@ -74,7 +74,7 @@ var StatsRecord = React.createClass({
         );
 
         return (
-         <Table striped bordered condensed hover>
+         <Table className="recordTable" striped >
                   <thead>
                   <tr>
                       <th>Game</th>

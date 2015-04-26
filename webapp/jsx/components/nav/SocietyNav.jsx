@@ -24,6 +24,7 @@ var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var DataFactory = require('./../../DataFactoryMixin.jsx');
 var LeagueNav = require('./LeagueNav.jsx');
+var LoginApp = require('../LoginApp.jsx');
 
 
 var SocietyNav = React.createClass({
@@ -48,6 +49,18 @@ var SocietyNav = React.createClass({
         );
     },
     render: function() {
+        if (this.getUserId() == 0) {
+            return (
+                <div>
+                    <div className="navbar-wrapper">
+                        <div className="container">
+                            {this.renderLoginNav()}
+                        </div>
+                    </div>
+                    <LoginApp />
+                </div>
+            )
+        }
         return (
             <div>
                 <div className="navbar-wrapper">
