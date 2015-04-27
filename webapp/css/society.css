@@ -26,12 +26,15 @@
 .challengeStatus li {
     color: black; !important;
 }
-
 .challengeStatus a {
-    color: black;
+	color: black;
 }
 
-.challengeStatus .active {
+.challengeStatusMenu a .active {
+	color: whitesmoke; !important;
+}
+
+.challengeStatusMenu .active {
     color: whitesmoke; !important;
     background-color: black; !important;
 }

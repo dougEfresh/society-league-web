@@ -44,11 +44,11 @@ var RouteNotFound = React.createClass({
 var routes = (
     <Route handler={App}>
         <NotFoundRoute handler={RouteNotFound}/>
-        <DefaultRoute handler={LoginApp} />
+        <DefaultRoute handler={NavApp} />
+        <Route name="login" path="login" handler={LoginApp} />
         <Route name="error" path="error" handler={ErrorApp} />
         <Route name="logout" path="logout" handler={LogoutApp} />
         <Route name="nav" path="/app/:userId" handler={NavApp}>
-            <Route name="login" path="login" handler={LoginApp} />
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>

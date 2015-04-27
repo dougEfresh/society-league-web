@@ -7,7 +7,12 @@ var DataFactory = {
         router: React.PropTypes.func
     },
     getUserId: function() {
-        return parseInt(this.context.router.getCurrentParams().userId);
+
+        var id =  parseInt(this.context.router.getCurrentParams().userId);
+        if (id == undefined || isNaN(id))
+            return 0;
+
+        return id;
     },
     redirect: function (to,params) {
         this.context.router.transitionTo(to,params,{from: this.context.router.getCurrentPath()});

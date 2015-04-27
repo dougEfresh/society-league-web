@@ -49,26 +49,12 @@ var SocietyNav = React.createClass({
         );
     },
     render: function() {
-        if (this.getUserId() == 0) {
-            return (
-                <div>
-                    <div className="navbar-wrapper">
-                        <div className="container">
-                            {this.renderLoginNav()}
-                        </div>
-                    </div>
-                    <LoginApp />
-                </div>
-            )
-        }
+
         return (
-            <div>
-                <div className="navbar-wrapper">
-                    <div className="container">
-                        {this.renderLoginNav()}
-                    </div>
+            <div className="navbar-wrapper">
+                <div className="container">
+                    {this.renderLoginNav()}
                 </div>
-                <LeagueNav />
             </div>
         );
     }

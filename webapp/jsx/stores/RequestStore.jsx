@@ -87,7 +87,6 @@ var RequestStore = assign({}, EventEmitter.prototype, {
                 }
             },
             success: function (d) {
-                _challenges = d;
                 _request.opponent = defaultOpponent();
                 _request.anySlot = false;
                 _request.slots.forEach(function(s) {

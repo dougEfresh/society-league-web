@@ -42,10 +42,12 @@ var ChallengeRequestApp = React.createClass({
         RequestStore.removeRequestListener(this._onAdd);
     },
     _onAdd: function() {
-        console.log('onAdd ');
-        this.state.submitted = true;
-        this.state.challenge = RequestStore.get();
-        ChallengeActions.newChallenge();
+        console.log('onAdd');
+        this.setState({
+            submitted : true,
+            challenges: RequestStore.get()
+        });
+        ChallengeActions.initChallenges(this.getUserId());
     },
     _onChange: function() {
         this.setState({challenge: RequestStore.get()});

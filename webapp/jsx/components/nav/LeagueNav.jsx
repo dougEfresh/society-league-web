@@ -90,33 +90,35 @@ var HomeNav = React.createClass({
         );
         var status = (
             <div className="challengeStatusMenu">
-                 <MenuItemLink className='challengeStatus pendingNav' to={ChallengeStatus.PENDING.toLowerCase()} params={{userId: this.getUserId()}} >
+                 <MenuItemLink className='pendingNav' to={ChallengeStatus.PENDING.toLowerCase()} params={{userId: this.getUserId()}} >
                         <Glyphicon glyph='alert' />
                         Pending
                         <Badge>
                             {c[ChallengeStatus.PENDING].length}
                         </Badge>
                  </MenuItemLink>
-                <MenuItemLink className='challengeStatus acceptedNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
+                <MenuItemLink className='acceptedNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
                         <Glyphicon glyph='calendar' />
                         Accepted
                         <Badge>
                             {c[ChallengeStatus.ACCEPTED].length}
                         </Badge>
                     </MenuItemLink>
-                  <MenuItemLink className='challengeStatus sentNav' to={ChallengeStatus.SENT.toLowerCase()} params={{userId: this.getUserId()}} >
+                  <MenuItemLink className='sentNav' to={ChallengeStatus.SENT.toLowerCase()} params={{userId: this.getUserId()}} >
                         <Glyphicon glyph='ok' />
                         Sent
                         <Badge>
                             {c[ChallengeStatus.SENT].length}
                         </Badge>
                     </MenuItemLink>
-                <MenuItemLink className='challengeStatus requestNav' to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} >
+                <MenuItemLink className='requestNav' to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} >
                         <Glyphicon glyph='flash' />
                         Request
                     </MenuItemLink>
             </div>
         );
+        var teamHeader = (<i className="fa fa-users">Teams</i>);
+        var standings = (<i className='fa fa-trophy'>Standings</i>);
         return (
             <div className="container" style={{'maxWidth': '1000px',padding: '0px 0px'}} >
                 <div className="account-wrapper">
@@ -136,6 +138,18 @@ var HomeNav = React.createClass({
                                         {status}
                                     </Panel>
                                 </Accordion>
+                                      <Accordion className='teamNav' style={{marginBottom: '0px'}}>
+                                          <Panel className='teamListNav' header={teamHeader} eventKey='1' >
+                                              My team 1
+                                              My team 2
+                                          </Panel>
+                                </Accordion>
+                                      <Accordion className='standingsNav' style={{marginBottom: '0px'}}>
+                                          <Panel className='standingList' header={standings} eventKey='1' >
+                                              <span>Eight Ball</span>
+                                              <span>Nine Ball</span>
+                                          </Panel>
+                                      </Accordion>
                                 <Button>
                                     <Link className='statsNav' to='stats' params={{userId: this.getUserId()}}>
                                         <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
