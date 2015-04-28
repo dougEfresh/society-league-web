@@ -17,26 +17,10 @@ var LoginApp = React.createClass({
     getInitialState: function () {
         return {
             error: false,
-            loggedIn: false,
-            users: []
+            loggedIn: false
         };
     },
-    componentDidMount: function() {
-         $.ajax({
-            url: '/api/users',
-            dataType: 'json',
-            success: function (d) {
-                this.setState({users: d});
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('users', status, err.toString());
-                console.log('Redirecting to error');
-                //this.redirect('error');
-            }.bind(this)
-        });
-    },
     handleSubmit: function(e){
-        debugger;
         var router = this.context.router;
         e.preventDefault();
         var user = this.refs.username.getValue();
@@ -69,7 +53,7 @@ var LoginApp = React.createClass({
     onClick: function() {
         var newUser = {};
         this.state.users.forEach(function(u) {
-            if (u.id == this.refs.newUser.getValue()) {
+            if (u.login == this.refs.newUser.getValue()) {
                 newUser = u;
             }
         }.bind(this));
@@ -78,7 +62,7 @@ var LoginApp = React.createClass({
             async: true,
             processData: true,
             url: '/api/authenticate',
-            data: {username: newUser.login, password: newUser.login},
+            data: {username: newUser.login, password: 'password'},
             method: 'post',
             success: function (d) {
                 console.log('Redirect to home ' + d.id);
@@ -91,11 +75,7 @@ var LoginApp = React.createClass({
         });
     },
     render: function () {
-        var users = [];
-        this.state.users.forEach(function(u) {
-            users.push(<option key={u.id} value={u.id}>{u.name}</option>);
-        });
-        var button = (<Button onClick={this.onClick} >Login</Button>);
+        var button = (<Button onClick={this.handleSubmit} >Login</Button>);
         //{linkSwitch}
         // <Panel bsStyle='primary' header={'Select User'} title={'Select User'} footer={button} >
         return (
@@ -103,23 +83,14 @@ var LoginApp = React.createClass({
                 <form className="login-form form-signin">
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="form-field form-group">
-                            <Input ref='newUser' type='select' >{users} </Input>
+                            <Input ref='username' type='input' placeholder='enter user name'> </Input>
+                            <Input ref='password' type='password' placeholder='enter password'> </Input>
                         </div>
                     {button}
                 </form>
             </div>
         );
     }
-/*
-
-        return (
-            <Panel header={'Login'} footer={button} >
-                <Input type='text' ref='username' placeholder="username" defaultValue="login0"/>
-                <Input type='text' ref='password' placeholder="password" defaultValue="login0"/>
-            </Panel>
-        );
-    }
-    */
 });
 
 
