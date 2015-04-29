@@ -23,11 +23,10 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
-
 var DataStore = require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
 
-var TeamNav = React.createClass({
+var SeasonNav = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function () {
         return {
@@ -52,18 +51,18 @@ var TeamNav = React.createClass({
         if (this.state.user.id == 0) {
             return null;
         }
-        var teams = [];
-        this.getCurrentTeams().forEach(function(t) {
-            teams.push(
-                <div key={t.id}><Link key={t.id} to="team" params={{userId: this.getUserId(),teamId: t.id, seasonId: t.season}} >
+        var seasons = [];
+        this.getCurrentSeasons().forEach(function(t) {
+            seasons.push(
+                <div key={t.id}><Link key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
                 {t.name}</Link>
             </div>);
         }.bind(this));
 
         return (
-            <div className='teamLinkNav' >{teams}</div>
+            <div className='seasonNavLink' >{seasons}</div>
         )
     }
 });
 
-module.exports = TeamNav;
+module.exports = SeasonNav;

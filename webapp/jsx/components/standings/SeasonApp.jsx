@@ -19,19 +19,22 @@ var Bootstrap = require('react-bootstrap')
     ,Accordion = Bootstrap.Accordion
     ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
+
 var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
-
-var DataStore = require('../../stores/DataStore.jsx');
+var ChallengeStore = require('../../stores/ChallengeStore.jsx');
+var DataStore= require('../../stores/DataStore.jsx');
+var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
 
-var TeamNav = React.createClass({
+var SeasonApp = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function () {
         return {
-            user: this.getUser()
+            user: this.getUser(),
+            seasonId: this.getContextParam('seasonId')
         }
     },
     componentWillMount: function () {
@@ -43,27 +46,17 @@ var TeamNav = React.createClass({
     componentDidMount: function () {
         this.setState({user: this.getUser()});
     },
-    _onChange: function () {
-        this.setState({
-            user: this.state.user
-        });
+    _onChange: function() {
+        this.setState({user: this.state.user});
     },
     render: function() {
         if (this.state.user.id == 0) {
             return null;
         }
-        var teams = [];
-        this.getCurrentTeams().forEach(function(t) {
-            teams.push(
-                <div key={t.id}><Link key={t.id} to="team" params={{userId: this.getUserId(),teamId: t.id, seasonId: t.season}} >
-                {t.name}</Link>
-            </div>);
-        }.bind(this));
-
         return (
-            <div className='teamLinkNav' >{teams}</div>
+            <h1>Season</h1>
         )
     }
 });
 
-module.exports = TeamNav;
+module.exports = SeasonApp;

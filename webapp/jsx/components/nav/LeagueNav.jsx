@@ -30,6 +30,7 @@ var DataStore= require('../../stores/DataStore.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
 var TeamNav = require('./TeamNav.jsx');
+var SeasonNav = require('./SeasonNav.jsx');
 
 var LeagueNav = React.createClass({
     mixins: [UserContextMixin],
@@ -60,11 +61,11 @@ var LeagueNav = React.createClass({
     },
     _onChange: function(){
         this.setState({
-            user: this.getUser()
+            user: this.state.user
         })
     },
     render: function () {
-        if (this.state.user.id == 0) {
+        if (this.getUserId() == 0) {
             return null
         }
         return (
@@ -125,7 +126,7 @@ var HomeNav = React.createClass({
             </div>
         );
         var teamHeader = (<i className="fa fa-users">Teams</i>);
-        var standings = (<i className='fa fa-trophy'>Standings</i>);
+        var seasons = (<i className='fa fa-trophy'>Seasons</i>);
         return (
             <div className="container" style={{'maxWidth': '1000px',padding: '0px 0px'}} >
                 <div className="account-wrapper">
@@ -140,20 +141,19 @@ var HomeNav = React.createClass({
                                         {' ' + this.getUser().name}
                                     </Link>
                                 </Button>
-                                <Accordion className='challengeNav' style={{marginBottom: '0px'}}>
-                                    <Panel className='challengeStatus' header={header} eventKey='1' >
+                                <Accordion className='challengeStatusNav' style={{marginBottom: '0px'}}>
+                                    <Panel className='challengePanelStatus' header={header} eventKey='1' >
                                         {status}
                                     </Panel>
                                 </Accordion>
                                       <Accordion className='teamNav' style={{marginBottom: '0px'}}>
-                                          <Panel className='teamListNav' header={teamHeader} eventKey='1' >
+                                          <Panel className='teamPanelNav' header={teamHeader} eventKey='1' >
                                               <TeamNav />
                                           </Panel>
                                 </Accordion>
-                                      <Accordion className='standingsNav' style={{marginBottom: '0px'}}>
-                                          <Panel className='standingList' header={standings} eventKey='1' >
-                                              <span>Eight Ball</span>
-                                              <span>Nine Ball</span>
+                                      <Accordion className='seasonNav' style={{marginBottom: '0px'}}>
+                                          <Panel className='seasonPanelNav' header={seasons} eventKey='1' >
+                                              <SeasonNav />
                                           </Panel>
                                       </Accordion>
                                 <Button>
