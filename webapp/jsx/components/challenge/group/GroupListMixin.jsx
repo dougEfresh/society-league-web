@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 
-var DataFactory = require('../../../DataFactoryMixin.jsx');
+var DataFactory = require('../../../UserContextMixin.jsx');
 var BallIcon = require('../../../BallMixin.jsx');
 
 var GroupListMixin = {

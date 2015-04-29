@@ -19,47 +19,54 @@ var Bootstrap = require('react-bootstrap')
     ,Accordion = Bootstrap.Accordion
     ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
+
 var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
-var UserStore = require('../../stores/UserStore.jsx');
-var StatsStore = require('../../stores/StatsStore.jsx');
+var DataActions = require('../../actions/DataActions.jsx');
+var DataStore= require('../../stores/DataStore.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
-var DataFactory = require('../../DataFactoryMixin.jsx');
+var UserContextMixin = require('../../UserContextMixin.jsx');
+var TeamNav = require('./TeamNav.jsx');
 
 var LeagueNav = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {
-            challenges: ChallengeStore.getAllChallenges()
+            challenges: ChallengeStore.getAllChallenges(),
+            user: this.getUser()
         }
     },
     componentWillMount: function() {
-        UserStore.addChangeListener(this._onUserChange);
+        DataStore.addChangeListener(this._onChange);
         ChallengeStore.addRequestListener(this._onChallengeChange);
         ChallengeStore.addChangeListener(this._onChallengeChange);
-        StatsStore.getFromServer();
     },
     componentDidMount: function() {
         ChallengeStore.initChallenges(this.getUserId());
-        UserStore.getAllFromServer();
+        DataActions.init();
     },
     componentWillUnmount: function() {
-        UserStore.removeChangeListener(this._onUserChange);
+        DataStore.removeChangeListener(this._onChange);
         ChallengeStore.removeChangeListener(this._onChallengeChange);
         ChallengeStore.removeRequestListener(this._onChallengeChange);
-    },
-    _onUserChange: function() {
-        this.forceUpdate();
     },
     _onChallengeChange: function() {
         this.setState(
             {challenges: ChallengeStore.getAllChallenges()}
         );
     },
+    _onChange: function(){
+        this.setState({
+            user: this.getUser()
+        })
+    },
     render: function () {
+        if (this.state.user.id == 0) {
+            return null
+        }
         return (
             <div>
                 <HomeNav challenges={this.state.challenges}/>
@@ -69,7 +76,7 @@ var LeagueNav = React.createClass({
 });
 
 var HomeNav = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     render: function() {
         var c = this.props.challenges;
         var counter =  c[ChallengeStatus.SENT].length
@@ -78,7 +85,7 @@ var HomeNav = React.createClass({
             +
             c[ChallengeStatus.ACCEPTED].length;
 
-        if (this.getUserId() == undefined || this.getUserId() == 0) {
+        if (this.getUser().id == 0) {
             return null;
         }
         var header = (
@@ -130,7 +137,7 @@ var HomeNav = React.createClass({
                                       <Button className={'active'}>
                                     <Link className='navName' to='home' params={{userId: this.getUserId()}}>
                                         <Glyphicon glyph='home' />
-                                        {' ' + UserStore.get(this.getUserId()).name}
+                                        {' ' + this.getUser().name}
                                     </Link>
                                 </Button>
                                 <Accordion className='challengeNav' style={{marginBottom: '0px'}}>
@@ -140,8 +147,7 @@ var HomeNav = React.createClass({
                                 </Accordion>
                                       <Accordion className='teamNav' style={{marginBottom: '0px'}}>
                                           <Panel className='teamListNav' header={teamHeader} eventKey='1' >
-                                              My team 1
-                                              My team 2
+                                              <TeamNav />
                                           </Panel>
                                 </Accordion>
                                       <Accordion className='standingsNav' style={{marginBottom: '0px'}}>

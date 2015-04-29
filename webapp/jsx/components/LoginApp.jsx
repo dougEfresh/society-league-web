@@ -6,7 +6,7 @@ var Bootstrap = require('react-bootstrap')
     ,Label = Bootstrap.Label;
 
 var UserActions = require('../actions/UserAction.jsx');
-var DataFactory = require('./../DataFactoryMixin.jsx');
+var DataFactory = require('./../UserContextMixin.jsx');
 var UserStore = require('../stores/UserStore.jsx');
 
 var LoginApp = React.createClass({
@@ -30,18 +30,10 @@ var LoginApp = React.createClass({
             async: true,
             processData: true,
             url: '/api/authenticate',
-            data: {username: user, password: password},
+            data: {username: user, password: 'password'},
             method: 'post',
             success: function (d) {
-                console.log('Router ' +
-                    JSON.stringify(router.getCurrentPath()) + ' ---- '+
-                    JSON.stringify(router.getCurrentPathname()) + ' ---- '+
-                    JSON.stringify(router.getCurrentParams()) + ' ---- ' +
-                    JSON.stringify(router.getCurrentQuery())
-                );
-                this.setState({error: false});
-                UserActions.set(d);
-                router.transitionTo('request',{userId: d.id},null);
+                router.transitionTo('home',{userId: d.id},null);
             }.bind(this),
             error: function (xhr, status, err) {
                 this.setState({error: true});

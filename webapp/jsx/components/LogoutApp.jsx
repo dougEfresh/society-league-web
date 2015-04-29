@@ -6,7 +6,7 @@ var Bootstrap = require('react-bootstrap')
     ,Label = Bootstrap.Label;
 
 var UserStore = require('../stores/UserStore.jsx');
-var DataFactory = require('./../DataFactoryMixin.jsx');
+var DataFactory = require('./../UserContextMixin.jsx');
 
 var LoginApp = React.createClass({
     mixins: [DataFactory],

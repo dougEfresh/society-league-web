@@ -19,7 +19,7 @@ var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeConstants = require('../../../constants/ChallengeConstants.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
-var DataFactory = require('../../../DataFactoryMixin.jsx');
+var DataFactory = require('../../../UserContextMixin.jsx');
 var GroupMixin = require('./GroupListMixin.jsx');
 
 var GroupAction = React.createClass({

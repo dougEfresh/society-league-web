@@ -3,7 +3,7 @@ var ReactPropTypes = React.PropTypes;
 var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;
 
-var DataFactory = require('../../../DataFactoryMixin.jsx');
+var DataFactory = require('../../../UserContextMixin.jsx');
 var RequestActions = require('../../../actions/RequestActions.jsx');
 
 

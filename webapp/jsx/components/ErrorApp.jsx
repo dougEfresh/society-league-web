@@ -5,7 +5,7 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
     ,Label = Bootstrap.Label;
 
-var DataFactory = require('./../DataFactoryMixin.jsx');
+var DataFactory = require('./../UserContextMixin.jsx');
 
 var ErrorApp = React.createClass({
     mixins: [DataFactory],

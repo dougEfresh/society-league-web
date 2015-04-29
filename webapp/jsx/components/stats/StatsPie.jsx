@@ -16,7 +16,7 @@ var Bar = require("react-chartjs").Bar;
 var StatActions = require('../../actions/StatActions.jsx');
 var StatStore = require('../../stores/StatsStore.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var DataFactory = require('./../../DataFactoryMixin.jsx');
+var DataFactory = require('./../../UserContextMixin.jsx');
 var BallIcon = require('../../BallMixin.jsx');
 var ChallengeConstants = require('../../constants/ChallengeConstants.jsx');
 

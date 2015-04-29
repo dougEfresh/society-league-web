@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
-var DataFactory = require('./../../DataFactoryMixin.jsx');
+var DataFactory = require('./../../UserContextMixin.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var UserActions = require('../../actions/UserAction.jsx');
 var Bootstrap = require('react-bootstrap')

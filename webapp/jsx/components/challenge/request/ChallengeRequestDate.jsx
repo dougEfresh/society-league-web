@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var RequestActions = require('../../../actions/RequestActions.jsx');
-var DataFactory  = require('../../../DataFactoryMixin.jsx');
+var DataFactory  = require('../../../UserContextMixin.jsx');
 var Util  = require('../../../util.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;

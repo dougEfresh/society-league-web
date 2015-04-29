@@ -4,7 +4,7 @@ var Router = require('react-router')
 
 var SocietyNav = require('./SocietyNav.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var DataFactory = require('../../DataFactoryMixin.jsx');
+var DataFactory = require('../../UserContextMixin.jsx');
 var LeagueNav = require('./LeagueNav.jsx');
 var LoginApp = require('../LoginApp.jsx');
 
