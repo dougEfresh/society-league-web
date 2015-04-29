@@ -5,7 +5,7 @@ var Bootstrap = require('react-bootstrap')
 
 var DataFactory = require('../../../UserContextMixin.jsx');
 var RequestActions = require('../../../actions/RequestActions.jsx');
-
+var Util = require('../../../util.jsx');
 
 var ChallengeRequestOpponent = React.createClass({
     mixins: [DataFactory],
@@ -26,7 +26,7 @@ var ChallengeRequestOpponent = React.createClass({
         }
     },
     update: function() {
-        this.getData('/api/challenge/potentials/' + this.getUserId(), function (potentials) {
+        Util.getData('/api/challenge/potentials/' + this.getUserId(), function (potentials) {
             this.setState({potentials: potentials});
         }.bind(this));
     },
