@@ -54,6 +54,9 @@ body {
 /* Header Image Background - Change the URL below to your image path (example: ../images/background.jpg) */
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
+.seasonTeamStandings {
+	background-color: whitesmoke !important;
+}
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 

@@ -15,7 +15,6 @@ var NavApp = React.createClass({
             console.log("LoginApp");
             return (
                 <div>
-                    <SocietyNav  />
                     <LoginApp />
                 </div>
             )
@@ -23,7 +22,6 @@ var NavApp = React.createClass({
 
         return (
             <div>
-                <SocietyNav  />
                 <LeagueNav />
             </div>
         )

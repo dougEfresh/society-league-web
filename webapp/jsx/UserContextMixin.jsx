@@ -8,7 +8,7 @@ var DataFactory = {
         router: React.PropTypes.func
     },
     getContextParam: function(param) {
-        return this.context.router.getCurrentParams().param;
+        return this.context.router.getCurrentParams()[param];
     },
     getUserId: function() {
 
@@ -29,33 +29,32 @@ var DataFactory = {
         }
         return u;
     },
+    getUserName: function() {
+        var u = this.getUser();
+        return u.firstName + ' ' + u.lastName;
+    },
     getCurrentSeasons: function() {
         var seasons = [];
         var u = this.getUser();
         u.currentSeasons.forEach(function(s){
-            var season = DataStore.getSeasons()[s];
-            var division = DataStore.getDivisions()[season.division];
-            if (!division.challenge)
-                seasons.push({id: s, name: season.season.name.split(',')[2]});
+            var division = DataStore.getDivisionBySeason(s);
+            seasons.push({id: s,division: division});
         }.bind(this));
-        seasons.push({id: 0 ,name:'Challenge'});
         return seasons;
     },
     getCurrentTeams: function() {
        var u = this.getUser();
         var teams = [];
         u.currentTeams.forEach(function(t) {
-            var season = DataStore.getSeasons()[t.season];
-            var division = DataStore.getDivisions()[season.division];
-            t.name = this.getTeam(t.id);
-            if (!division.challenge) {
-                teams.push(t);
-            }
+            var team = {id: t.id, season: t.season};
+            team.division = DataStore.getDivisionBySeason(t.season);
+            team.name = this.getTeam(t.id).name;
+            teams.push(team);
         }.bind(this));
         return teams;
     },
-    getTeam: function(id) {
-        return DataStore.getTeams()[id];
+    getTeamMembers: function(id,seasonId) {
+
     },
     redirect: function (to,params) {
         this.context.router.transitionTo(to,params,{from: this.context.router.getCurrentPath()});

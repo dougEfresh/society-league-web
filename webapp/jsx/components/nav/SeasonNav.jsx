@@ -54,8 +54,10 @@ var SeasonNav = React.createClass({
         var seasons = [];
         this.getCurrentSeasons().forEach(function(t) {
             seasons.push(
-                <div key={t.id}><Link key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
-                {t.name}</Link>
+                <div key={t.id}>
+                    <Link key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
+                        {t.division.type}
+                    </Link>
             </div>);
         }.bind(this));
 

@@ -26,9 +26,10 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 
 var DataStore = require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
+var TeamMixin = require('../../TeamMixin.jsx');
 
 var TeamNav = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,TeamMixin],
     getInitialState: function () {
         return {
             user: this.getUser()

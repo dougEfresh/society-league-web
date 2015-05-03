@@ -1,0 +1,9 @@
+var keyMirror = require('keymirror');
+
+module.exports = keyMirror({
+    EIGHT_BALL_CHALLENGE: null,
+    NINE_BALL_CHALLENGE: null,
+    EIGHT_BALL_WEDNESDAYS: null,
+    EIGHT_BALL_THURSDAYS: null,
+    NINE_BALL_TUESDAYS: null
+});

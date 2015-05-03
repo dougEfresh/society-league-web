@@ -127,29 +127,31 @@ var HomeNav = React.createClass({
         );
         var teamHeader = (<i className="fa fa-users">Teams</i>);
         var seasons = (<i className='fa fa-trophy'>Seasons</i>);
+        /*
+         <Accordion className='teamNav' style={{marginBottom: '0px'}}>
+         <Panel className='teamPanelNav' header={teamHeader} eventKey='1' >
+         <TeamNav />
+         </Panel>
+         </Accordion>
+         */
         return (
             <div className="container" style={{'maxWidth': '1000px',padding: '0px 0px'}} >
                 <div className="account-wrapper">
                     <Grid>
                         <Row>
-                          <Col xs={12} md={2}>
+                            <Col xs={12} md={2}>
                               <Nav>
                                   <ButtonGroup vertical className="homeNav" role="group" aria-label="...">
                                       <Button className={'active'}>
                                     <Link className='navName' to='home' params={{userId: this.getUserId()}}>
                                         <Glyphicon glyph='home' />
-                                        {' ' + this.getUser().name}
+                                        {' ' + this.getUserName()}
                                     </Link>
                                 </Button>
                                 <Accordion className='challengeStatusNav' style={{marginBottom: '0px'}}>
                                     <Panel className='challengePanelStatus' header={header} eventKey='1' >
                                         {status}
                                     </Panel>
-                                </Accordion>
-                                      <Accordion className='teamNav' style={{marginBottom: '0px'}}>
-                                          <Panel className='teamPanelNav' header={teamHeader} eventKey='1' >
-                                              <TeamNav />
-                                          </Panel>
                                 </Accordion>
                                       <Accordion className='seasonNav' style={{marginBottom: '0px'}}>
                                           <Panel className='seasonPanelNav' header={seasons} eventKey='1' >
