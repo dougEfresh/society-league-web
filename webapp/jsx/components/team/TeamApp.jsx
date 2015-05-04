@@ -28,6 +28,9 @@ var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
+var SeasonMixin = require('../../SeasonMixin.jsx');
+var StatsMixin = require('../../StatsMixin.jsx');
+var TeamMixin = require('../../TeamMixin.jsx');
 
 var TeamDisplayApp = React.createClass({
     mixins: [UserContextMixin],
@@ -56,6 +59,27 @@ var TeamDisplayApp = React.createClass({
         }
         return (
             <h1>Team</h1>
+        )
+    }
+});
+
+var TeamStandings = React.createClass({
+    mixins: [StatsMixin,SeasonMixin,TeamMixin],
+    getDefaultProps: function() {
+        return {
+            teamId: null,
+            seasonId: null
+        }
+    },
+    render: function() {
+        if (teamId == null) {
+            return null;
+        }
+        var teamStats = this.getSeasonTeamStats(season)
+        return (
+            <div className="teamStanding">
+
+            </div>
         )
     }
 });

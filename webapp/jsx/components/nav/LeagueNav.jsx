@@ -128,11 +128,6 @@ var HomeNav = React.createClass({
         var teamHeader = (<i className="fa fa-users">Teams</i>);
         var seasons = (<i className='fa fa-trophy'>Seasons</i>);
         /*
-         <Accordion className='teamNav' style={{marginBottom: '0px'}}>
-         <Panel className='teamPanelNav' header={teamHeader} eventKey='1' >
-         <TeamNav />
-         </Panel>
-         </Accordion>
          */
         return (
             <div className="container" style={{'maxWidth': '1000px',padding: '0px 0px'}} >
@@ -158,7 +153,12 @@ var HomeNav = React.createClass({
                                               <SeasonNav />
                                           </Panel>
                                       </Accordion>
-                                <Button>
+                                      <Accordion className='teamNav' style={{marginBottom: '0px'}}>
+                                          <Panel className='teamPanelNav' header={teamHeader} eventKey='1' >
+                                              <TeamNav />
+                                          </Panel>
+                                      </Accordion>
+                                      <Button>
                                     <Link className='statsNav' to='stats' params={{userId: this.getUserId()}}>
                                         <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
                                     </Link>

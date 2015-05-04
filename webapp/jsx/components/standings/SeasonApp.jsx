@@ -80,7 +80,7 @@ var SeasonWeeklyResults = React.createClass({
         for(var dt in this.props.matches) {
             cols.push(
                 <Col className="teamMatchResultDay" key={dt} xs={12} md={6}>
-                    <MatchResultsOnDay matches={this.props.matches[dt]}/>
+                    <MatchResultsOnDay day={dt} matches={this.props.matches[dt]}/>
                 </Col>
             );
         }
@@ -107,10 +107,11 @@ var SeasonWeeklyResults = React.createClass({
 });
 
 var MatchResultsOnDay = React.createClass({
-    mixins: [SeasonMixin,TeamMixin],
+    mixins: [SeasonMixin,TeamMixin,UserContextMixin],
      getDefaultProps: function() {
         return {
-            matches: null
+            matches: null,
+            day: null
         }
     },
     render: function() {
@@ -120,35 +121,46 @@ var MatchResultsOnDay = React.createClass({
         var rows = [];
 
         this.props.matches.forEach(function(m){
+            var teamWinnerLink = (
+                <Link to="team" params={{userId: this.getUserId(),teamId: m.winner, seasonId: this.getContextParam('seasonId')}}>
+                    {this.getTeam(m.winner).name}
+                </Link>);
+            var teamLoserLink = (
+                <Link to="team" params={{userId: this.getUserId(),teamId: m.loser, seasonId: this.getContextParam('seasonId')}}>
+                    {this.getTeam(m.loser).name}
+                </Link>);
+
             rows.push(
                 <tr className="teamMatchResultRow" key={m.teamMatchId}>
-                    <td>{this.getTeam(m.winner).name}</td>
+                    <td>{teamWinnerLink}</td>
                     <td>{m.winnerRacks}</td>
-                    <td>{this.getTeam(m.loser).name}</td>
+                    <td>{teamLoserLink}</td>
                     <td>{m.loserRacks}</td>
                 </tr>
             )
         }.bind(this));
         return (
             <div className="teamMatchResult" >
+                <Panel header={this.props.day.substr(0,10)}>
                 <Table striped >
                     <thead>
-                    <th>winner</th>
+                    <th></th>
                     <th>racks</th>
-                    <th>opponent</th>
+                    <th></th>
                     <th>racks</th>
                     </thead>
                     <tbody>
                     {rows}
                     </tbody>
                 </Table>
+                </Panel>
             </div>
         )
     }
 });
 
 var SeasonStandings = React.createClass({
-    mixins: [SeasonMixin,StatsMixin,TeamMixin],
+    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin],
     getDefaultProps: function() {
         return {
             nine : false,
@@ -161,20 +173,12 @@ var SeasonStandings = React.createClass({
         }
         var rows = [];
         this.props.standings.forEach(function(s) {
-            /*
-            rows.push(
-                <tr className="standingRow" key={s.teamId}>
-                    <td>{this.getTeam(s.teamId).name}</td>
-                    <td>{s.wins}</td>
-                    <td>{s.lost}</td>
-                    <td>{s.racksFor}</td>
-                    <td>{s.racksAgainsts}</td>
-                </tr>
-            );
-            */
+            var teamLink = (<Link to="team" params={{userId: this.getUserId(),teamId: s.teamId, seasonId: this.getContextParam('seasonId')}}>
+                {this.getTeam(s.teamId).name}
+            </Link>);
             rows.push(
                 <Row className="standingRow" key={s.teamId}>
-                    <Col xs={12} md={4}>{this.getTeam(s.teamId).name}</Col>
+                    <Col xs={12} md={4}>{teamLink}</Col>
                     <Col xs={12} md={2}>{s.wins}</Col>
                     <Col xs={12} md={2}>{s.lost}</Col>
                     <Col xs={12} md={2}>{s.racksFor}</Col>
@@ -184,10 +188,9 @@ var SeasonStandings = React.createClass({
         }.bind(this));
 
         return (
-            <Grid>
-                <Row>
-                    <Col className="standingsTitle" xs={12} md={12}>Standings</Col>
-                </Row>
+
+            <Grid className="seasonStandings">
+                <Panel header={'Standings'}>
                 <Row>
                     <Col xs={12} md={4}></Col>
                     <Col xs={12} md={4}>Match</Col>
@@ -203,6 +206,7 @@ var SeasonStandings = React.createClass({
                 <Row>
                     {rows}
                 </Row>
+                </Panel>
             </Grid>
         )
     }

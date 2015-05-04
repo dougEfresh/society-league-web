@@ -21,7 +21,7 @@ var ErrorApp = require('./components/ErrorApp.jsx');
 var AdminApp = require('./components/admin/AdminApp.jsx');
 var StatApp = require('./components/stats/StatApp.jsx');
 var HomeApp = require('./components/HomeApp.jsx');
-var TeamDisplayApp = require('./components/team/TeamDisplayApp.jsx');
+var TeamDisplayApp = require('./components/team/TeamApp.jsx');
 var SeasonApp = require('./components/standings/SeasonApp.jsx');
 
 var App = React.createClass({
