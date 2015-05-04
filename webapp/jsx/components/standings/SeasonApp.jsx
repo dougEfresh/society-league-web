@@ -29,6 +29,7 @@ var UserContextMixin = require('../../UserContextMixin.jsx');
 var SeasonMixin = require('../../SeasonMixin.jsx');
 var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
+var TeamLink = require('../TeamLink.jsx');
 
 var SeasonApp = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,StatsMixin,TeamMixin],
@@ -121,15 +122,8 @@ var MatchResultsOnDay = React.createClass({
         var rows = [];
 
         this.props.matches.forEach(function(m){
-            var teamWinnerLink = (
-                <Link to="team" params={{userId: this.getUserId(),teamId: m.winner, seasonId: this.getContextParam('seasonId')}}>
-                    {this.getTeam(m.winner).name}
-                </Link>);
-            var teamLoserLink = (
-                <Link to="team" params={{userId: this.getUserId(),teamId: m.loser, seasonId: this.getContextParam('seasonId')}}>
-                    {this.getTeam(m.loser).name}
-                </Link>);
-
+            var teamWinnerLink = <TeamLink team={this.getTeam(m.winner)} seasonId={ this.getContextParam('seasonId')}/>;
+            var teamLoserLink= <TeamLink team={this.getTeam(m.loser)} seasonId={ this.getContextParam('seasonId')}/>;
             rows.push(
                 <tr className="teamMatchResultRow" key={m.teamMatchId}>
                     <td>{teamWinnerLink}</td>
@@ -173,9 +167,7 @@ var SeasonStandings = React.createClass({
         }
         var rows = [];
         this.props.standings.forEach(function(s) {
-            var teamLink = (<Link to="team" params={{userId: this.getUserId(),teamId: s.teamId, seasonId: this.getContextParam('seasonId')}}>
-                {this.getTeam(s.teamId).name}
-            </Link>);
+            var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.getContextParam('seasonId')} />;
             rows.push(
                 <Row className="standingRow" key={s.teamId}>
                     <Col xs={12} md={4}>{teamLink}</Col>

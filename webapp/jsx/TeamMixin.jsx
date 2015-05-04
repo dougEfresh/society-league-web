@@ -7,9 +7,10 @@ var TeamMixin = {
     getTeam: function(id) {
         var team = DataStore.getTeams()[id];
         if (team == undefined) {
-            return {id:0,name:"unknown"};
+            return {teamId:0,name:"unknown"};
         }
-        return team;
+        //TODO change result set from server to be an array
+        return {teamId: id, name: team.name};
     }
 };
 
