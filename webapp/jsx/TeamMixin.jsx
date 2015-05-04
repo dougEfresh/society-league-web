@@ -5,7 +5,11 @@ var DataStore = require('./stores/DataStore.jsx');
 
 var TeamMixin = {
     getTeam: function(id) {
-        return DataStore.getTeams()[id];
+        var team = DataStore.getTeams()[id];
+        if (team == undefined) {
+            return {id:0,name:"unknown"};
+        }
+        return team;
     }
 };
 

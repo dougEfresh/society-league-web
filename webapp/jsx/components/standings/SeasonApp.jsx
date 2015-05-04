@@ -55,17 +55,8 @@ var SeasonApp = React.createClass({
         if (this.state.user.id == 0) {
             return null;
         }
-        var matches = this.getMatches(this.state.seasonId);
-        var display = [];
-        matches.forEach(function(m) {
-            display.push(<div key={m.id} >{DataStore.getTeam([m.home]).name + " vs " + DataStore.getTeam([m.away]).name}</div>);
-        }.bind(this));
-        var standings = this.getSeasonTeamStats(this.state.seasonId);
-        standings.forEach(function(s) {
-            display.push(<div key={s.team_id}>{s.wins + ' ' + s.loses}</div>)
-        });
         return (
-            <div>
+            <div className="seasonResults">
                 <SeasonStandings standings={this.getSeasonTeamStats(this.state.seasonId)}/>
                 <SeasonWeeklyResults matches={this.getMatches(this.state.seasonId)} />
             </div>
@@ -77,27 +68,19 @@ var SeasonWeeklyResults = React.createClass({
     mixins: [SeasonMixin,TeamMixin],
     getDefaultProps: function() {
         return {
-            matches: []
+            matches: null
         }
     },
     render: function() {
-        if (this.props.matches.length == 0) {
+        if (this.props.matches == null) {
             return null;
         }
-        var matchesByDate = {};
-        this.props.matches.forEach(function(m) {
-            if (matchesByDate[m.matchDate] == undefined) {
-                matchesByDate[m.matchDate] = [];
-            }
-            matchesByDate[m.matchDate].push(m);
-        });
-
         var cols = [];
         var rows = [];
-        for(var dt in matchesByDate) {
+        for(var dt in this.props.matches) {
             cols.push(
-                <Col key={dt} xs={12} md={6}>
-                    <MatchResultsOnDay matches={matchesByDate[dt]}/>
+                <Col className="teamMatchResultDay" key={dt} xs={12} md={6}>
+                    <MatchResultsOnDay matches={this.props.matches[dt]}/>
                 </Col>
             );
         }
@@ -135,8 +118,32 @@ var MatchResultsOnDay = React.createClass({
             return null;
         }
         var rows = [];
-        
-        return (<div>{this.props.matches[0].matchDate}</div>)
+
+        this.props.matches.forEach(function(m){
+            rows.push(
+                <tr className="teamMatchResultRow" key={m.teamMatchId}>
+                    <td>{this.getTeam(m.winner).name}</td>
+                    <td>{m.winnerRacks}</td>
+                    <td>{this.getTeam(m.loser).name}</td>
+                    <td>{m.loserRacks}</td>
+                </tr>
+            )
+        }.bind(this));
+        return (
+            <div className="teamMatchResult" >
+                <Table striped >
+                    <thead>
+                    <th>winner</th>
+                    <th>racks</th>
+                    <th>opponent</th>
+                    <th>racks</th>
+                    </thead>
+                    <tbody>
+                    {rows}
+                    </tbody>
+                </Table>
+            </div>
+        )
     }
 });
 
@@ -154,6 +161,7 @@ var SeasonStandings = React.createClass({
         }
         var rows = [];
         this.props.standings.forEach(function(s) {
+            /*
             rows.push(
                 <tr className="standingRow" key={s.teamId}>
                     <td>{this.getTeam(s.teamId).name}</td>
@@ -163,30 +171,41 @@ var SeasonStandings = React.createClass({
                     <td>{s.racksAgainsts}</td>
                 </tr>
             );
+            */
+            rows.push(
+                <Row className="standingRow" key={s.teamId}>
+                    <Col xs={12} md={4}>{this.getTeam(s.teamId).name}</Col>
+                    <Col xs={12} md={2}>{s.wins}</Col>
+                    <Col xs={12} md={2}>{s.lost}</Col>
+                    <Col xs={12} md={2}>{s.racksFor}</Col>
+                    <Col xs={12} md={2}>{s.racksAgainsts}</Col>
+                </Row>
+            );
         }.bind(this));
 
         return (
-            <Table className="seasonTeamStandings" >
-                <thead>
-                <th className="standingsHeader">Standings</th>
-                </thead>
-                <tbody>
-                <tr className="standingTitle">
-                    <td>Team</td>
-                    <td>Match</td>
-                    <td>Racks</td>
-                </tr>
-                <tr calssName="standingIndicator">
-                    <td></td>
-                    <td>W</td>
-                    <td>L</td>
-                    <td>W</td>
-                    <td>L</td>
-                </tr>
-                {rows}
-                </tbody>
-            </Table>
+            <Grid>
+                <Row>
+                    <Col className="standingsTitle" xs={12} md={12}>Standings</Col>
+                </Row>
+                <Row>
+                    <Col xs={12} md={4}></Col>
+                    <Col xs={12} md={4}>Match</Col>
+                    <Col xs={12} md={4}>Racks</Col>
+                </Row>
+                <Row>
+                    <Col xs={12} md={4}>Team</Col>
+                    <Col xs={12} md={2}>W</Col>
+                    <Col xs={12} md={2}>L</Col>
+                    <Col xs={12} md={2}>W</Col>
+                    <Col xs={12} md={2}>L</Col>
+                </Row>
+                <Row>
+                    {rows}
+                </Row>
+            </Grid>
         )
     }
 });
 module.exports = SeasonApp;
+
