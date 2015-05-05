@@ -25,13 +25,14 @@ var DataFactory = {
         }
 
         if (userId == 0) {
-            return {id:0, name: ""}
+            return {id:0, name: "unknown"}
         }
 
         var u = DataStore.getUsers()[userId];
         if (u == undefined) {
-             return {id:0, name: ""}
+             return {id:0, name: "not found"}
         }
+        u.name = u.firstName  + ' ' + u.lastName;
         return u;
     },
     getUserName: function() {

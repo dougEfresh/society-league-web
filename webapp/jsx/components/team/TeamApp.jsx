@@ -56,8 +56,48 @@ var TeamApp = React.createClass({
     },
     onSelect: function(e) {
         console.log(e.target.value);
-        this.state.teamId=e.target.value;
-        this.redirect('team',{userId: this.getUserId(),teamId: e.target.value, seasonId: this.state.seasonId})
+        this.setState({teamId:e.target.value});
+        //this.redirect('team',{userId: this.getUserId(),teamId: e.target.value, seasonId: this.state.seasonId})
+    },
+    renderBody: function() {
+        var standing = {};
+        var teamStats = this.getSeasonTeamStats(this.state.seasonId);
+        teamStats.forEach(function (s) {
+            if (s.teamId == this.state.teamId) {
+                standing = s;
+            }
+        }.bind(this));
+        var rows = [];
+        rows.push(<tr key={'all'}>
+            <td>All</td>
+            <td>{standing.wins}</td>
+            <td>{standing.lost}</td>
+            <td>{standing.racksFor}</td>
+            <td>{standing.racksAgainsts}</td>
+        </tr>);
+
+        var users = this.getTeamUsers(this.state.teamId,this.state.seasonId);
+        var userStats = [];
+        users.forEach(function(u) {
+            var s = this.getUserStats(u);
+            s.season.forEach(function(season) {
+                if (season.seasonId == this.state.seasonId) {
+                    userStats.push(season)
+                }
+            }.bind(this));
+        }.bind(this));
+        userStats.forEach(function(stat) {
+            rows.push(<tr key={stat.userId}>
+            <td>{this.getUser(stat.userId).name}</td>
+            <td>{stat.wins}</td>
+            <td>{stat.loses}</td>
+            <td>{stat.racksFor}</td>
+            <td>{stat.racksAgainst}</td>
+        </tr>)
+        }.bind(this));
+        return (
+        {rows}
+        )
     },
     render: function() {
         if (this.state.user.id == 0 || this.state.teamId == undefined || this.state.seasonId == undefined) {
@@ -77,11 +117,11 @@ var TeamApp = React.createClass({
                     <th></th>
                     <th>W</th>
                     <th>L</th>
-                    <th>W</th>
-                    <th>L</th>
+                    <th>RF</th>
+                    <th>RG</th>
                     </thead>
                     <tbody>
-                    <TeamMembers teamId={this.state.teamId} seasonId={this.state.seasonId} />
+                    {this.renderBody()}
                     </tbody>
                 </Table>
             </Panel>
@@ -106,23 +146,55 @@ var TeamPicker = React.createClass({
     }
 });
 
-var TeamMembers = React.createClass({
-    mixins: [StatsMixin,SeasonMixin,TeamMixin],
-    getDefaultProps: function() {
+var TeamStandings = React.createClass({
+    mixins: [StatsMixin, SeasonMixin, TeamMixin, UserContextMixin],
+    getDefaultProps: function () {
         return {
             teamId: null,
             seasonId: null
         }
     },
-    render: function() {
+    render: function () {
         if (this.props.teamId == null) {
             return null;
         }
-        this.getTeamUsers(this.props.teamId,this.props.seasonId);
-        return (
-            <div className="teamStanding">
+        var standing = {};
+        var teamStats = this.getSeasonTeamStats(this.props.seasonId);
+        teamStats.forEach(function (s) {
+            if (s.teamId == this.props.teamId) {
+                standing = s;
+            }
+        }.bind(this));
+        var rows = [];
+        rows.push(<tr key={'all'}>
+            <td>All</td>
+            <td>{standing.wins}</td>
+            <td>{standing.lost}</td>
+            <td>{standing.racksFor}</td>
+            <td>{standing.racksAgainsts}</td>
+        </tr>);
 
-            </div>
+        var users = this.getTeamUsers(this.props.teamId,this.props.seasonId);
+        var userStats = [];
+        users.forEach(function(u) {
+            var s = this.getUserStats(u);
+            s.season.forEach(function(season) {
+                if (season.seasonId == this.props.seasonId) {
+                    userStats.push(season)
+                }
+            }.bind(this));
+        }.bind(this));
+        userStats.forEach(function(stat) {
+            rows.push(<tr key={stat.userId}>
+            <td>{this.getUser(stat.userId).name}</td>
+            <td>{stat.wins}</td>
+            <td>{stat.loses}</td>
+            <td>{stat.racksFor}</td>
+            <td>{stat.racksAgainst}</td>
+        </tr>)
+        }.bind(this));
+        return (
+                {rows}
         )
     }
 });

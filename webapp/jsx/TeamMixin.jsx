@@ -1,6 +1,6 @@
 var React = require('react/addons');
 var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler;
+    ,RouteHandler = Router.RouteHandler;
 var DataStore = require('./stores/DataStore.jsx');
 
 var TeamMixin = {
