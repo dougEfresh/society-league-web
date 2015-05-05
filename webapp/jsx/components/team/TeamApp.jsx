@@ -125,13 +125,16 @@ var TeamApp = React.createClass({
                     </tbody>
                 </Table>
             </Panel>
-                </div>
+                <Panel className='teamWeeklyResults' header={'Weekly Results'}>
+                    <TeamWeeklyResults teamId={this.state.teamId} seasonId={this.state.seasonId} />
+                </Panel>
+            </div>
         );
     }
 });
 
-var TeamPicker = React.createClass({
-    mixins: [TeamMixin,StatsMixin,UserContextMixin],
+var TeamWeeklyResults = React.createClass({
+    mixins: [TeamMixin,StatsMixin,UserContextMixin,SeasonMixin],
     getDefaultProps: function(){
         return {
             teamId: null,
@@ -142,8 +145,58 @@ var TeamPicker = React.createClass({
         if (this.props.teamId == null || this.props.seasonId == null) {
             return null;
         }
+        var matches = this.getMatches(this.props.seasonId);
+        var rows=[];
+        var results=[];
+        for(var dt in matches) {
+            matches[dt].forEach(function(tm) {
+                var matchResult = null;
+                if (tm.winner == this.props.teamId) {
+                    matchResult = tm;
+                    matchResult.won = true;
+                    matchResult.date = dt;
+                } else if (tm.loser == this.props.teamId) {
+                    matchResult = tm;
+                    matchResult.won = false;
+                    matchResult.date = dt;
+                }
+                if (matchResult != null) {
+                    results.push(matchResult);
+                }
+            }.bind(this));
+        }
+        results.forEach(function(r) {
+            var opponent = r.won ? r.loser : r.winner;
+            var result = r.won ? 'W' : 'L';
+            var rw = r.won ? r.winnerRacks : r.loserRacks;
+            var rl = r.won ? r.loserRacks : r.winnerRacks;
+            rows.push(
+                <tr key={r.teamMatchId}>
+                    <td>{r.date.substr(0,10)}</td>
+                    <td>{this.getTeam(opponent).name}</td>
+                    <td>{result}</td>
+                    <td>{rw}</td>
+                    <td>{rl}</td>
+                </tr>
+            )
+        }.bind(this));
 
+        return (
+            <Table>
+                <thead>
+                <th>Date</th>
+                <th>Opponent</th>
+                <th>W/L</th>
+                <th>RW</th>
+                <th>RL</th>
+                </thead>
+                <tbody>
+                {rows}
+                </tbody>
+            </Table>
+        );
     }
+
 });
 
 var TeamStandings = React.createClass({

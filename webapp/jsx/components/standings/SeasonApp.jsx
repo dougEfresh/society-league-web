@@ -183,7 +183,6 @@ var SeasonStandings = React.createClass({
         return (
             <Panel header={'Standings'}>
             <Grid className="seasonStandings">
-
                 <Row>
                     <Col xs={4} ></Col>
                     <Col xs={4} >Match</Col>
