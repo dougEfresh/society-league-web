@@ -27,13 +27,13 @@ var StatsPie = React.createClass({
     getChartData: function(type,racks) {
         var chartData = [
             {
-                value: (racks ? this.props.stats[type].racksWon : this.props.stats[type].wins),
+                value: (racks ? this.props.stats[type].racksFor : this.props.stats[type].wins),
                 color: "green",
                 highlight: "#5AD3D1",
                 label: racks ? "Racks Won " : "Wins "
             },
             {
-                value: (racks ? this.props.stats[type].racksLost : this.props.stats[type].loses),
+                value: (racks ? this.props.stats[type].racksAgainst : this.props.stats[type].loses),
                 color: "red",
                 highlight: "#FFC870",
                 label: racks ? "Racks Lost " : "Loses "
@@ -82,8 +82,8 @@ var StatsPie = React.createClass({
                 <Label bsStyle={'danger'}>Loses:{this.props.stats.all.loses}</Label>
                 <Pie redraw chartOptions={this.getChartOptions()} data={this.getChartData('all',false)} />
                 <div>
-                    <Label bsStyle={'success'}>Racks Won:{this.props.stats.all.racksWon}</Label>
-                    <Label bsStyle={'danger'}>Racks Lost:{this.props.stats.all.racksLost}</Label>
+                    <Label bsStyle={'success'}>Racks Won:{this.props.stats.all.racksFor}</Label>
+                    <Label bsStyle={'danger'}>Racks Lost:{this.props.stats.all.racksAgainst}</Label>
                     <Pie redraw chartOptions={this.getChartOptions()} data={this.getChartData('all',true)} />
                 </div>
             </div>);

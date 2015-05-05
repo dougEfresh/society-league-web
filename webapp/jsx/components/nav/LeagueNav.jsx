@@ -159,13 +159,13 @@ var HomeNav = React.createClass({
                                           </Panel>
                                       </Accordion>
                                       <Button>
-                                    <Link className='statsNav' to='stats' params={{userId: this.getUserId()}}>
-                                        <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
-                                    </Link>
-                                </Button>
-                            </ButtonGroup>
-                          </Nav>
-                      </Col>
+                                          <Link className='statsNav' to='stats' params={{userId: this.getUserId(), statsId: this.getUserId()}}>
+                                              <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
+                                          </Link>
+                                      </Button>
+                                  </ButtonGroup>
+                              </Nav>
+                            </Col>
                             <Col xs={12} md={10}>
                                 <RouteHandler />
                             </Col>

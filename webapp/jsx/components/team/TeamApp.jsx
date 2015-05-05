@@ -32,6 +32,7 @@ var UserContextMixin = require('../../UserContextMixin.jsx');
 var SeasonMixin = require('../../SeasonMixin.jsx');
 var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
+var TeamLink = require('../TeamLink.jsx');
 
 var TeamApp = React.createClass({
     mixins: [TeamMixin,StatsMixin,UserContextMixin],
@@ -86,9 +87,16 @@ var TeamApp = React.createClass({
                 }
             }.bind(this));
         }.bind(this));
+        /*
+
+         */
         userStats.forEach(function(stat) {
             rows.push(<tr key={stat.userId}>
-            <td>{this.getUser(stat.userId).name}</td>
+            <td>
+                <Link to='stats' params={{userId: this.getUserId(),statsId: stat.userId}}>
+                    {this.getUser(stat.userId).name}
+                </Link>
+            </td>
             <td>{stat.wins}</td>
             <td>{stat.loses}</td>
             <td>{stat.racksFor}</td>
@@ -173,7 +181,7 @@ var TeamWeeklyResults = React.createClass({
             rows.push(
                 <tr key={r.teamMatchId}>
                     <td>{r.date.substr(0,10)}</td>
-                    <td>{this.getTeam(opponent).name}</td>
+                    <td><TeamLink team={this.getTeam(opponent)} seasonId={this.props.seasonId}/></td>
                     <td>{result}</td>
                     <td>{rw}</td>
                     <td>{rl}</td>

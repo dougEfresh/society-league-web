@@ -11,52 +11,51 @@ var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 var Pie = require("react-chartjs").Pie;
 
-var StatActions = require('../../actions/StatActions.jsx');
-var StatStore = require('../../stores/StatsStore.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var DataFactory = require('./../../UserContextMixin.jsx');
+var UserContextMixin = require('./../../UserContextMixin.jsx');
 var StatsDisplay = require('./StatsDisplay.jsx');
 var StatsRecord = require('./StatsRecord.jsx');
 var StatsHandicap = require('./StatsHandicap.jsx');
 var StatsChart = require('./StatsPie.jsx');
 
+var DataStore= require('../../stores/DataStore.jsx');
+var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
+var UserContextMixin = require('../../UserContextMixin.jsx');
+var SeasonMixin = require('../../SeasonMixin.jsx');
+var StatsMixin = require('../../StatsMixin.jsx');
+var TeamMixin = require('../../TeamMixin.jsx');
+
 var StatApp = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {
             userId: this.getUserId(),
-            viewing: null,
+            viewUserId: this.getContextParam('statsId'),
             navView: 'chart'
         }
     },
-    componentWillMount: function() {
-        StatStore.addChangeListener(this._onChange);
+    componentWillMount: function () {
+        DataStore.addChangeListener(this._onChange);
     },
-    componentWillUnmount: function() {
-        StatStore.removeChangeListener(this._onChange);
+    componentWillUnmount: function () {
+        DataStore.removeChangeListener(this._onChange);
     },
-    componentDidMount: function() {
-
-        this.setState(
-            {
-                userId: this.getUserId(),
-                viewing: StatStore.getViewingStats(this.state.userId)
-            }
-        );
+    componentDidMount: function () {
+        this.setState({user: this.getUser()});
     },
     _onChange: function() {
-        this.setState({viewing: StatStore.getViewingStats(this.state.userId)});
+        this.setState({user: this.state.user});
     },
     onSelect: function() {
-        StatActions.changeView(this.refs.viewer.getValue());
+
     },
     getOptions: function() {
         var options = [];
         options.push(<option key={0} value={0}>{'------'}</option>);
-        var users = UserStore.getAll();
-        users.forEach(function(p) {
-            options.push(<option key={p.id} value={p.id}>{p.name}</option>);
-        }.bind(this));
+        var users = this.getUsers();
+        for(var p in users) {
+            options.push(<option key={p} value={p}>{users[p].firstName + ' '+ users[p].lastName}</option>);
+        }
         return options;
     },
     onSelectView: function(key){
@@ -75,16 +74,21 @@ var StatApp = React.createClass({
         return <StatsChart stats={this.state.viewing.stats} />
     },
     render: function() {
-        if (this.state.viewing == null) {
+        if (this.state.viewUserId == null) {
             return null;
         }
+        //
+        var title = <span>Stats for {this.getUser(this.state.viewUserId).name}</span>;
         return (
-            <div>
-                <h3>Stats for {UserStore.get(this.state.viewing.id).name}</h3>
-                <Input type='select' value={this.state.viewing.id} ref='viewer' label={'Switch View'}
+            <div className='statsApp'>
+                <Panel header={title}>
+                <Input type='select' value={this.state.viewUserId} ref='viewer' label={'Switch'}
                        onChange={this.onSelect} >{this.getOptions()}
                 </Input>
-               <StatsDisplay stats={this.state.viewing.stats} />
+                    <StatsDisplay stats={DataStore.getStats()[this.state.viewUserId]} />
+               </Panel>
+
+
             </div>
         );
     }

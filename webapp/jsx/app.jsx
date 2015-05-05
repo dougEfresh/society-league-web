@@ -54,9 +54,9 @@ var routes = (
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>
-            <Route name="stats" path="stats"  handler={StatApp}/>
-            <Route name="team" path="team/:teamId/:seasonId"  handler={TeamApp}/>
-            <Route name="season" path="season/:seasonId"  handler={SeasonApp}/>
+            <Route name="stats" path="stats/:statsId"  handler={StatApp}/>
+            <Route name="team" path="team/:teamId/:seasonId"  handler={TeamApp} />
+            <Route name="season" path="season/:seasonId"  handler={SeasonApp} />
             <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={'challenge/' + ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
             <Route name={ChallengeStatus.PENDING.toLowerCase()} path={'challenge/' + ChallengeStatus.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
             <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={'challenge/' + ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>

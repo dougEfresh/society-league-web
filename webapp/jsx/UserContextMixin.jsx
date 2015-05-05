@@ -18,6 +18,9 @@ var DataFactory = {
 
         return id;
     },
+    getUsers: function() {
+        return DataStore.getUsers();
+    },
     getUser: function(id) {
         var userId = id;
         if (id == null) {
