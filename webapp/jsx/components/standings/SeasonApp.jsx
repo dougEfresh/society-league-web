@@ -80,7 +80,7 @@ var SeasonWeeklyResults = React.createClass({
         var rows = [];
         for(var dt in this.props.matches) {
             cols.push(
-                <Col className="teamMatchResultDay" key={dt} xs={12} md={6}>
+                <Col className="teamMatchResultDay" key={dt} xs={6}>
                     <MatchResultsOnDay day={dt} matches={this.props.matches[dt]}/>
                 </Col>
             );
@@ -167,39 +167,41 @@ var SeasonStandings = React.createClass({
         }
         var rows = [];
         this.props.standings.forEach(function(s) {
+            // xs={12}
             var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.getContextParam('seasonId')} />;
             rows.push(
                 <Row className="standingRow" key={s.teamId}>
-                    <Col xs={12} md={4}>{teamLink}</Col>
-                    <Col xs={12} md={2}>{s.wins}</Col>
-                    <Col xs={12} md={2}>{s.lost}</Col>
-                    <Col xs={12} md={2}>{s.racksFor}</Col>
-                    <Col xs={12} md={2}>{s.racksAgainsts}</Col>
+                    <Col xs={4}>{teamLink}</Col>
+                    <Col xs={2}>{s.wins}</Col>
+                    <Col xs={2}>{s.lost}</Col>
+                    <Col xs={2}>{s.racksFor}</Col>
+                    <Col xs={2}>{s.racksAgainsts}</Col>
                 </Row>
             );
         }.bind(this));
 
         return (
-
+            <Panel header={'Standings'}>
             <Grid className="seasonStandings">
-                <Panel header={'Standings'}>
+
                 <Row>
-                    <Col xs={12} md={4}></Col>
-                    <Col xs={12} md={4}>Match</Col>
-                    <Col xs={12} md={4}>Racks</Col>
+                    <Col xs={4} ></Col>
+                    <Col xs={4} >Match</Col>
+                    <Col xs={4} >Racks</Col>
                 </Row>
                 <Row>
-                    <Col xs={12} md={4}>Team</Col>
-                    <Col xs={12} md={2}>W</Col>
-                    <Col xs={12} md={2}>L</Col>
-                    <Col xs={12} md={2}>W</Col>
-                    <Col xs={12} md={2}>L</Col>
+                    <Col xs={4} >Team</Col>
+                    <Col xs={2} >W</Col>
+                    <Col xs={2} >L</Col>
+                    <Col xs={2} >W</Col>
+                    <Col xs={2} >L</Col>
                 </Row>
                 <Row>
                     {rows}
                 </Row>
-                </Panel>
+
             </Grid>
+            </Panel>
         )
     }
 });

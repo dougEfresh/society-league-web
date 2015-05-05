@@ -5,12 +5,28 @@ var DataStore = require('./stores/DataStore.jsx');
 
 var TeamMixin = {
     getTeam: function(id) {
-        var team = DataStore.getTeams()[id];
-        if (team == undefined) {
-            return {teamId:0,name:"unknown"};
-        }
-        //TODO change result set from server to be an array
-        return {teamId: id, name: team.name};
+        var teams = DataStore.getTeams();
+        var t = {teamId:0,name:"unknown"};
+        teams.forEach(function(team) {
+            if (id == team.teamId) {
+                t = team;
+            }
+        });
+        return t;
+    },
+    getTeamsBySeason: function(seasonId) {
+        var teams =  [];
+        console.log('Getting teams for ' + seasonId);
+        DataStore.getTeams().forEach(function(t) {
+            for(var s in t.seasons) {}
+            if (s == seasonId) {
+                teams.push(t);
+            }
+        });
+        return teams;
+    },
+    getTeamUsers: function(teamId,seasonId) {
+        return this.getTeam(teamId).seasons[seasonId];
     }
 };
 

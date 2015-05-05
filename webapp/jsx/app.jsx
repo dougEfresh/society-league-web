@@ -21,7 +21,7 @@ var ErrorApp = require('./components/ErrorApp.jsx');
 var AdminApp = require('./components/admin/AdminApp.jsx');
 var StatApp = require('./components/stats/StatApp.jsx');
 var HomeApp = require('./components/HomeApp.jsx');
-var TeamDisplayApp = require('./components/team/TeamApp.jsx');
+var TeamApp = require('./components/team/TeamApp.jsx');
 var SeasonApp = require('./components/standings/SeasonApp.jsx');
 
 var App = React.createClass({
@@ -55,7 +55,7 @@ var routes = (
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>
             <Route name="stats" path="stats"  handler={StatApp}/>
-            <Route name="team" path="team/:teamId/:seasonId"  handler={TeamDisplayApp}/>
+            <Route name="team" path="team/:teamId/:seasonId"  handler={TeamApp}/>
             <Route name="season" path="season/:seasonId"  handler={SeasonApp}/>
             <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={'challenge/' + ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
             <Route name={ChallengeStatus.PENDING.toLowerCase()} path={'challenge/' + ChallengeStatus.PENDING.toLowerCase()} handler={ChallengePendingApp}/>

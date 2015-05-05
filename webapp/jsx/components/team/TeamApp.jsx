@@ -18,6 +18,7 @@ var Bootstrap = require('react-bootstrap')
     ,MenuItem = Bootstrap.MenuItem
     ,Accordion = Bootstrap.Accordion
     ,Glyphicon = Bootstrap.Glyphicon
+    ,Input = Bootstrap.Input
     ,Panel = Bootstrap.Panel;
 
 var ReactRouterBootstrap = require('react-router-bootstrap')
@@ -32,8 +33,8 @@ var SeasonMixin = require('../../SeasonMixin.jsx');
 var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
 
-var TeamDisplayApp = React.createClass({
-    mixins: [UserContextMixin],
+var TeamApp = React.createClass({
+    mixins: [TeamMixin,StatsMixin,UserContextMixin],
     getInitialState: function () {
         return {
             user: this.getUser(),
@@ -53,17 +54,59 @@ var TeamDisplayApp = React.createClass({
     _onChange: function() {
         this.setState({user: this.state.user});
     },
+    onSelect: function(e) {
+        console.log(e.target.value);
+        this.state.teamId=e.target.value;
+        this.redirect('team',{userId: this.getUserId(),teamId: e.target.value, seasonId: this.state.seasonId})
+    },
     render: function() {
-        if (this.state.user.id == 0) {
+        if (this.state.user.id == 0 || this.state.teamId == undefined || this.state.seasonId == undefined) {
             return null;
         }
+        var rows=[];
+        this.getTeamsBySeason(this.state.seasonId).forEach(function(t) {
+            rows.push(<option key={t.teamId} value={t.teamId}>{t.name}</option>)
+        });
+        var teams = (<Input onChange={this.onSelect}  type={'select'} value={this.state.teamId}>{rows}</Input>);
         return (
-            <h1>Team</h1>
-        )
+            <div className="teamApp">
+            <Panel header={this.getTeam(this.state.teamId).name + ' Standings'}>
+                {teams}
+                <Table>
+                    <thead>
+                    <th></th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>W</th>
+                    <th>L</th>
+                    </thead>
+                    <tbody>
+                    <TeamMembers teamId={this.state.teamId} seasonId={this.state.seasonId} />
+                    </tbody>
+                </Table>
+            </Panel>
+                </div>
+        );
     }
 });
 
-var TeamStandings = React.createClass({
+var TeamPicker = React.createClass({
+    mixins: [TeamMixin,StatsMixin,UserContextMixin],
+    getDefaultProps: function(){
+        return {
+            teamId: null,
+            seasonId: null
+        }
+    },
+    render: function() {
+        if (this.props.teamId == null || this.props.seasonId == null) {
+            return null;
+        }
+
+    }
+});
+
+var TeamMembers = React.createClass({
     mixins: [StatsMixin,SeasonMixin,TeamMixin],
     getDefaultProps: function() {
         return {
@@ -72,10 +115,10 @@ var TeamStandings = React.createClass({
         }
     },
     render: function() {
-        if (teamId == null) {
+        if (this.props.teamId == null) {
             return null;
         }
-        var teamStats = this.getSeasonTeamStats(season)
+        this.getTeamUsers(this.props.teamId,this.props.seasonId);
         return (
             <div className="teamStanding">
 
@@ -84,4 +127,4 @@ var TeamStandings = React.createClass({
     }
 });
 
-module.exports = TeamDisplayApp;
+module.exports = TeamApp;

@@ -18,12 +18,17 @@ var DataFactory = {
 
         return id;
     },
-    getUser: function() {
-        if (this.getUserId() == 0) {
+    getUser: function(id) {
+        var userId = id;
+        if (id == null) {
+            userId = this.getUserId();
+        }
+
+        if (userId == 0) {
             return {id:0, name: ""}
         }
 
-        var u = DataStore.getUsers()[this.getUserId()];
+        var u = DataStore.getUsers()[userId];
         if (u == undefined) {
              return {id:0, name: ""}
         }
@@ -53,11 +58,8 @@ var DataFactory = {
         }.bind(this));
         return teams;
     },
-    getTeamMembers: function(id,seasonId) {
-
-    },
     redirect: function (to,params) {
-        this.context.router.transitionTo(to,params,{from: this.context.router.getCurrentPath()});
+        this.context.router.transitionTo(to,params,null);
     }
 };
 
