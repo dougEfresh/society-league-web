@@ -149,7 +149,7 @@ var ChallengeRequestApp = React.createClass({
             <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleToggle}>Request Challenge</Button>
         );
         return (
-            <div className="requestApp" >
+            <div id="requestApp"  >
                     <ChallengeRequestDate  date={c.date} />
                     <ChallengeRequestSlots any={c.anySlot} date={c.date} slots={c.slots} />
                     <ChallengeRequestOpponent opponent={c.opponent} />

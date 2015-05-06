@@ -143,21 +143,15 @@ var HomeNav = React.createClass({
                                         {' ' + this.getUserName()}
                                     </Link>
                                 </Button>
-                                <Accordion className='challengeStatusNav' style={{marginBottom: '0px'}}>
-                                    <Panel className='challengePanelStatus' header={header} eventKey='1' >
+                                    <Panel  expanded={true} defaultExpanded={true} className='challengePanelStatus' header={header} eventKey='1' >
                                         {status}
                                     </Panel>
-                                </Accordion>
-                                      <Accordion className='seasonNav' style={{marginBottom: '0px'}}>
-                                          <Panel className='seasonPanelNav' header={seasons} eventKey='1' >
+                                          <Panel  expanded={true} defaultExpanded={true} className='seasonPanelNav' header={seasons} eventKey='1' >
                                               <SeasonNav />
                                           </Panel>
-                                      </Accordion>
-                                      <Accordion className='teamNav' style={{marginBottom: '0px'}}>
-                                          <Panel className='teamPanelNav' header={teamHeader} eventKey='1' >
+                                          <Panel  expanded={true} defaultExpanded={true} className='teamPanelNav' header={teamHeader} eventKey='1' >
                                               <TeamNav />
                                           </Panel>
-                                      </Accordion>
                                       <Button>
                                           <Link className='statsNav' to='stats' params={{userId: this.getUserId(), statsId: this.getUserId()}}>
                                               <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>

@@ -80,7 +80,7 @@ var StatApp = React.createClass({
         //
         var title = <span>Stats for {this.getUser(this.state.viewUserId).name}</span>;
         return (
-            <div className='statsApp'>
+            <div id='statsApp'>
                 <Panel header={title}>
                 <Input type='select' value={this.state.viewUserId} ref='viewer' label={'Switch'}
                        onChange={this.onSelect} >{this.getOptions()}

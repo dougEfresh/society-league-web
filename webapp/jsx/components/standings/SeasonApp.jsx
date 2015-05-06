@@ -72,7 +72,7 @@ var SeasonApp = React.createClass({
         var division = DataStore.getDivisionBySeason(this.state.seasonId);
 
         return (
-            <div className="seasonResults">
+            <div id="seasonApp" className="seasonResults">
                 <SeasonStandings nine={division.type == DivisionConstants.NINE_BALL_TUESDAYS} standings={this.getSeasonTeamStats(this.state.seasonId)}/>
                 <SeasonWeeklyResults matches={this.getMatches(this.state.seasonId)} />
             </div>

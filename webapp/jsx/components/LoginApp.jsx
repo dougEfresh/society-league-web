@@ -68,10 +68,8 @@ var LoginApp = React.createClass({
     },
     render: function () {
         var button = (<Button onClick={this.handleSubmit} >Login</Button>);
-        //{linkSwitch}
-        // <Panel bsStyle='primary' header={'Select User'} title={'Select User'} footer={button} >
         return (
-            <div className="login-container well col-lg-5 col-md-5 col-sm-6">
+            <div id="loginApp" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form className="login-form form-signin">
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="form-field form-group">

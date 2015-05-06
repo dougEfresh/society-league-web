@@ -12,7 +12,7 @@ var ChallengeSentApp = React.createClass({
     },
     render: function(){
         return (
-            <div>
+            <div id="sentApp">
                 <GroupList noSelect={true} challengeGroups={this.state.challengeGroups}/>
             </div>
         )

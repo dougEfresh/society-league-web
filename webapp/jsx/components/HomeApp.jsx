@@ -9,7 +9,7 @@ var DataFactory = require('../UserContextMixin.jsx');
 var HomeApp = React.createClass({
     mixins: [DataFactory],
     render: function () {
-        return null;
+        return (<div id="homeApp"></div>);
     }
 });
 

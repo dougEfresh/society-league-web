@@ -12,7 +12,7 @@ var ChallengePendingApp = React.createClass({
     },
     render: function(){
         return (
-            <div>
+            <div id="pendingApp">
                 <GroupList noSelect={false} challengeGroups={this.state.challengeGroups}/>
             </div>
         )

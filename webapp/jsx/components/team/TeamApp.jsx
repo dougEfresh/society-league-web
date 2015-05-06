@@ -112,7 +112,7 @@ var TeamApp = React.createClass({
         });
         var teams = (<Input onChange={this.onSelect}  type={'select'} value={this.state.teamId}>{options}</Input>);
         return (
-            <div className="teamApp">
+            <div id="teamApp">
             <Panel header={this.getTeam(this.state.teamId).name + ' Standings'}>
                 {teams}
                 <Table>
