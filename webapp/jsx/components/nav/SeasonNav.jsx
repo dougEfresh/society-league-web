@@ -25,6 +25,8 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 
 var DataStore = require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
+var DivisionConstants = require('../../constants/DivisionConstants.jsx');
+var BallIcon = require('../../components/BallIcon.jsx');
 
 var SeasonNav = React.createClass({
     mixins: [UserContextMixin],
@@ -53,10 +55,22 @@ var SeasonNav = React.createClass({
         }
         var seasons = [];
         this.getCurrentSeasons().forEach(function(t) {
+            var title = "unknown";
+            switch (t.division.type) {
+                case DivisionConstants.NINE_BALL_TUESDAYS:
+                    title = (<div><BallIcon type={t.division.type}/> Tuesdays </div>);
+                    break;
+                case DivisionConstants.EIGHT_BALL_WEDNESDAYS:
+                    title = (<div><BallIcon type={t.division.type} /> Wednesdays</div>);
+                    break;
+                case DivisionConstants.EIGHT_BALL_THURSDAYS:
+                    title = (<div><BallIcon type={t.division.type} /> Thursdays </div>);
+                    break;
+            }
             seasons.push(
                 <div key={t.id}>
                     <Link key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
-                        {t.division.type}
+                        {title}
                     </Link>
             </div>);
         }.bind(this));

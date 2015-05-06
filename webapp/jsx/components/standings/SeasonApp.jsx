@@ -30,6 +30,7 @@ var SeasonMixin = require('../../SeasonMixin.jsx');
 var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
+var DivisionConstants = require('../../constants/DivisionConstants.jsx');
 
 var SeasonApp = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,StatsMixin,TeamMixin],
@@ -48,6 +49,18 @@ var SeasonApp = React.createClass({
     componentDidMount: function () {
         this.setState({user: this.getUser()});
     },
+    componentWillReceiveProps: function() {
+        this.setState({seasonId: this.getContextParam('seasonId')});
+    },
+    /*
+    shouldComponentUpdate: function(nextProps, nextState) {
+        if (this.getContextParam('seasonId') != this.state.seasonId) {
+            this.state.seasonId = this.getContextParam('seasonId') ;
+            return true;
+        }
+        return false;
+    },
+    */
     _onChange: function() {
         console.log('onchange');
         this.setState({user: this.state.user});
@@ -56,9 +69,11 @@ var SeasonApp = React.createClass({
         if (this.state.user.id == 0) {
             return null;
         }
+        var division = DataStore.getDivisionBySeason(this.state.seasonId);
+
         return (
             <div className="seasonResults">
-                <SeasonStandings standings={this.getSeasonTeamStats(this.state.seasonId)}/>
+                <SeasonStandings nine={division.type == DivisionConstants.NINE_BALL_TUESDAYS} standings={this.getSeasonTeamStats(this.state.seasonId)}/>
                 <SeasonWeeklyResults matches={this.getMatches(this.state.seasonId)} />
             </div>
         );
@@ -165,44 +180,123 @@ var SeasonStandings = React.createClass({
         if (this.props.standings == undefined || this.props.standings.length == 0) {
             return null;
         }
+        if (this.props.nine) {
+            return <SeasonNineStandings standings={this.props.standings} />
+        }
+
+        return <SeasonEightStandings standings={this.props.standings} />
+    }
+});
+
+var SeasonEightStandings = React.createClass({
+    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin],
+    getDefaultProps: function() {
+        return {
+            nine : false,
+            standings: []
+        }
+    },
+    render: function() {
+        if (this.props.standings == undefined || this.props.standings.length == 0) {
+            return null;
+        }
         var rows = [];
         this.props.standings.forEach(function(s) {
             // xs={12}
             var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.getContextParam('seasonId')} />;
             rows.push(
-                <Row className="standingRow" key={s.teamId}>
-                    <Col xs={4}>{teamLink}</Col>
-                    <Col xs={2}>{s.wins}</Col>
-                    <Col xs={2}>{s.lost}</Col>
-                    <Col xs={2}>{s.racksFor}</Col>
-                    <Col xs={2}>{s.racksAgainsts}</Col>
-                </Row>
+                <tr className="standingRow" key={s.teamId}>
+                    <td >{teamLink}</td>
+                    <td >{s.wins}</td>
+                    <td >{s.lost}</td>
+                    <td >{s.racksFor}</td>
+                    <td >{s.racksAgainsts}</td>
+                </tr>
             );
         }.bind(this));
 
         return (
             <Panel header={'Standings'}>
-            <Grid className="seasonStandings">
-                <Row>
-                    <Col xs={4} ></Col>
-                    <Col xs={4} >Match</Col>
-                    <Col xs={4} >Racks</Col>
-                </Row>
-                <Row>
-                    <Col xs={4} >Team</Col>
-                    <Col xs={2} >W</Col>
-                    <Col xs={2} >L</Col>
-                    <Col xs={2} >W</Col>
-                    <Col xs={2} >L</Col>
-                </Row>
-                <Row>
+            <Table className="seasonStandings">
+                <tr>
+                    <td ></td>
+                    <td >Match</td>
+                    <td >Racks</td>
+                </tr>
+                <tr>
+                    <td >Team</td>
+                    <td >W</td>
+                    <td >L</td>
+                    <td >RW</td>
+                    <td >RL</td>
+                </tr>
+                <tr>
                     {rows}
-                </Row>
+                </tr>
 
-            </Grid>
+            </Table>
             </Panel>
         )
     }
 });
+
+var SeasonNineStandings = React.createClass({
+    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin],
+    getDefaultProps: function() {
+        return {
+            nine : false,
+            standings: []
+        }
+    },
+    render: function() {
+        if (this.props.standings == undefined || this.props.standings.length == 0) {
+            return null;
+        }
+        var rows = [];
+        this.props.standings.forEach(function(s) {
+            // xs={12}
+            var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.getContextParam('seasonId')} />;
+            rows.push(
+                <tr className="standingRow" key={s.teamId}>
+                    <td >{teamLink}</td>
+                    <td >{s.wins}</td>
+                    <td >{s.lost}</td>
+                    <td >{s.setWins}</td>
+                    <td >{s.setLoses}</td>
+                    <td >{s.racksFor}</td>
+                    <td >{s.racksAgainsts}</td>
+                </tr>
+            );
+        }.bind(this));
+
+        return (
+            <Panel header={'Standings'}>
+            <Table className="seasonStandings">
+                <tr>
+                    <td ></td>
+                    <td >Match</td>
+                    <td >Set</td>
+                    <td >Racks</td>
+                </tr>
+                <tr>
+                    <td >Team</td>
+                    <td >W</td>
+                    <td >L</td>
+                    <td >W</td>
+                    <td >L</td>
+                    <td >RW</td>
+                    <td >RL</td>
+                </tr>
+                <tr>
+                    {rows}
+                </tr>
+
+            </Table>
+            </Panel>
+        )
+    }
+});
+
+
 module.exports = SeasonApp;
 

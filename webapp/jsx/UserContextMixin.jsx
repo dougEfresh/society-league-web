@@ -43,13 +43,16 @@ var DataFactory = {
         return u.firstName + ' ' + u.lastName;
     },
     getCurrentSeasons: function() {
-        var seasons = [];
-        var u = this.getUser();
-        u.currentSeasons.forEach(function(s){
-            var division = DataStore.getDivisionBySeason(s);
-            seasons.push({id: s,division: division});
-        }.bind(this));
-        return seasons;
+        var seasons = DataStore.getSeasons();
+        var activeSeasons = [];
+        for(var id in seasons) {
+            if (seasons[id].season.seasonStatus == 'ACTIVE') {
+                var division = DataStore.getDivisionBySeason(id);
+                if (division != undefined && division.type.toLowerCase().indexOf('challenge') == -1)
+                    activeSeasons.push({id: id,division: division});
+            }
+        }
+        return activeSeasons;
     },
     getCurrentTeams: function() {
        var u = this.getUser();

@@ -21,8 +21,8 @@ var NavApp = React.createClass({
         }
 
         return (
-            <div>
-                <LeagueNav />
+            <div id="leagueNav">
+                <LeagueNav  />
             </div>
         )
     }
