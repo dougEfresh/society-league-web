@@ -206,7 +206,6 @@ h2.form-signin-heading {
 .footer .container {
 	margin-top: 200px;
 	background-color: #000;
-	max-width: 1000px;
 	color: #fff;
 }
 .footer .container a, .footer.container a:visited {
@@ -233,14 +232,11 @@ h2.form-signin-heading {
 	clear: both;
 	width: 100%;
 }
-.account-wrapper {
-	padding: 0px 0px;
-	margin-top: 10px;
-	max-width: 1000px;
-}
+
+
 .account-wrapper .btn-group-vertical { max-width: 1000px;padding: 0px 0px; }
 .account-wrapper .btn-group-vertical a { text-align: left;}
-.account-wrapper .btn-group-vertical a:hover, .account-wrapper .btn-group-vertical .active { background-color: #cc2; color: #fff;}
+.account-wrapper .btn-group-vertical a:hover, .account-wrapper .btn-group-vertical .active { background-color: #000; color: #fff;}
 
 .badge {
 	background-color: #9c302d;
@@ -294,7 +290,7 @@ h2.form-signin-heading {
 .homeNav .panel-body {
 	padding: 0px 0px;
 }
-.panel-body li a:link,.panel-body li a:visited {
+.homeNav .panel-body li a:link,.homeNav .panel-body li a:visited {
 	float: left;
 	width: 100%;
 	text-indent: 8px;
@@ -317,9 +313,7 @@ h2.form-signin-heading {
 .navbar-wrapper {
 	background-color: transparent;
 }
-.navbar-wrapper > .container {
-		max-width: 1000px;
-}
+
 .navbar-wrapper .container .navbar-header {
 		padding: 0px 0px;
 }
