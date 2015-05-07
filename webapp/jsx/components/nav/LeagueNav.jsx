@@ -130,7 +130,7 @@ var HomeNav = React.createClass({
         /*
          */
         return (
-            <div className="container" style={{'maxWidth': '1000px',padding: '0px 0px'}} >
+            <div className="container"  >
                 <div className="account-wrapper">
                     <Grid>
                         <Row>
