@@ -40,16 +40,20 @@ var TeamApp = React.createClass({
         return {
             user: this.getUser(),
             teamId: this.getContextParam('teamId'),
-            seasonId: this.getContextParam('seasonId')
+            seasonId: this.getContextParam('seasonId'),
+            counter: 0
         }
     },
     componentWillMount: function () {
+        console.log('Mount');
         DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
+        console.log('UnMount');
         DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
+        console.log('DidMount');
         this.setState({user: this.getUser()});
     },
     _onChange: function() {
@@ -60,16 +64,79 @@ var TeamApp = React.createClass({
         this.setState({teamId:e.target.value});
         //this.redirect('team',{userId: this.getUserId(),teamId: e.target.value, seasonId: this.state.seasonId})
     },
-    renderBody: function() {
+    onChange: function(e) {
+        this.setState(
+            {
+                seasonId: this.getContextParam('seasonId'),
+                teamId: e.targe.value
+            }
+        );
+    },
+    componentWillReceiveProps: function() {
+        console.log('Prpos');
+        this.setState(
+            {
+                seasonId: this.getContextParam('seasonId'),
+                teamId: this.getContextParam('teamId'),
+                counter: this.state.counter++
+            }
+        );
+    },
+    render: function() {
+        if (this.state.user.id == 0 || this.state.teamId == undefined || this.state.seasonId == undefined) {
+            return null;
+        }
+        
+        if (this.state.counter % 2 == 0) {
+            return (
+                <TeamAppSwitchOdd teamId={this.state.teamId} seasonId={this.state.seasonId} />
+            );
+        } else {
+            return (<TeamAppSwitchEven teamId={this.state.teamId} seasonId={this.state.seasonId} />);
+        }
+    }
+});
+
+var TeamAppSwitchOdd = React.createClass({
+    render: function() {
+        if (this.props.teamId == undefined || this.props.seasonId == undefined) {
+            return null;
+        }
+        return (
+            <div id="teamApp">
+                <TeamStandings onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />
+                <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />
+            </div>
+        );
+    }
+});
+var TeamAppSwitchEven = React.createClass({
+     render: function() {
+        if (this.props.teamId == undefined || this.props.seasonId == undefined) {
+            return null;
+        }
+        return (
+            <div id="teamApp">
+                <TeamStandings onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />
+                <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />
+            </div>
+        );
+    }
+});
+
+
+var TeamStandings = React.createClass({
+    mixins: [TeamMixin,StatsMixin,UserContextMixin],
+       renderBody: function() {
         var standing = {};
-        var teamStats = this.getSeasonTeamStats(this.state.seasonId);
+        var teamStats = this.getSeasonTeamStats(this.props.seasonId);
         teamStats.forEach(function (s) {
-            if (s.teamId == this.state.teamId) {
+            if (s.teamId == this.props.teamId) {
                 standing = s;
             }
         }.bind(this));
-        var teamStats = [];
-        teamStats.push(<tr key={'all'}>
+        var teamRow = [];
+        teamRow.push(<tr key={'all'}>
             <td>All</td>
             <td>{standing.wins}</td>
             <td>{standing.lost}</td>
@@ -77,18 +144,19 @@ var TeamApp = React.createClass({
             <td>{standing.racksAgainsts}</td>
         </tr>);
 
-        var users = this.getTeamUsers(this.state.teamId,this.state.seasonId);
+        var users = this.getTeamUsers(this.props.teamId,this.props.seasonId);
         var userStats = [];
         users.forEach(function(u) {
             var s = this.getUserStats(u);
             s.season.forEach(function(season) {
-                if (season.seasonId == this.state.seasonId) {
+                if (season.seasonId == this.props.seasonId) {
                     userStats.push(season)
                 }
             }.bind(this));
         }.bind(this));
+           var i = 0;
         userStats.forEach(function(stat) {
-            teamStats.push(<tr key={stat.userId}>
+            teamRow.push(<tr key={i++}>
             <td>
                 <Link to='stats' params={{userId: this.getUserId(),statsId: stat.userId}}>
                     {this.getUser(stat.userId).name}
@@ -100,20 +168,16 @@ var TeamApp = React.createClass({
             <td>{stat.racksAgainst}</td>
         </tr>)
         }.bind(this));
-        return (<div>{teamStats}</div>);
+        return (<div>{teamRow}</div>);
     },
     render: function() {
-        if (this.state.user.id == 0 || this.state.teamId == undefined || this.state.seasonId == undefined) {
-            return null;
-        }
         var options=[];
-        this.getTeamsBySeason(this.state.seasonId).forEach(function(t) {
+        this.getTeamsBySeason(this.props.seasonId).forEach(function(t) {
             options.push(<option key={t.teamId} value={t.teamId}>{t.name}</option>)
         });
-        var teams = (<Input onChange={this.onSelect}  type={'select'} value={this.state.teamId}>{options}</Input>);
+        var teams = (<Input onSelect={this.props.onChange}  type={'select'} value={this.props.teamId}>{options}</Input>);
         return (
-            <div id="teamApp">
-            <Panel header={this.getTeam(this.state.teamId).name + ' Standings'}>
+            <Panel header={this.getTeam(this.props.teamId).name + ' Standings'}>
                 {teams}
                 <Table>
                     <thead>
@@ -128,10 +192,7 @@ var TeamApp = React.createClass({
                     </tbody>
                 </Table>
             </Panel>
-                <Panel className='teamWeeklyResults' header={'Weekly Results'}>
-                    <TeamWeeklyResults teamId={this.state.teamId} seasonId={this.state.seasonId} />
-                </Panel>
-            </div>
+
         );
     }
 });
@@ -168,13 +229,14 @@ var TeamWeeklyResults = React.createClass({
                 }
             }.bind(this));
         }
+        var i = 0;
         results.forEach(function(r) {
             var opponent = r.won ? r.loser : r.winner;
             var result = r.won ? 'W' : 'L';
             var rw = r.won ? r.winnerRacks : r.loserRacks;
             var rl = r.won ? r.loserRacks : r.winnerRacks;
             rows.push(
-                <tr key={r.teamMatchId}>
+                <tr key={i++}>
                     <td>{r.date.substr(0,10)}</td>
                     <td><TeamLink team={this.getTeam(opponent)} seasonId={this.props.seasonId}/></td>
                     <td>{result}</td>
@@ -185,6 +247,7 @@ var TeamWeeklyResults = React.createClass({
         }.bind(this));
 
         return (
+            <Panel className='teamWeeklyResults' header={'Weekly Results'}>
             <Table>
                 <thead>
                 <th>Date</th>
@@ -197,6 +260,7 @@ var TeamWeeklyResults = React.createClass({
                 {rows}
                 </tbody>
             </Table>
+            </Panel>
         );
     }
 });

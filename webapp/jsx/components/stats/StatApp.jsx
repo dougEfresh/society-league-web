@@ -46,8 +46,8 @@ var StatApp = React.createClass({
     _onChange: function() {
         this.setState({user: this.state.user});
     },
-    onSelect: function() {
-
+    onSelect: function(e) {
+        this.setState({viewUserId: e.target.value});
     },
     getOptions: function() {
         var options = [];
@@ -82,9 +82,10 @@ var StatApp = React.createClass({
         return (
             <div id='statsApp'>
                 <Panel header={title}>
-                <Input type='select' value={this.state.viewUserId} ref='viewer' label={'Switch'}
-                       onChange={this.onSelect} >{this.getOptions()}
-                </Input>
+                    <Input type='select' value={this.state.viewUserId} ref='viewer' label={'Switch User'}
+                           onChange={this.onSelect} >{this.getOptions()}
+                    </Input>
+
                     <StatsDisplay stats={DataStore.getStats()[this.state.viewUserId]} />
                </Panel>
 
