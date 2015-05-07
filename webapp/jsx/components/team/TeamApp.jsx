@@ -49,11 +49,9 @@ var TeamApp = React.createClass({
         DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
-        console.log('UnMount');
         DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
-        console.log('DidMount');
         this.setState({user: this.getUser()});
     },
     _onChange: function() {
@@ -68,17 +66,18 @@ var TeamApp = React.createClass({
         this.setState(
             {
                 seasonId: this.getContextParam('seasonId'),
-                teamId: e.targe.value
+                teamId: e.target.value
             }
         );
     },
     componentWillReceiveProps: function() {
-        console.log('Prpos');
+        var c = this.state.counter;
+        c++;
         this.setState(
             {
                 seasonId: this.getContextParam('seasonId'),
                 teamId: this.getContextParam('teamId'),
-                counter: this.state.counter++
+                counter: c
             }
         );
     },
@@ -86,13 +85,13 @@ var TeamApp = React.createClass({
         if (this.state.user.id == 0 || this.state.teamId == undefined || this.state.seasonId == undefined) {
             return null;
         }
-        
+        console.log('Counter: ' + this.state.counter);
         if (this.state.counter % 2 == 0) {
             return (
-                <TeamAppSwitchOdd teamId={this.state.teamId} seasonId={this.state.seasonId} />
+                <TeamAppSwitchOdd  teamId={this.state.teamId} seasonId={this.state.seasonId} />
             );
         } else {
-            return (<TeamAppSwitchEven teamId={this.state.teamId} seasonId={this.state.seasonId} />);
+            return (<TeamAppSwitchEven  teamId={this.state.teamId} seasonId={this.state.seasonId} />);
         }
     }
 });
@@ -103,27 +102,44 @@ var TeamAppSwitchOdd = React.createClass({
             return null;
         }
         return (
-            <div id="teamApp">
-                <TeamStandings onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />
-                <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />
-            </div>
-        );
+                <div id="teamApp">
+                    <TeamStandingsOdd teamId={this.props.teamId} seasonId={this.props.seasonId} />
+                    <TeamWeeklyOdd teamId={this.props.teamId} seasonId={this.props.seasonId} />
+                </div>
+            );
     }
 });
 var TeamAppSwitchEven = React.createClass({
-     render: function() {
-        if (this.props.teamId == undefined || this.props.seasonId == undefined) {
-            return null;
-        }
+    render: function() {
         return (
             <div id="teamApp">
-                <TeamStandings onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />
-                <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />
+                <TeamStandingsEven onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />
+                <TeamWeeklyEven teamId={this.props.teamId} seasonId={this.props.seasonId} />
             </div>
         );
     }
 });
+var TeamStandingsOdd = React.createClass({
+    render: function() {
+        return ( <TeamStandings onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />);
+    }
+});
+var TeamStandingsEven = React.createClass({
+    render: function() {
+        return ( <TeamStandings onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />);
+    }
+});
+var TeamWeeklyOdd = React.createClass({
+    render: function() {
+        return ( <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />);
+    }
+});
 
+var TeamWeeklyEven = React.createClass({
+    render: function() {
+        return ( <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />);
+    }
+});
 
 var TeamStandings = React.createClass({
     mixins: [TeamMixin,StatsMixin,UserContextMixin],
