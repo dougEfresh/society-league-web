@@ -4,6 +4,8 @@ var Router = require('react-router')
     , Route = Router.Route
     , NotFoundRoute = Router.NotFoundRoute
     , Link = Router.Link
+    , State = Router.State
+    , Navigation = Router.Navigation
     , DefaultRoute = Router.DefaultRoute;
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
@@ -19,6 +21,9 @@ var Bootstrap = require('react-bootstrap')
     ,Accordion = Bootstrap.Accordion
     ,Glyphicon = Bootstrap.Glyphicon
     ,Input = Bootstrap.Input
+    ,Modal = Bootstrap.Modal
+    ,OverlayMixin = Bootstrap.OverlayMixin
+    ,ModalTrigger = Bootstrap.ModalTrigger
     ,Panel = Bootstrap.Panel;
 
 var ReactRouterBootstrap = require('react-router-bootstrap')
@@ -32,15 +37,13 @@ var UserContextMixin = require('../../UserContextMixin.jsx');
 var SeasonMixin = require('../../SeasonMixin.jsx');
 var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
+var ResultMixin = require('../../ResultMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
 
 var TeamApp = React.createClass({
-    mixins: [TeamMixin,StatsMixin,UserContextMixin],
-    getInitialState: function () {
+    mixins: [TeamMixin,StatsMixin,UserContextMixin,State,Navigation],
+    getInitialState: function() {
         return {
-            user: this.getUser(),
-            teamId: this.getContextParam('teamId'),
-            seasonId: this.getContextParam('seasonId'),
             counter: 0
         }
     },
@@ -70,28 +73,18 @@ var TeamApp = React.createClass({
             }
         );
     },
-    componentWillReceiveProps: function() {
+    componentWillReceiveProps: function(o,n) {
         var c = this.state.counter;
         c++;
-        this.setState(
-            {
-                seasonId: this.getContextParam('seasonId'),
-                teamId: this.getContextParam('teamId'),
-                counter: c
-            }
-        );
+        this.setState({counter: c});
     },
     render: function() {
-        if (this.state.user.id == 0 || this.state.teamId == undefined || this.state.seasonId == undefined) {
-            return null;
-        }
         console.log('Counter: ' + this.state.counter);
+
         if (this.state.counter % 2 == 0) {
-            return (
-                <TeamAppSwitchOdd  teamId={this.state.teamId} seasonId={this.state.seasonId} />
-            );
+            return (<TeamAppSwitchOdd  teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />);
         } else {
-            return (<TeamAppSwitchEven  teamId={this.state.teamId} seasonId={this.state.seasonId} />);
+            return (<TeamAppSwitchEven  teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />);
         }
     }
 });
@@ -143,7 +136,7 @@ var TeamWeeklyEven = React.createClass({
 
 var TeamStandings = React.createClass({
     mixins: [TeamMixin,StatsMixin,UserContextMixin],
-       renderBody: function() {
+    renderBody: function() {
         var standing = {};
         var teamStats = this.getSeasonTeamStats(this.props.seasonId);
         teamStats.forEach(function (s) {
@@ -214,28 +207,67 @@ var TeamStandings = React.createClass({
 });
 
 var TeamWeeklyResults = React.createClass({
-    mixins: [TeamMixin,StatsMixin,UserContextMixin,SeasonMixin],
-    getDefaultProps: function(){
+    mixins: [ResultMixin,TeamMixin,StatsMixin,UserContextMixin,SeasonMixin,State,Navigation,OverlayMixin],
+     getInitialState: function() {
         return {
-            teamId: null,
-            seasonId: null
-        }
+            isModalOpen: false,
+            teamMatchId: 0
+        };
     },
-    render: function() {
-        if (this.props.teamId == null || this.props.seasonId == null) {
-            return null;
+    handleToggle: function(e,id) {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen,
+            teamMatchId: e.target.id == undefined || e.target.id == "" ? 0 : e.target.id
+        });
+    },
+    renderOverlay: function () {
+        if (!this.state.isModalOpen) {
+            return <span/>;
         }
-        var matches = this.getMatches(this.props.seasonId);
+        var matches = this.getTeamResults(this.getParams().seasonId,this.getParams().teamId,this.state.teamMatchId);
+        var rows = [];
+
+        var body = (
+            <div>
+                <div className='modal-body'>
+                    <Table>
+                        <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Opponent</th>
+                            <th>W/L</th>
+                            <th>RW</th>
+                            <th>RL</th>
+                        </tr>
+                        </thead>
+
+
+                    </Table>
+                    {matches.length}
+                </div>
+                <div className='modal-footer'>
+                    <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
+                </div>
+            </div>);
+
+        return (
+            <Modal className="resultsModal" bsStyle={'success'} title={'Results'} onRequestHide={this.handleToggle}>
+                {body}
+            </Modal>
+        );
+  },
+    render: function() {
+        var matches = this.getMatches(this.getParams().seasonId);
         var rows=[];
         var results=[];
         for(var dt in matches) {
             matches[dt].forEach(function(tm) {
                 var matchResult = null;
-                if (tm.winner == this.props.teamId) {
+                if (tm.winner == this.getParams().teamId) {
                     matchResult = tm;
                     matchResult.won = true;
                     matchResult.date = dt;
-                } else if (tm.loser == this.props.teamId) {
+                } else if (tm.loser == this.getParams().teamId) {
                     matchResult = tm;
                     matchResult.won = false;
                     matchResult.date = dt;
@@ -251,10 +283,15 @@ var TeamWeeklyResults = React.createClass({
             var result = r.won ? 'W' : 'L';
             var rw = r.won ? r.winnerRacks : r.loserRacks;
             var rl = r.won ? r.loserRacks : r.winnerRacks;
+            //<td>
             rows.push(
                 <tr key={i++}>
-                    <td>{r.date.substr(0,10)}</td>
-                    <td><TeamLink team={this.getTeam(opponent)} seasonId={this.props.seasonId}/></td>
+                    <td>
+                        <Button id={r.teamMatchId} bsStyle='primary' disabled={false} onClick={this.handleToggle}>{r.date.substr(0,10)}</Button>
+                    </td>
+                    <td>
+                        <TeamLink team={this.getTeam(opponent)} seasonId={this.getParams().seasonId}/>
+                    </td>
                     <td>{result}</td>
                     <td>{rw}</td>
                     <td>{rl}</td>
