@@ -39,6 +39,7 @@ var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
 var ResultMixin = require('../../ResultMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
+var UserLink = require('../UserLink.jsx');
 
 var TeamApp = React.createClass({
     mixins: [TeamMixin,StatsMixin,UserContextMixin,State,Navigation],
@@ -167,9 +168,7 @@ var TeamStandings = React.createClass({
         userStats.forEach(function(stat) {
             teamRow.push(<tr key={i++}>
             <td>
-                <Link to='stats' params={{userId: this.getUserId(),statsId: stat.userId}}>
-                    {this.getUser(stat.userId).name}
-                </Link>
+                <UserLink user={this.getUser(stat.userId)} />
             </td>
             <td>{stat.wins}</td>
             <td>{stat.loses}</td>
@@ -226,7 +225,17 @@ var TeamWeeklyResults = React.createClass({
         }
         var matches = this.getTeamResults(this.getParams().seasonId,this.getParams().teamId,this.state.teamMatchId);
         var rows = [];
-
+        var key = 0;
+        matches.forEach(function(m){
+            rows.push(
+                <tr key={key++}>
+                    <td><UserLink user={this.getUser(m.userId)}/></td>
+                    <td><UserLink user={this.getUser(m.opponent)}/></td>
+                    <td>{m.win ? 'W' : 'L'}</td>
+                    <td>{m.racksFor}</td>
+                    <td>{m.racksAgainst}</td>
+                </tr>);
+        }.bind(this));
         var body = (
             <div>
                 <div className='modal-body'>
@@ -240,10 +249,11 @@ var TeamWeeklyResults = React.createClass({
                             <th>RL</th>
                         </tr>
                         </thead>
-
+                        <tbody>
+                        {rows}
+                        </tbody>
 
                     </Table>
-                    {matches.length}
                 </div>
                 <div className='modal-footer'>
                     <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>

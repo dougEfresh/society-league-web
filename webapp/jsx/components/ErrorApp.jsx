@@ -1,14 +1,16 @@
 var React = require('react/addons');
+var Router = require('react-router')
+    , RouteHandler = Router.RouteHandler;
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Input = Bootstrap.Input
     ,Panel = Bootstrap.Panel
     ,Label = Bootstrap.Label;
 
-var DataFactory = require('./../UserContextMixin.jsx');
+var UserContextMixin = require('./../UserContextMixin.jsx');
 
 var ErrorApp = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin,Router.state],
     render: function () {
         return (
             <Panel header={'Error'} >

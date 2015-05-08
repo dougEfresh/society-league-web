@@ -7,7 +7,7 @@ var ResultMixin = {
         var teamMatchResults = [];
         for (var user in seasonResults) {
             seasonResults[user].forEach(function(result) {
-                if (result.teamMatchId == teamMatchId && result.opponentTeam == teamId ) {
+                if (result.teamMatchId == teamMatchId && result.opponentTeam != teamId ) {
                     result.userId = user;
                     teamMatchResults.push(result);
                 }

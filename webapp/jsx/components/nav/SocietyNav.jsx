@@ -22,13 +22,13 @@ var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
-var DataFactory = require('./../../UserContextMixin.jsx');
+var UserContextMixin = require('./../../UserContextMixin.jsx');
 var LeagueNav = require('./LeagueNav.jsx');
 var LoginApp = require('../LoginApp.jsx');
 
 
 var SocietyNav = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     renderLoginNav: function() {
         var homeLink = (<Link className="logo" to='home' params={{userId: this.getUserId()}}></Link>);
         return (

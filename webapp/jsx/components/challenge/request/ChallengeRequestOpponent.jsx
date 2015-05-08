@@ -3,12 +3,12 @@ var ReactPropTypes = React.PropTypes;
 var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;
 
-var DataFactory = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../UserContextMixin.jsx');
 var RequestActions = require('../../../actions/RequestActions.jsx');
 var Util = require('../../../util.jsx');
 
 var ChallengeRequestOpponent = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     propTypes: {
         opponent: ReactPropTypes.object.isRequired
     },

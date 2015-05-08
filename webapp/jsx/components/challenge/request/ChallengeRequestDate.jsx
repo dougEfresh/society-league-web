@@ -1,14 +1,14 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var RequestActions = require('../../../actions/RequestActions.jsx');
-var DataFactory  = require('../../../UserContextMixin.jsx');
+var UserContextMixin  = require('../../../UserContextMixin.jsx');
 var Util  = require('../../../util.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;
 var moment = require('moment');
 
 var ChallengeRequestDate = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     getOptions: function(){
         var nextChallengeDate = Util.nextChallengeDate();
         var dates = [];

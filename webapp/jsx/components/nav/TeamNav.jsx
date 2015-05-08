@@ -29,7 +29,7 @@ var UserContextMixin = require('../../UserContextMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
 
 var TeamNav = React.createClass({
-    mixins: [UserContextMixin,TeamMixin],
+    mixins: [UserContextMixin,TeamMixin,Router.state],
     getInitialState: function () {
         return {
             user: this.getUser()

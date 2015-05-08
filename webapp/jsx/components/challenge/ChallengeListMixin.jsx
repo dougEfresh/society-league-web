@@ -19,10 +19,10 @@ var BallIcon = require('../../BallMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
-var DataFactory = require('../../UserContextMixin.jsx');
+var UserContextMixin = require('../../UserContextMixin.jsx');
 
 var ChallengeListMixin = {
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     propTypes: {
         type:  ReactPropTypes.string.isRequired
     },

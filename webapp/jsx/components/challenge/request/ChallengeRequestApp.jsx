@@ -22,10 +22,10 @@ var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
 var ChallengeRequestGame= require('./ChallengeRequestGame.jsx');
 
-var DataFactory = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../UserContextMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
-    mixins: [DataFactory,OverlayMixin],
+    mixins: [UserContextMixin,OverlayMixin],
     getInitialState: function() {
         return {
             isModalOpen: false,

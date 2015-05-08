@@ -18,7 +18,7 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
-var DataFactory = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../UserContextMixin.jsx');
 var GroupAction = require('./GroupAction.jsx');
 var GroupGame = require('./GroupGame.jsx');
 var GroupSlot = require('./GroupSlot.jsx');
@@ -29,7 +29,7 @@ function dateFormat(date) {
 }
 
 var GroupRow = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     propTypes: {
         challengeGroup: ReactPropTypes.object.isRequired,
         noSelect:  ReactPropTypes.bool.isRequired

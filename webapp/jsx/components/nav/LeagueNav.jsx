@@ -33,7 +33,7 @@ var TeamNav = require('./TeamNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
 
 var LeagueNav = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.state],
     getInitialState: function() {
         return {
             challenges: ChallengeStore.getAllChallenges(),
@@ -77,7 +77,7 @@ var LeagueNav = React.createClass({
 });
 
 var HomeNav = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.state],
     render: function() {
         var c = this.props.challenges;
         var counter =  c[ChallengeStatus.SENT].length

@@ -6,10 +6,10 @@ var Bootstrap = require('react-bootstrap')
     ,Label = Bootstrap.Label;
 
 var UserStore = require('../stores/UserStore.jsx');
-var DataFactory = require('./../UserContextMixin.jsx');
+var UserContextMixin = require('./../UserContextMixin.jsx');
 
 var LoginApp = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     contextTypes: {
         router: React.PropTypes.func
     },

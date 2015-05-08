@@ -1,18 +1,11 @@
 var React = require('react/addons');
-var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler;
+var Router = require('react-router');
 var DataStore = require('./stores/DataStore.jsx');
 
-var DataFactory = {
-    contextTypes: {
-        router: React.PropTypes.func
-    },
-    getContextParam: function(param) {
-        return this.context.router.getCurrentParams()[param];
-    },
+var UserContextMixin = {
+    mixins: [Router.state],
     getUserId: function() {
-
-        var id =  parseInt(this.context.router.getCurrentParams().userId);
+        var id =  parseInt(this.getParams().userId);
         if (id == undefined || isNaN(id))
             return 0;
 
@@ -36,6 +29,7 @@ var DataFactory = {
              return {id:0, name: "not found"}
         }
         u.name = u.firstName  + ' ' + u.lastName;
+        u.userId = id;
         return u;
     },
     getUserName: function() {
@@ -70,4 +64,4 @@ var DataFactory = {
     }
 };
 
-module.exports = DataFactory;
+module.exports = UserContextMixin;

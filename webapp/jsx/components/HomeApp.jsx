@@ -1,13 +1,13 @@
 var React = require('react/addons');
 var Bootstrap = require('react-bootstrap');
-
+var Router = require('react-router');
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
 var UserStore = require('../stores/UserStore.jsx');
 var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
-var DataFactory = require('../UserContextMixin.jsx');
+var UserContextMixin = require('../UserContextMixin.jsx');
 
 var HomeApp = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin,Router.state],
     render: function () {
         return (<div id="homeApp"></div>);
     }

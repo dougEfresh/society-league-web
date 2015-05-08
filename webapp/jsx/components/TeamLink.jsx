@@ -6,7 +6,7 @@ var UserContextMixin = require('../UserContextMixin.jsx');
 var TeamMixin = require('../TeamMixin.jsx');
 
 var TeamLink = React.createClass({
-    mixins: [UserContextMixin,TeamMixin],
+    mixins: [UserContextMixin,TeamMixin,Router.state],
     propTypes: {
         team: ReactPropTypes.object.isRequired
     },

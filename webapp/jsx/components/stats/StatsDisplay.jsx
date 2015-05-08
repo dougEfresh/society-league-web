@@ -14,14 +14,14 @@ var Pie = require("react-chartjs").Pie;
 var StatActions = require('../../actions/StatActions.jsx');
 var StatStore = require('../../stores/StatsStore.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
-var DataFactory = require('./../../UserContextMixin.jsx');
+var UserContextMixin = require('./../../UserContextMixin.jsx');
 var StatsDisplay = require('./StatsDisplay.jsx');
 var StatsRecord = require('./StatsRecord.jsx');
 var StatsHandicap = require('./StatsHandicap.jsx');
 var StatsChart = require('./StatsPie.jsx');
 
 var StatsDisplay = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     propTypes: {
         stats: ReactPropTypes.object.isRequired
     },

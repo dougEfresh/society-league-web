@@ -29,7 +29,7 @@ var DivisionConstants = require('../../constants/DivisionConstants.jsx');
 var BallIcon = require('../../components/BallIcon.jsx');
 
 var SeasonNav = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.state],
     getInitialState: function () {
         return {
             user: this.getUser()

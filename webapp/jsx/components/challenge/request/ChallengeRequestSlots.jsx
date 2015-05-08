@@ -6,11 +6,11 @@ var Bootstrap = require('react-bootstrap')
     ,ListGroup = Bootstrap.ListGroup
     ,ListGroupItem = Bootstrap.ListGroupItem;
 
-var DataFactory = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../UserContextMixin.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 
 var ChallengeRequestSlots = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     propTypes: {
         slots: ReactPropTypes.array.isRequired,
         any:  ReactPropTypes.bool.isRequired
@@ -59,7 +59,7 @@ var ChallengeRequestSlots = React.createClass({
 });
 
 var SlotButton = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     propTypes: {
         slot: ReactPropTypes.object.isRequired,
         any: ReactPropTypes.bool.isRequired

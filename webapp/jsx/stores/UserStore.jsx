@@ -3,7 +3,7 @@ var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/UserConstants.jsx');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
-var DataFactoryMixin = require('../UserContextMixin.jsx');
+var UserContextMixinMixin = require('../UserContextMixin.jsx');
 
 var _users = [];
 var _user = {};
@@ -23,14 +23,14 @@ var UserStore = assign({}, EventEmitter.prototype, {
     },
 
     getAllFromServer: function() {
-        DataFactoryMixin.getData('/api/users', function(d) {
+        UserContextMixinMixin.getData('/api/users', function(d) {
             _users = d;
             UserStore.emitChange();
         }.bind(this));
     },
 
     getFromServer: function(id) {
-        DataFactoryMixin.getData('/api/user/' + id, function(d) {
+        UserContextMixinMixin.getData('/api/user/' + id, function(d) {
             _user = d;
             UserStore.emitChange();
         }.bind(this));

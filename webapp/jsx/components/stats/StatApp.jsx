@@ -26,7 +26,7 @@ var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
 
 var StatApp = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.state],
     getInitialState: function() {
         return {
             userId: this.getUserId(),

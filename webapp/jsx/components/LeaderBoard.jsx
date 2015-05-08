@@ -20,11 +20,11 @@ var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
 var StatActions = require('../actions/StatActions.jsx');
 var StatStore = require('../stores/StatsStore.jsx');
-var DataFactory = require('../UserContextMixin.jsx');
+var UserContextMixin = require('../UserContextMixin.jsx');
 var StatsDisplay = require('../components/stats/StatsDisplay.jsx');
 
 var LeaderBoard = React.createClass({
-  mixins: [DataFactory],
+  mixins: [UserContextMixin],
     propTypes: {
         stats: ReactPropTypes.object.isRequired
     },

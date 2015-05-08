@@ -30,7 +30,7 @@ var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
 
 var SeasonApp = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.state],
     getInitialState: function () {
         return {
             user: this.getUser(),

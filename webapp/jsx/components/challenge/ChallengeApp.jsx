@@ -26,11 +26,11 @@ var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('./approved/ChallengeApprovedApp.jsx');
 var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
 
-var DataFactory = require('../../UserContextMixin.jsx');
+var UserContextMixin = require('../../UserContextMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 
 var ChallengeApp = React.createClass({
-    mixins: [DataFactory],
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {
             requests: ChallengeStore.getAllChallenges(),
