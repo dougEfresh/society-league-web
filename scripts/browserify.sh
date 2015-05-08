@@ -1,3 +1,2 @@
 #!/bin/bash
-cd webapp
-../node_modules/.bin/browserify -t reactify --full-paths  -o js/bundle.js  jsx/*.jsx  jsx/*/*.jsx  
+./node_modules/.bin/browserify -t reactify --full-paths  -o webapp/js/bundle.js  `find webapp/jsx/ -name '*.jsx'`

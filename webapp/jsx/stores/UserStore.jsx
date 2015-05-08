@@ -49,6 +49,9 @@ var UserStore = assign({}, EventEmitter.prototype, {
             }
         });
         return user
+    },
+    setUser: function(u) {
+        _user = u;
     }
 });
 

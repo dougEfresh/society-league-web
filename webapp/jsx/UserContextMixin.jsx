@@ -3,9 +3,8 @@ var Router = require('react-router');
 var DataStore = require('./stores/DataStore.jsx');
 
 var UserContextMixin = {
-    mixins: [Router.state],
     getUserId: function() {
-        var id =  parseInt(this.getParams().userId);
+        var id = DataStore.getAuthUser().id;
         if (id == undefined || isNaN(id))
             return 0;
 

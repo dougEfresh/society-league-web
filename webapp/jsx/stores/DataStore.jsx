@@ -8,6 +8,7 @@ var Util = require('../util.jsx');
 var divisions = {}, teams  = {} , players = {}, seasons = {} , users = {}, stats = {};
 var teamStats = {};
 var results = {};
+var _user = {id: 0, name: 'unknown'};
 
 var DataStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
@@ -47,6 +48,12 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getTeam: function(id) {
         return teams[id];
     },
+    setUser: function(u) {
+        _user = u;
+    },
+    getAuthUser: function() {
+        return _user;
+    }
 
 });
 

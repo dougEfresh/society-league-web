@@ -8,6 +8,7 @@ var Bootstrap = require('react-bootstrap')
 var UserActions = require('../actions/UserAction.jsx');
 var UserContextMixin = require('./../UserContextMixin.jsx');
 var UserStore = require('../stores/UserStore.jsx');
+var DataStore = require('../stores/DataStore.jsx');
 
 var LoginApp = React.createClass({
     mixins: [UserContextMixin],
@@ -33,6 +34,8 @@ var LoginApp = React.createClass({
             data: {username: user, password: 'password'},
             method: 'post',
             success: function (d) {
+                console.log(JSON.stringify(d));
+                DataStore.setUser(d);
                 router.transitionTo('home',{userId: d.id},null);
             }.bind(this),
             error: function (xhr, status, err) {
