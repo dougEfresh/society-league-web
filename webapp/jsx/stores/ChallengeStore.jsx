@@ -3,7 +3,6 @@ var EventEmitter = require('events').EventEmitter;
 var ChallengeConstants = require('../constants/ChallengeConstants.jsx');
 var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
 var assign = require('object-assign');
-var UserStore = require('./UserStore.jsx');
 var CHANGE_EVENT = 'change';
 var ADD_EVENT = 'add';
 var ChallengeActions = require('../actions/ChallengeActions.jsx');

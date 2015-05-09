@@ -19,7 +19,6 @@ var Router = require('react-router')
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var ChallengeGroupStore = require('../../stores/ChallengeGroupStore.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
-var UserStore = require('../../stores/UserStore.jsx');
 var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 
 var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');

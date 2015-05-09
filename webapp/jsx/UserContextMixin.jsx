@@ -20,12 +20,12 @@ var UserContextMixin = {
         }
 
         if (userId == 0) {
-            return {id:0, name: "unknown"}
+            return {userId:0, name: "unknown"}
         }
 
         var u = DataStore.getUsers()[userId];
         if (u == undefined) {
-             return {id:0, name: "not found"}
+             return {userId:0, name: "not found"}
         }
         u.name = u.firstName  + ' ' + u.lastName;
         u.userId = id;

@@ -5,9 +5,7 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
     ,Label = Bootstrap.Label;
 
-var UserActions = require('../actions/UserAction.jsx');
 var UserContextMixin = require('./../UserContextMixin.jsx');
-var UserStore = require('../stores/UserStore.jsx');
 var DataStore = require('../stores/DataStore.jsx');
 
 var LoginApp = React.createClass({
@@ -36,7 +34,7 @@ var LoginApp = React.createClass({
             success: function (d) {
                 console.log(JSON.stringify(d));
                 DataStore.setUser(d);
-                router.transitionTo('home',{userId: d.userId},null);
+                router.transitionTo('home',null,null);
             }.bind(this),
             error: function (xhr, status, err) {
                 this.setState({error: true});

@@ -27,9 +27,7 @@ var SeasonApp = require('./components/season/SeasonApp.jsx');
 var App = React.createClass({
     render: function () {
         return (
-            <div>
-                <RouteHandler/>
-            </div>
+            <RouteHandler/>
         );
     }
 });
@@ -39,7 +37,7 @@ var RouteNotFound = React.createClass({
         router: React.PropTypes.func
     },
     render: function(){
-        return (<div><h1><Link to="challenge" params={{userId: 1000}} >Challenge Someone</Link></h1></div>);
+        return (<div><h1><Link to="challenge" params={{userId: 1000}} >Not Found</Link></h1></div>);
     }
 });
 
@@ -50,7 +48,7 @@ var routes = (
         <Route name="login" path="login" handler={LoginApp} />
         <Route name="error" path="error" handler={ErrorApp} />
         <Route name="logout" path="logout" handler={LogoutApp} />
-        <Route name="nav" path="/app/:userId" handler={NavApp}>
+        <Route name="nav" path="/app" handler={NavApp}>
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>

@@ -39,8 +39,6 @@ var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
 var ResultMixin = require('../../ResultMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
-var UserLink = require('../UserLink.jsx');
-var TeamStandings = require('./TeamStandings.jsx');
 
 var TeamWeeklyResults = React.createClass({
     mixins: [ResultMixin,TeamMixin,StatsMixin,UserContextMixin,SeasonMixin,State,Navigation,OverlayMixin],

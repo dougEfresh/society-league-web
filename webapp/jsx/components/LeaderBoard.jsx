@@ -1,6 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route
@@ -15,7 +14,6 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
-var UserStore = require('../stores/UserStore.jsx');
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
 var StatActions = require('../actions/StatActions.jsx');
@@ -41,6 +39,9 @@ var LeaderBoard = React.createClass({
         this.context.router.transitionTo('stats',{userId: this.getUserId()},null);
     },
     render: function() {
+        return null;
+    }
+        /*
         if ( this.props.stats == undefined || this.props.stats == null){
             return null;
         }
@@ -49,7 +50,6 @@ var LeaderBoard = React.createClass({
         for(var id in this.props.stats) {
             var data = {
                 id: id,
-                name: UserStore.getName(id),
                 actions: (<div>
                     <Button onClick={this.challenge}>
                         <i className='fa fa-fighter-jet'>
@@ -96,6 +96,7 @@ var LeaderBoard = React.createClass({
               </Table>
         );
     }
+    */
 });
 
 

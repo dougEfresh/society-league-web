@@ -1,57 +1,21 @@
 var React = require('react/addons');
 var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler
-    , Route = Router.Route
-    , NotFoundRoute = Router.NotFoundRoute
-    , Link = Router.Link
     , State = Router.State
-    , Navigation = Router.Navigation
-    , DefaultRoute = Router.DefaultRoute;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Nav = Bootstrap.Nav
-    ,Grid = Bootstrap.Grid
-    ,Row = Bootstrap.Row
-    ,Col = Bootstrap.Col
-    ,MenuItem = Bootstrap.MenuItem
-    ,Accordion = Bootstrap.Accordion
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Input = Bootstrap.Input
-    ,Modal = Bootstrap.Modal
-    ,OverlayMixin = Bootstrap.OverlayMixin
-    ,ModalTrigger = Bootstrap.ModalTrigger
-    ,Panel = Bootstrap.Panel;
+    , Navigation = Router.Navigation;
 
-var ReactRouterBootstrap = require('react-router-bootstrap')
-    ,NavItemLink = ReactRouterBootstrap.NavItemLink
-    ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
-
-var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
-var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
-var SeasonMixin = require('../../SeasonMixin.jsx');
-var StatsMixin = require('../../StatsMixin.jsx');
-var TeamMixin = require('../../TeamMixin.jsx');
-var ResultMixin = require('../../ResultMixin.jsx');
-var TeamLink = require('../TeamLink.jsx');
-var UserLink = require('../UserLink.jsx');
 var TeamStandings = require('./TeamStandings.jsx');
 var TeamWeeklyResults = require('./TeamWeeklyResults.jsx');
 
 var TeamApp = React.createClass({
-    mixins: [TeamMixin,StatsMixin,UserContextMixin,State,Navigation],
+    mixins: [UserContextMixin,State,Navigation],
     getInitialState: function() {
         return {
             counter: 0
         }
     },
     componentWillMount: function () {
-        console.log('Mount');
         DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
@@ -66,7 +30,6 @@ var TeamApp = React.createClass({
     onSelect: function(e) {
         console.log(e.target.value);
         this.setState({teamId:e.target.value});
-        //this.redirect('team',{userId: this.getUserId(),teamId: e.target.value, seasonId: this.state.seasonId})
     },
     onChange: function(e) {
         this.setState(
@@ -82,8 +45,6 @@ var TeamApp = React.createClass({
         this.setState({counter: c});
     },
     render: function() {
-        console.log('Counter: ' + this.state.counter);
-
         if (this.state.counter % 2 == 0) {
             return (<TeamAppSwitchOdd  teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />);
         } else {

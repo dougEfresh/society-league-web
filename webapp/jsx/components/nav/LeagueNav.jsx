@@ -81,7 +81,7 @@ var HomeNav = React.createClass({
                               <Nav>
                                   <div className="homeNav" aria-label="...">
                                       <Button className={'active btn-block user'}>
-                                          <Link className='navName' to='home' params={{userId: this.getUserId()}}>
+                                          <Link className='navName' to='home'>
                                               <Glyphicon glyph='home' />
                                               {' ' + this.getUserName()}
                                           </Link>
@@ -92,7 +92,7 @@ var HomeNav = React.createClass({
                                       <TeamNav />
 
                                       <Button>
-                                          <Link className='statsNav' to='stats' params={{userId: this.getUserId(), statsId: this.getUserId()}}>
+                                          <Link className='statsNav' to='stats' params={{statsId: this.getUserId()}}>
                                               <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
                                           </Link>
                                       </Button>

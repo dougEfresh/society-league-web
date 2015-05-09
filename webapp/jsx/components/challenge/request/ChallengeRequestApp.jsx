@@ -15,7 +15,6 @@ var RequestStore = require('../../../stores/RequestStore.jsx');
 var ChallengeGroupStore = require('../../../stores/ChallengeGroupStore.jsx');
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
-var UserStore = require('../../../stores/UserStore.jsx');
 
 var ChallengeRequestDate = require('./ChallengeRequestDate.jsx');
 var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
@@ -116,7 +115,7 @@ var ChallengeRequestApp = React.createClass({
         }
         var c = this.state.challenge;
         var msg = 'Send request to '
-            + UserStore.get(c.opponent.user.id).name + ' for' +
+            + this.getUser(c.opponent.user.id).name + ' for' +
             ' a match on ' + c.date ;
         var title = 'Notify Opponent?';
         if (this.state.submitted) {
