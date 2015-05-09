@@ -37,32 +37,20 @@ var LeagueNav = React.createClass({
     mixins: [UserContextMixin,Router.state],
     getInitialState: function() {
         return {
-            challenges: ChallengeStore.getAllChallenges(),
             user: this.getUser()
         }
     },
     componentWillMount: function() {
         DataStore.addChangeListener(this._onChange);
-        ChallengeStore.addRequestListener(this._onChallengeChange);
-        ChallengeStore.addChangeListener(this._onChallengeChange);
     },
     componentDidMount: function() {
-        ChallengeStore.initChallenges(this.getUserId());
-        DataActions.init();
     },
     componentWillUnmount: function() {
         DataStore.removeChangeListener(this._onChange);
-        ChallengeStore.removeChangeListener(this._onChallengeChange);
-        ChallengeStore.removeRequestListener(this._onChallengeChange);
-    },
-    _onChallengeChange: function() {
-        this.setState(
-            {challenges: ChallengeStore.getAllChallenges()}
-        );
     },
     _onChange: function(){
         this.setState({
-            user: this.state.user
+            user: this.getUser()
         })
     },
     render: function () {
@@ -70,7 +58,9 @@ var LeagueNav = React.createClass({
             return null
         }
         return (
-            <HomeNav />
+            <div id="leagueApp" >
+                <HomeNav />
+            </div>
         );
     }
 });

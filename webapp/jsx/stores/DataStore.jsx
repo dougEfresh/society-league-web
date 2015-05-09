@@ -22,6 +22,11 @@ var DataStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
     init: function() {
+        Util.getData('/api/user', function(d) {
+            _user = d;
+            DataStore.emitChange();
+        }.bind(this));
+
         Util.getData('/api/data', function(d) {
             teams=d.teams;
             players=d.players;
