@@ -6,8 +6,8 @@ var CHANGE_EVENT = 'change';
 var Util = require('../util.jsx');
 
 var divisions = {}, teams  = {} , players = {}, seasons = {} , users = {}, stats = {};
-var teamStats = {};
-var results = {};
+var teamStats = {}, results = {};
+
 var _user = {id: 0, name: 'unknown'};
 
 var DataStore = assign({}, EventEmitter.prototype, {
@@ -54,7 +54,6 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getAuthUser: function() {
         return _user;
     }
-
 });
 
 AppDispatcher.register(function(action) {

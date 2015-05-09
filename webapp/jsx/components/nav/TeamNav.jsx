@@ -60,9 +60,11 @@ var TeamNav = React.createClass({
                 {t.name}</Link>
             </div>);
         }.bind(this));
-
+        var teamHeader = (<i className="fa fa-users">Teams</i>);
         return (
-            <div className='teamLinkNav' >{teams}</div>
+            <Panel  expanded={true} defaultExpanded={true} className='teamPanelNav' header={teamHeader} eventKey='1' >
+                <div className='teamLinkNav' >{teams}</div>
+            </Panel>
         )
     }
 });

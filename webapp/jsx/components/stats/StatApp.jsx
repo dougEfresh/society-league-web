@@ -30,7 +30,7 @@ var StatApp = React.createClass({
     getInitialState: function() {
         return {
             userId: this.getUserId(),
-            viewUserId: this.getContextParam('statsId'),
+            viewUserId: this.getParams('statsId'),
             navView: 'chart'
         }
     },

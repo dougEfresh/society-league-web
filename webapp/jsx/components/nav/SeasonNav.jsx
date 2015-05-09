@@ -74,9 +74,13 @@ var SeasonNav = React.createClass({
                     </Link>
             </div>);
         }.bind(this));
-
+        var seasonHeader = (<i className='fa fa-trophy'>Seasons</i>);
         return (
-            <div className='seasonNavLink' >{seasons}</div>
+            <div className='seasonNavLink' >
+                <Panel  expanded={true} defaultExpanded={true} className='seasonPanelNav' header={seasonHeader} eventKey='1' >
+                    {seasons}
+                </Panel>
+            </div>
         )
     }
 });

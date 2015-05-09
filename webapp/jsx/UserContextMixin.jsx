@@ -4,7 +4,7 @@ var DataStore = require('./stores/DataStore.jsx');
 
 var UserContextMixin = {
     getUserId: function() {
-        var id = DataStore.getAuthUser().id;
+        var id = DataStore.getAuthUser().userId;
         if (id == undefined || isNaN(id))
             return 0;
 
@@ -15,7 +15,7 @@ var UserContextMixin = {
     },
     getUser: function(id) {
         var userId = id;
-        if (id == null) {
+        if (id == null || id == undefined) {
             userId = this.getUserId();
         }
 
@@ -57,9 +57,6 @@ var UserContextMixin = {
             teams.push(team);
         }.bind(this));
         return teams;
-    },
-    redirect: function (to,params) {
-        this.context.router.transitionTo(to,params,null);
     }
 };
 

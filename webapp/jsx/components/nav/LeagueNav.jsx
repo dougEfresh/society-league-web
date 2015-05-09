@@ -31,6 +31,7 @@ var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
 var TeamNav = require('./TeamNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
+var ChallengeNav = require('./ChallengeNav.jsx');
 
 var LeagueNav = React.createClass({
     mixins: [UserContextMixin,Router.state],
@@ -69,9 +70,7 @@ var LeagueNav = React.createClass({
             return null
         }
         return (
-            <div>
-                <HomeNav challenges={this.state.challenges}/>
-            </div>
+            <HomeNav />
         );
     }
 });
@@ -79,85 +78,35 @@ var LeagueNav = React.createClass({
 var HomeNav = React.createClass({
     mixins: [UserContextMixin,Router.state],
     render: function() {
-        var c = this.props.challenges;
-        var counter =  c[ChallengeStatus.SENT].length
-            +
-            c[ChallengeStatus.PENDING].length
-            +
-            c[ChallengeStatus.ACCEPTED].length;
-
         if (this.getUser().id == 0) {
             return null;
         }
-        var header = (
-            <div>
-                <Glyphicon glyph='cog' />
-                Challenges
-                <Badge>{counter}</Badge>
-            </div>
-        );
-        var status = (
-            <div className="challengeStatusMenu">
-                 <MenuItemLink className='pendingNav' to={ChallengeStatus.PENDING.toLowerCase()} params={{userId: this.getUserId()}} >
-                        <Glyphicon glyph='alert' />
-                        Pending
-                        <Badge>
-                            {c[ChallengeStatus.PENDING].length}
-                        </Badge>
-                 </MenuItemLink>
-                <MenuItemLink className='acceptedNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} params={{userId: this.getUserId()}} >
-                        <Glyphicon glyph='calendar' />
-                        Accepted
-                        <Badge>
-                            {c[ChallengeStatus.ACCEPTED].length}
-                        </Badge>
-                    </MenuItemLink>
-                  <MenuItemLink className='sentNav' to={ChallengeStatus.SENT.toLowerCase()} params={{userId: this.getUserId()}} >
-                        <Glyphicon glyph='ok' />
-                        Sent
-                        <Badge>
-                            {c[ChallengeStatus.SENT].length}
-                        </Badge>
-                    </MenuItemLink>
-                <MenuItemLink className='requestNav' to={ChallengeStatus.REQUEST.toLowerCase()} params={{userId: this.getUserId()}} >
-                        <Glyphicon glyph='flash' />
-                        Request
-                    </MenuItemLink>
-            </div>
-        );
-        var teamHeader = (<i className="fa fa-users">Teams</i>);
-        var seasons = (<i className='fa fa-trophy'>Seasons</i>);
-        /*
-         */
+
         return (
             <div className="container"  >
                 <div className="account-wrapper">
-                    <Grid>
+                    <Grid className="leagueNavGrid" style={{marginWidth: '30px'}} >
                         <Row>
                             <Col xs={12} md={2}>
                               <Nav>
-                                  <ButtonGroup vertical className="homeNav" role="group" aria-label="...">
-                                      <Button className={'active'}>
-                                    <Link className='navName' to='home' params={{userId: this.getUserId()}}>
-                                        <Glyphicon glyph='home' />
-                                        {' ' + this.getUserName()}
-                                    </Link>
-                                </Button>
-                                    <Panel  expanded={true} defaultExpanded={true} className='challengePanelStatus' header={header} eventKey='1' >
-                                        {status}
-                                    </Panel>
-                                          <Panel  expanded={true} defaultExpanded={true} className='seasonPanelNav' header={seasons} eventKey='1' >
-                                              <SeasonNav />
-                                          </Panel>
-                                          <Panel  expanded={true} defaultExpanded={true} className='teamPanelNav' header={teamHeader} eventKey='1' >
-                                              <TeamNav />
-                                          </Panel>
+                                  <div className="homeNav" aria-label="...">
+                                      <Button className={'active btn-block user'}>
+                                          <Link className='navName' to='home' params={{userId: this.getUserId()}}>
+                                              <Glyphicon glyph='home' />
+                                              {' ' + this.getUserName()}
+                                          </Link>
+                                      </Button>
+
+                                      <ChallengeNav />
+                                      <SeasonNav />
+                                      <TeamNav />
+
                                       <Button>
                                           <Link className='statsNav' to='stats' params={{userId: this.getUserId(), statsId: this.getUserId()}}>
                                               <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
                                           </Link>
                                       </Button>
-                                  </ButtonGroup>
+                                  </div>
                               </Nav>
                             </Col>
                             <Col xs={12} md={10}>

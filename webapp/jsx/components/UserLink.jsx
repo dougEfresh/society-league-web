@@ -21,7 +21,8 @@ var UserLink = React.createClass({
         return (
             <Link className="userLink" to="stats" params={{userId: this.getUserId(), statsId: this.props.user.userId}}>
                 {this.props.user.name}
-            </Link>);
+            </Link>
+        );
     }
 });
 

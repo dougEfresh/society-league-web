@@ -40,6 +40,8 @@ var TeamMixin = require('../../TeamMixin.jsx');
 var ResultMixin = require('../../ResultMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var UserLink = require('../UserLink.jsx');
+var TeamStandings = require('./TeamStandings.jsx');
+var TeamWeeklyResults = require('./TeamWeeklyResults.jsx');
 
 var TeamApp = React.createClass({
     mixins: [TeamMixin,StatsMixin,UserContextMixin,State,Navigation],
@@ -69,7 +71,7 @@ var TeamApp = React.createClass({
     onChange: function(e) {
         this.setState(
             {
-                seasonId: this.getContextParam('seasonId'),
+                seasonId: this.getParams('seasonId'),
                 teamId: e.target.value
             }
         );
@@ -132,199 +134,6 @@ var TeamWeeklyOdd = React.createClass({
 var TeamWeeklyEven = React.createClass({
     render: function() {
         return ( <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />);
-    }
-});
-
-var TeamStandings = React.createClass({
-    mixins: [TeamMixin,StatsMixin,UserContextMixin],
-    renderBody: function() {
-        var standing = {};
-        var teamStats = this.getSeasonTeamStats(this.props.seasonId);
-        teamStats.forEach(function (s) {
-            if (s.teamId == this.props.teamId) {
-                standing = s;
-            }
-        }.bind(this));
-        var teamRow = [];
-        teamRow.push(<tr key={'all'}>
-            <td>All</td>
-            <td>{standing.wins}</td>
-            <td>{standing.lost}</td>
-            <td>{standing.racksFor}</td>
-            <td>{standing.racksAgainsts}</td>
-        </tr>);
-
-        var users = this.getTeamUsers(this.props.teamId,this.props.seasonId);
-        var userStats = [];
-        users.forEach(function(u) {
-            var s = this.getUserStats(u);
-            s.season.forEach(function(season) {
-                if (season.seasonId == this.props.seasonId) {
-                    userStats.push(season)
-                }
-            }.bind(this));
-        }.bind(this));
-           var i = 0;
-        userStats.forEach(function(stat) {
-            teamRow.push(<tr key={i++}>
-            <td>
-                <UserLink user={this.getUser(stat.userId)} />
-            </td>
-            <td>{stat.wins}</td>
-            <td>{stat.loses}</td>
-            <td>{stat.racksFor}</td>
-            <td>{stat.racksAgainst}</td>
-        </tr>)
-        }.bind(this));
-        return (<div>{teamRow}</div>);
-    },
-    render: function() {
-        var options=[];
-        this.getTeamsBySeason(this.props.seasonId).forEach(function(t) {
-            options.push(<option key={t.teamId} value={t.teamId}>{t.name}</option>)
-        });
-        var teams = (<Input onSelect={this.props.onChange}  type={'select'} value={this.props.teamId}>{options}</Input>);
-        return (
-            <Panel header={this.getTeam(this.props.teamId).name + ' Standings'}>
-                {teams}
-                <Table>
-                    <thead>
-                    <th></th>
-                    <th>W</th>
-                    <th>L</th>
-                    <th>RF</th>
-                    <th>RG</th>
-                    </thead>
-                    <tbody>
-                    {this.renderBody()}
-                    </tbody>
-                </Table>
-            </Panel>
-
-        );
-    }
-});
-
-var TeamWeeklyResults = React.createClass({
-    mixins: [ResultMixin,TeamMixin,StatsMixin,UserContextMixin,SeasonMixin,State,Navigation,OverlayMixin],
-     getInitialState: function() {
-        return {
-            isModalOpen: false,
-            teamMatchId: 0
-        };
-    },
-    handleToggle: function(e,id) {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen,
-            teamMatchId: e.target.id == undefined || e.target.id == "" ? 0 : e.target.id
-        });
-    },
-    renderOverlay: function () {
-        if (!this.state.isModalOpen) {
-            return <span/>;
-        }
-        var matches = this.getTeamResults(this.getParams().seasonId,this.getParams().teamId,this.state.teamMatchId);
-        var rows = [];
-        var key = 0;
-        matches.forEach(function(m){
-            rows.push(
-                <tr key={key++}>
-                    <td><UserLink user={this.getUser(m.userId)}/></td>
-                    <td><UserLink user={this.getUser(m.opponent)}/></td>
-                    <td>{m.win ? 'W' : 'L'}</td>
-                    <td>{m.racksFor}</td>
-                    <td>{m.racksAgainst}</td>
-                </tr>);
-        }.bind(this));
-        var body = (
-            <div>
-                <div className='modal-body'>
-                    <Table>
-                        <thead>
-                        <tr>
-                            <th>Player</th>
-                            <th>Opponent</th>
-                            <th>W/L</th>
-                            <th>RW</th>
-                            <th>RL</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {rows}
-                        </tbody>
-
-                    </Table>
-                </div>
-                <div className='modal-footer'>
-                    <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
-                </div>
-            </div>);
-
-        return (
-            <Modal className="resultsModal" bsStyle={'success'} title={'Results'} onRequestHide={this.handleToggle}>
-                {body}
-            </Modal>
-        );
-  },
-    render: function() {
-        var matches = this.getMatches(this.getParams().seasonId);
-        var rows=[];
-        var results=[];
-        for(var dt in matches) {
-            matches[dt].forEach(function(tm) {
-                var matchResult = null;
-                if (tm.winner == this.getParams().teamId) {
-                    matchResult = tm;
-                    matchResult.won = true;
-                    matchResult.date = dt;
-                } else if (tm.loser == this.getParams().teamId) {
-                    matchResult = tm;
-                    matchResult.won = false;
-                    matchResult.date = dt;
-                }
-                if (matchResult != null) {
-                    results.push(matchResult);
-                }
-            }.bind(this));
-        }
-        var i = 0;
-        results.forEach(function(r) {
-            var opponent = r.won ? r.loser : r.winner;
-            var result = r.won ? 'W' : 'L';
-            var rw = r.won ? r.winnerRacks : r.loserRacks;
-            var rl = r.won ? r.loserRacks : r.winnerRacks;
-            //<td>
-            rows.push(
-                <tr key={i++}>
-                    <td>
-                        <Button id={r.teamMatchId} bsStyle='primary' disabled={false} onClick={this.handleToggle}>{r.date.substr(0,10)}</Button>
-                    </td>
-                    <td>
-                        <TeamLink team={this.getTeam(opponent)} seasonId={this.getParams().seasonId}/>
-                    </td>
-                    <td>{result}</td>
-                    <td>{rw}</td>
-                    <td>{rl}</td>
-                </tr>
-            )
-        }.bind(this));
-
-        return (
-            <Panel className='teamWeeklyResults' header={'Weekly Results'}>
-            <Table>
-                <thead>
-                <th>Date</th>
-                <th>Opponent</th>
-                <th>W/L</th>
-                <th>RW</th>
-                <th>RL</th>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </Table>
-            </Panel>
-        );
     }
 });
 
