@@ -8,7 +8,15 @@ var SeasonMixin = {
         return DataStore.getSeasons()[id];
     },
     getMatches: function(id) {
-        return this.getSeason(id).teamMatches;
+        var s = this.getSeason(id);
+        if (s == undefined || s.teamMatches == undefined)
+            return {};
+
+        return s.teamMatches;
+    },
+    getDivision: function(id) {
+        console.log('Getting division ' + id);
+        return DataStore.getDivisionBySeason(id);
     }
 };
 
