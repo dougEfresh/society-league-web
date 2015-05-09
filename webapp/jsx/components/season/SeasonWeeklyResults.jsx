@@ -14,7 +14,7 @@ var Bootstrap = require('react-bootstrap')
     ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
 
-var MatchResultsOnDay = require('./MatchResultsOnDay.jsx');
+var MatchResultsOnDay = require('./SeasonMatchResultsOnDay.jsx');
 
 var SeasonWeeklyResults = React.createClass({
     getDefaultProps: function() {

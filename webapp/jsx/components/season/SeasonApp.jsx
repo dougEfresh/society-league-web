@@ -27,16 +27,17 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 var DataStore= require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
 var DivisionConstants = require('../../constants/DivisionConstants.jsx');
-var SeasonNineApp = require('./SeasonNineApp.jsx');
-var SeasonEightThursApp = require('./SeasonEightThursApp.jsx');
-var SeasonEightWedsApp = require('./SeasonEightWedApp.jsx');
+var SeasonStandings = require('./SeasonStandings.jsx');
+var SeasonWeeklyResults= require('./SeasonWeeklyResults.jsx');
+var SeasonMixin = require('../../SeasonMixin.jsx');
+var StatsMixin = require('../../StatsMixin.jsx');
 
 var SeasonApp = React.createClass({
-    mixins: [UserContextMixin,Router.State],
+    mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State],
     getInitialState: function () {
         return {
             user: this.getUser(),
-            seasonId: this.getParams('seasonId')
+            seasonId: this.getParams().seasonId
         }
     },
     componentWillMount: function () {
@@ -59,28 +60,18 @@ var SeasonApp = React.createClass({
         if (this.getUserId() == 0) {
             return null;
         }
-        var division = DataStore.getDivisionBySeason(this.getParams().seasonId);
-
-        switch (division.type) {
-            case DivisionConstants.NINE_BALL_TUESDAYS:
-                return (
-                    <div id="seasonApp">
-                        <SeasonNineApp seasonId={this.getParams().seasonId} />
-                    </div>);
-
-            case DivisionConstants.EIGHT_BALL_WEDNESDAYS:
-                return (
-                    <div id="seasonApp">
-                        <SeasonEightWedsApp seasonId={this.getParams().seasonId} />
-                    </div>);
-            case DivisionConstants.EIGHT_BALL_THURSDAYS:
-                return (
-                    <div id="seasonApp">
-                        <SeasonEightThursApp seasonId={this.getParams().seasonId} />
-                    </div>);
-            default:
-                return null;
+        var division = this.getDivision(this.getParams().seasonId);
+        if (division == null || division == undefined) {
+            return null;
         }
+        return (
+            <div id="seasonApp" className="seasonResults">
+                <SeasonStandings seasonId={this.getParams().seasonId}
+                                 nine={division.type == DivisionConstants.NINE_BALL_TUESDAYS}
+                                 standings={this.getSeasonTeamStats(this.getParams().seasonId)}/>
+                <SeasonWeeklyResults matches={this.getMatches(this.getParams().seasonId)}/>
+            </div>
+        );
     }
 });
 
