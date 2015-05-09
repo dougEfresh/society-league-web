@@ -4,7 +4,7 @@ var DataStore = require('./stores/DataStore.jsx');
 
 var UserContextMixin = {
     getUserId: function() {
-        var id = DataStore.getAuthUser().userId;
+        var id = DataStore.getAuthUserId();
         if (id == undefined || isNaN(id))
             return 0;
 
@@ -18,7 +18,7 @@ var UserContextMixin = {
         if (id == null || id == undefined) {
             userId = this.getUserId();
         }
-
+        console.log('Getting user ' + userId);
         if (userId == 0) {
             return {userId:0, name: "unknown"}
         }
@@ -49,7 +49,11 @@ var UserContextMixin = {
     },
     getCurrentTeams: function() {
        var u = this.getUser();
+
         var teams = [];
+        if (u.currentTeams == undefined) {
+            return teams;
+        }
         u.currentTeams.forEach(function(t) {
             var team = {id: t.id, season: t.season};
             team.division = DataStore.getDivisionBySeason(t.season);
