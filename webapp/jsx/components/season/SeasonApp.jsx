@@ -24,17 +24,19 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
-var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
-var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
+var DivisionConstants = require('../../constants/DivisionConstants.jsx');
+var SeasonNineApp = require('./SeasonNineApp.jsx');
+var SeasonEightThursApp = require('./SeasonEightThursApp.jsx');
+var SeasonEightWedsApp = require('./SeasonEightWedApp.jsx');
 
 var SeasonApp = React.createClass({
-    mixins: [UserContextMixin,Router.state],
+    mixins: [UserContextMixin,Router.State],
     getInitialState: function () {
         return {
             user: this.getUser(),
-            seasonId: this.getContextParam('seasonId')
+            seasonId: this.getParams('seasonId')
         }
     },
     componentWillMount: function () {
@@ -46,17 +48,41 @@ var SeasonApp = React.createClass({
     componentDidMount: function () {
         this.setState({user: this.getUser()});
     },
+    componentWillReceiveProps: function() {
+        this.setState({seasonId: this.getParams().seasonId});
+    },
     _onChange: function() {
-        this.setState({user: this.state.user});
+        console.log('onchange');
+        this.setState({user: this.getUser()});
     },
     render: function() {
-        if (this.state.user.id == 0) {
+        if (this.getUserId() == 0) {
             return null;
         }
-        return (
-            <h1>Season</h1>
-        )
+        var division = DataStore.getDivisionBySeason(this.getParams().seasonId);
+
+        switch (division.type) {
+            case DivisionConstants.NINE_BALL_TUESDAYS:
+                return (
+                    <div id="seasonApp">
+                        <SeasonNineApp seasonId={this.getParams().seasonId} />
+                    </div>);
+
+            case DivisionConstants.EIGHT_BALL_WEDNESDAYS:
+                return (
+                    <div id="seasonApp">
+                        <SeasonEightWedsApp seasonId={this.getParams().seasonId} />
+                    </div>);
+            case DivisionConstants.EIGHT_BALL_THURSDAYS:
+                return (
+                    <div id="seasonApp">
+                        <SeasonEightThursApp seasonId={this.getParams().seasonId} />
+                    </div>);
+            default:
+                return null;
+        }
     }
 });
 
 module.exports = SeasonApp;
+

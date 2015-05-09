@@ -29,22 +29,51 @@ var UserContextMixin = require('../../UserContextMixin.jsx');
 var SeasonMixin = require('../../SeasonMixin.jsx');
 var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
-var TeamLink = require('../TeamLink.jsx');
 var DivisionConstants = require('../../constants/DivisionConstants.jsx');
-var SeasonDisplay= require('./SeasonDisplay.jsx');
+var SeasonWeeklyResults = require('./SeasonWeeklyResults.jsx');
+var SeasonNineStandings = require('./SeasonNineStandings.jsx');
+var SeasonEightStandings = require('./SeasonEightStandings.jsx');
 
-var SeasonEight = React.createClass({
+var SeasonDisplay = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,StatsMixin,TeamMixin],
+    getDefaultProps: function () {
+        return {
+            seasonId: null
+        }
+    },
     render: function() {
         if (this.props.seasonId == null) {
             return null;
         }
+        var division = DataStore.getDivisionBySeason(this.props.seasonId);
         return (
-            <div >
-                <SeasonDisplay seasonId={this.props.seasonId} />
+            <div id="seasonApp" className="seasonResults">
+                <SeasonStandings nine={division.type == DivisionConstants.NINE_BALL_TUESDAYS} standings={this.getSeasonTeamStats(this.props.seasonId)}/>
+                <SeasonWeeklyResults matches={this.getMatches(this.props.seasonId)} />
             </div>
         );
     }
 });
 
-module.exports = SeasonEight;
+var SeasonStandings = React.createClass({
+    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin],
+    getDefaultProps: function() {
+        return {
+            nine : false,
+            standings: []
+        }
+    },
+    render: function() {
+        if (this.props.standings == undefined || this.props.standings.length == 0) {
+            return null;
+        }
+        if (this.props.nine) {
+            return <SeasonNineStandings standings={this.props.standings} />
+        }
+
+        return <SeasonEightStandings standings={this.props.standings} />
+    }
+});
+
+module.exports = SeasonDisplay;
+
