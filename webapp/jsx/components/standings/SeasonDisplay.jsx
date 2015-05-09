@@ -96,7 +96,7 @@ var SeasonWeeklyResults = React.createClass({
 });
 
 var MatchResultsOnDay = React.createClass({
-    mixins: [SeasonMixin,TeamMixin,UserContextMixin],
+    mixins: [SeasonMixin,TeamMixin,UserContextMixin,Router.State],
      getDefaultProps: function() {
         return {
             matches: null,
@@ -110,8 +110,8 @@ var MatchResultsOnDay = React.createClass({
         var rows = [];
 
         this.props.matches.forEach(function(m){
-            var teamWinnerLink = <TeamLink team={this.getTeam(m.winner)} seasonId={ this.getContextParam('seasonId')}/>;
-            var teamLoserLink= <TeamLink team={this.getTeam(m.loser)} seasonId={ this.getContextParam('seasonId')}/>;
+            var teamWinnerLink = <TeamLink team={this.getTeam(m.winner)} seasonId={ this.getParams().seasonId}/>;
+            var teamLoserLink= <TeamLink team={this.getTeam(m.loser)} seasonId={this.getParams().seasonId}/>;
             rows.push(
                 <tr className="teamMatchResultRow" key={m.teamMatchId}>
                     <td>{teamWinnerLink}</td>
@@ -162,7 +162,7 @@ var SeasonStandings = React.createClass({
 });
 
 var SeasonEightStandings = React.createClass({
-    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin],
+    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin,Router.State],
     getDefaultProps: function() {
         return {
             nine : false,
@@ -176,7 +176,7 @@ var SeasonEightStandings = React.createClass({
         var rows = [];
         this.props.standings.forEach(function(s) {
             // xs={12}
-            var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.getContextParam('seasonId')} />;
+            var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.getParams().seasonId} />;
             rows.push(
                 <tr className="standingRow" key={s.teamId}>
                     <td >{teamLink}</td>
@@ -214,7 +214,7 @@ var SeasonEightStandings = React.createClass({
 });
 
 var SeasonNineStandings = React.createClass({
-    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin],
+    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin,Router.State],
     getDefaultProps: function() {
         return {
             nine : false,
@@ -228,7 +228,7 @@ var SeasonNineStandings = React.createClass({
         var rows = [];
         this.props.standings.forEach(function(s) {
             // xs={12}
-            var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.getContextParam('seasonId')} />;
+            var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.getParams().seasonId} />;
             rows.push(
                 <tr className="standingRow" key={s.teamId}>
                     <td >{teamLink}</td>
