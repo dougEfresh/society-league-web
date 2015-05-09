@@ -34,11 +34,8 @@ var ChallengeStore = require('../../stores/ChallengeStore.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
-var SeasonMixin = require('../../SeasonMixin.jsx');
 var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
-var ResultMixin = require('../../ResultMixin.jsx');
-var TeamLink = require('../TeamLink.jsx');
 var UserLink = require('../UserLink.jsx');
 
 var TeamStandings = React.createClass({
@@ -74,7 +71,7 @@ var TeamStandings = React.createClass({
         userStats.forEach(function(stat) {
             teamRow.push(<tr key={i++}>
             <td>
-                <UserLink user={this.getUser(stat.userId)} />
+                <UserLink router={this} user={this.getUser(stat.userId)} />
             </td>
             <td>{stat.wins}</td>
             <td>{stat.loses}</td>
@@ -82,17 +79,19 @@ var TeamStandings = React.createClass({
             <td>{stat.racksAgainst}</td>
         </tr>)
         }.bind(this));
-        return (<div>{teamRow}</div>);
+        return ({teamRow})
     },
     render: function() {
-        var options=[];
-        this.getTeamsBySeason(this.props.seasonId).forEach(function(t) {
-            options.push(<option key={t.teamId} value={t.teamId}>{t.name}</option>)
-        });
-        var teams = (<Input onSelect={this.props.onChange}  type={'select'} value={this.props.teamId}>{options}</Input>);
+        if (this.props.seasonId == null || this.props.seasonId == undefined) {
+            console.warn('SeasonId is null');
+            return null;
+        }
+        var t = this.getTeamsBySeason(this.props.seasonId);
+        if (t == null || t == undefined || t.length == 0) {
+            return null;
+        }
         return (
             <Panel header={this.getTeam(this.props.teamId).name + ' Standings'}>
-                {teams}
                 <Table>
                     <thead>
                     <th></th>

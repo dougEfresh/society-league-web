@@ -5,10 +5,10 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var Util = require('../util.jsx');
 
-var divisions = {}, teams  = {} , players = {}, seasons = {} , users = {}, stats = {};
+var divisions = {}, teams  = [] , players = {}, seasons = {} , users = {}, stats = {};
 var teamStats = {}, results = {};
 
-var _user = {id: 0, name: 'unknown'};
+var _authUserId = 0;
 
 var DataStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
@@ -48,16 +48,28 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getStats: function() {return stats},
     getResults: function() {return results;},
     getDivisionBySeason: function(season) {
-      return divisions[seasons[season].division];
+        if (season == null || season == undefined) {
+            return null;
+        }
+        if (seasons[season] == undefined || seasons[season].division == undefined) {
+            console.log('No season for '+ season);
+            return null;
+        }
+
+      var d = divisions[seasons[season].division];
+        if (d == null || d == undefined) {
+            console.warn('Could not find division for ' + season);
+        }
+        return d;
     },
     getTeam: function(id) {
         return teams[id];
     },
     setUser: function(u) {
-        _user = u;
+        _authUserId = u.userId;
     },
-    getAuthUser: function() {
-        return _user;
+    getAuthUserId: function() {
+        return _authUserId;
     }
 });
 
@@ -69,6 +81,8 @@ AppDispatcher.register(function(action) {
          default:
             console.log('Unknown Action ' + JSON.stringify(action));
      }
+
+
 });
 
 module.exports = DataStore;

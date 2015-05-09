@@ -1,17 +1,18 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var Router = require('react-router')
-    , Link = Router.Link;
+    ,Link = Router.Link;
 var UserContextMixin = require('../UserContextMixin.jsx');
 
 var UserLink = React.createClass({
-    mixins: [UserContextMixin,Router.State],
+    mixins: [UserContextMixin],
     propTypes: {
         user: ReactPropTypes.object.isRequired
     },
     getDefaultProps: function(){
         return {
-            user: null
+            user: null,
+            router: null
         }
     },
     render: function() {
@@ -19,9 +20,9 @@ var UserLink = React.createClass({
             return null;
         }
         return (
-            <Link className="userLink" to="stats" params={{statsId: this.props.user.userId}}>
+            <a className="userLink" href={'#/app/stats/' + this.props.user.userId}>
                 {this.props.user.name}
-            </Link>
+            </a>
         );
     }
 });

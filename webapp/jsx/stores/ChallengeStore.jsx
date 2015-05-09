@@ -16,78 +16,9 @@ _challenges[ChallengeStatus.SENT] = [];
 _challenges[ChallengeStatus.ACCEPTED] = [];
 
 var ChallengeStore = assign({}, EventEmitter.prototype, {
-
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
-
-    emitAdd: function() {
-        this.emit(ADD_EVENT);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    addRequestListener: function(callback) {
-        this.on(ADD_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    removeRequestListener: function(callback) {
-        this.removeListener(ADD_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function(callback) {
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
-    },
-
-    getAllChallenges: function() {
-        return _challenges;
-    },
-
-    getChallenges: function(type) {
-        return _challenges[type];
-    },
-
-    initChallenges: function(userId) {
-        console.log("Getting data from " + window.location.origin + '/api/challenge/' + userId);
-         $.ajax({
-            url: '/api/challenge/' + userId,
-            dataType: 'json',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                }.bind(this)
-            },
-            success: function (d) {
-                this._processChallenges(d);
-                ChallengeStore.emitChange();
-                //ChallengeGroupStore.emitChange();
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('slots', status, err.toString());
-                console.log('Redirecting to error');
-                //this.redirect('error');
-            }.bind(this)
-        });
-    },
-
     setChallenges: function(challenges) {
         this._processChallenges(challenges);
     },
-
     _processChallenges: function(challenges) {
         // Set the selected game and slot to a default value
         _challenges = challenges;

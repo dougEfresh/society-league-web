@@ -4,36 +4,30 @@ var ReactPropTypes = React.PropTypes;
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeGroupStore = require('../../../stores/ChallengeGroupStore.jsx');
+var UserContextMixin = require('../../../UserContextMixin.jsx');
+var DataStore = require('../../../stores/DataStore.jsx');
 
 var GroupAppMixin = {
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {
-            challengeGroups: ChallengeStore.getChallenges(this.props.type)
+            challengeGroups: this.getUser().challenges[this.props.type]
         }
     },
-    componentWillMount: function() {
-        console.log(this.props.type + ' will mount');
-        ChallengeGroupStore.addChangeListener(this._onChange);
-        ChallengeStore.addChangeListener(this._onChallengeStoreChange);
-        ChallengeGroupStore.setType(this.props.type);
+    componentWillMount: function () {
+        DataStore.addChangeListener(this._onChange);
     },
-    componentWillUnmount: function() {
-        console.log(this.props.type + 'unmounted');
-        ChallengeGroupStore.setType(null);
-        ChallengeStore.removeChangeListener(this._onChallengeStoreChange);
-        ChallengeGroupStore.removeChangeListener(this._onChange);
+    componentWillUnmount: function () {
+        DataStore.removeChangeListener(this._onChange);
     },
-    componentDidMount: function() {
-        console.log(this.props.type + ' mounted');
-        this.setState({challengeGroups: ChallengeStore.getChallenges(this.props.type)});
+    componentDidMount: function () {
+        this.setState({user: this.getUser()});
     },
-    _onChallengeStoreChange: function() {
-        console.log('Challenge Store Change');
-        this.setState({challengeGroups: ChallengeStore.getChallenges(this.props.type)});
+    componentWillReceiveProps: function() {
+        this.setState({seasonId: this.getParams().seasonId});
     },
     _onChange: function() {
-        console.log('ChallengeGroupStore Change: ' );
-        this.setState({challengeGroups: ChallengeStore.getChallenges(this.props.type)});
+        this.setState({challengeGroups: this.getUser().challenges[this.props.type]});
     }
 };
 

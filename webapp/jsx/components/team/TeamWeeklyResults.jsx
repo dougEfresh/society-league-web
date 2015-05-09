@@ -39,6 +39,7 @@ var StatsMixin = require('../../StatsMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
 var ResultMixin = require('../../ResultMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
+var TeamResult = require('../TeamResult.jsx');
 
 var TeamWeeklyResults = React.createClass({
     mixins: [ResultMixin,TeamMixin,StatsMixin,UserContextMixin,SeasonMixin,State,Navigation,OverlayMixin],
@@ -58,55 +59,24 @@ var TeamWeeklyResults = React.createClass({
         if (!this.state.isModalOpen) {
             return <span/>;
         }
-        var matches = this.getTeamResults(this.getParams().seasonId,this.getParams().teamId,this.state.teamMatchId);
-        var rows = [];
-        var key = 0;
-        //<td><UserLink user={this.getUser(m.userId)}/></td>
-        //<td><UserLink user={this.getUser(m.opponent)}/></td>
-        matches.forEach(function(m){
-            rows.push(
-                <tr key={key++}>
-                    <td>{m.userId}</td>
-                    <td>{m.opponent}</td>
-                    <td>{m.win ? 'W' : 'L'}</td>
-                    <td>{m.racksFor}</td>
-                    <td>{m.racksAgainst}</td>
-                </tr>);
-        }.bind(this));
-        var body = (
-            <div>
-                <div className='modal-body'>
-                    <Table>
-                        <thead>
-                        <tr>
-                            <th>Player</th>
-                            <th>Opponent</th>
-                            <th>W/L</th>
-                            <th>RW</th>
-                            <th>RL</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {rows}
-                        </tbody>
-
-                    </Table>
-                </div>
-                <div className='modal-footer'>
-                    <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
-                </div>
-            </div>);
-
         return (
-            <Modal className="resultsModal" bsStyle={'success'} title={'Results'} onRequestHide={this.handleToggle}>
-                {body}
+             <Modal className="resultsModal" bsStyle={'success'} title={'Results'} onRequestHide={this.handleToggle}>
+                 <div className='modal-body'>
+                     <TeamResult teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} teamMatchId={this.state.teamMatchId} />
+                 </div>
+                 <div className='modal-footer'>
+                     <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
+                 </div>
             </Modal>
         );
-  },
+    },
     render: function() {
         var matches = this.getMatches(this.getParams().seasonId);
         var rows=[];
         var results=[];
+        if (matches == undefined || matches == null) {
+            return null;
+        }
         for(var dt in matches) {
             matches[dt].forEach(function(tm) {
                 var matchResult = null;
@@ -145,7 +115,9 @@ var TeamWeeklyResults = React.createClass({
                 </tr>
             )
         }.bind(this));
-
+        if (rows.length == 0) {
+            return null;
+        }
         return (
             <Panel className='teamWeeklyResults' header={'Weekly Results'}>
             <Table>

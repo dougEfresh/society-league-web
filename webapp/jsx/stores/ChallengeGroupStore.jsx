@@ -6,6 +6,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
+var DataStore = require('../stores/DataStore.jsx');
 
 var _type = null; //ChallengeStatus tytpe
 var _lastStatusChange = null;
@@ -44,10 +45,10 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
                 }
             },
             success: function (d) {
-                ChallengeActions.setChallenges(d);
                 _lastStatusChange = status;
                 _lastStatusAction = newStatus;
-                ChallengeGroupStore.emitChange();
+                DataStore.getUsers()[d.userId] = d;
+                DataStore.emitChange();
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());

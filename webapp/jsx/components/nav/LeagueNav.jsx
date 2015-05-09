@@ -25,7 +25,6 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
-var DataActions = require('../../actions/DataActions.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');

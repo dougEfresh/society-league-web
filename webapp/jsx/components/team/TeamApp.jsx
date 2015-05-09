@@ -45,11 +45,23 @@ var TeamApp = React.createClass({
         this.setState({counter: c});
     },
     render: function() {
+        if (this.getUserId() == 0) {
+            return null;
+        }
+        return  (
+            <div id="teamApp">
+                <TeamStandings teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />
+                <TeamWeeklyResults teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />
+            </div>
+        );
+        /*
+         return (
         if (this.state.counter % 2 == 0) {
             return (<TeamAppSwitchOdd  teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />);
         } else {
             return (<TeamAppSwitchEven  teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />);
         }
+        */
     }
 });
 
@@ -88,7 +100,7 @@ var TeamStandingsEven = React.createClass({
 });
 var TeamWeeklyOdd = React.createClass({
     render: function() {
-        return ( <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />);
+
     }
 });
 

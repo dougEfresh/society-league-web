@@ -32,19 +32,20 @@ var GroupRow = React.createClass({
     mixins: [UserContextMixin],
     propTypes: {
         challengeGroup: ReactPropTypes.object.isRequired,
-        noSelect:  ReactPropTypes.bool.isRequired
+        noSelect:  ReactPropTypes.bool.isRequired,
+        type: ReactPropTypes.string.isRequired
     },
     getOpponent: function() {
-        if (this.getUserId() == this.props.challengeGroup.opponent.id) {
-            return this.props.challengeGroup.challenger.name;
+        if (this.getUserId() == this.props.challengeGroup.opponent) {
+            return this.getUser(this.props.challengeGroup.challenger).name;
         }
-        return this.props.challengeGroup.opponent.name;
+        return this.getUser(this.props.challengeGroup.opponent).name;
     },
     render: function() {
         return (
             <tr>
                 <td>
-                    <GroupAction challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
+                    <GroupAction type={this.props.type} challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
                 </td>
                 <td>
                     {dateFormat(this.props.challengeGroup.date)}

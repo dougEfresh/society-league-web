@@ -20,18 +20,17 @@ var ChallengeConstants = require('../../../constants/ChallengeConstants.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var GroupMixin = require('./GroupListMixin.jsx');
+var UserContextMixin = require('../../../UserContextMixin.jsx');
 
 var GroupAction = React.createClass({
-    mixins: [GroupMixin],
+    mixins: [GroupMixin,UserContextMixin],
     sendStatus: function(s) {
-
         var status = {
             userId: this.getUserId(),
             status : s,
             group: this.props.challengeGroup
         };
         ChallengeActions.status(status);
-
     },
     notify: function(){
         ChallengeActions.notifyChallenge(this.getUserId(),this.props.challengeGroup);
@@ -57,7 +56,7 @@ var GroupAction = React.createClass({
         };
 
         var actions = null;
-        switch(this.props.challengeGroup.status) {
+        switch(this.props.type) {
             case ChallengeStatus.PENDING:
                 actions =
                     (<div>
@@ -69,14 +68,6 @@ var GroupAction = React.createClass({
                 actions =
                     (<div >
                         {buttons.calender}
-                        {buttons.change}
-                        {buttons.cancel}
-                    </div>);
-                break;
-            case ChallengeStatus.NOTIFY:
-                actions =
-                    (<div >
-                        {buttons.notify}
                         {buttons.change}
                         {buttons.cancel}
                     </div>);

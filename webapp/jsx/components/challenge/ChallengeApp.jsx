@@ -27,23 +27,24 @@ var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
 
 var UserContextMixin = require('../../UserContextMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
+var DataStore = require('../../stores/DataStore.jsx');
 
 var ChallengeApp = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
         return {
-            requests: ChallengeStore.getAllChallenges(),
+            requests: this.getUser().challenges,
             activeKey: ChallengeStatus.REQUEST
         }
     },
-    componentWillMount: function() {
-        ChallengeGroupStore.addChangeListener(this._onStatusChange);
+    componentWillMount: function () {
+        DataStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function () {
+        DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
         this._onChange();
-    },
-    componentWillUnmount: function() {
-        ChallengeGroupStore.removeChangeListener(this._onStatusChange);
     },
     _onAdd: function() {
 
@@ -70,6 +71,7 @@ var ChallengeApp = React.createClass({
     },
 
     _onChange: function() {
+        /*
         var key = this.state.activeKey;
         var c =  ChallengeStore.getAllChallenges();
         if (c[key] != undefined && c[key].length <= 0) {
@@ -80,6 +82,7 @@ var ChallengeApp = React.createClass({
             requests: c,
             activeKey: key
         });
+        */
     },
     getTitle: function(type) {
         var r = this.state.requests[type];
