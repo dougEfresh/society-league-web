@@ -63,30 +63,69 @@ var ChallengeNav = React.createClass({
                 <Glyphicon glyph='cog' />Challenges<Badge>{counter}</Badge>
             </div>
         );
+        var sentLink = (<div>
+            <Glyphicon glyph='ok'/>
+            Sent
+            <Badge>
+                {0}
+            </Badge>
+        </div>
+        );
+
+        if (c[ChallengeStatus.SENT].length > 0) {
+            sentLink = (<MenuItemLink className='sentNav' to={ChallengeStatus.SENT.toLowerCase()} >
+                <Glyphicon glyph='ok'/>
+                Sent
+                <Badge>
+                    {c[ChallengeStatus.SENT].length}
+                </Badge>
+            </MenuItemLink>);
+        }
+
+         var acceptedLink = (<div>
+            <Glyphicon glyph='ok'/>
+            Sent
+            <Badge>
+                {0}
+            </Badge>
+        </div>
+        );
+
+        if (c[ChallengeStatus.ACCEPTED].length > 0) {
+            acceptedLink = (<MenuItemLink className='sentNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} >
+                <Glyphicon glyph='calendar'/>
+                Accepted
+                <Badge>
+                    {c[ChallengeStatus.ACCEPTED].length}
+                </Badge>
+            </MenuItemLink>);
+        }
+
+        var pendingLink = (<div>
+            <Glyphicon glyph='ok'/>
+            Pending
+            <Badge>
+                {0}
+            </Badge>
+        </div>
+        );
+
+        if (c[ChallengeStatus.PENDING].length > 0) {
+            pendingLink = (<MenuItemLink className='sentNav' to={ChallengeStatus.PENDING.toLowerCase()} >
+                <Glyphicon glyph='alert'/>
+                Pending
+                <Badge>
+                    {c[ChallengeStatus.PENDING].length}
+                </Badge>
+            </MenuItemLink>);
+        }
+
         return (
         <div className="challengeStatusMenu">
             <Panel expanded={false} defaultExpanded={false} className='challengePanelStatus' header={header} eventKey='1' >
-                <MenuItemLink className='pendingNav' to={ChallengeStatus.PENDING.toLowerCase()}>
-                    <Glyphicon glyph='alert'/>
-                    Pending
-                    <Badge>
-                        {c[ChallengeStatus.PENDING].length}
-                    </Badge>
-                </MenuItemLink>
-                <MenuItemLink className='acceptedNav' to={ChallengeStatus.ACCEPTED.toLowerCase()}>
-                    <Glyphicon glyph='calendar'/>
-                    Accepted
-                    <Badge>
-                        {c[ChallengeStatus.ACCEPTED].length}
-                    </Badge>
-                </MenuItemLink>
-                <MenuItemLink className='sentNav' to={ChallengeStatus.SENT.toLowerCase()} >
-                    <Glyphicon glyph='ok'/>
-                    Sent
-                    <Badge>
-                        {c[ChallengeStatus.SENT].length}
-                    </Badge>
-                </MenuItemLink>
+                {pendingLink}
+                {acceptedLink}
+                {sentLink}
                 <MenuItemLink className='requestNav' to={ChallengeStatus.REQUEST.toLowerCase()}>
                     <Glyphicon glyph='flash'/>
                     Request
