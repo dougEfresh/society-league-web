@@ -86,16 +86,15 @@ var HomeNav = React.createClass({
                                               {' ' + this.getUserName()}
                                           </Link>
                                       </Button>
-
-                                      <ChallengeNav />
-                                      <SeasonNav />
                                       <TeamNav />
-
+                                      <SeasonNav />
                                       <Button>
-                                          <Link className='statsNav' to='stats' params={{statsId: this.getUserId()}}>
-                                              <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
-                                          </Link>
+                                      <Link className='statsNav' to='stats' params={{statsId: this.getUserId()}}>
+                                          <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
+                                      </Link>
                                       </Button>
+                                      <ChallengeNav />
+
                                   </div>
                               </Nav>
                             </Col>
