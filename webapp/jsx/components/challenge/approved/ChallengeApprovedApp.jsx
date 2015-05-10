@@ -1,19 +1,37 @@
 var React = require('react/addons');
 var GroupList = require('../group/GroupList.jsx');
-var GroupAppMixin = require('../group/GroupAppMixin.jsx');
+var UserContextMixin = require('../../../UserContextMixin.jsx');
 var ChallengeStatus  = require('../../../constants/ChallengeStatus.jsx');
+var DataStore = require('../../../stores/DataStore.jsx');
 
 var ChallengeAcceptedApp = React.createClass({
-    mixins: [GroupAppMixin],
-    getDefaultProps: function () {
+    mixins: [UserContextMixin],
+    getInitialState: function () {
         return  {
-            type: ChallengeStatus.ACCEPTED
+            challengeGroups: []
         };
+    },
+    componentWillMount: function () {
+        DataStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function () {
+        DataStore.removeChangeListener(this._onChange);
+    },
+    componentDidMount: function () {
+        if (this.getUser().userId != 0 && this.getUser().challenges != undefined)
+            this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.ACCEPTED]});
+    },
+    componentWillReceiveProps: function() {
+
+    },
+    _onChange: function() {
+        if (this.getUser().userId != 0 && this.getUser().challenges != undefined)
+            this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.ACCEPTED]});
     },
     render: function(){
         return (
             <div id="approvedApp">
-                <GroupList noSelect={false} challengeGroups={this.state.challengeGroups}/>
+                <GroupList type={ChallengeStatus.ACCEPTED} noSelect={false} challengeGroups={this.state.challengeGroups}/>
             </div>
         )
     }
