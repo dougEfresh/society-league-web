@@ -6,9 +6,9 @@ var DataStore = require('../../../stores/DataStore.jsx');
 
 var ChallengePendingApp = React.createClass({
     mixins: [UserContextMixin],
-    getDefaultProps: function () {
+    getInitialState: function () {
         return  {
-            type: ChallengeStatus.PENDING
+            challengeGroups: []
         };
     },
     componentWillMount: function () {
@@ -18,18 +18,19 @@ var ChallengePendingApp = React.createClass({
         DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
-        this.setState({user: this.getUser()});
+        if (this.getUser().userId != 0 && this.getUser().challenges != undefined)
+            this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.PENDING]});
     },
     componentWillReceiveProps: function() {
-        this.setState({seasonId: this.getParams().seasonId});
+
     },
     _onChange: function() {
-        this.setState({challengeGroups: this.getUser().challenges[this.props.type]});
+        this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.PENDING]});
     },
-    render: function(){
+    render: function() {
         return (
             <div id="pendingApp">
-                <GroupList noSelect={false} challengeGroups={this.state.challengeGroups}/>
+                <GroupList type={ChallengeStatus.PENDING} noSelect={false} challengeGroups={this.state.challengeGroups}/>
             </div>
         )
     }

@@ -23,7 +23,7 @@ var GroupMixin = require('./GroupListMixin.jsx');
 var UserContextMixin = require('../../../UserContextMixin.jsx');
 
 var GroupAction = React.createClass({
-    mixins: [GroupMixin,UserContextMixin],
+    mixins: [GroupMixin],
     sendStatus: function(s) {
         var status = {
             userId: this.getUserId(),

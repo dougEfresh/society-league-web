@@ -22,8 +22,9 @@ var DataStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
     init: function() {
+        console.log('Checking login stats');
         Util.getData('/api/user', function(d) {
-            _user = d;
+            _authUserId = d.userId
             DataStore.emitChange();
         }.bind(this));
 
