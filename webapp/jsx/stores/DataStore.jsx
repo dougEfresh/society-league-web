@@ -24,12 +24,66 @@ var DataStore = assign({}, EventEmitter.prototype, {
     init: function() {
         console.log('Checking login stats');
         Util.getData('/api/user', function(d) {
-            _authUserId = d.userId
+            _authUserId = d.userId;
             DataStore.emitChange();
         }.bind(this));
 
+        Util.getData('/api/users', function(d) {
+            users = d;
+            DataStore.emitChange();
+        }.bind(this));
+        Util.getData('/api/divisions', function(d) {
+            divisions = d;
+            DataStore.emitChange();
+        }.bind(this));
+        Util.getData('/api/teams', function(d) {
+            teams = d;
+            DataStore.emitChange();
+        }.bind(this));
+        Util.getData('/api/seasons/current', function(d) {
+            for(var id in d) {
+                console.log('Adding seasonId: ' + id);
+                seasons[id] = d[id];
+            }
+            DataStore.emitChange();
+        }.bind(this));
+
+        Util.getData('/api/results/current/users', function(d) {
+            for(var id in d) {
+                //console.log('Adding user resultId: ' + id);
+                results[id] = d[id];
+            }
+            DataStore.emitChange();
+        }.bind(this));
+
+        Util.getData('/api/stats/user', function(d) {
+            for(var id in d) {
+              //  console.log('Adding stats resultId: ' + id);
+                stats[id] = d[id];
+            }
+            DataStore.emitChange();
+        }.bind(this));
+
+        Util.getData('/api/stats/team', function(d) {
+            for(var id in d) {
+                //console.log('Adding team stats resultId: ' + id);
+                teamStats[id] = d[id];
+            }
+            DataStore.emitChange();
+        }.bind(this));
+
+
+        Util.getData('/api/seasons/past', function(d) {
+            for(var id in d) {
+            //    console.log('Adding past season id: ' + id);
+                seasons[id] = d[id];
+            }
+            DataStore.emitChange();
+        }.bind(this));
+
+      /*
         Util.getData('/api/data', function(d) {
-            teams=d.teams;
+              teams=d.teams;
             players=d.players;
             seasons=d.seasons;
             users=d.users;
@@ -39,6 +93,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
             results = d.results;
             DataStore.emitChange();
         }.bind(this));
+*/
     },
     getDivisions: function() { return divisions;},
     getTeams: function() { return teams;},
@@ -71,6 +126,20 @@ var DataStore = assign({}, EventEmitter.prototype, {
     },
     getAuthUserId: function() {
         return _authUserId;
+    },
+    checkLogin: function() {
+        console.log('Checking login stats');
+        Util.getData('/api/user', function(d) {
+            _authUserId = d.userId;
+            DataStore.emitChange();
+        }.bind(this));
+    },
+    challengeSignUp: function(id) {
+        console.log('Signing up ' + id);
+         Util.getData('/api/challenge/signup/' + id, function(d) {
+            users[d.userId] = d;
+            DataStore.emitChange();
+        }.bind(this));
     }
 });
 
@@ -78,6 +147,12 @@ AppDispatcher.register(function(action) {
      switch(action.actionType) {
          case 'INIT':
              DataStore.init();
+             break;
+         case 'CHECK':
+             DataStore.checkLogin();
+             break;
+         case 'CHALLENGE_SIGN_UP':
+             DataStore.challengeSignUp(action.id);
              break;
          default:
             console.log('Unknown Action ' + JSON.stringify(action));

@@ -50,10 +50,16 @@ var TeamWeeklyResults = React.createClass({
         };
     },
     handleToggle: function(e,id) {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen,
-            teamMatchId: e.target.id == undefined || e.target.id == "" ? 0 : e.target.id
-        });
+        if (e != undefined && e != null) {
+            this.setState({
+                isModalOpen: !this.state.isModalOpen,
+                teamMatchId: e.target.id == undefined || e.target.id == "" ? 0 : e.target.id
+            });
+        } else {
+             this.setState({
+                isModalOpen: !this.state.isModalOpen
+            });
+        }
     },
     renderOverlay: function () {
         if (!this.state.isModalOpen) {

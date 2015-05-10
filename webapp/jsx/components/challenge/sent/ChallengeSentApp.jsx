@@ -36,7 +36,7 @@ var ChallengeSentApp = React.createClass({
     },
     render: function(){
         if (this.state.challengeGroups.length == 0) {
-            return (<Panel><div><p>You have not sent away challenges</p></div></Panel>)
+            return (<Panel><div><p>You have not sent any challenges</p></div></Panel>)
         }
         return (
             <div id="approvedApp">

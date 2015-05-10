@@ -50,7 +50,10 @@ var TeamNav = React.createClass({
         });
     },
     render: function() {
-        if (this.state.user.id == 0) {
+        if (this.getUser().userId == 0) {
+            return null;
+        }
+        if (this.getCurrentSeasons().length == 0) {
             return null;
         }
         var teams = [];

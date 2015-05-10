@@ -23,6 +23,7 @@ var StatApp = require('./components/stats/StatApp.jsx');
 var HomeApp = require('./components/HomeApp.jsx');
 var TeamApp = require('./components/team/TeamApp.jsx');
 var SeasonApp = require('./components/season/SeasonApp.jsx');
+var ChallengeSignUp = require('./components/challenge/ChallengeSignUp.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -55,6 +56,7 @@ var routes = (
             <Route name="stats" path="stats/:statsId"  handler={StatApp}/>
             <Route name="team" path="team/:teamId/:seasonId"  handler={TeamApp} />
             <Route name="season" path="season/:seasonId"  handler={SeasonApp} />
+            <Route name="challengeSignUp" path="challenge/signup"  handler={ChallengeSignUp} />
             <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={'challenge/' + ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
             <Route name={ChallengeStatus.PENDING.toLowerCase()} path={'challenge/' + ChallengeStatus.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
             <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={'challenge/' + ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>

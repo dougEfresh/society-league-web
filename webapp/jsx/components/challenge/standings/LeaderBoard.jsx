@@ -13,13 +13,9 @@ var Bootstrap = require('react-bootstrap')
     ,Table = Bootstrap.Table
     ,Panel = Bootstrap.Panel;
 
-var ChallengeStore = require('../stores/ChallengeStore.jsx');
-var ChallengeActions = require('../actions/ChallengeActions.jsx');
-var ChallengeStatus = require('../constants/ChallengeStatus.jsx');
-var StatActions = require('../actions/StatActions.jsx');
-var StatStore = require('../stores/StatsStore.jsx');
-var UserContextMixin = require('../UserContextMixin.jsx');
-var StatsDisplay = require('../components/stats/StatsDisplay.jsx');
+
+var UserContextMixin = require('../../../UserContextMixin.jsx');
+
 
 var LeaderBoard = React.createClass({
   mixins: [UserContextMixin],
@@ -27,15 +23,16 @@ var LeaderBoard = React.createClass({
         stats: ReactPropTypes.object.isRequired
     },
     challenge: function(e) {
+        /*
         ChallengeActions.setOpponent({
             user: {
                 id: e.target.textContent
             }
         });
         this.context.router.transitionTo('request',{userId: this.getUserId()},null);
+        */
     },
     stats: function(e) {
-        StatStore.changeView(e.target.textContent);
         this.context.router.transitionTo('stats',{userId: this.getUserId()},null);
     },
     render: function() {

@@ -18,22 +18,24 @@ var Bootstrap = require('react-bootstrap')
     ,MenuItem = Bootstrap.MenuItem
     ,Accordion = Bootstrap.Accordion
     ,Glyphicon = Bootstrap.Glyphicon
+    ,Modal = Bootstrap.Modal
+    ,ModalTrigger = Bootstrap.ModalTrigger
     ,Panel = Bootstrap.Panel;
+
 var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var DataStore = require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
-var DivisionConstants = require('../../constants/DivisionConstants.jsx');
-var BallIcon = require('../../components/BallIcon.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 
 var ChallengeNav = React.createClass({
-    mixins: [UserContextMixin,Router.state],
+    mixins: [UserContextMixin,Router.state,Bootstrap.OverlayMixin],
     getInitialState: function () {
         return {
-            user: this.getUser()
+            user: this.getUser(),
+            isModalOpen: false
         }
     },
     componentWillMount: function () {
@@ -50,14 +52,41 @@ var ChallengeNav = React.createClass({
             user: this.getUser()
         });
     },
+    handleToggle: function(e,id) {
+        if (e != undefined  && e != null) {
+            e.preventDefault();
+        }
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    },
+    renderOverlay: function () {
+        if (!this.state.isModalOpen) {
+            return <span/>;
+        }
+        console.warn('!! OPEN !!');
+        return (
+             <Modal className="challengeSignupModal" bsStyle={'success'} title={'Challenge Sign Up'} onRequestHide={this.handleToggle}>
+                 <div className='modal-body'>
+                     <Panel>Sign me up bitch</Panel>
+                 </div>
+                 <div className='modal-footer'>
+                     <Button bsStyle={'success'} onClick={this.handleToggle}>Sign Up</Button>
+                     <Button bsStyle={'warning'} onClick={this.handleToggle}>Cancel</Button>
+                 </div>
+            </Modal>
+        );
+    },
     render: function() {
-        if (this.getUser().userId == 0) {
+        var u = this.getUser();
+        if (u.userId == 0) {
             return null;
         }
-        var c = this.getUser().challenges;
+        var c = u.challenges;
         var counter = c[ChallengeStatus.SENT].length
             + c[ChallengeStatus.PENDING].length
             + c[ChallengeStatus.ACCEPTED].length;
+
         var header = (
             <div>
                 <Glyphicon glyph='cog' />Challenges<Badge>{counter}</Badge>
@@ -87,6 +116,18 @@ var ChallengeNav = React.createClass({
                     {c[ChallengeStatus.PENDING].length}
                 </Badge>
             </MenuItemLink>);
+
+        if (!u.challenge) {
+            return (
+                <div className="challengeStatusMenu">
+                    <Panel expanded={false} defaultExpanded={false} className='challengePanelStatus' header={header} eventKey='1' >
+                        <MenuItemLink className='requestNav' to={'challengeSignUp'}>
+                            <Glyphicon glyph='info-sign'/>
+                            What's this?
+                        </MenuItemLink>
+                    </Panel>
+            </div>);
+        }
 
         return (
         <div className="challengeStatusMenu">

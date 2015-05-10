@@ -3,6 +3,8 @@ var GroupList = require('../group/GroupList.jsx');
 var UserContextMixin = require('../../../UserContextMixin.jsx');
 var ChallengeStatus  = require('../../../constants/ChallengeStatus.jsx');
 var DataStore = require('../../../stores/DataStore.jsx');
+var Bootstrap = require('react-bootstrap')
+    ,Panel = Bootstrap.Panel;
 
 var ChallengeAcceptedApp = React.createClass({
     mixins: [UserContextMixin],
@@ -29,6 +31,9 @@ var ChallengeAcceptedApp = React.createClass({
             this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.ACCEPTED]});
     },
     render: function(){
+        if (this.state.challengeGroups.length == 0) {
+            return (<Panel><div><p>You have no challenges accepted</p></div></Panel>)
+        }
         return (
             <div id="approvedApp">
                 <GroupList type={ChallengeStatus.ACCEPTED} noSelect={false} challengeGroups={this.state.challengeGroups}/>

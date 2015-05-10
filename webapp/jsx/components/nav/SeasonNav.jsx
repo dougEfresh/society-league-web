@@ -54,7 +54,11 @@ var SeasonNav = React.createClass({
             return null;
         }
         var seasons = [];
-        this.getCurrentSeasons().forEach(function(t) {
+        var currentSeasons = this.getCurrentSeasons();
+        if (currentSeasons.length == 0) {
+            return null;
+        }
+            currentSeasons.forEach(function(t) {
             var title = "unknown";
             switch (t.division.type) {
                 case DivisionConstants.NINE_BALL_TUESDAYS:
@@ -65,6 +69,9 @@ var SeasonNav = React.createClass({
                     break;
                 case DivisionConstants.EIGHT_BALL_THURSDAYS:
                     title = (<div><BallIcon type={t.division.type} /> Thursdays </div>);
+                    break;
+                case DivisionConstants.EIGHT_BALL_MIXED_MONDAYS:
+                    title = (<div><BallIcon type={DivisionConstants.EIGHT_BALL_CHALLENGE} /> <BallIcon type={DivisionConstants.NINE_BALL_CHALLENGE} /> Mondays </div>);
                     break;
             }
             seasons.push(

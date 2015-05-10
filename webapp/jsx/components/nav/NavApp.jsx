@@ -22,9 +22,10 @@ var NavApp = React.createClass({
         DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
-        DataActions.init();
+        DataActions.checkLogin();
     },
     _onChange: function(){
+        console.log('NavApp change: ' + this.getUserId());
         this.setState({
             user: this.getUser()
         })

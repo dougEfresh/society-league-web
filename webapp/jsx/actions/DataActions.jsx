@@ -5,6 +5,17 @@ var DataActions = {
          AppDispatcher.dispatch({
             actionType: 'INIT'
         });
+    },
+    checkLogin: function() {
+         AppDispatcher.dispatch({
+            actionType: 'CHECK'
+        });
+    },
+    challengeSignUp: function(id) {
+         AppDispatcher.dispatch({
+            actionType: 'CHALLENGE_SIGN_UP',
+             id: id
+        });
     }
 };
 

@@ -28,7 +28,7 @@ var UserContextMixin = {
              return {userId:0, name: "not found"}
         }
         u.name = u.firstName  + ' ' + u.lastName;
-        u.userId = id;
+        u.userId = userId;
         return u;
     },
     getUserName: function() {

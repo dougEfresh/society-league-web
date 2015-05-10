@@ -5,5 +5,6 @@ module.exports = keyMirror({
     NINE_BALL_CHALLENGE: null,
     EIGHT_BALL_WEDNESDAYS: null,
     EIGHT_BALL_THURSDAYS: null,
-    NINE_BALL_TUESDAYS: null
+    NINE_BALL_TUESDAYS: null,
+    EIGHT_BALL_MIXED_MONDAYS: null
 });

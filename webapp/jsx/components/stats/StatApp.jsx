@@ -17,7 +17,7 @@ var UserContextMixin = require('../../UserContextMixin.jsx');
 var TeamMixin = require('../../TeamMixin.jsx');
 
 var StatApp = React.createClass({
-    mixins: [UserContextMixin,State],
+    mixins: [UserContextMixin,State,Router.Navigation],
     getInitialState: function() {
         return {
             userId: this.getUserId(),
@@ -37,7 +37,7 @@ var StatApp = React.createClass({
         this.setState({user: this.state.user});
     },
     onSelect: function(e) {
-        this.setState({viewUserId: e.target.value});
+        this.transitionTo('stats',{statsId: e.target.value},null);
     },
     getOptions: function() {
         var options = [];

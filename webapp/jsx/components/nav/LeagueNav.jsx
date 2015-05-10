@@ -31,6 +31,7 @@ var UserContextMixin = require('../../UserContextMixin.jsx');
 var TeamNav = require('./TeamNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
 var ChallengeNav = require('./ChallengeNav.jsx');
+var DataActions = require('../../actions/DataActions.jsx');
 
 var LeagueNav = React.createClass({
     mixins: [UserContextMixin,Router.state],
@@ -43,6 +44,7 @@ var LeagueNav = React.createClass({
         DataStore.addChangeListener(this._onChange);
     },
     componentDidMount: function() {
+        DataActions.init();
     },
     componentWillUnmount: function() {
         DataStore.removeChangeListener(this._onChange);
@@ -70,7 +72,6 @@ var HomeNav = React.createClass({
         if (this.getUser().id == 0) {
             return null;
         }
-
         return (
             <div className="container"  >
                 <div className="account-wrapper">
