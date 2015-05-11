@@ -1,8 +1,22 @@
 @charset "UTF-8";
 /* CSS Document */
+/*#leagueApp > div > div > div > div > div.col-md-2.col-xs-12 > nav > ul > div > div.seasonNavLink > div > div.panel-body > li:nth-child(1) > a > div > span.eightBall.badge*/
 
-.nineBall {
+#leagueApp > .eightBall {
+	background-color: black; !important;
+}
+
+span.eightBall.badge {
+	background-color: black; !important;
+}
+
+span.nineBall.badge {
 	background-color: yellow; !important;
+	color: black; !important;
+}
+
+.badge {
+	background-color: #9c302d;
 }
 
 .panel-default>.panel-heading .badge {
@@ -238,9 +252,7 @@ h2.form-signin-heading {
 .account-wrapper .btn-group-vertical a { text-align: left;}
 .account-wrapper .btn-group-vertical a:hover, .account-wrapper .btn-group-vertical .active { background-color: #000; color: #fff;}
 
-.badge {
-	background-color: #9c302d;
-}
+
 .request {
 	margin: 0px 0px 30px 0px;
 	}

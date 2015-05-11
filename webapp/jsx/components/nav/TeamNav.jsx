@@ -59,15 +59,19 @@ var TeamNav = React.createClass({
         var teams = [];
         this.getCurrentTeams().forEach(function(t) {
             teams.push(
-                <div key={t.id}><Link key={t.id} to="team" params={{userId: this.getUserId(),teamId: t.id, seasonId: t.season}} >
-                {t.name}</Link>
-            </div>);
+                <MenuItemLink key={t.name} className='teamNavLink' to={'team'} params={{userId: this.getUserId(),teamId: t.id, seasonId: t.season}} >
+                    {t.name}
+                </MenuItemLink>
+            );
         }.bind(this));
-        var teamHeader = (<i className="fa fa-users">Teams</i>);
+        var teamHeader = (<div><i className="fa fa-users">Teams</i></div>);
+
         return (
-            <Panel  expanded={true} defaultExpanded={true} className='teamPanelNav' header={teamHeader} eventKey='1' >
-                <div className='teamLinkNav' >{teams}</div>
-            </Panel>
+            <div id="teamNav" >
+                <Panel expanded={true} defaultExpanded={true} className='teamPanelNav' header={teamHeader} eventKey='1' >
+                    <div className='teamLinkNav' >{teams}</div>
+                </Panel>
+            </div>
         )
     }
 });

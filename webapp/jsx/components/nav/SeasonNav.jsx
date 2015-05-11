@@ -58,7 +58,8 @@ var SeasonNav = React.createClass({
         if (currentSeasons.length == 0) {
             return null;
         }
-            currentSeasons.forEach(function(t) {
+
+        currentSeasons.forEach(function(t) {
             var title = "unknown";
             switch (t.division.type) {
                 case DivisionConstants.NINE_BALL_TUESDAYS:
@@ -75,13 +76,12 @@ var SeasonNav = React.createClass({
                     break;
             }
             seasons.push(
-                <div key={t.id}>
-                    <Link key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
+                    <MenuItemLink key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
                         {title}
-                    </Link>
-            </div>);
+                    </MenuItemLink>
+            );
         }.bind(this));
-        var seasonHeader = (<i className='fa fa-trophy'>Seasons</i>);
+        var seasonHeader = (<div><i className='fa fa-trophy'>Seasons</i></div>);
         return (
             <div className='seasonNavLink' >
                 <Panel  expanded={true} defaultExpanded={true} className='seasonPanelNav' header={seasonHeader} eventKey='1' >

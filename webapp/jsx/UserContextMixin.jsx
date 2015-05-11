@@ -1,6 +1,7 @@
 var React = require('react/addons');
 var Router = require('react-router');
 var DataStore = require('./stores/DataStore.jsx');
+var Divisions = require('./constants/DivisionConstants.jsx');
 
 var UserContextMixin = {
     getUserId: function() {
@@ -45,7 +46,15 @@ var UserContextMixin = {
                     activeSeasons.push({id: id,division: division});
             }
         }
-        return activeSeasons;
+        var orderSeasons = [];
+        for(var d in Divisions) {
+            activeSeasons.forEach(function (s) {
+                if (s.division.type == d) {
+                    orderSeasons.push(s);
+                }
+            });
+        }
+        return orderSeasons;
     },
     getCurrentTeams: function() {
        var u = this.getUser();
