@@ -3,16 +3,17 @@ var DataStore = require('./stores/DataStore.jsx');
 
 var ResultMixin = {
     getTeamResults: function(seasonId,teamId,teamMatchId) {
-        var seasonResults =  DataStore.getResults()[seasonId];
-        var teamMatchResults = [];
-        for (var user in seasonResults) {
-            seasonResults[user].forEach(function(result) {
-                if (result.teamMatchId == teamMatchId && result.opponentTeam != teamId ) {
-                    result.userId = user;
-                    teamMatchResults.push(result);
-                }
-            });
+        var seasonResults =  DataStore.getResults();
+        if (seasonResults.length == 0) {
+            console.log('No matches for ' + teamMatchId);
+            return [];
         }
+        var teamMatchResults = [];
+        seasonResults.forEach(function(r) {
+           if (r.teamMatchId == teamMatchId) {
+               teamMatchResults.push(r);
+           }
+        });
         return teamMatchResults;
     }
 };

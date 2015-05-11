@@ -50,13 +50,34 @@ var TeamResult = React.createClass({
         var rows = [];
         var key = 0;
         var nine = this.getDivision(this.props.seasonId).type.toLowerCase().indexOf('nine') >=0;
+        var matchResults =  [];
+        matches.forEach(function(m){
+            if (m.winnerTeam == this.props.teamId) {
+                matchResults.push({
+                    userId: m.winner,
+                    opponent: m.loser,
+                    racksFor: m.winnerRacks,
+                    racksAgainst: m.loserRacks,
+                    win: true
+                });
+            } else {
+                matchResults.push({
+                    userId: m.loser,
+                    opponent: m.winner,
+                    racksFor: m.loserRacks,
+                    racksAgainst: m.winnerRacks,
+                    win: false
+                });
+            }
+        }.bind(this));
+
         if (nine) {
-            matches.forEach(function (m) {
+            matchResults.forEach(function (m) {
                 rows.push(
                     <tr key={key++}>
                         <td><UserLink user={this.getUser(m.userId)}/></td>
                         <td><UserLink user={this.getUser(m.opponent)}/></td>
-                        <td>{m.racksFor > m.racksAgainst ? 'W' : 'L'}</td>
+                        <td>{m.win ? 'W' : 'L'}</td>
                         <td>{m.racksFor}</td>
                         <td>{m.racksAgainst}</td>
                     </tr>);
@@ -67,7 +88,7 @@ var TeamResult = React.createClass({
                     <tr key={key++}>
                         <td><UserLink user={this.getUser(m.userId)}/></td>
                         <td><UserLink user={this.getUser(m.opponent)}/></td>
-                        <td>{m.racksFor > m.racksAgainst ? 'W' : 'L'}</td>
+                        <td>{m.win ? 'W' : 'L'}</td>
                     </tr>);
             }.bind(this));
         }

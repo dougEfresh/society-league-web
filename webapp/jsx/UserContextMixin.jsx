@@ -18,7 +18,7 @@ var UserContextMixin = {
         if (id == null || id == undefined) {
             userId = this.getUserId();
         }
-        console.log('Getting user ' + userId);
+        //console.log('Getting user ' + userId);
         if (userId == 0) {
             return {userId:0, name: "unknown"}
         }

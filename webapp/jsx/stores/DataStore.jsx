@@ -6,7 +6,7 @@ var CHANGE_EVENT = 'change';
 var Util = require('../util.jsx');
 
 var divisions = {}, teams  = [] , players = {}, seasons = {} , users = {}, stats = {};
-var teamStats = {}, results = {};
+var teamStats = {}, results = [];
 
 var _authUserId = 0;
 
@@ -42,17 +42,14 @@ var DataStore = assign({}, EventEmitter.prototype, {
         }.bind(this));
         Util.getData('/api/seasons/current', function(d) {
             for(var id in d) {
-                console.log('Adding seasonId: ' + id);
+                //console.log('Adding seasonId: ' + id);
                 seasons[id] = d[id];
             }
             DataStore.emitChange();
         }.bind(this));
 
-        Util.getData('/api/results/current/users', function(d) {
-            for(var id in d) {
-                //console.log('Adding user resultId: ' + id);
-                results[id] = d[id];
-            }
+        Util.getData('/api/results/current', function(d) {
+            results = d;
             DataStore.emitChange();
         }.bind(this));
 

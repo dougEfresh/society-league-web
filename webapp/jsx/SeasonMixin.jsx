@@ -15,7 +15,7 @@ var SeasonMixin = {
         return s.teamMatches;
     },
     getDivision: function(id) {
-        console.log('Getting division ' + id);
+        //console.log('Getting division ' + id);
         return DataStore.getDivisionBySeason(id);
     }
 };
