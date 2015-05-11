@@ -7,6 +7,7 @@ var CHANGE_EVENT = 'change';
 var ADD_EVENT = 'add';
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeGroupStore = require('./ChallengeGroupStore.jsx');
+var DataStore = require('../stores/DataStore.jsx');
 
 /**
  * Returns the default game type, which is neither 9 or 8
@@ -92,6 +93,8 @@ var RequestStore = assign({}, EventEmitter.prototype, {
                     s.selected = false;
                 });
                 _request.game = defaultGame();
+                DataStore.getUsers()[d.userId] = d;
+                DataStore.emitChange();
                 RequestStore.emitAdd();
             }.bind(this),
             error: function (xhr, status, err) {

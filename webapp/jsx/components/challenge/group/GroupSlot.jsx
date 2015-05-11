@@ -18,7 +18,9 @@ var GroupSlot = React.createClass({
     onSelectSlot: function() {
         ChallengeActions.selectChallengeGroupSlot(
             this.props.challengeGroup,
-            this.refs.slot.getValue()
+            this.refs.slot.getValue(),
+            this.getUserId(),
+            this.props.type
         );
     },
     renderNoSelect: function() {

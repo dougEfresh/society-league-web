@@ -27,7 +27,10 @@ var ChallengePendingApp = React.createClass({
 
     },
     _onChange: function() {
-        this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.PENDING]});
+        if (this.getUser().userId != 0 && this.getUser().challenges != undefined &&
+            this.getUser().challenges[ChallengeStatus.PENDING] != undefined) {
+            this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.PENDING]});
+        }
     },
     render: function() {
         if (this.state.challengeGroups.length == 0) {

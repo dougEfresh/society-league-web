@@ -5,7 +5,7 @@ var Bootstrap = require('react-bootstrap')
 
 var UserContextMixin = require('../../../UserContextMixin.jsx');
 var RequestActions = require('../../../actions/RequestActions.jsx');
-var Util = require('../../../util.jsx');
+
 
 var ChallengeRequestOpponent = React.createClass({
     mixins: [UserContextMixin],
@@ -22,29 +22,21 @@ var ChallengeRequestOpponent = React.createClass({
     },
     getDefaultProps: function () {
         return {
-            opponent : {user: {id:0}}
+            opponent : {userId:0}
         }
     },
-    update: function() {
-        Util.getData('/api/challenge/potentials/' + this.getUserId(), function (potentials) {
-            this.setState({potentials: potentials});
-        }.bind(this));
-    },
-    componentWillReceiveProps: function(props) {
-       if (props.userId == this.props.userId) {
-           return;
-       }
-        this.update();
-    },
     componentDidMount: function() {
-        this.update(this.props);
+        for(var u in this.getUsers()) {
+            var user = this.getUser(u);
+            if (user.challenge && user.userId != this.getUserId() ) {
+                this.state.potentials.push(this.getUser(user.userId));
+            }
+        }
     },
     onChange: function(e) {
         this.state.potentials.forEach(function(p) {
-            if (p.user.id == e.target.value) {
-                RequestActions.setOpponent(
-                    p
-                );
+            if (p.userId == e.target.value) {
+                RequestActions.setOpponent(p);
             }
         }.bind(this));
     },
@@ -52,13 +44,13 @@ var ChallengeRequestOpponent = React.createClass({
         var options = [];
         options.push(<option key={0} value={0}>{'------'}</option>);
         this.state.potentials.forEach(function(p) {
-            options.push(<option key={p.user.id} value={p.user.id}>{p.user.name}</option>);
+            options.push(<option key={p.userId} value={p.userId}>{p.name}</option>);
         }.bind(this));
         return options;
     },
     render: function() {
         return (
-            <Input type='select' value={this.props.opponent.user.id} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
+            <Input type='select' value={this.props.opponent.userId} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
         );
     }
 });

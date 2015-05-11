@@ -84,11 +84,13 @@ var ChallengeActions = {
      * @param id
      * @param game
      */
-    selectChallengeGroupGame: function(challengeGroup,game) {
+    selectChallengeGroupGame: function(challengeGroup,game,id,type) {
         AppDispatcher.dispatch({
             actionType: RequestConstants.SELECT_REQUEST_GAME,
             challengeGroup: challengeGroup,
-            game: game
+            game: game,
+            userId: id,
+            type: type
         });
     },
 
@@ -97,11 +99,13 @@ var ChallengeActions = {
      * @param id
      * @param game
      */
-    selectChallengeGroupSlot: function(challengeGroup,slot) {
+    selectChallengeGroupSlot: function(challengeGroup,slot,userId,type) {
         AppDispatcher.dispatch({
             actionType: RequestConstants.SELECT_REQUEST_SLOT,
             challengeGroup: challengeGroup,
-            slot: slot
+            slot: slot,
+            userId: userId,
+            type: type
         });
     },
 

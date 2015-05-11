@@ -40,7 +40,7 @@ var UserLink = require('../UserLink.jsx');
 
 var TeamStandings = React.createClass({
     mixins: [TeamMixin,StatsMixin,UserContextMixin,Router.state],
-    renderBody: function() {
+    render: function() {
         var standing = {};
         var teamStats = this.getSeasonTeamStats(this.props.seasonId);
         teamStats.forEach(function (s) {
@@ -49,14 +49,13 @@ var TeamStandings = React.createClass({
             }
         }.bind(this));
         var teamRow = [];
-        teamRow.push(<tr key={'all'}>
+	teamRow.push(<tr key={'all'}>
             <td>All</td>
             <td>{standing.wins}</td>
             <td>{standing.lost}</td>
             <td>{standing.racksFor}</td>
             <td>{standing.racksAgainsts}</td>
         </tr>);
-
         var users = this.getTeamUsers(this.props.teamId,this.props.seasonId);
         var userStats = [];
         users.forEach(function(u) {
@@ -67,7 +66,7 @@ var TeamStandings = React.createClass({
                 }
             }.bind(this));
         }.bind(this));
-           var i = 0;
+	var i = 0;
         userStats.forEach(function(stat) {
             teamRow.push(<tr key={i++}>
             <td>
@@ -79,9 +78,7 @@ var TeamStandings = React.createClass({
             <td>{stat.racksAgainst}</td>
         </tr>)
         }.bind(this));
-        return ({teamRow})
-    },
-    render: function() {
+
         if (this.props.seasonId == null || this.props.seasonId == undefined) {
             console.warn('SeasonId is null');
             return null;
@@ -101,11 +98,10 @@ var TeamStandings = React.createClass({
                     <th>RG</th>
                     </thead>
                     <tbody>
-                    {this.renderBody()}
+                    {teamRow}
                     </tbody>
                 </Table>
-            </Panel>
-
+           </Panel>
         );
     }
 });

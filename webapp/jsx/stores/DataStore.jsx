@@ -152,7 +152,7 @@ AppDispatcher.register(function(action) {
              DataStore.challengeSignUp(action.id);
              break;
          default:
-            console.log('Unknown Action ' + JSON.stringify(action));
+            //console.log('Unknown Action ' + JSON.stringify(action));
      }
 
 

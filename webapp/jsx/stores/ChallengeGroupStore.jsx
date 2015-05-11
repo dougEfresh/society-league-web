@@ -60,7 +60,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     acceptChallenge: function(userId,challengeGroup) {
         var originalStatus = challengeGroup.status;
         var challenge = {id : 0};
-        challengeGroup.challenges.forEach(function(c) {
+        challengeGroup.slots.forEach(function(c) {
             if (c.slot.id == challengeGroup.selectedSlot &&
                     c.opponent.division.type == challengeGroup.selectedGame) {
                 challenge = {id: c.id};
@@ -96,27 +96,32 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         this._cancelOrNotifyChallenge(ChallengeStatus.NOTIFY,userId,challengeGroup);
     },
 
-    selectChallengeGroupGame: function(challengeGroup,game) {
+    selectChallengeGroupGame: function(challengeGroup,game,userId,type) {
         var id =  challengeGroup.challenges[0].id;
-        ChallengeStore.getChallenges(_type).forEach(function(g) {
+        var user = DataStore.getUsers()[userId];
+        var groups = user.challenges[type];
+        groups.forEach(function(g) {
             g.challenges.forEach(function(c) {
                 if (c.id == id) {
                     g.selectedGame = game;
                 }
             })
         });
-
+        DataStore.emitChange();
     },
 
-    selectChallengeGroupSlot: function(challengeGroup,slot) {
+    selectChallengeGroupSlot: function(challengeGroup,slot,userId,type) {
         var id =  challengeGroup.challenges[0].id;
-        ChallengeStore.getChallenges(_type).forEach(function(g) {
+        var user = DataStore.getUsers()[userId];
+        var groups = user.challenges[type];
+        groups.forEach(function(g) {
             g.challenges.forEach(function(c) {
                 if (c.id == id) {
                     g.selectedSlot = slot;
                 }
             })
         });
+        DataStore.emitChange();
     },
 
     lastStatusChange: function() {
@@ -139,12 +144,12 @@ AppDispatcher.register(function(action) {
 
      switch(action.actionType) {
          case ChallengeConstants.SELECT_REQUEST_GAME:
-             ChallengeGroupStore.selectChallengeGroupGame(action.challengeGroup,action.game);
+             ChallengeGroupStore.selectChallengeGroupGame(action.challengeGroup,action.game,action.userId,action.type);
              ChallengeGroupStore.emitChange();
              break;
 
           case ChallengeConstants.SELECT_REQUEST_SLOT:
-              ChallengeGroupStore.selectChallengeGroupSlot(action.challengeGroup,action.slot);
+              ChallengeGroupStore.selectChallengeGroupSlot(action.challengeGroup,action.slot,action.userId,action.type);
               ChallengeGroupStore.emitChange();
              break;
 

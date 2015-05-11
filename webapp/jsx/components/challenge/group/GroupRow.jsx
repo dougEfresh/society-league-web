@@ -54,10 +54,10 @@ var GroupRow = React.createClass({
                     {this.getOpponent()}
                 </td>
                 <td>
-                    <GroupGame challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
+                    <GroupGame type={this.props.type} challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
                 </td>
                 <td>
-                    <GroupSlot challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
+                    <GroupSlot type={this.props.type} challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
                 </td>
             </tr>
         )

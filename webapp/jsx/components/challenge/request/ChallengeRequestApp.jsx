@@ -9,6 +9,7 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 
 var Router = require('react-router')
+    ,Link = Router.Link
     ,RouteHandler = Router.RouteHandler;
 
 var RequestStore = require('../../../stores/RequestStore.jsx');
@@ -20,7 +21,7 @@ var ChallengeRequestDate = require('./ChallengeRequestDate.jsx');
 var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
 var ChallengeRequestGame= require('./ChallengeRequestGame.jsx');
-
+var DataStore = require('../../../stores/DataStore.jsx');
 var UserContextMixin = require('../../../UserContextMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
@@ -32,13 +33,18 @@ var ChallengeRequestApp = React.createClass({
             challenge: RequestStore.get()
         };
     },
+    componentDidMount: function () {
+        this.setState({user: this.getUser()});
+    },
     componentWillMount: function() {
         RequestStore.addChangeListener(this._onChange);
+        DataStore.addChangeListener(this._onChange);
         RequestStore.addRequestListener(this._onAdd);
     },
     componentWillUnmount: function() {
         RequestStore.removeChangeListener(this._onChange);
         RequestStore.removeRequestListener(this._onAdd);
+        DataStore.removeChangeListener(this._onChange);
     },
     _onAdd: function() {
         console.log('onAdd');
@@ -46,7 +52,7 @@ var ChallengeRequestApp = React.createClass({
             submitted : true,
             challenges: RequestStore.get()
         });
-        ChallengeActions.initChallenges(this.getUserId());
+        //ChallengeActions.initChallenges(this.getUserId());
     },
     _onChange: function() {
         this.setState({challenge: RequestStore.get()});
@@ -58,7 +64,7 @@ var ChallengeRequestApp = React.createClass({
             errors.push('Nothing Selected');
             return errors;
         }
-        if (c.opponent == null || c.opponent == undefined || c.opponent.user.id == 0)
+        if (c.opponent == null || c.opponent == undefined || c.opponent.userId == 0)
             errors.push('Need an opponent');
         if (!c.game.nine.selected && !c.game.eight.selected)
             errors.push('Please choose game type');
@@ -78,7 +84,7 @@ var ChallengeRequestApp = React.createClass({
     send: function() {
         var opponent = { id: 0};
         var c = this.state.challenge;
-        opponent.id = c.opponent.user.id;
+        opponent.id = c.opponent.userId;
         var slots = [];
         c.slots.forEach(function(s) {
             if (!s.selected){
@@ -115,11 +121,11 @@ var ChallengeRequestApp = React.createClass({
         }
         var c = this.state.challenge;
         var msg = 'Send request to '
-            + this.getUser(c.opponent.user.id).name + ' for' +
-            ' a match on ' + c.date ;
+            + this.getUser(c.opponent.userId).name + ' for' +
+            ' match on ' + c.date ;
         var title = 'Notify Opponent?';
         if (this.state.submitted) {
-            title = 'Sucess';
+            title = 'Success';
         }
         var body = (
             <div>
@@ -132,7 +138,7 @@ var ChallengeRequestApp = React.createClass({
             </div>);
         if (this.state.submitted) {
             body = (<div>
-                <Alert>Request Sent. See Sent tab for details</Alert>
+                <Alert>Request Sent! See <a href='#/app/challenge/sent'>sent</a> page for details</Alert>
                 <Button bsStyle={'success'} onClick={this.handleClose}>Close</Button>
             </div>);
         }
@@ -143,17 +149,20 @@ var ChallengeRequestApp = React.createClass({
         );
   },
     render: function(){
+        if (this.getUser().userId == 0 ) {
+            return null;
+        }
         var c = this.state.challenge;
         var submit = (
             <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleToggle}>Request Challenge</Button>
         );
         return (
             <div id="requestApp"  >
-                    <ChallengeRequestDate  date={c.date} />
-                    <ChallengeRequestSlots any={c.anySlot} date={c.date} slots={c.slots} />
-                    <ChallengeRequestOpponent opponent={c.opponent} />
-                    <ChallengeRequestGame game={c.game} />
-                    {submit}
+                <ChallengeRequestDate  date={c.date} />
+                <ChallengeRequestOpponent opponent={c.opponent} />
+                <ChallengeRequestSlots any={c.anySlot} date={c.date} slots={c.slots} />
+                <ChallengeRequestGame game={c.game} />
+                {submit}
             </div>
         )
     }

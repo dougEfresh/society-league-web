@@ -19,7 +19,9 @@ var GroupGame = React.createClass({
     onSelectGame: function() {
         ChallengeActions.selectChallengeGroupGame(
             this.props.challengeGroup,
-            this.refs.game.getValue()
+            this.refs.game.getValue(),
+            this.getUserId(),
+            this.props.type
         );
     },
     renderNoSelect: function() {
@@ -38,7 +40,7 @@ var GroupGame = React.createClass({
         this.props.challengeGroup.games.forEach(function(g) {
             games.push(<option key={g} value={g}>{this.getBall(g)}</option>);
         }.bind(this));
-        return (<Input ref='game'onChange={this.onSelectGame} value={this.props.challengeGroup.selectedGame} type='select' >{games}</Input>);
+        return (<Input ref='game' onChange={this.onSelectGame} value={this.props.challengeGroup.selectedGame} type='select' >{games}</Input>);
     },
     render: function() {
         if (this.props.noSelect)
