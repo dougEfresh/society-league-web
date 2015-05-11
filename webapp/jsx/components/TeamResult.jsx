@@ -83,7 +83,7 @@ var TeamResult = React.createClass({
                     </tr>);
             }.bind(this));
         } else {
-             matches.forEach(function (m) {
+             matchResults.forEach(function (m) {
                 rows.push(
                     <tr key={key++}>
                         <td><UserLink user={this.getUser(m.userId)}/></td>
