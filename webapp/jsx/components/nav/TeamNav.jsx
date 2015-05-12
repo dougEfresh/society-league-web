@@ -33,8 +33,8 @@ var TeamMatch = require('../../../lib/TeamMatch');
 var Result = require('../../../lib/Result');
 
 var DataStore = require('../../stores/DataStore.jsx');
-var UserContextMixin = require('../../UserContextMixin.jsx');
-var TeamMixin = require('../../TeamMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
+var TeamMixin = require('../../mixins/TeamMixin.jsx');
 
 var TeamNav = React.createClass({
     mixins: [UserContextMixin,TeamMixin,Router.state],
@@ -54,18 +54,15 @@ var TeamNav = React.createClass({
     },
     _onChange: function () {
         this.setState({
-            user: this.state.user
+            user: this.getUser()
         });
     },
     render: function() {
         if (this.getUser().id == 0) {
             return null;
         }
-        if (this.getCurrentSeasons().length == 0) {
-            return null;
-        }
         var teams = [];
-        this.getCurrentTeams().forEach(function(t) {
+        this.getUser().getCurrentTeams().forEach(function(t) {
             teams.push(
                 <MenuItemLink key={t.name} className='teamNavLink' to={'team'} params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >
                     {t.name}

@@ -6,7 +6,7 @@ var Bootstrap = require('react-bootstrap')
     ,ListGroup = Bootstrap.ListGroup
     ,ListGroupItem = Bootstrap.ListGroupItem;
 
-var UserContextMixin = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 
 var ChallengeRequestSlots = React.createClass({

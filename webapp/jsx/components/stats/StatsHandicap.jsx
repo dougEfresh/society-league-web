@@ -13,7 +13,7 @@ var Router = require('react-router')
 var Pie = require("react-chartjs").Pie;
 var Bar = require("react-chartjs").Bar;
 
-var UserContextMixin = require('./../../UserContextMixin.jsx');
+var UserContextMixin = require('./../../mixins/UserContextMixin.jsx');
 var BallIcon = require('../../BallMixin.jsx');
 var ChallengeConstants = require('../../constants/ChallengeConstants.jsx');
 

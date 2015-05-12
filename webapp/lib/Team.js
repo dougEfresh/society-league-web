@@ -50,17 +50,20 @@ Team.prototype.addSeason = function(season) {
     this.seasons.push(season);
 };
 
-Team.prototype.addTeamMembers = function(seasonId,members) {
+Team.prototype.addTeamMember = function(seasonId,user) {
     if (seasonId == undefined)
         return;
-    this.members[seasonId] = members;
+    if (this.members[seasonId] == undefined) {
+        this.members[seasonId] = [];
+    }
+    this.members[seasonId].push(user);
 };
 
 Team.prototype.getMembers = function (season) {
     if (season == undefined || season == null) {
         return [];
     }
-    var m = this.members[seson.id];
+    var m = this.members[season];
     if (m == undefined) {
         return [];
     }
@@ -74,6 +77,17 @@ Team.prototype.isActive = function() {
             active = true;
     });
     return active;
+};
+
+Team.prototype.getMatch = function(teamMatchId) {
+    for(var i=0;i<this.matches.length;i++) {
+        var m = this.matches[i];
+        if (m.teamMatchId == teamMatchId) {
+            return m;
+        }
+    }
+    debugger;
+    return undefined;
 };
 
 module.exports = Team;

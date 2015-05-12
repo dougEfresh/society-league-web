@@ -7,7 +7,7 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
     ,Label = Bootstrap.Label;
 
-var UserContextMixin = require('./../UserContextMixin.jsx');
+var UserContextMixin = require('./../mixins/UserContextMixin.jsx');
 
 var ErrorApp = React.createClass({
     mixins: [UserContextMixin,Router.state],

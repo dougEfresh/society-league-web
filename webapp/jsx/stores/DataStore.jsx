@@ -4,8 +4,8 @@ var UserConstants = require('../constants/UserConstants.jsx');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var Util = require('../util.jsx');
-var _ = require('lodash');
 var Season = require('../../lib/Season.js');
+var Stat = require('../../lib/Stat');
 var Division = require('../../lib/Division.js');
 var Team = require('../../lib/Team.js');
 var User = require('../../lib/User.js');
@@ -31,67 +31,125 @@ var DataStore = assign({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     },
+    _findSeason: function(id){
+        for (var i = 0; i < seasons.length; i++) {
+            if (seasons[i].id == id) {
+                return seasons[i];
+            }
+        }
+
+    },
+    _findDivision: function(id){
+        for (var i = 0; i < divisions.length; i++) {
+            if (divisions[i].id == id) {
+                return divisions[i];
+            }
+        }
+
+    },
+     _findUser: function(id){
+        for (var i = 0; i < users.length; i++) {
+            if (users[i].id == id) {
+                return users[i];
+            }
+        }
+
+    },
+     _findTeam: function(id){
+        for (var i = 0; i < teams.length; i++) {
+            if (teams[i].id == id) {
+                return teams[i];
+            }
+        }
+
+    },
     processData: function(d) {
         var k;
         for (k in d.divisions) {
             divisions.push(new Division(k,d.divisions[k].type));
         }
-        _.map(d.seasons,function(season) {
-            var divObj = _.find(divisions,
-                function(el) { return el.id == season.division;}
-            );
-            seasons.push(new Season(season.id,season.name,season.startDate,season.endDate,season.status,divObj));
-        });
+        for (var id in d.seasons) {
+            var division = DataStore._findDivision(d.seasons[id].division);
+            var season = d.seasons[id];
+            seasons.push(new Season(season.id,season.name,season.startDate,season.endDate,season.status,division));
+        }
+
         d.teams.forEach(function(t) {
             var team = new Team(t.teamId, t.name);
             for (var sid in t.seasons) {
-                team.addSeason(_.find(seasons, function (sea) {
-                            return sea.id == sid
-                        })
-                );
+                var season = DataStore._findSeason(sid);
+                team.addSeason(season);
             }
             teams.push(team);
         });
 
-	d.users.forEach(function(u){
+        d.users.forEach(function(u){
             var user = new User(u.userId,u.firstName,u.lastName,u.challenges);
             for (var i in u.seasons) {
-                user.addSeason(_.find(seasons, function (sea) {
-                    return sea.id == u.seasons[i]
-                }));
+                user.addSeason(DataStore._findSeason(u.seasons[i]));
             }
             for (var i in u.teams) {
-		teams.forEach(function(t) {
-		    if (t.id == u.teams[i]) {
-			user.addTeam(t);
-		    }
-		});
+                user.addTeam(DataStore._findTeam(u.teams[i]));
             }
             users.push(user);
         });
 
-        for(var id in d.stats) {
-            users.forEach(function(u) {
-                if (id == u.id) {
-                    u.setStats(d.stats[id]);
+         d.teams.forEach(function(t) {
+             var team = DataStore._findTeam(t.teamId);
+             for (var sid in t.seasons) {
+                for(var i =0; i<t.seasons[sid].length; i++){
+                    var u = DataStore._findUser(t.seasons[sid][i]);
+                    team.addTeamMember(sid,u);
                 }
-            });
+            }
+        });
+
+        for(var id in d.userStats) {
+            var user = DataStore._findUser(id);
+            if (user == undefined) {
+                console.warn('Could not find user: ' + id);
+                continue;
+            }
+            var stats = d.userStats[id];
+            for (var type in stats) {
+                if (type == 'all') {
+                    if (stats[type] == undefined || stats[type] == null){
+                        console.warn('Could not find all stats for '+ id);
+                        continue;
+                    }
+                    user.addStats(new Stat(type, stats[type]), null);
+                } else if (type == 'season') {
+                    stats[type].forEach(function(s){
+                        user.addStats(new Stat(type, s, DataStore._findSeason(s.seasonId)));
+                    });
+
+                } else if (type == 'division') {
+                    stats[type].forEach(function(s){
+                        user.addStats(new Stat(type, s,DataStore._findDivision(s.divisionId)));
+                    });
+                } else {
+                    if (stats[type] == undefined || stats[type] == null){
+                        console.warn('Could not find stats for '+ id);
+                        continue;
+                    }
+                    user.addStats(new Stat(type,stats[type],null));
+                }
+            }
         }
 
         for(var id in d.teamStats) {
-              d.teamStats[id].forEach(function(s) {
+            var season = DataStore._findSeason(id);
+            d.teamStats[id].forEach(function(s) {
                   teams.forEach(function(t){
                       if (t.id == s.teamId) {
-                          t.addStats(id,s);
+                          t.addStats(id,new Stat('team',s,season));
                       }
                   });
               });
         }
 
         d.teamResults.forEach(function(r) {
-            var season = _.find(seasons,function(s){
-                return s.id == r.seasonId;
-            });
+            var season = DataStore._findSeason(r.seasonId);
             var tm = new TeamMatch(r.teamMatchId,r.resultId,r.matchDate,season);
             teams.forEach(function(t) {
                 if (t.id == r.winner) {
@@ -132,13 +190,14 @@ var DataStore = assign({}, EventEmitter.prototype, {
                    var result = new Result(r.resultId,tm,winner,loser);
                    result.setLoserHandicap(r.loserHandicap);
                    result.setLoserRacks(r.loserRacks);
-                   result.setLoserTeam(tm.loser);
+                   result.setLoserTeam(DataStore._findTeam(r.loserTeam));
                    result.setLoserHandicap(r.loserHandicap);
 
                    result.setWinnerHandicap(r.winnerHandicap);
                    result.setWinnerRacks(r.winnerRacks);
-                   result.setWinnerTeam(tm.winner);
+                   result.setWinnerTeam(DataStore._findTeam(r.winnerTeam));
                    result.setWinnerHandicap(r.winnerHandicap);
+
                    winner.addResult(result);
                    loser.addResult(result);
                    results.push(result);
@@ -226,12 +285,10 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getTeams: function() { return teams;},
     getSeasons: function () { return seasons;},
     getUsers: function() { return users;},
-    getTeamStats: function() {return teamStats},
     getStats: function() {return stats},
     getResults: function() {return results;},
-    getTeam: function(id) {
-        return teams[id];
-    },
+    getTeamMatches: function() {return teamMatches;},
+
     setUser: function(u) {
         _authUserId = u.userId;
     },

@@ -21,10 +21,10 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 
 var DataStore= require('../../stores/DataStore.jsx');
-var UserContextMixin = require('../../UserContextMixin.jsx');
-var SeasonMixin = require('../../SeasonMixin.jsx');
-var StatsMixin = require('../../StatsMixin.jsx');
-var TeamMixin = require('../../TeamMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
+var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
+var StatsMixin = require('../../mixins/StatsMixin.jsx');
+var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
 
 var SeasonStandings = React.createClass({

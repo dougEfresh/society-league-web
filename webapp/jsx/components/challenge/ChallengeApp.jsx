@@ -25,7 +25,7 @@ var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('./approved/ChallengeApprovedApp.jsx');
 var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
 
-var UserContextMixin = require('../../UserContextMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var DataStore = require('../../stores/DataStore.jsx');
 

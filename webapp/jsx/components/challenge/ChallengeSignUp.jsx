@@ -17,7 +17,7 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 
-var UserContextMixin = require('../../UserContextMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var DataStore = require('../../stores/DataStore.jsx');
 var DataActions= require('../../actions/DataActions.jsx');
 

@@ -13,7 +13,7 @@ var Pie = require("react-chartjs").Pie;
 
 var StatActions = require('../../actions/StatActions.jsx');
 var StatStore = require('../../stores/StatsStore.jsx');
-var UserContextMixin = require('./../../UserContextMixin.jsx');
+var UserContextMixin = require('./../../mixins/UserContextMixin.jsx');
 var StatsDisplay = require('./StatsDisplay.jsx');
 var StatsRecord = require('./StatsRecord.jsx');
 var StatsHandicap = require('./StatsHandicap.jsx');

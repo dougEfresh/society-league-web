@@ -26,10 +26,10 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 
 var DataStore= require('../stores/DataStore.jsx');
-var UserContextMixin = require('../UserContextMixin.jsx');
-var SeasonMixin = require('../SeasonMixin.jsx');
-var TeamMixin = require('../TeamMixin.jsx');
-var ResultMixin = require('../ResultMixin.jsx');
+var UserContextMixin = require('../mixins/UserContextMixin.jsx');
+var SeasonMixin = require('../mixins/SeasonMixin.jsx');
+var TeamMixin = require('../mixins/TeamMixin.jsx');
+var ResultMixin = require('../mixins/ResultMixin.jsx');
 var UserLink = require('./UserLink.jsx');
 
 var TeamResult = React.createClass({
@@ -39,22 +39,25 @@ var TeamResult = React.createClass({
             teamId: 0,
             seasonId: 0,
             teamMatchId: 0,
-            router: null
         }
     },
     render: function(){
         if (this.props.teamId == 0 || this.props.seasonId == 0) {
             return null;
         }
-        var matches = this.getTeamResults(this.props.seasonId,this.props.teamId,this.props.teamMatchId);
+        var team = this.getTeam(this.props.teamId);
+        var results = this.getResults(this.props.teamMatchId);
+        var teamMatch = team.getMatch(this.props.teamMatchId);
+        var away = teamMatch.winner.id == team.id ? teamMatch.loser : teamMatch.winner;
+        var season  = this.getSeason(this.props.seasonId);
+        var nine = season.isNine();
         var rows = [];
         var key = 0;
-        var nine = this.getDivision(this.props.seasonId).type.toLowerCase().indexOf('nine') >=0;
         var matchResults =  [];
-        matches.forEach(function(m){
-            if (m.winnerTeam == this.props.teamId) {
+        results.forEach(function(m){
+            if (m.winnerTeam.id == this.props.teamId) {
                 matchResults.push({
-                    userId: m.winner,
+                    user: m.winner,
                     opponent: m.loser,
                     racksFor: m.winnerRacks,
                     racksAgainst: m.loserRacks,
@@ -62,7 +65,7 @@ var TeamResult = React.createClass({
                 });
             } else {
                 matchResults.push({
-                    userId: m.loser,
+                    user: m.loser,
                     opponent: m.winner,
                     racksFor: m.loserRacks,
                     racksAgainst: m.winnerRacks,
@@ -75,8 +78,8 @@ var TeamResult = React.createClass({
             matchResults.forEach(function (m) {
                 rows.push(
                     <tr key={key++}>
-                        <td><UserLink user={this.getUser(m.userId)}/></td>
-                        <td><UserLink user={this.getUser(m.opponent)}/></td>
+                        <td><UserLink user={m.user}/></td>
+                        <td><UserLink user={m.opponent}/></td>
                         <td>{m.win ? 'W' : 'L'}</td>
                         <td>{m.racksFor}</td>
                         <td>{m.racksAgainst}</td>
@@ -86,25 +89,20 @@ var TeamResult = React.createClass({
              matchResults.forEach(function (m) {
                 rows.push(
                     <tr key={key++}>
-                        <td><UserLink user={this.getUser(m.userId)}/></td>
-                        <td><UserLink user={this.getUser(m.opponent)}/></td>
+                        <td><UserLink user={m.user}/></td>
+                        <td><UserLink user={m.opponent}/></td>
                         <td>{m.win ? 'W' : 'L'}</td>
                     </tr>);
             }.bind(this));
         }
-        var teamMatch = this.getTeamMatch(this.props.seasonId,this.props.teamMatchId);
-        var away = "";
-        if (teamMatch.winner == this.props.teamId)
-            away = this.getTeam(teamMatch.loser).name;
-        else
-            away = this.getTeam(teamMatch.winner).name;
+
         if (nine) {
         return (
             <Table>
                 <thead>
                 <tr>
-                    <th>{this.getTeam(this.props.teamId).name}</th>
-                    <th>{away}</th>
+                    <th>{team.name}</th>
+                    <th>{away.name}</th>
                     <th>W/L</th>
                     <th>RW</th>
                     <th>RL</th>
@@ -119,8 +117,8 @@ var TeamResult = React.createClass({
             <Table>
                 <thead>
                 <tr>
-                    <th>{this.getTeam(this.props.teamId).name}</th>
-                    <th>{away}</th>
+                    <th>{team.name}</th>
+                    <th>{away.name}</th>
                     <th>W/L</th>
                 </tr>
                 </thead>

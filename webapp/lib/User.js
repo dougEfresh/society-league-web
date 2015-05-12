@@ -1,6 +1,5 @@
 var Status = require('./Status');
 var DivisionType = require('./DivisionType');
-var _ = require('lodash');
 
 function User(id,first_name,last_name,challenges) {
     this.id = id;
@@ -9,7 +8,7 @@ function User(id,first_name,last_name,challenges) {
     this.seasons = [];
     this.teamMatches = [];
     this.results = [];
-    this.stats = {};
+    this.stats = [];
     this.teams = [];
     this.challenges = challenges;
 }
@@ -34,30 +33,43 @@ User.prototype.isChallenge = function() {
 };
 
 User.prototype.getCurrentTeams = function() {
-    var activeTeams = _.filter(this.teams, function(t) {
-        return t.isActive();
-    })
+    var activeTeams = [];
+    this.teams.forEach(function(t) {
+        if (t.isActive()) {
+            activeTeams.push(t);
+        }
+    });
+
     var userActiveTeams = [];
     activeTeams.forEach(function(t){
-	this.getCurrentSeasons().forEach( function(s){
-	    if (t.getSeason().id == s.id) {
-		userActiveTeams.push(t);
-	    }
-	});
+        this.getCurrentSeasons().forEach( function(s){
+            if (t.getSeason().id == s.id) {
+                userActiveTeams.push(t);
+            }
+        });
     }.bind(this));
-return userActiveTeams;
+    return userActiveTeams;
 };
 
 User.prototype.getCurrentSeasons = function() {
-    return _.filter(this.seasons, function(s) {
-        return s.status == Status.ACTIVE;
-    })
+    var seasons = [];
+    this.seasons.forEach(function(s){
+        if (s.isActive()) {
+            seasons.push(s);
+        }
+    });
+    return seasons;
 };
 User.prototype.getPastSeason = function() {
-    return _.filter(this.seasons, function(s) {
-        return s.status != Status.ACTIVE;
-    })
+    var seasons = [];
+    this.seasons.forEach(function(s){
+        if (!s.isActive()) {
+            seasons.push(s);
+        }
+    });
+    return seasons;
 };
+
 User.prototype.getSeasons = function() {
     return this.seasons;
 };
@@ -79,6 +91,25 @@ User.prototype.addResult= function(r) {
 
 User.prototype.getResults = function() {
     return this.results;
+};
+
+User.prototype.addStats = function(stats) {
+    if (stats == undefined)
+        return;
+
+    this.stats.push(stats);
+};
+
+User.prototype.getSeasonStats = function(seasonId) {
+    for(var i =0 ; i < this.stats.length; i++) {
+        if (this.stats[i].season != null && this.stats[i].season != undefined) {
+            if (this.stats[i].season.id == seasonId) {
+                return this.stats[i];
+            }
+        }
+    }
+    debugger;
+    return undefined;
 };
 
 User.DEFAULT_USER = new User(0,'unknown','',{});

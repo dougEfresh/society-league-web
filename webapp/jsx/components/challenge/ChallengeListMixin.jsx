@@ -19,7 +19,7 @@ var BallIcon = require('../../BallMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
-var UserContextMixin = require('../../UserContextMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 
 var ChallengeListMixin = {
     mixins: [UserContextMixin],

@@ -14,7 +14,7 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 
 
-var UserContextMixin = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 
 
 var LeaderBoard = React.createClass({

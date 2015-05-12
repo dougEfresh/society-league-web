@@ -18,7 +18,7 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var GroupRow = require('./GroupRow.jsx');
-var UserContextMixin = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 
 var GroupList = React.createClass({
     mixins: [UserContextMixin],

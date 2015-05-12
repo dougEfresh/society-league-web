@@ -22,7 +22,7 @@ var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
 var ChallengeRequestGame= require('./ChallengeRequestGame.jsx');
 var DataStore = require('../../../stores/DataStore.jsx');
-var UserContextMixin = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
     mixins: [UserContextMixin,OverlayMixin],

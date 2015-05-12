@@ -25,12 +25,12 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var DataStore= require('../../stores/DataStore.jsx');
-var UserContextMixin = require('../../UserContextMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var DivisionConstants = require('../../constants/DivisionConstants.jsx');
 var SeasonStandings = require('./SeasonStandings.jsx');
 var SeasonWeeklyResults= require('./SeasonWeeklyResults.jsx');
-var SeasonMixin = require('../../SeasonMixin.jsx');
-var StatsMixin = require('../../StatsMixin.jsx');
+var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
+var StatsMixin = require('../../mixins/StatsMixin.jsx');
 
 var SeasonApp = React.createClass({
     mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State],

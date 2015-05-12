@@ -13,8 +13,8 @@ var Router = require('react-router')
 
 var StatsDisplay = require('./StatsDisplay.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
-var UserContextMixin = require('../../UserContextMixin.jsx');
-var TeamMixin = require('../../TeamMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
+var TeamMixin = require('../../mixins/TeamMixin.jsx');
 
 var StatApp = React.createClass({
     mixins: [UserContextMixin,State,Router.Navigation],

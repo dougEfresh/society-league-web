@@ -1,6 +1,6 @@
 var React = require('react/addons');
 var GroupList = require('../group/GroupList.jsx');
-var UserContextMixin = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 var ChallengeStatus  = require('../../../constants/ChallengeStatus.jsx');
 var DataStore = require('../../../stores/DataStore.jsx');
 var Bootstrap = require('react-bootstrap')

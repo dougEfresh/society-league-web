@@ -4,7 +4,7 @@ var ReactPropTypes = React.PropTypes;
 var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var ChallengeGroupStore = require('../../../stores/ChallengeGroupStore.jsx');
-var UserContextMixin = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 var DataStore = require('../../../stores/DataStore.jsx');
 
 var GroupAppMixin = {

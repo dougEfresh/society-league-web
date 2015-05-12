@@ -24,7 +24,8 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var DataStore = require('../../stores/DataStore.jsx');
-var UserContextMixin = require('../../UserContextMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
+var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var DivisionConstants = require('../../constants/DivisionConstants.jsx');
 var BallIcon = require('../../components/BallIcon.jsx');
 var Season = require('../../../lib/Season.js');
@@ -37,7 +38,7 @@ var TeamMatch = require('../../../lib/TeamMatch');
 var Result = require('../../../lib/Result');
 
 var SeasonNav = React.createClass({
-    mixins: [UserContextMixin,Router.state],
+    mixins: [UserContextMixin,SeasonMixin,Router.state],
     getInitialState: function () {
         return {
             user: this.getUser()
@@ -58,7 +59,7 @@ var SeasonNav = React.createClass({
         });
     },
     render: function() {
-        if (this.state.user.id == 0) {
+        if (this.getUser().id == 0) {
             return null;
         }
         var seasons = [];
@@ -80,7 +81,7 @@ var SeasonNav = React.createClass({
                     title = (<div><BallIcon type={t.division.type} /> Thursdays </div>);
                     break;
                 case DivisionConstants.EIGHT_BALL_MIXED_MONDAYS:
-                    title = (<div><BallIcon type={DivisionConstants.EIGHT_BALL_CHALLENGE} /> <BallIcon type={DivisionConstants.NINE_BALL_CHALLENGE} /> Mondays </div>);
+                    title = (<div><BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} /> <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays </div>);
                     break;
             }
             seasons.push(

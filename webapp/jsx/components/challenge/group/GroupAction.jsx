@@ -20,7 +20,7 @@ var ChallengeConstants = require('../../../constants/ChallengeConstants.jsx');
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var GroupMixin = require('./GroupListMixin.jsx');
-var UserContextMixin = require('../../../UserContextMixin.jsx');
+var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 
 var GroupAction = React.createClass({
     mixins: [GroupMixin],

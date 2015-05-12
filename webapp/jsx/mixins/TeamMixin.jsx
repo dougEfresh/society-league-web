@@ -1,18 +1,18 @@
 var React = require('react/addons');
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
-var DataStore = require('./stores/DataStore.jsx');
+var DataStore = require('./../stores/DataStore.jsx');
 
 var TeamMixin = {
     getTeam: function(id) {
         var teams = DataStore.getTeams();
-	var team = null;
-	teams.forEach(function(t) {
-	    if (t.id == id) {
-		team = t;
-	    }
-	});
-	return team;
+        var team = null;
+        teams.forEach(function(t) {
+            if (t.id == id) {
+                team = t;
+            }
+        });
+        return team;
     },
     getTeamsBySeason: function(seasonId) {
         var teams =  [];

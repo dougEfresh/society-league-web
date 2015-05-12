@@ -5,7 +5,7 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
     ,Label = Bootstrap.Label;
 
-var UserContextMixin = require('./../UserContextMixin.jsx');
+var UserContextMixin = require('./../mixins/UserContextMixin.jsx');
 var DataStore = require('../stores/DataStore.jsx');
 
 var LoginApp = React.createClass({

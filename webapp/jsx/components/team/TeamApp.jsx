@@ -4,12 +4,12 @@ var Router = require('react-router')
     , Navigation = Router.Navigation;
 
 var DataStore= require('../../stores/DataStore.jsx');
-var UserContextMixin = require('../../UserContextMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var TeamStandings = require('./TeamStandings.jsx');
 var TeamWeeklyResults = require('./TeamWeeklyResults.jsx');
 
 var TeamApp = React.createClass({
-    mixins: [UserContextMixin,State,Navigation],
+    mixins: [UserContextMixin, State, Navigation],
     componentWillMount: function () {
         DataStore.addChangeListener(this._onChange);
     },
@@ -19,14 +19,14 @@ var TeamApp = React.createClass({
     componentDidMount: function () {
         this.setState({user: this.getUser()});
     },
-    _onChange: function() {
+    _onChange: function () {
         this.setState({user: this.state.user});
     },
-    onSelect: function(e) {
+    onSelect: function (e) {
         console.log(e.target.value);
-        this.setState({teamId:e.target.value});
+        this.setState({teamId: e.target.value});
     },
-    onChange: function(e) {
+    onChange: function (e) {
         this.setState(
             {
                 seasonId: this.getParams().seasonId,
@@ -34,17 +34,23 @@ var TeamApp = React.createClass({
             }
         );
     },
-    componentWillReceiveProps: function(o,n) {
-	this.setState({seasonId: this.getParams().seasonId});
+    componentWillReceiveProps: function (o, n) {
+        this.setState({seasonId: this.getParams().seasonId});
     },
-    render: function() {
+    render: function () {
         if (this.getUserId() == 0) {
             return null;
         }
-        return  (
+        //
+        return (
             <div id="teamApp">
-                <TeamStandings teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />
-                <TeamWeeklyResults teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />
+                <TeamStandings teamId={this.getParams().teamId} seasonId={this.getParams().seasonId}/>
+                <TeamWeeklyResults teamId={this.getParams().teamId} seasonId={this.getParams().seasonId}/>
             </div>
         );
+
+
+    }
+});
+
 module.exports = TeamApp;

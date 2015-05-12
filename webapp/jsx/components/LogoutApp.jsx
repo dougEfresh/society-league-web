@@ -5,7 +5,7 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
     ,Label = Bootstrap.Label;
 
-var UserContextMixin = require('./../UserContextMixin.jsx');
+var UserContextMixin = require('./../mixins/UserContextMixin.jsx');
 
 var LoginApp = React.createClass({
     mixins: [UserContextMixin],

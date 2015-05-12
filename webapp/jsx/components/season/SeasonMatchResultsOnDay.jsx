@@ -27,10 +27,10 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var DataStore= require('../../stores/DataStore.jsx');
-var UserContextMixin = require('../../UserContextMixin.jsx');
-var SeasonMixin = require('../../SeasonMixin.jsx');
-var TeamMixin = require('../../TeamMixin.jsx');
-var ResultMixin = require('../../ResultMixin.jsx');
+var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
+var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
+var TeamMixin = require('../../mixins/TeamMixin.jsx');
+var ResultMixin = require('../../mixins/ResultMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var TeamResult = require('../TeamResult.jsx');
 
