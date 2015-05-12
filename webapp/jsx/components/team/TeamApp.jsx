@@ -10,11 +10,6 @@ var TeamWeeklyResults = require('./TeamWeeklyResults.jsx');
 
 var TeamApp = React.createClass({
     mixins: [UserContextMixin,State,Navigation],
-    getInitialState: function() {
-        return {
-            counter: 0
-        }
-    },
     componentWillMount: function () {
         DataStore.addChangeListener(this._onChange);
     },
@@ -34,15 +29,13 @@ var TeamApp = React.createClass({
     onChange: function(e) {
         this.setState(
             {
-                seasonId: this.getParams('seasonId'),
+                seasonId: this.getParams().seasonId,
                 teamId: e.target.value
             }
         );
     },
     componentWillReceiveProps: function(o,n) {
-        var c = this.state.counter;
-        c++;
-        this.setState({counter: c});
+	this.setState({seasonId: this.getParams().seasonId});
     },
     render: function() {
         if (this.getUserId() == 0) {
@@ -54,60 +47,4 @@ var TeamApp = React.createClass({
                 <TeamWeeklyResults teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />
             </div>
         );
-        /*
-         return (
-        if (this.state.counter % 2 == 0) {
-            return (<TeamAppSwitchOdd  teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />);
-        } else {
-            return (<TeamAppSwitchEven  teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} />);
-        }
-        */
-    }
-});
-
-var TeamAppSwitchOdd = React.createClass({
-    render: function() {
-        if (this.props.teamId == undefined || this.props.seasonId == undefined) {
-            return null;
-        }
-        return (
-                <div id="teamApp">
-                    <TeamStandingsOdd teamId={this.props.teamId} seasonId={this.props.seasonId} />
-                    <TeamWeeklyOdd teamId={this.props.teamId} seasonId={this.props.seasonId} />
-                </div>
-            );
-    }
-});
-var TeamAppSwitchEven = React.createClass({
-    render: function() {
-        return (
-            <div id="teamApp">
-                <TeamStandingsEven onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />
-                <TeamWeeklyEven teamId={this.props.teamId} seasonId={this.props.seasonId} />
-            </div>
-        );
-    }
-});
-var TeamStandingsOdd = React.createClass({
-    render: function() {
-        return ( <TeamStandings onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />);
-    }
-});
-var TeamStandingsEven = React.createClass({
-    render: function() {
-        return ( <TeamStandings onChange={this.onChange} teamId={this.props.teamId} seasonId={this.props.seasonId} />);
-    }
-});
-var TeamWeeklyOdd = React.createClass({
-    render: function() {
-
-    }
-});
-
-var TeamWeeklyEven = React.createClass({
-    render: function() {
-        return ( <TeamWeeklyResults teamId={this.props.teamId} seasonId={this.props.seasonId} />);
-    }
-});
-
 module.exports = TeamApp;

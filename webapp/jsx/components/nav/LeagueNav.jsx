@@ -32,6 +32,14 @@ var TeamNav = require('./TeamNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
 var ChallengeNav = require('./ChallengeNav.jsx');
 var DataActions = require('../../actions/DataActions.jsx');
+var Season = require('../../../lib/Season.js');
+var Division = require('../../../lib/Division.js');
+var Team = require('../../../lib/Team.js');
+var User = require('../../../lib/User.js');
+var DivisionType = require('../../../lib/DivisionType');
+var Status = require('../../../lib/Status');
+var TeamMatch = require('../../../lib/TeamMatch');
+var Result = require('../../../lib/Result');
 
 var LeagueNav = React.createClass({
     mixins: [UserContextMixin,Router.state],
@@ -83,7 +91,7 @@ var HomeNav = React.createClass({
                                       <Button className={'active btn-block user'}>
                                           <Link className='navName' to='home'>
                                               <Glyphicon glyph='home' />
-                                              {' ' + this.getUserName()}
+                                              {this.getUser().name}
                                           </Link>
                                       </Button>
                                       <TeamNav />

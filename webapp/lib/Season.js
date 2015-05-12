@@ -15,4 +15,6 @@ Season.prototype.endDate = function () { return this.endDate ; };
 Season.prototype.status = function () { return this.status ; };
 Season.prototype.division = function () { return this.division ; };
 
+Season.prototype.isChallenge = function() {return this.division.isChallenge() };
+
 module.exports = Season;

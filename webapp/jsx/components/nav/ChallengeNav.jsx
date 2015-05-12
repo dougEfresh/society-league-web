@@ -29,6 +29,14 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 var DataStore = require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
+var Season = require('../../../lib/Season.js');
+var Division = require('../../../lib/Division.js');
+var Team = require('../../../lib/Team.js');
+var User = require('../../../lib/User.js');
+var DivisionType = require('../../../lib/DivisionType');
+var Status = require('../../../lib/Status');
+var TeamMatch = require('../../../lib/TeamMatch');
+var Result = require('../../../lib/Result');
 
 var ChallengeNav = React.createClass({
     mixins: [UserContextMixin,Router.state,Bootstrap.OverlayMixin],

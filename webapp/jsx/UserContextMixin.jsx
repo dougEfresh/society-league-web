@@ -2,6 +2,9 @@ var React = require('react/addons');
 var Router = require('react-router');
 var DataStore = require('./stores/DataStore.jsx');
 var Divisions = require('./constants/DivisionConstants.jsx');
+var User = require('../lib/User');
+var Status = require('../lib/Status');
+var Season = require('../lib/Season');
 
 var UserContextMixin = {
     getUserId: function() {
@@ -19,57 +22,36 @@ var UserContextMixin = {
         if (id == null || id == undefined) {
             userId = this.getUserId();
         }
-        //console.log('Getting user ' + userId);
-        if (userId == 0) {
-            return {userId:0, name: "unknown"}
+        var u = undefined;
+        var users = DataStore.getUsers();
+        for (var i = 0; i < users.length; i++) {
+            if (userId == users[i].id) {
+                u = users[i];
+                break;
+            }
         }
 
-        var u = DataStore.getUsers()[userId];
-        if (u == undefined) {
-             return {userId:0, name: "not found"}
-        }
-        u.name = u.firstName  + ' ' + u.lastName;
-        u.userId = userId;
+        if(u == undefined)
+            return User.DEFAULT_USER;
+
         return u;
-    },
-    getUserName: function() {
-        var u = this.getUser();
-        return u.firstName + ' ' + u.lastName;
     },
     getCurrentSeasons: function() {
         var seasons = DataStore.getSeasons();
-        var activeSeasons = [];
-        for(var id in seasons) {
-            if (seasons[id].season.seasonStatus == 'ACTIVE') {
-                var division = DataStore.getDivisionBySeason(id);
-                if (division != undefined && division.type.toLowerCase().indexOf('challenge') == -1)
-                    activeSeasons.push({id: id,division: division});
+        var active = [];
+        seasons.forEach(function (s) {
+            if (s.status == Status.ACTIVE && !s.isChallenge()) {
+                active.push(s);
             }
-        }
-        var orderSeasons = [];
-        for(var d in Divisions) {
-            activeSeasons.forEach(function (s) {
-                if (s.division.type == d) {
-                    orderSeasons.push(s);
-                }
-            });
-        }
-        return orderSeasons;
+        });
+        return active;
     },
     getCurrentTeams: function() {
        var u = this.getUser();
-
-        var teams = [];
-        if (u.currentTeams == undefined) {
-            return teams;
+        if (u.id == 0) {
+            return [];
         }
-        u.currentTeams.forEach(function(t) {
-            var team = {id: t.id, season: t.season};
-            team.division = DataStore.getDivisionBySeason(t.season);
-            team.name = this.getTeam(t.id).name;
-            teams.push(team);
-        }.bind(this));
-        return teams;
+        return u.getCurrentTeams();
     }
 };
 

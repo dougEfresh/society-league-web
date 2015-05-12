@@ -14,7 +14,7 @@ Division.prototype.type = function() {
 };
 
 Division.prototype.isChallenge = function() {
-  return this.type == DivisionType.EIGHT_BALL_CHALLENGE || DivisionType.NINE_BALL_CHALLENGE;
+  return this.type == DivisionType.EIGHT_BALL_CHALLENGE || this.type == DivisionType.NINE_BALL_CHALLENGE;
 };
 
 module.exports = Division;

@@ -27,6 +27,14 @@ var DataStore = require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
 var DivisionConstants = require('../../constants/DivisionConstants.jsx');
 var BallIcon = require('../../components/BallIcon.jsx');
+var Season = require('../../../lib/Season.js');
+var Division = require('../../../lib/Division.js');
+var Team = require('../../../lib/Team.js');
+var User = require('../../../lib/User.js');
+var DivisionType = require('../../../lib/DivisionType');
+var Status = require('../../../lib/Status');
+var TeamMatch = require('../../../lib/TeamMatch');
+var Result = require('../../../lib/Result');
 
 var SeasonNav = React.createClass({
     mixins: [UserContextMixin,Router.state],

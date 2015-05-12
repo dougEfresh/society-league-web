@@ -42,7 +42,9 @@ var TeamStandings = React.createClass({
     mixins: [TeamMixin,StatsMixin,UserContextMixin,Router.state],
     render: function() {
         var standing = {};
-        var teamStats = this.getSeasonTeamStats(this.props.seasonId);
+	var team = this.getTeam(this.props.teamId);
+	
+        var teamStats = this.getSeasonTeamStats(this.props.teamId,this.props.seasonId);
         teamStats.forEach(function (s) {
             if (s.teamId == this.props.teamId) {
                 standing = s;

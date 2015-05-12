@@ -42,28 +42,30 @@ var DataStore = assign({}, EventEmitter.prototype, {
             );
             seasons.push(new Season(season.id,season.name,season.startDate,season.endDate,season.status,divObj));
         });
-        _.map(d.teams,function(t) {
+        d.teams.forEach(function(t) {
             var team = new Team(t.teamId, t.name);
-            for (var id in t.seasons) {
+            for (var sid in t.seasons) {
                 team.addSeason(_.find(seasons, function (sea) {
-                            return sea.id == id
+                            return sea.id == sid
                         })
                 );
             }
             teams.push(team);
         });
 
-        _.map(d.users,function(u){
+	d.users.forEach(function(u){
             var user = new User(u.userId,u.firstName,u.lastName,u.challenges);
-            for (var id in u.seasons) {
+            for (var i in u.seasons) {
                 user.addSeason(_.find(seasons, function (sea) {
-                    return sea.id == id
+                    return sea.id == u.seasons[i]
                 }));
             }
-            for (id in u.teams) {
-                user.addTeam(_.find(teams, function (t) {
-                    return t.id == id
-                }));
+            for (var i in u.teams) {
+		teams.forEach(function(t) {
+		    if (t.id == u.teams[i]) {
+			user.addTeam(t);
+		    }
+		});
             }
             users.push(user);
         });
@@ -137,15 +139,13 @@ var DataStore = assign({}, EventEmitter.prototype, {
                    result.setWinnerRacks(r.winnerRacks);
                    result.setWinnerTeam(tm.winner);
                    result.setWinnerHandicap(r.winnerHandicap);
-                   if (winner == null) {
-                       debugger;
-                   }
                    winner.addResult(result);
                    loser.addResult(result);
                    results.push(result);
                }
             });
         });
+        users.push(User.DEFAULT_USER);
 
         console.log('Created ' + divisions.length + ' divisions');
         console.log('Created ' + seasons.length + ' seasons');

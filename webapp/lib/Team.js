@@ -2,6 +2,7 @@ var Status = require('./Status.js');
 
 function Team(id,name) {
     this.id = id;
+    this.teamId = id;
     this.name = name;
     this.seasons = [];
     this.members = {};
@@ -10,9 +11,23 @@ function Team(id,name) {
 }
 
 Team.prototype.id = function () { return this.id ; };
-Team.prototype.teamId= function () { return this.id ; };
+Team.prototype.teamId = function () { return this.teamId ; };
 Team.prototype.name = function () { return this.name ; };
 Team.prototype.seasons = function() {return this.seasons};
+
+Team.prototype.getStats = function(seasonId) {
+    return this.stats[seasonId];
+};
+
+Team.prototype.getSeason = function() {
+    var season = undefined;
+    this.seasons.forEach(function (s) {
+        if (s.status == Status.ACTIVE) {
+            season = s;
+        }
+    });
+    return season;
+};
 
 Team.prototype.addMatch = function(m) {
     if (m == undefined || m == null)

@@ -23,6 +23,14 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
     ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
+var Season = require('../../../lib/Season.js');
+var Division = require('../../../lib/Division.js');
+var Team = require('../../../lib/Team.js');
+var User = require('../../../lib/User.js');
+var DivisionType = require('../../../lib/DivisionType');
+var Status = require('../../../lib/Status');
+var TeamMatch = require('../../../lib/TeamMatch');
+var Result = require('../../../lib/Result');
 
 var DataStore = require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../UserContextMixin.jsx');
@@ -50,7 +58,7 @@ var TeamNav = React.createClass({
         });
     },
     render: function() {
-        if (this.getUser().userId == 0) {
+        if (this.getUser().id == 0) {
             return null;
         }
         if (this.getCurrentSeasons().length == 0) {
@@ -59,7 +67,7 @@ var TeamNav = React.createClass({
         var teams = [];
         this.getCurrentTeams().forEach(function(t) {
             teams.push(
-                <MenuItemLink key={t.name} className='teamNavLink' to={'team'} params={{userId: this.getUserId(),teamId: t.id, seasonId: t.season}} >
+                <MenuItemLink key={t.name} className='teamNavLink' to={'team'} params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >
                     {t.name}
                 </MenuItemLink>
             );

@@ -6,13 +6,13 @@ var DataStore = require('./stores/DataStore.jsx');
 var TeamMixin = {
     getTeam: function(id) {
         var teams = DataStore.getTeams();
-        var t = {teamId:0,name:"unknown"};
-        teams.forEach(function(team) {
-            if (id == team.teamId) {
-                t = team;
-            }
-        });
-        return t;
+	var team = null;
+	teams.forEach(function(t) {
+	    if (t.id == id) {
+		team = t;
+	    }
+	});
+	return team;
     },
     getTeamsBySeason: function(seasonId) {
         var teams =  [];
