@@ -33,7 +33,7 @@ var LoginApp = React.createClass({
             method: 'post',
             success: function (d) {
                 console.log(JSON.stringify(d));
-                //DataStore.setUser(d);
+                DataStore.setUser(d);
                 //DataStore.init();
                 router.transitionTo('home',null,null);
             }.bind(this),

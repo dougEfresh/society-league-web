@@ -9,16 +9,25 @@ var Stat = require('../../lib/Stat');
 var Division = require('../../lib/Division.js');
 var Team = require('../../lib/Team.js');
 var User = require('../../lib/User.js');
-var DivisionType = require('../../lib/DivisionType');
 var Status = require('../../lib/Status');
 var TeamMatch = require('../../lib/TeamMatch');
 var Result = require('../../lib/Result');
 
-var divisions = [], teams  = [] , seasons = [] , users = [], stats = {};
-var teamMatches = [];
-var teamStats = {}, results = [];
+function resetData() {
+    return  {
+        divisions: [],
+        teams: [] ,
+        seasons: [],
+        users: [],
+        teamMatches: [],
+        results: []
+    }
+}
+
+var data = resetData();
 var _loading = false;
 var _authUserId = 0;
+var _loaded = false;
 
 var DataStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
@@ -32,47 +41,46 @@ var DataStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
     _findSeason: function(id){
-        for (var i = 0; i < seasons.length; i++) {
-            if (seasons[i].id == id) {
-                return seasons[i];
+        for (var i = 0; i < data.seasons.length; i++) {
+            if (data.seasons[i].id == id) {
+                return data.seasons[i];
             }
         }
 
     },
     _findDivision: function(id){
-        for (var i = 0; i < divisions.length; i++) {
-            if (divisions[i].id == id) {
-                return divisions[i];
+        for (var i = 0; i < data.divisions.length; i++) {
+            if (data.divisions[i].id == id) {
+                return data.divisions[i];
             }
         }
 
     },
      _findUser: function(id){
-        for (var i = 0; i < users.length; i++) {
-            if (users[i].id == id) {
-                return users[i];
+        for (var i = 0; i < data.users.length; i++) {
+            if (data.users[i].id == id) {
+                return data.users[i];
             }
         }
 
     },
      _findTeam: function(id){
-        for (var i = 0; i < teams.length; i++) {
-            if (teams[i].id == id) {
-                return teams[i];
+        for (var i = 0; i < data.teams.length; i++) {
+            if (data.teams[i].id == id) {
+                return data.teams[i];
             }
         }
 
     },
     processData: function(d) {
-
-        var k;
-        for (k in d.divisions) {
-            divisions.push(new Division(k,d.divisions[k].type));
+        var id;
+        for (id in d.divisions) {
+            data.divisions.push(new Division(id,d.divisions[id].type));
         }
-        for (var id in d.seasons) {
+        for (id in d.seasons) {
             var division = DataStore._findDivision(d.seasons[id].division);
             var season = d.seasons[id];
-            seasons.push(new Season(season.id,season.name,season.startDate,season.endDate,season.status,division));
+            data.seasons.push(new Season(season.id,season.name,season.startDate,season.endDate,season.status,division));
         }
 
         d.teams.forEach(function(t) {
@@ -81,18 +89,19 @@ var DataStore = assign({}, EventEmitter.prototype, {
                 var season = DataStore._findSeason(sid);
                 team.addSeason(season);
             }
-            teams.push(team);
+            data.teams.push(team);
         });
 
         d.users.forEach(function(u){
             var user = new User(u.userId,u.firstName,u.lastName,u.challenges);
-            for (var i in u.seasons) {
+            var i;
+            for (i in u.seasons) {
                 user.addSeason(DataStore._findSeason(u.seasons[i]));
             }
-            for (var i in u.teams) {
+            for (i in u.teams) {
                 user.addTeam(DataStore._findTeam(u.teams[i]));
             }
-            users.push(user);
+            data.users.push(user);
         });
 
          d.teams.forEach(function(t) {
@@ -105,10 +114,10 @@ var DataStore = assign({}, EventEmitter.prototype, {
             }
         });
 
-        for(var id in d.userStats) {
+        for(id in d.userStats) {
             var user = DataStore._findUser(id);
             if (user == undefined) {
-                console.warn('Could not find user: ' + id);
+                //console.warn('Could not find user: ' + id);
                 continue;
             }
             var stats = d.userStats[id];
@@ -144,10 +153,10 @@ var DataStore = assign({}, EventEmitter.prototype, {
             }
         }
 
-        for(var id in d.teamStats) {
+        for(id in d.teamStats) {
             var season = DataStore._findSeason(id);
             d.teamStats[id].forEach(function(s) {
-                  teams.forEach(function(t){
+                  data.teams.forEach(function(t){
                       if (t.id == s.teamId) {
                           t.addStats(id,new Stat('team',s,season));
                       }
@@ -158,7 +167,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
         d.teamResults.forEach(function(r) {
             var season = DataStore._findSeason(r.seasonId);
             var tm = new TeamMatch(r.teamMatchId,r.resultId,r.matchDate,season);
-            teams.forEach(function(t) {
+            data.teams.forEach(function(t) {
                 if (t.id == r.winner) {
                     tm.setWinner(t);
                     t.addMatch(tm);
@@ -178,13 +187,13 @@ var DataStore = assign({}, EventEmitter.prototype, {
             tm.setLoserSetWins(r.loserSetWins);
             tm.setWinnerSetWins(r.winnerSetWins);
 
-            teamMatches.push(tm);
+            data.teamMatches.push(tm);
         });
 
         d.userResults.forEach(function(r){
             var winner = null;
             var loser = null;
-            users.forEach(function(u){
+            data.users.forEach(function(u){
                 if (r.winner == u.id ) {
                     winner = u;
                 }
@@ -192,7 +201,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
                     loser = u;
                 }
              });
-            teamMatches.forEach(function(tm){
+            data.teamMatches.forEach(function(tm){
                if(tm.teamMatchId == r.teamMatchId) {
                    var result = new Result(r.resultId,tm,winner,loser);
                    result.setLoserHandicap(r.loserHandicap);
@@ -207,37 +216,45 @@ var DataStore = assign({}, EventEmitter.prototype, {
 
                    winner.addResult(result);
                    loser.addResult(result);
-                   results.push(result);
+                   data.results.push(result);
                }
             });
         });
-        users.push(User.DEFAULT_USER);
+        data.users.push(User.DEFAULT_USER);
 
-        console.log('Created ' + divisions.length + ' divisions');
-        console.log('Created ' + seasons.length + ' seasons');
-        console.log('Created ' + teams.length + ' teams');
-        console.log('Created ' + users.length + ' users');
-        console.log('Created ' + teamMatches.length + ' teamMatches');
-        console.log('Created ' + results.length + ' userResults');
+        console.log('Created ' + data.divisions.length + ' divisions');
+        console.log('Created ' + data.seasons.length + ' seasons');
+        console.log('Created ' + data.teams.length + ' teams');
+        console.log('Created ' + data.users.length + ' users');
+        console.log('Created ' + data.teamMatches.length + ' teamMatches');
+        console.log('Created ' + data.results.length + ' userResults');
+
         _loading = false;
+        _loaded = true;
+        DataStore.emitChange();
     },
     init: function() {
         _loading = true;
+        _loaded = false;
+        data = resetData();
         Util.getData('/api/data', function(d) {
             console.log('Got me some data');
             this.processData(d);
             DataStore.emitChange();
         }.bind(this));
     },
-    getDivisions: function() { return divisions;},
-    getTeams: function() { return teams;},
-    getSeasons: function () { return seasons;},
-    getUsers: function() { return users;},
-    getStats: function() {return stats},
+    getDivisions: function() { return data.divisions;},
+    getTeams: function() { return data.teams;},
+    getSeasons: function () { return data.seasons;},
+    getUsers: function() { return data.users;},
     getResults: function() {return results;},
-    getTeamMatches: function() {return teamMatches;},
+    getTeamMatches: function() {return data.teamMatches;},
+
     isLoading: function() {
         return _loading;
+    },
+    isLoaded: function() {
+        return _loaded;
     },
     isAuthenticated: function() {
         return _authUserId > 0;
@@ -251,14 +268,23 @@ var DataStore = assign({}, EventEmitter.prototype, {
     checkLogin: function() {
         console.log('Checking login stats');
         Util.getData('/api/user', function(d) {
-            _authUserId = d.userId;
-            DataStore.init();
+            console.log('User is logged');
+            if (d.userId != 0) {
+                _authUserId = d.userId;
+                DataStore.emitChange();
+            }
         }.bind(this));
     },
     challengeSignUp: function(id) {
         console.log('Signing up ' + id);
          Util.getData('/api/challenge/signup/' + id, function(d) {
-            users[d.userId] = d;
+             var users = DataStore.getUsers();
+             for (var i = 0; i<users.length;i++){
+                 if (users[i].id == d.userId) {
+                     users[i] = d;
+                     break;
+                 }
+             }
             DataStore.emitChange();
         }.bind(this));
     }
@@ -270,7 +296,7 @@ AppDispatcher.register(function(action) {
              DataStore.init();
              break;
          case 'CHECK':
-             DataStore.checkLogin();
+      //       DataStore.checkLogin();
              break;
          case 'CHALLENGE_SIGN_UP':
              DataStore.challengeSignUp(action.id);
@@ -278,8 +304,6 @@ AppDispatcher.register(function(action) {
          default:
             //console.log('Unknown Action ' + JSON.stringify(action));
      }
-
-
 });
 
 module.exports = DataStore;

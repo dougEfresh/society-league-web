@@ -21,7 +21,7 @@ var HomeApp = React.createClass({
 
     },
     _onChange: function () {
-        this.setState({user: this.state.user});
+        this.setState({user: DataStore.getAuthUserId()});
     },
     render: function () {
         if (this.getUser().id == 0) {

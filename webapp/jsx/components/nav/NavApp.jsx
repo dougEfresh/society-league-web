@@ -10,7 +10,7 @@ var DataActions= require('../../actions/DataActions.jsx');
 var LoadingApp  = require('../../components/LoadingApp.jsx');
 
 var NavApp = React.createClass({
-    mixins: [State,UserContextMixin],
+    mixins: [State,UserContextMixin,Router.Navigation,Router.State],
     getInitialState: function() {
          return {
              loading: false,
@@ -24,10 +24,28 @@ var NavApp = React.createClass({
         DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
-        DataActions.checkLogin();
+        DataStore.checkLogin();
+    },
+    componentWillReceiveProps: function(p,n) {
+        if (!DataStore.isAuthenticated()) {
+            return;
+        }
+        if (DataStore.isLoading()) {
+            return;
+        }
+        if (DataStore.isLoaded() && DataStore.isAuthenticated()) {
+            if (this.isActive('default')) {
+                this.transitionTo('home');
+            }
+            return;
+        }
+        DataActions.init();
     },
     _onChange: function(){
         console.log('NavApp change: ' + this.getUserId() + ' Loading ' + DataStore.isLoading() + ' Authenticated: ' + DataStore.isAuthenticated());
+        if (DataStore.isAuthenticated() && !DataStore.isLoaded() && !DataStore.isLoading()) {
+            DataStore.init();
+        }
         this.setState({
             loading: DataStore.isLoading(),
             authenticated: DataStore.isAuthenticated()

@@ -49,10 +49,9 @@ var RouteNotFound = React.createClass({
 var routes = (
     <Route handler={App}>
         <NotFoundRoute handler={RouteNotFound}/>
-        <DefaultRoute handler={NavApp} />
+        <DefaultRoute name="default" handler={NavApp} />
         <Route name="login" path="login" handler={LoginApp} />
         <Route name="error" path="error" handler={ErrorApp} />
-
         <Route name="logout" path="logout" handler={LogoutApp} />
         <Route name="nav" path="/app" handler={NavApp}>
             <Route name="loading" path="loading" handler={LoadingApp} />
