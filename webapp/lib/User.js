@@ -109,8 +109,8 @@ User.prototype.addStats = function(stats) {
 
 User.prototype.getStats = function() {
     for(var i =0 ; i < this.stats.length; i++) {
-        if (this.stats[i].type != undefined && this.stats[i].type != undefined) {
-            if (this.stats[i].type.indexOf('all') >= 0) {
+        if (this.stats[i].type != undefined && this.stats[i].type != null) {
+            if (this.stats[i].type == 'all') {
                 return this.stats[i];
             }
         }
