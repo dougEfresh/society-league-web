@@ -15,6 +15,10 @@ span.nineBall.badge {
 	color: black; !important;
 }
 
+#teamApp {
+	max-width: 500px;
+}
+
 .badge {
 	background-color: #9c302d;
 }
