@@ -98,15 +98,12 @@ User.prototype.addResult= function(r) {
 User.prototype.getResults = function() {
     return this.results;
 };
-
 User.prototype.addStats = function(stats) {
     if (stats == undefined)
         return;
 
     this.stats.push(stats);
 };
-
-
 User.prototype.getStats = function() {
     for(var i =0 ; i < this.stats.length; i++) {
         if (this.stats[i].type != undefined && this.stats[i].type != null) {
@@ -117,7 +114,6 @@ User.prototype.getStats = function() {
     }
     return Stat.DEFAULT;
 };
-
 User.prototype.getSeasonStats = function(seasonId) {
     var stats = [];
     for(var i =0 ; i < this.stats.length; i++) {
@@ -130,7 +126,6 @@ User.prototype.getSeasonStats = function(seasonId) {
     }
     return stats;
 };
-
 User.prototype.getHandicapStats = function() {
     var stats = [];
     for(var i =0 ; i < this.stats.length; i++) {

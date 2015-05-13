@@ -7,6 +7,7 @@ var Bootstrap = require('react-bootstrap')
 
 var DataStore = require('../../stores/DataStore.jsx');
 var HomeChart = require('./HomeChart.jsx');
+var HomeMatches= require('./HomeMatches.jsx');
 
 var HomeApp = React.createClass({
     mixins: [UserContextMixin,Router.state],
@@ -29,6 +30,7 @@ var HomeApp = React.createClass({
         var header = 'Welcome, ' + this.getUser().name;
         return (<div id="homeApp">
             <Panel header={header}>
+                <HomeMatches />
                 <HomeChart />
             </Panel>
         </div>);

@@ -16,6 +16,8 @@ Team.prototype.teamId = function () { return this.teamId ; };
 Team.prototype.name = function () { return this.name ; };
 Team.prototype.seasons = function() {return this.seasons};
 
+Team.prototype.getMatches = function() {return this.matches;};
+
 Team.prototype.getStats = function(seasonId) {
     var s = this.stats[seasonId];
     if (s == undefined)

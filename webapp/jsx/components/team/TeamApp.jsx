@@ -29,6 +29,7 @@ var TeamApp = React.createClass({
         this.setState({user: this.state.user});
     },
     onSelect: function (e) {
+        console.log(e.target.value);
         this.setState({teamId: e.target.value});
     },
     onChange: function (e) {
@@ -69,7 +70,7 @@ var TeamApp = React.createClass({
             <div>
                 {team.name + ' Standings'}
                 <div style={{display: 'inline'}}>
-                    <Button bsStyle={chart == 'true' ? 'success' : 'default'} onClick={this.handleClick}> <i className="fa fa-bar-chart"></i></Button>
+                    <Button bsStyle={chart == 'true' ? 'success' : 'default'} onClick={this.handleClick}><i className="fa fa-bar-chart"></i></Button>
                 </div>
             </div>
         );

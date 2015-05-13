@@ -33,7 +33,8 @@ var LoginApp = React.createClass({
             method: 'post',
             success: function (d) {
                 console.log(JSON.stringify(d));
-                DataStore.setUser(d);
+                //DataStore.setUser(d);
+                //DataStore.init();
                 router.transitionTo('home',null,null);
             }.bind(this),
             error: function (xhr, status, err) {
@@ -43,39 +44,15 @@ var LoginApp = React.createClass({
         });
 
     },
-    onClick: function() {
-        var newUser = {};
-        this.state.users.forEach(function(u) {
-            if (u.login == this.refs.newUser.getValue()) {
-                newUser = u;
-            }
-        }.bind(this));
-        console.log('Login ' + newUser.login);
-         $.ajax({
-            async: true,
-            processData: true,
-            url: '/api/authenticate',
-            data: {username: newUser.login, password: 'password'},
-            method: 'post',
-            success: function (d) {
-                console.log('Redirect to home ' + d.id);
-                this.context.router.transitionTo('home',{userId: d.id},null);
-            }.bind(this),
-            error: function (xhr, status, err) {
-                this.setState({error: true});
-                console.error('authenticate', status, err.toString());
-            }.bind(this)
-        });
-    },
     render: function () {
-        var button = (<Button onClick={this.handleSubmit} >Login</Button>);
+        var button = (<Button id='submit' onClick={this.handleSubmit} >Login</Button>);
         return (
             <div id="loginApp" className="login-container well col-lg-5 col-md-5 col-sm-6">
-                <form className="login-form form-signin">
+                <form id='login' className="login-form form-signin">
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="form-field form-group">
-                            <Input ref='username' type='input' placeholder='enter user name'> </Input>
-                            <Input ref='password' type='password' placeholder='enter password'> </Input>
+                            <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
+                            <Input id="password" ref='password' type='password' name='password' placeholder='enter password'> </Input>
                         </div>
                     {button}
                 </form>

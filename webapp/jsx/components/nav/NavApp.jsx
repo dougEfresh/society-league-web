@@ -7,12 +7,14 @@ var LeagueNav = require('./LeagueNav.jsx');
 var LoginApp = require('../LoginApp.jsx');
 var DataStore = require('../../stores/DataStore.jsx');
 var DataActions= require('../../actions/DataActions.jsx');
+var LoadingApp  = require('../../components/LoadingApp.jsx');
 
 var NavApp = React.createClass({
     mixins: [State,UserContextMixin],
     getInitialState: function() {
          return {
-            user: this.getUser()
+             loading: false,
+             authenticated: false
         }
     },
     componentWillMount: function() {
@@ -25,20 +27,33 @@ var NavApp = React.createClass({
         DataActions.checkLogin();
     },
     _onChange: function(){
-        console.log('NavApp change: ' + this.getUserId());
+        console.log('NavApp change: ' + this.getUserId() + ' Loading ' + DataStore.isLoading() + ' Authenticated: ' + DataStore.isAuthenticated());
         this.setState({
-            user: this.getUser()
-        })
+            loading: DataStore.isLoading(),
+            authenticated: DataStore.isAuthenticated()
+        });
     },
     render: function() {
-        if (this.getUserId() == 0) {
+        if (!this.state.authenticated) {
             console.log("LoginApp");
             return (
                 <LoginApp />
             )
         }
+        if (this.state.loading) {
+            return (
+                <div id={'loading-' + this.state.loading}>
+                    <LoadingApp />
+                </div>
+            );
+        }
         return (
-            <LeagueNav  />
+            <div>
+                <LeagueNav  />
+                <div id='appReady' ></div>
+                <div id={this.getUser().id} ></div>
+            </div>
+
         );
     }
 });

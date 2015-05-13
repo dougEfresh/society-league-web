@@ -52,7 +52,6 @@ var LeagueNav = React.createClass({
         DataStore.addChangeListener(this._onChange);
     },
     componentDidMount: function() {
-        DataActions.init();
     },
     componentWillUnmount: function() {
         DataStore.removeChangeListener(this._onChange);
@@ -87,23 +86,20 @@ var HomeNav = React.createClass({
                         <Row>
                             <Col xs={12} md={2}>
                               <Nav>
-                                  <div className="homeNav" aria-label="...">
-                                      <Button className={'active btn-block user'}>
-                                          <Link className='navName' to='home'>
-                                              <Glyphicon glyph='home' />
-                                              {this.getUser().name}
-                                          </Link>
-                                      </Button>
-                                      <TeamNav />
-                                      <SeasonNav />
-                                      <Button>
+                                  <Button className={'active btn-block user'}>
+                                      <Link className='navName' to='home'>
+                                          <Glyphicon glyph='home' />
+                                          {this.getUser().name}
+                                      </Link>
+                                  </Button>
+                                  <TeamNav />
+                                  <SeasonNav />
+                                  <Button>
                                       <Link className='statsNav' to='stats' params={{statsId: this.getUserId()}}>
                                           <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
                                       </Link>
-                                      </Button>
-                                      <ChallengeNav />
-
-                                  </div>
+                                  </Button>
+                                  <ChallengeNav />
                               </Nav>
                             </Col>
                             <Col xs={12} md={10}>

@@ -24,11 +24,15 @@ var HomeApp = require('./components/home/HomeApp.jsx');
 var TeamApp = require('./components/team/TeamApp.jsx');
 var SeasonApp = require('./components/season/SeasonApp.jsx');
 var ChallengeSignUp = require('./components/challenge/ChallengeSignUp.jsx');
+var LoadingApp = require('./components/LoadingApp.jsx');
 
 var App = React.createClass({
     render: function () {
         return (
-            <RouteHandler/>
+            <div>
+                <RouteHandler/>
+                <div id='pageReady'></div>
+            </div>
         );
     }
 });
@@ -48,8 +52,10 @@ var routes = (
         <DefaultRoute handler={NavApp} />
         <Route name="login" path="login" handler={LoginApp} />
         <Route name="error" path="error" handler={ErrorApp} />
+
         <Route name="logout" path="logout" handler={LogoutApp} />
         <Route name="nav" path="/app" handler={NavApp}>
+            <Route name="loading" path="loading" handler={LoadingApp} />
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>

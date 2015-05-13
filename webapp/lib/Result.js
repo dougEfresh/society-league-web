@@ -24,4 +24,37 @@ Result.prototype.setLoserRacks = function (data) { this.loserRacks = data ; };
 Result.prototype.setLoserHandicap = function (data) { this.loserHandicap = data ; };
 Result.prototype.setLoserTeam = function (data) { this.loserTeam = data ; };
 
+Result.prototype.isWinner = function(user) {
+    return this.winner.id == user.id;
+};
+
+Result.prototype.getOpponent = function(user) {
+    if (this.winner.id == user.id) {
+        return this.loser;
+    }
+    return this.winner;
+};
+
+Result.prototype.getOpponentRacks = function(user) {
+    if (this.winner.id == user.id) {
+        return this.loserRacks;
+    }
+    return this.winnerRacks;
+};
+
+Result.prototype.getOpponentHandicap = function(user) {
+    if (this.winner.id == user.id) {
+        return this.winnerHandicap;
+    }
+    return this.loserHandicap;
+};
+
+Result.prototype.getRacks = function(user) {
+    if (this.winner.id == user.id) {
+        return this.winnerRacks;
+    }
+    return this.loserRacks;
+};
+
+
 module.exports = Result;

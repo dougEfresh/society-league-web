@@ -92,7 +92,7 @@ var TeamWeeklyResults = React.createClass({
             rows.push(
                 <tr key={i++}>
                     <td>
-                        <Button  bsSize='xsmall' id={r.teamMatchId} bsStyle='primary' disabled={(rl+rw)== 0} onClick={this.handleToggle}>{r.matchDate.substr(0,10)}</Button>
+                        <Button id={r.teamMatchId} bsStyle='primary' disabled={(rl+rw)== 0} onClick={this.handleToggle}>{r.matchDate.substr(0,10)}</Button>
                     </td>
                     <td>
                         <TeamLink team={opponent} seasonId={this.props.seasonId}/>

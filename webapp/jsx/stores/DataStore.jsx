@@ -17,7 +17,7 @@ var Result = require('../../lib/Result');
 var divisions = [], teams  = [] , seasons = [] , users = [], stats = {};
 var teamMatches = [];
 var teamStats = {}, results = [];
-
+var _loading = false;
 var _authUserId = 0;
 
 var DataStore = assign({}, EventEmitter.prototype, {
@@ -64,6 +64,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
 
     },
     processData: function(d) {
+
         var k;
         for (k in d.divisions) {
             divisions.push(new Division(k,d.divisions[k].type));
@@ -218,74 +219,15 @@ var DataStore = assign({}, EventEmitter.prototype, {
         console.log('Created ' + users.length + ' users');
         console.log('Created ' + teamMatches.length + ' teamMatches');
         console.log('Created ' + results.length + ' userResults');
+        _loading = false;
     },
     init: function() {
-        //TODO Split this up and send events for different data types
-        console.log('Checking login stats');
-        Util.getData('/api/user', function(d) {
-            _authUserId = d.userId;
-            //DataStore.emitChange();
-        }.bind(this));
-        /*
-        Util.getData('/api/users', function(d) {
-            users = d;
-            DataStore.emitChange();
-        }.bind(this));
-        Util.getData('/api/divisions', function(d) {
-            divisions = d;
-            DataStore.emitChange();
-        }.bind(this));
-        Util.getData('/api/teams', function(d) {
-            teams = d;
-            DataStore.emitChange();
-        }.bind(this));
-        Util.getData('/api/seasons/current', function(d) {
-            for(var id in d) {
-                //console.log('Adding seasonId: ' + id);
-                seasons[id] = d[id];
-            }
-            DataStore.emitChange();
-        }.bind(this));
-
-        Util.getData('/api/results/current', function(d) {
-            results = d;
-            DataStore.emitChange();
-        }.bind(this));
-
-        Util.getData('/api/stats/user', function(d) {
-            for(var id in d) {
-              //  console.log('Adding stats resultId: ' + id);
-                stats[id] = d[id];
-            }
-            DataStore.emitChange();
-        }.bind(this));
-
-
-        Util.getData('/api/stats/team', function(d) {
-            for(var id in d) {
-                //console.log('Adding team stats resultId: ' + id);
-                teamStats[id] = d[id];
-            }
-            DataStore.emitChange();
-        }.bind(this));
-
-
-
-        Util.getData('/api/seasons/past', function(d) {
-            for(var id in d) {
-            //    console.log('Adding past season id: ' + id);
-                seasons[id] = d[id];
-            }
-           // DataStore.emitChange();
-        }.bind(this));
-         */
-
+        _loading = true;
         Util.getData('/api/data', function(d) {
             console.log('Got me some data');
             this.processData(d);
             DataStore.emitChange();
         }.bind(this));
-
     },
     getDivisions: function() { return divisions;},
     getTeams: function() { return teams;},
@@ -294,7 +236,12 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getStats: function() {return stats},
     getResults: function() {return results;},
     getTeamMatches: function() {return teamMatches;},
-
+    isLoading: function() {
+        return _loading;
+    },
+    isAuthenticated: function() {
+        return _authUserId > 0;
+    },
     setUser: function(u) {
         _authUserId = u.userId;
     },
@@ -305,7 +252,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
         console.log('Checking login stats');
         Util.getData('/api/user', function(d) {
             _authUserId = d.userId;
-            DataStore.emitChange();
+            DataStore.init();
         }.bind(this));
     },
     challengeSignUp: function(id) {
