@@ -81,8 +81,11 @@ var SeasonNav = React.createClass({
                     title = (<div><BallIcon type={t.division.type} /> Thursdays </div>);
                     break;
                 case DivisionConstants.EIGHT_BALL_MIXED_MONDAYS:
-                    title = (<div><BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} /> <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays </div>);
+                    title = (<div><BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
+                        <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays </div>);
                     break;
+                default:
+                    return;
             }
             seasons.push(
                     <MenuItemLink key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
@@ -90,7 +93,17 @@ var SeasonNav = React.createClass({
                     </MenuItemLink>
             );
         }.bind(this));
-        var seasonHeader = (<div><i className='fa fa-trophy'>Seasons</i></div>);
+
+        seasons.push(
+            <MenuItemLink key={0} to="season" params={{userId: this.getUserId(),seasonId: 0}} >
+                <div>
+                    <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
+                    <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} />
+                    Challenge
+                </div>
+            </MenuItemLink>);
+
+        var seasonHeader = (<div><i className='fa fa-trophy'> Seasons </i></div>);
         return (
             <div className='seasonNavLink' >
                 <Panel  expanded={true} defaultExpanded={true} className='seasonPanelNav' header={seasonHeader} eventKey='1' >

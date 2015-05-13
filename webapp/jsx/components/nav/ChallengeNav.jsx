@@ -97,7 +97,7 @@ var ChallengeNav = React.createClass({
 
         var header = (
             <div>
-                <Glyphicon glyph='cog' />Challenges<Badge>{counter}</Badge>
+                <Glyphicon glyph='cog' /> Challenges <Badge>{counter}</Badge>
             </div>
         );
 

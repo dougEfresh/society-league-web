@@ -69,7 +69,7 @@ var TeamNav = React.createClass({
                 </MenuItemLink>
             );
         }.bind(this));
-        var teamHeader = (<div><i className="fa fa-users">Teams</i></div>);
+        var teamHeader = (<div><i className="fa fa-users"> Teams </i></div>);
 
         return (
             <Panel expanded={true} defaultExpanded={true} className='teamPanelNav' header={teamHeader} eventKey='1' >
