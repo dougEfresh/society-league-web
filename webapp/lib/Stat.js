@@ -1,11 +1,17 @@
 function Stat(type,obj,season) {
-    this.matches = obj.matches;
-    this.wins = obj.wins;
+    this.matches = obj.matches == undefined ? 0 : obj.matches;
+    this.wins = obj.wins == undefined ? 0 : obj.wins;
     this.loses = obj.loses == undefined ? obj.lost : obj.loses;
-    this.racksFor = obj.racksFor;
+    if (this.loses ==  undefined)
+        this.loses =0;
+
+    this.racksFor = obj.racksFor == undefined ? 0 : obj.racksFor;
     this.racksAgainst = obj.racksAgainst == undefined ? obj.racksAgainsts : obj.racksAgainst;
+    if (this.racksAgainst == undefined)
+        this.racksAgainst = 0;
     this.setLoses = obj.setLoses == undefined ? 0 : obj.setLoses;
     this.setWins = obj.setWins== undefined ? 0 : obj.setWins;
+
     this.handicap = obj.handicap;
     this.season = season;
     this.type = type;
@@ -21,5 +27,7 @@ Stat.prototype.setLoses = function() {return this.setLoses; };
 Stat.prototype.racksFor = function() {return this.racksFor; };
 Stat.prototype.racksAgainst = function() {return this.racksAgainst; };
 Stat.prototype.season = function() {return this.season; };
+
+Stat.DEFAULT = new Stat('none',{},null);
 
 module.exports = Stat;

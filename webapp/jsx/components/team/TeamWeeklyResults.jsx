@@ -70,23 +70,29 @@ var TeamWeeklyResults = React.createClass({
             } else {
                 matchResult.won = false;
             }
-            matchResult.winnerRacks = m.winnerRacks;
-            matchResult.loserRacks = m.loserRacks;
+            matchResult.winnerRacks = m.winnerRacks == undefined ? 0 : m.winnerRacks;
+            matchResult.loserRacks = m.loserRacks == undefined ? 0 : m.loserRacks;
             matchResult.winner = m.winner;
             matchResult.loser = m.loser;
             results.push(matchResult);
         }.bind(this));
 
         var i = 0;
+        results = results.sort(function(a,b) {
+            return a.matchDate.localeCompare(b.matchDate);
+        });
         results.forEach(function(r) {
             var opponent = r.won ? r.loser : r.winner;
             var result = r.won ? 'W' : 'L';
             var rw = r.won ? r.winnerRacks : r.loserRacks;
             var rl = r.won ? r.loserRacks : r.winnerRacks;
+            if (rl+rw == 0) {
+                result = 'N/A';
+            }
             rows.push(
                 <tr key={i++}>
                     <td>
-                        <Button id={r.teamMatchId} bsStyle='primary' disabled={false} onClick={this.handleToggle}>{r.matchDate.substr(0,10)}</Button>
+                        <Button id={r.teamMatchId} bsStyle='primary' disabled={(rl+rw)== 0} onClick={this.handleToggle}>{r.matchDate.substr(0,10)}</Button>
                     </td>
                     <td>
                         <TeamLink team={opponent} seasonId={this.props.seasonId}/>

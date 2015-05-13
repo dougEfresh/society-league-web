@@ -14,7 +14,6 @@ var Pie = require("react-chartjs").Pie;
 var Bar = require("react-chartjs").Bar;
 
 var UserContextMixin = require('./../../mixins/UserContextMixin.jsx');
-var BallIcon = require('../../BallMixin.jsx');
 var ChallengeConstants = require('../../constants/ChallengeConstants.jsx');
 
 var StatsBar = React.createClass({
@@ -96,9 +95,9 @@ var StatsBar = React.createClass({
 
         };
         return (
-        <div>
-            <Bar redraw width={600} height={400} charOptions={options} data={this.getHandicapChartData('byHandicap')} />
-        </div>
+            <div className="leagueChart">
+                <Bar redraw width={600} height={400} charOptions={options} data={this.getHandicapChartData('byHandicap')} />
+            </div>
         );
     }
 

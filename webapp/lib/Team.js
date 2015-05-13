@@ -1,4 +1,5 @@
 var Status = require('./Status.js');
+var Stat = require('./Stat');
 
 function Team(id,name) {
     this.id = id;
@@ -16,7 +17,11 @@ Team.prototype.name = function () { return this.name ; };
 Team.prototype.seasons = function() {return this.seasons};
 
 Team.prototype.getStats = function(seasonId) {
-    return this.stats[seasonId];
+    var s = this.stats[seasonId];
+    if (s == undefined)
+        return Stat.DEFAULT;
+
+    return s;
 };
 
 Team.prototype.getSeason = function() {

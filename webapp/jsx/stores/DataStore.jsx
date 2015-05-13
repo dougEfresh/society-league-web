@@ -124,9 +124,15 @@ var DataStore = assign({}, EventEmitter.prototype, {
                     });
 
                 } else if (type == 'division') {
-                    stats[type].forEach(function(s){
-                        user.addStats(new Stat(type, s,DataStore._findDivision(s.divisionId)));
+                    stats[type].forEach(function (s) {
+                        user.addStats(new Stat(type, s, DataStore._findDivision(s.divisionId)));
                     });
+                } else if (type == 'handicapAll') {
+                    if (stats[type] != undefined && stats[type] != null) {
+                        stats[type].forEach(function (s) {
+                            user.addStats(new Stat(type, s, null));
+                        });
+                    }
                 } else {
                     if (stats[type] == undefined || stats[type] == null){
                         console.warn('Could not find stats for '+ id);

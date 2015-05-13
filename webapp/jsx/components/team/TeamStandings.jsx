@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var Bootstrap = require('react-bootstrap')
     ,Table = Bootstrap.Table
-    ,Panel = Bootstrap.Panel;
+    ,Button = Bootstrap.Button;
 
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
@@ -12,6 +12,7 @@ var TeamStandings = React.createClass({
     render: function() {
         var team = this.getTeam(this.props.teamId);
         var stats = team.getStats(this.props.seasonId);
+        var users = team.getMembers(this.props.seasonId);
         var teamRow = [];
         teamRow.push(<tr key={'all'}>
             <td>Team Record</td>
@@ -20,23 +21,31 @@ var TeamStandings = React.createClass({
             <td>{stats.racksFor}</td>
             <td>{stats.racksAgainst}</td>
         </tr>);
-        var users = team.getMembers(this.props.seasonId);
         var i = 0;
+        var userStats = [];
         users.forEach(function(u) {
-            var stat = u.getSeasonStats(this.props.seasonId);
+            userStats.push({user: u, stat : u.getSeasonStats(this.props.seasonId)});
+        }.bind(this));
+        userStats = userStats.sort(function(a,b) {
+            if (a.stat.wins == b.stat.wins) {
+                return a.stat.loses > b.stat.loses;
+            }
+            return a.stat.wins < b.stat.wins;
+        });
+        userStats.forEach(function(u) {
             teamRow.push(<tr key={i++}>
             <td>
-                <UserLink user={u} />
+                <UserLink user={u.user} />
             </td>
-            <td>{stat.wins}</td>
-            <td>{stat.loses}</td>
-            <td>{stat.racksFor}</td>
-            <td>{stat.racksAgainst}</td>
+            <td>{u.stat.wins}</td>
+            <td>{u.stat.loses}</td>
+            <td>{u.stat.racksFor}</td>
+            <td>{u.stat.racksAgainst}</td>
         </tr>);
         }.bind(this));
 
         return (
-            <Panel header={team.name + ' Standings'}>
+            <div>
                 <Table>
                     <thead>
                     <th></th>
@@ -49,7 +58,7 @@ var TeamStandings = React.createClass({
                     {teamRow}
                     </tbody>
                 </Table>
-           </Panel>
+           </div>
         );
     }
 });

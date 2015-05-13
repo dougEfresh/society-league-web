@@ -1,9 +1,12 @@
 var Status = require('./Status');
 var DivisionType = require('./DivisionType');
+var Stat = require('./Stat');
 
 function User(id,first_name,last_name,challenges) {
     this.id = id;
     this.userId = id;
+    this.fName = first_name;
+    this.lName = last_name;
     this.name = first_name + ' ' + last_name;
     this.seasons = [];
     this.teamMatches = [];
@@ -16,6 +19,9 @@ function User(id,first_name,last_name,challenges) {
 User.prototype.getUserId = function () { return this.id ; };
 User.prototype.userId = function () { return this.userId ; };
 User.prototype.id = function () { return this.id ; };
+User.prototype.lName = function () { return this.lName ; };
+User.prototype.fName = function () { return this.fName ; };
+User.prototype.sName = function() {return this.lName + ' ' + this.lName.substr(0,1);};
 User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
 User.prototype.setStats = function(s) {this.stats = s;};
@@ -100,16 +106,41 @@ User.prototype.addStats = function(stats) {
     this.stats.push(stats);
 };
 
-User.prototype.getSeasonStats = function(seasonId) {
+
+User.prototype.getStats = function() {
     for(var i =0 ; i < this.stats.length; i++) {
-        if (this.stats[i].season != null && this.stats[i].season != undefined) {
-            if (this.stats[i].season.id == seasonId) {
+        if (this.stats[i].type != undefined && this.stats[i].type != undefined) {
+            if (this.stats[i].type.indexOf('all') >= 0) {
                 return this.stats[i];
             }
         }
     }
-    debugger;
-    return undefined;
+    return Stat.DEFAULT;
+};
+
+User.prototype.getSeasonStats = function(seasonId) {
+    var stats = [];
+    for(var i =0 ; i < this.stats.length; i++) {
+        if (this.stats[i].season != null && this.stats[i].season != undefined) {
+            if (seasonId != undefined && seasonId != null && this.stats[i].season.id == seasonId) {
+                return this.stats[i];
+            }
+            stats.push(this.stats[i]);
+        }
+    }
+    return stats;
+};
+
+User.prototype.getHandicapStats = function() {
+    var stats = [];
+    for(var i =0 ; i < this.stats.length; i++) {
+        if (this.stats[i].type != undefined && this.stats[i].type != undefined) {
+            if (this.stats[i].type.indexOf('handicap') >= 0) {
+                stats.push(this.stats[i]);
+            }
+        }
+    }
+    return stats;
 };
 
 User.DEFAULT_USER = new User(0,'unknown','',{});

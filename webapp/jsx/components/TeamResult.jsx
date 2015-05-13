@@ -38,7 +38,7 @@ var TeamResult = React.createClass({
         return {
             teamId: 0,
             seasonId: 0,
-            teamMatchId: 0,
+            teamMatchId: 0
         }
     },
     render: function(){
