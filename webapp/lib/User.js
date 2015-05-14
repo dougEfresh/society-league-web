@@ -116,16 +116,29 @@ User.prototype.getStats = function() {
 };
 User.prototype.getSeasonStats = function(seasonId) {
     var stats = [];
+    if (seasonId != undefined && seasonId != null) {
+        return this.getStatsForSeason(seasonId);
+    }
     for(var i =0 ; i < this.stats.length; i++) {
         if (this.stats[i].season != null && this.stats[i].season != undefined) {
-            if (seasonId != undefined && seasonId != null && this.stats[i].season.id == seasonId) {
-                return this.stats[i];
-            }
             stats.push(this.stats[i]);
         }
     }
     return stats;
 };
+
+User.prototype.getStatsForSeason = function(seasonId) {
+    for(var i =0 ; i < this.stats.length; i++) {
+        if (this.stats[i].season != null && this.stats[i].season != undefined) {
+            if (seasonId != undefined && seasonId != null && this.stats[i].season.id == seasonId) {
+                return this.stats[i];
+            }
+        }
+    }
+    console.warn('No season stats for ' +seasonId + ' user:' + this.id);
+    return Stat.getDefault();
+};
+
 User.prototype.getHandicapStats = function() {
     var stats = [];
     for(var i =0 ; i < this.stats.length; i++) {

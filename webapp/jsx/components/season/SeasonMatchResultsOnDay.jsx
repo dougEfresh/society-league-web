@@ -31,7 +31,6 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var ResultMixin = require('../../mixins/ResultMixin.jsx');
-var TeamLink = require('../TeamLink.jsx');
 var TeamResult = require('../TeamResult.jsx');
 
 var MatchResultsOnDay = React.createClass({
@@ -79,10 +78,11 @@ var MatchResultsOnDay = React.createClass({
         if (!this.state.isModalOpen) {
             return <span/>;
         }
+        var teamMatch = this.getTeamMatch(this.state.teamMatchId);
         return (
              <Modal className="resultsModal" bsStyle={'success'} title={'Results'} onRequestHide={this.handleToggle}>
                  <div className='modal-body'>
-                     <TeamResult teamId={this.state.teamId} seasonId={this.getParams().seasonId} teamMatchId={this.state.teamMatchId} />
+                     <TeamResult teamId={this.state.teamId} seasonId={teamMatch.season.id} teamMatchId={this.state.teamMatchId} />
                  </div>
                  <div className='modal-footer'>
                      <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
@@ -97,8 +97,8 @@ var MatchResultsOnDay = React.createClass({
         var rows = [];
 
         this.props.matches.forEach(function(m){
-            var teamWinnerLink = (<a id={m.teamMatchId + ',' + m.winner} href="#" onClick={this.handleToggle}>{this.getTeam(m.winner).name}</a>);
-            var teamLoserLink = (<a id={m.teamMatchId + ',' + m.loser} href="#" onClick={this.handleToggle}>{this.getTeam(m.loser).name}</a>);
+            var teamWinnerLink = (<a id={m.teamMatchId + ',' + m.winner.id} href="#" onClick={this.handleToggle}>{m.winner.name}</a>);
+            var teamLoserLink = (<a id={m.teamMatchId + ',' + m.loser.id} href="#" onClick={this.handleToggle}>{m.loser.name}</a>);
             rows.push(
                 <tr className="teamMatchResultRow" key={m.teamMatchId}>
                     <td>{teamWinnerLink}</td>

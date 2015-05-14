@@ -28,19 +28,14 @@ var TeamMixin = {
     getTeamUsers: function(teamId,seasonId) {
         return this.getTeam(teamId).seasons[seasonId];
     },
-    getTeamMatch: function(seasonId,teamMatchId) {
-        var s = DataStore.getSeasons()[seasonId];
-        if (s == undefined )
-            return undefined;
-        var match = undefined;
-        for(var dt in s.teamMatches) {
-            s.teamMatches[dt].forEach(function(m) {
-                if (m.teamMatchId == teamMatchId) {
-                    match = m;
-                }
-            });
+    getTeamMatch: function(teamMatchId) {
+        var matches = DataStore.getTeamMatches();
+        for(var i = 0; i<matches.length; i++) {
+            if (matches[i].teamMatchId == teamMatchId) {
+                return matches[i];
+            }
         }
-        return match;
+        return undefined;
     }
 };
 

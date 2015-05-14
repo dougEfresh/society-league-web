@@ -3,19 +3,21 @@ var Bootstrap = require('react-bootstrap');
 
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
+var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var Chart = require('../Chart.jsx');
 
 var TeamChart = React.createClass({
-    mixins: [TeamMixin,UserContextMixin],
+    mixins: [TeamMixin,SeasonMixin,UserContextMixin],
     render: function() {
         var label = [];
         var team = this.getTeam(this.props.teamId);
         var stats = team.getStats(this.props.seasonId);
         var users = team.getMembers(this.props.seasonId);
+        var season = this.getSeason(this.props.seasonId);
         var wins = [];
         var lost = [];
 
-        label.push('W:'+ stats.wins + ' L:' + stats.loses);
+        label.push('W:' + stats.wins + ' L:' + stats.loses);
         wins.push(stats.wins);
         lost.push(stats.loses);
         var userStats = [];
@@ -34,7 +36,7 @@ var TeamChart = React.createClass({
         userStats.forEach(function(u) {
             label.push(u.user.lName.substr(0,8) +'.');
             wins.push(u.stat.wins);
-            lost.push(u.stat.loses);
+            lost.push(u.stat.loses );
         });
          var data = {
              labels: label,

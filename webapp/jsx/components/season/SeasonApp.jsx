@@ -26,7 +26,6 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 
 var DataStore= require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
-var DivisionConstants = require('../../constants/DivisionConstants.jsx');
 var SeasonStandings = require('./SeasonStandings.jsx');
 var SeasonWeeklyResults= require('./SeasonWeeklyResults.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
@@ -60,16 +59,11 @@ var SeasonApp = React.createClass({
         if (this.getUserId() == 0) {
             return null;
         }
-        var division = this.getDivision(this.getParams().seasonId);
-        if (division == null || division == undefined) {
-            return null;
-        }
+
         return (
             <div id="seasonApp" className="seasonResults">
-                <SeasonStandings seasonId={this.getParams().seasonId}
-                                 nine={division.type == DivisionConstants.NINE_BALL_TUESDAYS}
-                                 standings={this.getSeasonTeamStats(this.getParams().seasonId)}/>
-                <SeasonWeeklyResults matches={this.getMatches(this.getParams().seasonId)}/>
+                <SeasonStandings seasonId={this.getParams().seasonId} />
+                <SeasonWeeklyResults seasonId={this.getParams().seasonId}/>
             </div>
         );
     }

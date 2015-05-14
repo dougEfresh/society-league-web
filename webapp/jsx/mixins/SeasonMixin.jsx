@@ -11,6 +11,38 @@ var SeasonMixin = {
             }
         }
     },
+    getSeasonStandings: function(id) {
+        var teams = DataStore.getTeams();
+        var teamStandings = [];
+        var season = this.getSeason(id);
+        teams.forEach(function(t){
+            var stats = t.getStats(id);
+            if (stats.notFound) {
+                return;
+            }
+            teamStandings.push(t);
+        });
+        //var matches = DataStore.getTeamMatches();
+        teamStandings = teamStandings.sort(function(a,b){
+            var aStat = a.getStats(id);
+            var bStat = b.getStats(id);
+            if (aStat.wins == bStat.wins) {
+                if (aStat.loses == bStat.loses) {
+                    if (bStat.racksFor == aStat.racksFor ) {
+                        return bStat.racksAgainst > aStat.racksAgainst;
+                    }
+                    return bStat.racksFor > aStat.racksFor;
+                } else {
+                    return bStat.loses > bStat.loses;
+                }
+            }
+	    
+            return bStat.wins > aStat.wins;
+        });
+	
+        return teamStandings;
+    },
+
     getCurrentSeasons: function() {
         var seasons = DataStore.getSeasons();
         var active = [];
@@ -20,7 +52,7 @@ var SeasonMixin = {
         });
         return active;
     },
-    getMatches: function(id) {
+    getSeasonMatches: function(id) {
         var matches = DataStore.getTeamMatches();
         var seasonMatches = [];
         matches.forEach(function(m) {
@@ -28,7 +60,9 @@ var SeasonMixin = {
                 seasonMatches.push(m);
             }
         });
-        return seasonMatches;
+        return seasonMatches.sort(function(a,b){
+            return a.matchDate.localeCompare(b.matchDate);
+        })
     }
 };
 

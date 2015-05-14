@@ -20,9 +20,11 @@ Team.prototype.getMatches = function() {return this.matches;};
 
 Team.prototype.getStats = function(seasonId) {
     var s = this.stats[seasonId];
-    if (s == undefined)
-        return Stat.DEFAULT;
-
+    if (s == undefined) {
+        var stat = Stat.getDefault();
+        stat.notFound = true;
+        return stat;
+    }
     return s;
 };
 
@@ -37,21 +39,31 @@ Team.prototype.getSeason = function() {
 };
 
 Team.prototype.addMatch = function(m) {
-    if (m == undefined || m == null)
+    if (m == undefined || m == null) {
+        console.warn('Trying to add a undefined match to '+ this.id);
         return;
+    }
 
     return this.matches.push(m)
 };
 
 Team.prototype.addStats = function(seasonId,stats) {
-    if (seasonId == undefined)
+    if (seasonId == undefined) {
+        console.warn('Trying to add a undefined stat to '+ this.id);
         return;
+    }
+
+    if (seasonId == stats) {
+        console.warn('Trying to add a undefined stat to '+ this.id);
+        return;
+    }
 
     this.stats[seasonId] = stats;
 };
 
 Team.prototype.addSeason = function(season) {
     if (season == null || season == undefined) {
+        console.warn('Trying to add a undefined season to '+ this.id);
         return
     }
     this.seasons.push(season);
@@ -60,8 +72,13 @@ Team.prototype.addSeason = function(season) {
 Team.prototype.addTeamMember = function(seasonId,user) {
     if (seasonId == undefined)
         return;
+
     if (this.members[seasonId] == undefined) {
         this.members[seasonId] = [];
+    }
+    if (user == undefined) {
+        console.warn('Trying to add a undefined user to ' + this.id);
+        return;
     }
     this.members[seasonId].push(user);
 };

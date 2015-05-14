@@ -20,7 +20,7 @@ Season.prototype.division = function () { return this.division ; };
 Season.prototype.isChallenge = function() {return this.division.isChallenge() };
 Season.prototype.isActive = function() {return this.status == Status.ACTIVE };
 Season.prototype.isNine = function() {
-    return this.division == DivisionType.NINE_BALL_TUESDAYS;
+    return this.division.isNine();
 };
 
 module.exports = Season;

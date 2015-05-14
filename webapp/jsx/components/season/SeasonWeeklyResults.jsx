@@ -15,26 +15,35 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 
 var MatchResultsOnDay = require('./SeasonMatchResultsOnDay.jsx');
+var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 
 var SeasonWeeklyResults = React.createClass({
-    getDefaultProps: function() {
-        return {
-            matches: null
-        }
-    },
+    mixins: [SeasonMixin],
     render: function() {
-        if (this.props.matches == null) {
-            return null;
-        }
         var cols = [];
         var rows = [];
-        for(var dt in this.props.matches) {
-            cols.push(
-                <Col className="teamMatchResultDay" key={dt} xs={6}>
-                    <MatchResultsOnDay day={dt} matches={this.props.matches[dt]}/>
-                </Col>
-            );
-        }
+        var processDate = null;
+        var matches = this.getSeasonMatches(this.props.seasonId);
+        var matchesOnDay = [];
+        matches.forEach(function(m){
+            if (processDate == null || processDate == m.matchDate) {
+                matchesOnDay.push(m);
+                processDate = m.matchDate;
+                return;
+            }
+            if (processDate != m.matchDate) {
+                var process = matchesOnDay;
+                var d = processDate;
+                cols.push(
+                    <Col className="teamMatchResultDay" key={d} xs={6}>
+                        <MatchResultsOnDay day={d} matches={process}/>
+                    </Col>);
+                matchesOnDay = [];
+                processDate = m.matchDate;
+                return;
+            }
+
+        });
         for (var i=0; i< cols.length; i=i+2) {
             if (i+1 >= cols.length) {
                 rows.push(

@@ -73,7 +73,6 @@ var TeamResult = React.createClass({
                 });
             }
         }.bind(this));
-
         if (nine) {
             matchResults.forEach(function (m) {
                 rows.push(

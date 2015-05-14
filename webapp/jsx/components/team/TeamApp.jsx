@@ -5,6 +5,7 @@ var Router = require('react-router')
 
 var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
+    ,Badge = Bootstrap.Badge
     ,Button = Bootstrap.Button;
 
 var DataStore= require('../../stores/DataStore.jsx');
@@ -13,9 +14,10 @@ var TeamStandings = require('./TeamStandings.jsx');
 var TeamChart = require('./TeamChart.jsx');
 var TeamWeeklyResults = require('./TeamWeeklyResults.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
+var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 
 var TeamApp = React.createClass({
-    mixins: [UserContextMixin, TeamMixin, State, Navigation],
+    mixins: [UserContextMixin, TeamMixin, SeasonMixin, State, Navigation],
     componentWillMount: function () {
         DataStore.addChangeListener(this._onChange);
     },
@@ -66,9 +68,25 @@ var TeamApp = React.createClass({
         var team = this.getTeam(this.getParams().teamId);
         var chart = this.getQuery().chart;
         if (chart == undefined){ chart = 'true'}
+        var stats = team.getStats(this.getParams().seasonId);
+        var standings = this.getSeasonStandings(this.getParams().seasonId);
+        var rank = 0;
+        for(; rank < standings.length; rank++ ) {
+            if (standings[rank].teamId == this.props.teamId) {
+                rank++;
+                break;
+            }
+        }
+        if (stats.matches == 0){
+            rank = 0;
+        }
+        var teamHeader = (<span>{team.name}</span>);
+        if (rank > 0) {
+            teamHeader = (<span>{team.name + ' - Rank '}<Badge>{rank}</Badge> </span>);
+        }
         var header = (
             <div>
-                {team.name + ' Standings'}
+                {teamHeader}
                 <div style={{display: 'inline'}}>
                     <Button bsStyle={chart == 'true' ? 'success' : 'default'} onClick={this.handleClick}><i className="fa fa-bar-chart"></i></Button>
                 </div>

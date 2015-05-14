@@ -44,9 +44,9 @@ Result.prototype.getOpponentRacks = function(user) {
 
 Result.prototype.getOpponentHandicap = function(user) {
     if (this.winner.id == user.id) {
-        return this.winnerHandicap;
+        return this.loserHandicap;
     }
-    return this.loserHandicap;
+    return this.winnerHandicap;
 };
 
 Result.prototype.getRacks = function(user) {

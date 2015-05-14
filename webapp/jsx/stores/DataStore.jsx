@@ -247,7 +247,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getTeams: function() { return data.teams;},
     getSeasons: function () { return data.seasons;},
     getUsers: function() { return data.users;},
-    getResults: function() {return results;},
+    getResults: function() {return data.results;},
     getTeamMatches: function() {return data.teamMatches;},
 
     isLoading: function() {

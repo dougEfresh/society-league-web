@@ -31,57 +31,58 @@ var SeasonStandings = React.createClass({
     mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin],
     getDefaultProps: function() {
         return {
-            nine : false,
-            seasonId: 0,
-            standings: []
+            seasonId: 0
         }
-    },  render: function() {
-        if (this.props.standings == undefined || this.props.standings.length == 0) {
-            return null;
-        }
+    },
+    render: function() {
+        var season = this.getSeason(this.props.seasonId);
         var rows = [];
-        if (this.props.nine) {
-            this.props.standings.forEach(function (s) {
-                var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.props.seasonId}/>;
+        if (season.isNine()) {
+            var standings = this.getSeasonStandings(this.props.seasonId).forEach(function (t) {
+                var teamLink = <TeamLink team={t} seasonId={this.props.seasonId}/>;
+                var s = t.getStats(this.props.seasonId);
                 var pct = 0;
-                var racksTotal = s.racksFor + s.racksAgainsts;
+                var racksTotal = s.racksFor + s.racksAgainst;
                 if (racksTotal != 0) {
-                    pct = s.racksAgainsts / racksTotal;
+                    pct = s.racksAgainst / racksTotal;
                 }
                 rows.push(
-                    <tr className="standingRow" key={s.teamId}>
+                    <tr className="standingRow" key={t.id}>
                         <td>{teamLink}</td>
                         <td>{s.wins}</td>
-                        <td>{s.lost}</td>
+                        <td>{s.loses}</td>
                         <td>{s.setWins}</td>
                         <td>{s.setLoses}</td>
                         <td>{s.racksFor}</td>
-                        <td>{s.racksAgainsts}</td>
+                        <td>{s.racksAgainst}</td>
                         <td>{pct.toFixed(3)}</td>
                     </tr>
                 );
 
             }.bind(this));
         } else {
-               this.props.standings.forEach(function (s) {
-                var teamLink = <TeamLink team={this.getTeam(s.teamId)} seasonId={this.props.seasonId}/>;
-                var pct = 0;
-                var racksTotal = s.racksFor + s.racksAgainsts;
-                if (racksTotal != 0) {
-                    pct = s.racksAgainsts / racksTotal;
-                }
-                rows.push(
-                    <tr className="standingRow" key={s.teamId}>
+            var teamStandings = this.getSeasonStandings(this.props.seasonId);
+            for (var i = 0; i< teamStandings.length; i++) {
+                       var t = teamStandings[i];
+                       var teamLink = <TeamLink team={t} seasonId={this.props.seasonId}/>;
+                       var s = t.getStats(this.props.seasonId);
+                       var pct = 0;
+                       var racksTotal = s.racksFor + s.racksAgainst;
+                       if (racksTotal != 0) {
+                           pct = s.racksAgainst / racksTotal;
+                       }
+                       rows.push(
+                    <tr className="standingRow" key={t.id}>
                         <td>{teamLink}</td>
                         <td>{s.wins}</td>
-                        <td>{s.lost}</td>
+                        <td>{s.loses}</td>
                         <td>{s.racksFor}</td>
-                        <td>{s.racksAgainsts}</td>
+                        <td>{s.racksAgainst}</td>
                         <td>{pct.toFixed(3)}</td>
                     </tr>
                 );
 
-            }.bind(this));
+                   }
         }
         if (this.props.nine) {
             return (

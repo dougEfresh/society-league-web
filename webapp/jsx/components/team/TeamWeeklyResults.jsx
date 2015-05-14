@@ -47,7 +47,7 @@ var TeamWeeklyResults = React.createClass({
         );
     },
     render: function() {
-        var seasonMatches = this.getMatches(this.props.seasonId);
+        var seasonMatches = this.getSeasonMatches(this.props.seasonId);
         var matches = [];
         seasonMatches.forEach(function(m) {
             if (m.winner.id == this.props.teamId || m.loser.id == this.props.teamId) {
