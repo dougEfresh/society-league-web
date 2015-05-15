@@ -1,23 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,Panel = Bootstrap.Panel
-    ,ListGroup = Bootstrap.ListGroup
-    ,ListGroupItem = Bootstrap.ListGroupItem
-    ,Table =  Bootstrap.Table
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,DropdownButton = Bootstrap.DropdownButton
-    ,MenuItem = Bootstrap.MenuItem
-    ,Input = Bootstrap.Input
-    ,Label = Bootstrap.Label
-    ,Well = Bootstrap.Well
-    ,Badge = Bootstrap.Badge
-    ,SplitButton = Bootstrap.SplitButton;
-
-var ChallengeStatus = require('../../../constants/ChallengeStatus.jsx');
-var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
-var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 var GroupAction = require('./GroupAction.jsx');
 var GroupGame = require('./GroupGame.jsx');
@@ -36,10 +18,10 @@ var GroupRow = React.createClass({
         type: ReactPropTypes.string.isRequired
     },
     getOpponent: function() {
-        if (this.getUserId() == this.props.challengeGroup.opponent) {
-            return this.getUser(this.props.challengeGroup.challenger).name;
+        if (this.getUser().id == this.props.challengeGroup.opponent.id) {
+            return this.props.challengeGroup.challenger.name
         }
-        return this.getUser(this.props.challengeGroup.opponent).name;
+        return this.props.challengeGroup.opponent.name;
     },
     render: function() {
         return (

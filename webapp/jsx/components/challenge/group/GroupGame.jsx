@@ -1,18 +1,7 @@
 var React = require('react/addons');
 var GroupMixin = require('./GroupListMixin.jsx');
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,Panel = Bootstrap.Panel
-    ,ListGroup = Bootstrap.ListGroup
-    ,ListGroupItem = Bootstrap.ListGroupItem
-    ,Table =  Bootstrap.Table
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,DropdownButton = Bootstrap.DropdownButton
-    ,MenuItem = Bootstrap.MenuItem
-    ,Input = Bootstrap.Input
-    ,Label = Bootstrap.Label;
-
 var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
+var BallIcon = require('../../../components/BallIcon.jsx');
 
 var GroupGame = React.createClass({
     mixins: [GroupMixin],
@@ -33,12 +22,12 @@ var GroupGame = React.createClass({
     },
     renderSelectOptions: function(){
         if (this.props.challengeGroup.games.length == 1) {
-            return (<div>{this.getBall(this.props.challengeGroup.games[0])}</div>);
+            return (<div><BallIcon type={g} /></div>);
         }
         var games = [];
         games.push(<option key={0} value={0}>{'choose'}</option>);
         this.props.challengeGroup.games.forEach(function(g) {
-            games.push(<option key={g} value={g}>{this.getBall(g)}</option>);
+            games.push(<option key={g} value={g}><BallIcon type={g}/></option>);
         }.bind(this));
         return (<Input ref='game' onChange={this.onSelectGame} value={this.props.challengeGroup.selectedGame} type='select' >{games}</Input>);
     },

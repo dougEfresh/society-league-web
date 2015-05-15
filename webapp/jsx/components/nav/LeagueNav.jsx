@@ -101,7 +101,6 @@ var HomeNav = React.createClass({
                                       </Link>
                                       </Button>
                                       <ChallengeNav />
-
                                   </div>
                               </Nav>
                             </Col>

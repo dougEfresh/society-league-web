@@ -1,8 +1,7 @@
 var Status = require('./Status');
-var DivisionType = require('./DivisionType');
 var Stat = require('./Stat');
 
-function User(id,first_name,last_name,challenges) {
+function User(id,first_name,last_name) {
     this.id = id;
     this.userId = id;
     this.fName = first_name;
@@ -13,7 +12,10 @@ function User(id,first_name,last_name,challenges) {
     this.results = [];
     this.stats = [];
     this.teams = [];
-    this.challenges = challenges;
+    this.challenges = {};
+    for(var st in Status) {
+        this.challenges[st] = [];
+    }
 }
 
 User.prototype.getUserId = function () { return this.id ; };
@@ -25,13 +27,11 @@ User.prototype.sName = function() {return this.lName + ' ' + this.lName.substr(0
 User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
 User.prototype.setStats = function(s) {this.stats = s;};
+
 User.prototype.isChallenge = function() {
     var challenge = false;
     this.seasons.forEach(function(s){
-        if (s.division.type  == DivisionType.EIGHT_BALL_CHALLENGE ) {
-            challenge = true;
-        }
-        if (s.division.type  == DivisionType.NINE_BALL_CHALLENGE ) {
+        if (s.isChallenge() && s.isActive()) {
             challenge = true;
         }
     });
@@ -66,6 +66,7 @@ User.prototype.getCurrentSeasons = function() {
     });
     return seasons;
 };
+
 User.prototype.getPastSeason = function() {
     var seasons = [];
     this.seasons.forEach(function(s){
@@ -149,6 +150,21 @@ User.prototype.getHandicapStats = function() {
         }
     }
     return stats;
+};
+
+User.prototype.addChallenge = function(type,cg) {
+    if (type == undefined || type == null || cg == undefined) {
+        console.warn('Unknown challenge group');
+        return;
+    }
+    this.challenges[type].push(cg);
+};
+
+User.prototype.getChallenges = function(type) {
+    if (type == null || type == undefined) {
+        return [];
+    }
+    return this.challenges[type];
 };
 
 User.DEFAULT_USER = new User(0,'unknown','',{});

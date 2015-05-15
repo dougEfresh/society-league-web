@@ -12,6 +12,8 @@ var User = require('../../lib/User.js');
 var Status = require('../../lib/Status');
 var TeamMatch = require('../../lib/TeamMatch');
 var Result = require('../../lib/Result');
+var ChallengeGroup = require('../../lib/ChallengeGroup');
+var Challenge = require('../../lib/Challenge');
 
 function resetData() {
     return  {
@@ -93,7 +95,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
         });
 
         d.users.forEach(function(u){
-            var user = new User(u.userId,u.firstName,u.lastName,u.challenges);
+            var user = new User(u.userId,u.firstName,u.lastName);
             var i;
             for (i in u.seasons) {
                 user.addSeason(DataStore._findSeason(u.seasons[i]));
@@ -124,7 +126,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
             for (var type in stats) {
                 if (type == 'all') {
                     if (stats[type] == undefined || stats[type] == null){
-                        console.warn('Could not find all stats for '+ id);
+                        //console.warn('Could not find all stats for '+ id);
                         continue;
                     }
                     user.addStats(new Stat(type, stats[type]), null);
@@ -145,7 +147,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
                     }
                 } else {
                     if (stats[type] == undefined || stats[type] == null){
-                        console.warn('Could not find stats for '+ id);
+                        //console.warn('Could not find stats for '+ id);
                         continue;
                     }
                     user.addStats(new Stat(type,stats[type],null));
@@ -220,6 +222,34 @@ var DataStore = assign({}, EventEmitter.prototype, {
                }
             });
         });
+
+        d.users.forEach(function(u){
+            var user = DataStore._findUser(u.userId);
+            for(var type in u.challenges) {
+                var cg = u.challenges[type];
+                if (cg.length == 0) {
+                    continue;
+                }
+
+                cg.forEach(function(group){
+                    var ch = DataStore._findUser(group.challenger);
+                    var op = DataStore._findUser(group.opponent);
+                    var challengeGroup = new ChallengeGroup(ch,op,group.date,type,group.selectedGame,group.selectedSlot);
+                    group.games.forEach(function(g){
+                        challengeGroup.addGame(g);
+                    });
+                    group.slots.forEach(function(s){
+                        challengeGroup.addSlotId(s);
+                    });
+                    group.challenges.forEach(function(c){
+                        var challenge = new Challenge(c.id,ch,op,c.slot.id,c.game,c.status);
+                        challengeGroup.addChallenge(challenge);
+                    });
+                    user.addChallenge(type,challengeGroup);
+                });
+            }
+        });
+
         data.users.push(User.DEFAULT_USER);
 
         console.log('Created ' + data.divisions.length + ' divisions');
@@ -231,7 +261,6 @@ var DataStore = assign({}, EventEmitter.prototype, {
 
         _loading = false;
         _loaded = true;
-        DataStore.emitChange();
     },
     init: function() {
         _loading = true;

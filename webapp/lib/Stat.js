@@ -32,4 +32,17 @@ Stat.prototype.season = function() {return this.season; };
 Stat.DEFAULT = new Stat('none',{},null);
 Stat.getDefault = function() { var s =new Stat('none',{},null); return s;};
 
+Stat.sortAsc = function(a,b) {
+    if (a.wins == b.wins) {
+        if (a.loses == b.loses) {
+            if (a.racksFor == b.racksFor) {
+                return a.racksAgainst < b.racksAgainst ? -1 :1;
+            }
+            return a.racksFor < b.racksFor ? -1 : 1;
+        }
+        return a.loses < b.loses ? -1 : 1;
+    }
+    return a.wins < b.wins ? 1: -1;
+} ;
+
 module.exports = Stat;

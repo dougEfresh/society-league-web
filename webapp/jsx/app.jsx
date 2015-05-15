@@ -7,8 +7,6 @@ var Router = require('react-router')
     , DefaultRoute = Router.DefaultRoute;
 
 var ChallengeStatus = require('./constants/ChallengeStatus.jsx');
-var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
-
 var ChallengeRequestApp = require('./components/challenge/request/ChallengeRequestApp.jsx');
 var ChallengePendingApp = require('./components/challenge/pending/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('./components/challenge/approved/ChallengeApprovedApp.jsx');
@@ -67,7 +65,6 @@ var routes = (
             <Route name={ChallengeStatus.PENDING.toLowerCase()} path={'challenge/' + ChallengeStatus.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
             <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={'challenge/' + ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>
             <Route name={ChallengeStatus.SENT.toLowerCase()} path={'challenge/' + ChallengeStatus.SENT.toLowerCase()} handler={ChallengeSentApp}/>
-            <Route name={ChallengeStatus.CANCELLED.toLowerCase()} path={'challenge/' + ChallengeStatus.CANCELLED.toLowerCase()} handler={ChallengeApp}/>
         </Route>
     </Route>
 );

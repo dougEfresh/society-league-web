@@ -5,6 +5,7 @@ var ChallengeStatus  = require('../../../constants/ChallengeStatus.jsx');
 var DataStore = require('../../../stores/DataStore.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
+var Status = require('../../../../lib/Stat');
 
 var ChallengePendingApp = React.createClass({
     mixins: [UserContextMixin],
@@ -33,12 +34,14 @@ var ChallengePendingApp = React.createClass({
         }
     },
     render: function() {
-        if (this.state.challengeGroups.length == 0) {
+        var user = this.getUser();
+        var challenges = user.getChallenges(Status.PENDING);
+        if (challenges.length == 0) {
             return (<Panel><div><p>You have no challenges pending</p></div></Panel>)
         }
         return (
             <div id="pendingApp">
-                <GroupList type={ChallengeStatus.PENDING} noSelect={false} challengeGroups={this.state.challengeGroups}/>
+                <GroupList type={ChallengeStatus.PENDING} noSelect={false} challengeGroups={challenges}/>
             </div>
         )
     }

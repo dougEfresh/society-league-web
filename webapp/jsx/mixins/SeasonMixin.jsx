@@ -15,32 +15,31 @@ var SeasonMixin = {
         var teams = DataStore.getTeams();
         var teamStandings = [];
         var season = this.getSeason(id);
+        var counter = 1;
         teams.forEach(function(t){
             var stats = t.getStats(id);
             if (stats.notFound) {
                 return;
             }
-            teamStandings.push(t);
+            if (counter < 10)
+                teamStandings.push(t);
+            counter++;
         });
-        //var matches = DataStore.getTeamMatches();
-        teamStandings = teamStandings.sort(function(a,b){
+        return  teamStandings.sort(function(a,b){
             var aStat = a.getStats(id);
             var bStat = b.getStats(id);
             if (aStat.wins == bStat.wins) {
                 if (aStat.loses == bStat.loses) {
                     if (bStat.racksFor == aStat.racksFor ) {
-                        return bStat.racksAgainst > aStat.racksAgainst;
+                        return bStat.racksAgainst > aStat.racksAgainst ? 1 : -1;
                     }
-                    return bStat.racksFor > aStat.racksFor;
+                    return bStat.racksFor > aStat.racksFor ? 1 : -1;
                 } else {
-                    return bStat.loses > bStat.loses;
+                    return bStat.loses > bStat.loses ? 1 : -1 ;
                 }
             }
-	    
-            return bStat.wins > aStat.wins;
+            return bStat.wins > aStat.wins ? 1 : -1;
         });
-	
-        return teamStandings;
     },
 
     getCurrentSeasons: function() {

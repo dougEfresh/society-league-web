@@ -40,7 +40,7 @@ Team.prototype.getSeason = function() {
 
 Team.prototype.addMatch = function(m) {
     if (m == undefined || m == null) {
-        console.warn('Trying to add a undefined match to '+ this.id);
+        //console.warn('Trying to add a undefined match to '+ this.id);
         return;
     }
 
@@ -49,12 +49,12 @@ Team.prototype.addMatch = function(m) {
 
 Team.prototype.addStats = function(seasonId,stats) {
     if (seasonId == undefined) {
-        console.warn('Trying to add a undefined stat to '+ this.id);
+        //console.warn('Trying to add a undefined stat to '+ this.id);
         return;
     }
 
     if (seasonId == stats) {
-        console.warn('Trying to add a undefined stat to '+ this.id);
+        //console.warn('Trying to add a undefined stat to '+ this.id);
         return;
     }
 
@@ -77,7 +77,7 @@ Team.prototype.addTeamMember = function(seasonId,user) {
         this.members[seasonId] = [];
     }
     if (user == undefined) {
-        console.warn('Trying to add a undefined user to ' + this.id);
+        //console.warn('Trying to add a undefined user to ' + this.id);
         return;
     }
     this.members[seasonId].push(user);

@@ -38,7 +38,7 @@ var SeasonStandings = React.createClass({
         var season = this.getSeason(this.props.seasonId);
         var rows = [];
         if (season.isNine()) {
-            var standings = this.getSeasonStandings(this.props.seasonId).forEach(function (t) {
+            this.getSeasonStandings(this.props.seasonId).forEach(function (t) {
                 var teamLink = <TeamLink team={t} seasonId={this.props.seasonId}/>;
                 var s = t.getStats(this.props.seasonId);
                 var pct = 0;
@@ -84,7 +84,7 @@ var SeasonStandings = React.createClass({
 
                    }
         }
-        if (this.props.nine) {
+        if (season.isNine()) {
             return (
                 <Panel header={'Standings'}>
                     <Table className="seasonStandings">

@@ -97,6 +97,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     },
 
     selectChallengeGroupGame: function(challengeGroup,game,userId,type) {
+        
         var id =  challengeGroup.challenges[0].id;
         var user = DataStore.getUsers()[userId];
         var groups = user.challenges[type];

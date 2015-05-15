@@ -76,7 +76,7 @@ var ChallengeNav = React.createClass({
         return (
              <Modal className="challengeSignupModal" bsStyle={'success'} title={'Challenge Sign Up'} onRequestHide={this.handleToggle}>
                  <div className='modal-body'>
-                     <Panel>Sign me up bitch</Panel>
+                     <Panel>Sign me up</Panel>
                  </div>
                  <div className='modal-footer'>
                      <Button bsStyle={'success'} onClick={this.handleToggle}>Sign Up</Button>
@@ -89,6 +89,17 @@ var ChallengeNav = React.createClass({
         var u = this.getUser();
         if (u.userId == 0) {
             return null;
+        }
+        if (!u.isChallenge()) {
+            return (
+                <div className="challengeStatusMenu">
+                    <Panel expanded={false} defaultExpanded={false} className='challengePanelStatus' header={header} eventKey='1' >
+                        <MenuItemLink className='requestNav' to={'challengeSignUp'}>
+                            <Glyphicon glyph='info-sign'/>
+                            What's this?
+                        </MenuItemLink>
+                    </Panel>
+                </div>);
         }
         var c = u.challenges;
         var counter = c[ChallengeStatus.SENT].length
@@ -124,18 +135,6 @@ var ChallengeNav = React.createClass({
                     {c[ChallengeStatus.PENDING].length}
                 </Badge>
             </MenuItemLink>);
-
-        if (!u.challenge) {
-            return (
-                <div className="challengeStatusMenu">
-                    <Panel expanded={false} defaultExpanded={false} className='challengePanelStatus' header={header} eventKey='1' >
-                        <MenuItemLink className='requestNav' to={'challengeSignUp'}>
-                            <Glyphicon glyph='info-sign'/>
-                            What's this?
-                        </MenuItemLink>
-                    </Panel>
-            </div>);
-        }
 
         return (
         <div className="challengeStatusMenu">

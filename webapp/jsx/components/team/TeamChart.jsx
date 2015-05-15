@@ -5,6 +5,7 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var Chart = require('../Chart.jsx');
+var Stat = require('../../../lib/Stat');
 
 var TeamChart = React.createClass({
     mixins: [TeamMixin,SeasonMixin,UserContextMixin],
@@ -25,14 +26,9 @@ var TeamChart = React.createClass({
             userStats.push({user: u, stat : u.getSeasonStats(this.props.seasonId)});
         }.bind(this));
         userStats = userStats.sort(function(a,b) {
-            if (a.stat.wins == b.stat.wins) {
-                return a.stat.loses > b.stat.loses;
-            }
-            if (a.stat.loses == b.stat.loses) {
-                return a.stat.racksFor < b.stat.racksFor;
-            }
-            return a.stat.wins < b.stat.wins;
+            return Stat.sortAsc(a.stat,b.stat);
         });
+
         userStats.forEach(function(u) {
             label.push(u.user.lName.substr(0,8) +'.');
             wins.push(u.stat.wins);

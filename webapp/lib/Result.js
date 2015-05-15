@@ -10,8 +10,12 @@ Result.prototype.loserRacks = function () { return this.loserRacks ; };
 Result.prototype.winner = function () { return this.winner ; };
 Result.prototype.loser = function () { return this.loser ; };
 Result.prototype.winnerTeam = function () { return this.winnerTeam ; };
-Result.prototype.winnerHandicap = function () { return this.winnerHandicap ; };
+Result.prototype.winnerHandicap = function () { return this.winnerHandicap; };
 Result.prototype.loserHandicap = function () { return this.loserHandicap ; };
+
+Result.prototype.getWinnerHandicap = function () { return this.winnerHandicap.replace('PLUS','+').toLocaleLowerCase() ; };
+Result.prototype.getLoserHandicap = function () { return this.loserHandicap.replace('PLUS','+').toLocaleLowerCase() ; };
+
 Result.prototype.loserTeam = function () { return this.loserTeam ; };
 Result.prototype.teamMatch = function () { return this.teamMatch ; };
 Result.prototype.getMatchDate = function () { return this.teamMatch.matchDate(); };
@@ -44,9 +48,9 @@ Result.prototype.getOpponentRacks = function(user) {
 
 Result.prototype.getOpponentHandicap = function(user) {
     if (this.winner.id == user.id) {
-        return this.loserHandicap;
+        return this.getLoserHandicap();
     }
-    return this.winnerHandicap;
+    return this.getWinnerHandicap();
 };
 
 Result.prototype.getRacks = function(user) {
