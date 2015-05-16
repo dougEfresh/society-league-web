@@ -30,6 +30,7 @@ var SeasonStandings = require('./SeasonStandings.jsx');
 var SeasonWeeklyResults= require('./SeasonWeeklyResults.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var StatsMixin = require('../../mixins/StatsMixin.jsx');
+var SeasonResults = require('./SeasonResults.jsx');
 
 var SeasonApp = React.createClass({
     mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State],
@@ -59,7 +60,11 @@ var SeasonApp = React.createClass({
         if (this.getUserId() == 0) {
             return null;
         }
-
+        if (this.getQuery().results != undefined || this.getQuery().results =='true') {
+            return (<div id="seasonApp" className="seasonResults">
+                <SeasonResults seasonId={this.getParams().seasonId} />
+            </div>);
+        }
         return (
             <div id="seasonApp" className="seasonResults">
                 <SeasonStandings seasonId={this.getParams().seasonId} />
