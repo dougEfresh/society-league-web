@@ -52,6 +52,8 @@ var StatApp = React.createClass({
         if (this.getUserId() == null) {
             return null;
         }
+        return (null);
+        /*
         var title = <span>Stats for {this.getUser(this.getParams().statsId).name}</span>;
         return (
             <div id='statsApp'>
@@ -65,6 +67,8 @@ var StatApp = React.createClass({
             </div>
         );
     }
+    */
+
 });
 
 module.exports = StatApp;
