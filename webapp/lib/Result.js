@@ -13,13 +13,13 @@ Result.prototype.winnerTeam = function () { return this.winnerTeam ; };
 Result.prototype.winnerHandicap = function () { return this.winnerHandicap; };
 Result.prototype.loserHandicap = function () { return this.loserHandicap ; };
 
-Result.prototype.getWinnerHandicap = function () { return this.winnerHandicap.replace('PLUS','+').toLocaleLowerCase() ; };
-Result.prototype.getLoserHandicap = function () { return this.loserHandicap.replace('PLUS','+').toLocaleLowerCase() ; };
+Result.prototype.getWinnerHandicap = function () { return this.winnerHandicap.replace('PLUS','+') ; };
+Result.prototype.getLoserHandicap = function () { return this.loserHandicap.replace('PLUS','+') ; };
 
 Result.prototype.loserTeam = function () { return this.loserTeam ; };
 Result.prototype.teamMatch = function () { return this.teamMatch ; };
-Result.prototype.getMatchDate = function () { return this.teamMatch.matchDate(); };
-Result.prototype.gerSeason = function () { return this.teamMatch.season; };
+Result.prototype.getMatchDate = function () { return this.teamMatch.matchDate; };
+Result.prototype.getSeason = function () { return this.teamMatch.season; };
 
 Result.prototype.setWinnerRacks = function (data) { this.winnerRacks = data ; };
 Result.prototype.setWinnerTeam = function (data) { this.winnerTeam = data ; };
@@ -32,11 +32,26 @@ Result.prototype.isWinner = function(user) {
     return this.winner.id == user.id;
 };
 
+Result.prototype.getHandicap = function(user) {
+    if (this.winner.id == user.id) {
+        return this.getWinnerHandicap();
+    }
+    return this.getLoserHandicap();
+};
+
 Result.prototype.getOpponent = function(user) {
     if (this.winner.id == user.id) {
         return this.loser;
     }
     return this.winner;
+};
+
+
+Result.prototype.getOpponentTeam = function(user) {
+    if (this.winner.id == user.id) {
+        return this.loserTeam;
+    }
+    return this.winnerTeam;
 };
 
 Result.prototype.getOpponentRacks = function(user) {

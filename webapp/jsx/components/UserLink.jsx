@@ -11,7 +11,8 @@ var UserLink = React.createClass({
     },
     getDefaultProps: function(){
         return {
-            user: null
+            user: null,
+            seasonId: 0
         }
     },
     render: function() {
@@ -19,11 +20,11 @@ var UserLink = React.createClass({
             return null;
         }
         return (
-            <a className="userLink" href={'#/app/stats/' + this.props.user.userId}>
-                {this.props.user.name}
-            </a>
+                <a className="userLink" href={'#/app/stats/' + this.props.user.userId}>
+                    {this.props.user.name + ' - ' + this.props.user.getCurrentHandicap(this.props.seasonId)}
+                </a>
         );
-    }
+    }    //
 });
 
 module.exports = UserLink;

@@ -16,6 +16,7 @@ function User(id,first_name,last_name) {
     for(var st in Status) {
         this.challenges[st] = [];
     }
+    this.handicaps = {};
 }
 
 User.prototype.getUserId = function () { return this.id ; };
@@ -27,7 +28,23 @@ User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
 
 User.prototype.getCurrentHandicap = function(seasonId) {
+    if (this.handicaps[seasonId] != undefined) {
+        return this.handicaps[seasonId];
+    }
 
+    var results = [];
+    this.results.forEach(function(r){
+        if (r.getSeason().id == seasonId) {
+            results.push(r);
+        }
+    });
+    results = results.sort(function(a,b){
+        return b.getMatchDate().localeCompare(a.getMatchDate());
+    });
+    if (results.length > 0) {
+        return this.handicaps[seasonId] = results[0].getHandicap(this);
+    }
+    return this.handicaps[seasonId] == undefined ? "N/A" :  this.handicaps[seasonId];
 };
 
 User.prototype.isChallenge = function() {

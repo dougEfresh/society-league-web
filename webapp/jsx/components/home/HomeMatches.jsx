@@ -3,7 +3,6 @@ var Bootstrap = require('react-bootstrap');
 var Table = Bootstrap.Table;
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var UserLink= require('../UserLink.jsx');
-var TeamLink = require('../UserLink.jsx');
 var moment = require('moment');
 
 var HomeMatches = React.createClass({
@@ -48,14 +47,15 @@ var HomeMatches = React.createClass({
             if (i++ < 6) {
                 matchRows.push(
                     <tr key={i}>
-                        <td>{r.teamMatch.matchDate}</td>
+                        <td>{r.getMatchDate()}</td>
                         <td>{r.isWinner(user)? 'W' : 'L'}</td>
-                        <td><UserLink user={r.getOpponent(user)}/></td>
-                        <td>{r.getOpponentHandicap(user)}</td>
+                        <td><UserLink user={r.getOpponent(user)} seasonId={r.getSeason().id}/></td>
+                        <td>{'blah'}</td>
                     </tr>
                 );
             }
         });
+        //<td>{r.getOpponentTeam(user)}</td>
         var resultTable = null;
         if (matchRows.length > 0) {
             resultTable = (
@@ -65,7 +65,7 @@ var HomeMatches = React.createClass({
                         <th>date</th>
                         <th>W/L</th>
                         <th>Opponent</th>
-                        <th>Handicap</th>
+                        <th>Team</th>
                     </tr>
                     </thead>
                     <tbody>
