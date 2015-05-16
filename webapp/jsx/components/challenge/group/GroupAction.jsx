@@ -32,9 +32,6 @@ var GroupAction = React.createClass({
         };
         ChallengeActions.status(status);
     },
-    notify: function(){
-        ChallengeActions.notifyChallenge(this.getUserId(),this.props.challengeGroup);
-    },
     cancel: function() {
         ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
     },
@@ -51,7 +48,6 @@ var GroupAction = React.createClass({
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,
             cancel:   <Button bsSize='xsmall'  onClick={this.cancel} key={'cancel'}  bsStyle={'warning'} >Cancel</Button>,
-            notify:   <Button bsSize='xsmall'  onClick={this.notify} key={'notify'}  bsStyle={'success'} >Notify</Button>,
             calender: null //<Button disabled bsSize='xsmall'  key={'calendar'}  bsStyle={'success'} >Calendar</Button>
         };
 

@@ -23,10 +23,12 @@ User.prototype.userId = function () { return this.userId ; };
 User.prototype.id = function () { return this.id ; };
 User.prototype.lName = function () { return this.lName ; };
 User.prototype.fName = function () { return this.fName ; };
-User.prototype.sName = function() {return this.lName + ' ' + this.lName.substr(0,1);};
 User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
-User.prototype.setStats = function(s) {this.stats = s;};
+
+User.prototype.getCurrentHandicap = function(seasonId) {
+
+};
 
 User.prototype.isChallenge = function() {
     var challenge = false;
@@ -81,8 +83,10 @@ User.prototype.getSeasons = function() {
     return this.seasons;
 };
 User.prototype.addSeason = function(season) {
-    if (season == null || season == undefined)
+    if (season == null || season == undefined) {
+        debugger;
         return;
+    }
     this.seasons.push(season);
 };
 User.prototype.addTeam = function(team) {
@@ -162,10 +166,21 @@ User.prototype.addChallenge = function(type,cg) {
 
 User.prototype.getChallenges = function(type) {
     if (type == null || type == undefined) {
+        debugger;
         return [];
     }
     return this.challenges[type];
 };
+
+
+User.prototype.reset = function(){
+   for(var st in Status) {
+        this.challenges[st] = [];
+    }
+    this.teams = [];
+    this.seasons = [];
+};
+
 
 User.DEFAULT_USER = new User(0,'unknown','',{});
 

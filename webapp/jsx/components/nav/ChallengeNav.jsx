@@ -28,7 +28,6 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 
 var DataStore = require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
-var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var Season = require('../../../lib/Season.js');
 var Division = require('../../../lib/Division.js');
 var Team = require('../../../lib/Team.js');
@@ -91,20 +90,22 @@ var ChallengeNav = React.createClass({
             return null;
         }
         if (!u.isChallenge()) {
+
+            debugger;
             return (
                 <div className="challengeStatusMenu">
                     <Panel expanded={false} defaultExpanded={false} className='challengePanelStatus' header={header} eventKey='1' >
                         <MenuItemLink className='requestNav' to={'challengeSignUp'}>
                             <Glyphicon glyph='info-sign'/>
-                            What's this?
+                            {"What's this?"}
                         </MenuItemLink>
                     </Panel>
                 </div>);
         }
         var c = u.challenges;
-        var counter = c[ChallengeStatus.SENT].length
-            + c[ChallengeStatus.PENDING].length
-            + c[ChallengeStatus.ACCEPTED].length;
+        var counter = c[Status.SENT].length
+            + c[Status.PENDING].length
+            + c[Status.ACCEPTED].length;
 
         var header = (
             <div>
@@ -112,27 +113,27 @@ var ChallengeNav = React.createClass({
             </div>
         );
 
-        var sentLink = (<MenuItemLink className='sentNav' to={ChallengeStatus.SENT.toLowerCase()} >
+        var sentLink = (<MenuItemLink className='sentNav' to={Status.SENT.toLowerCase()} >
                 <Glyphicon glyph='ok'/>
                 Sent
                 <Badge>
-                    {c[ChallengeStatus.SENT].length}
+                    {c[Status.SENT].length}
                 </Badge>
             </MenuItemLink>);
 
-        var acceptedLink = (<MenuItemLink className='sentNav' to={ChallengeStatus.ACCEPTED.toLowerCase()} >
+        var acceptedLink = (<MenuItemLink className='sentNav' to={Status.ACCEPTED.toLowerCase()} >
                 <Glyphicon glyph='calendar'/>
                 Accepted
                 <Badge>
-                    {c[ChallengeStatus.ACCEPTED].length}
+                    {c[Status.ACCEPTED].length}
                 </Badge>
             </MenuItemLink>);
 
-        var pendingLink = (<MenuItemLink className='sentNav' to={ChallengeStatus.PENDING.toLowerCase()} >
+        var pendingLink = (<MenuItemLink className='sentNav' to={Status.PENDING.toLowerCase()} >
                 <Glyphicon glyph='alert'/>
                 Pending
                 <Badge>
-                    {c[ChallengeStatus.PENDING].length}
+                    {c[Status.PENDING].length}
                 </Badge>
             </MenuItemLink>);
 
@@ -142,7 +143,7 @@ var ChallengeNav = React.createClass({
                 {pendingLink}
                 {acceptedLink}
                 {sentLink}
-                <MenuItemLink className='requestNav' to={ChallengeStatus.REQUEST.toLowerCase()}>
+                <MenuItemLink className='requestNav' to={Status.REQUEST.toLowerCase()}>
                     <Glyphicon glyph='flash'/>
                     Request
                 </MenuItemLink>

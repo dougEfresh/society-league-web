@@ -18,7 +18,7 @@ var ChallengeRequestSlots = React.createClass({
     getOptions: function() {
         var options = [];
         for (var key in this.state.available) {
-            options.push(<option key={key} value={key}>{this.state.available[key].time}</option>);
+            options.push(<option key={key} value={key}>{this.state.available[key].getTime()}</option>);
         }
         return options;
     },
@@ -47,9 +47,11 @@ var ChallengeRequestSlots = React.createClass({
     render: function() {
         var buttons = [];
         buttons.push(this.getAnyTime());
-        this.props.slots.forEach(function(s) {
-            buttons.push(<SlotButton any={this.props.any} key={s.id} slot={s} > </SlotButton>);
-        }.bind(this));
+        if (!this.props.any) {
+            this.props.slots.forEach(function (s) {
+                buttons.push(<SlotButton any={this.props.any} key={s.id} slot={s}> </SlotButton>);
+            }.bind(this));
+        }
         return (
             <div>
                 {buttons}
@@ -72,7 +74,7 @@ var SlotButton = React.createClass({
         if (this.props.any){
             return (<Button bsStyle='success' disabled onClick={this.onClick}>
                 <i className="fa fa-check">
-                    {this.props.slot.time}
+                    {'Any time'}
                 </i>
             </Button>);
         }
@@ -80,14 +82,14 @@ var SlotButton = React.createClass({
             return (
                 <Button onClick={this.onClick}>
                     <i className="fa fa-times">
-                        {this.props.slot.time}
+                        {this.props.slot.getTime()}
                     </i>
                 </Button>
             );
         }
          return (<Button bsStyle='success' onClick={this.onClick}>
                 <i className="fa fa-check">
-                    {this.props.slot.time}
+                    {this.props.slot.getTime()}
                 </i>
             </Button>);
     }

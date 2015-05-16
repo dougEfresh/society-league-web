@@ -5,7 +5,7 @@ var ChallengeStatus  = require('../../../constants/ChallengeStatus.jsx');
 var DataStore = require('../../../stores/DataStore.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
-var Status = require('../../../../lib/Stat');
+var Status = require('../../../../lib/Status');
 
 var ChallengePendingApp = React.createClass({
     mixins: [UserContextMixin],

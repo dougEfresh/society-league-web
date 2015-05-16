@@ -4,11 +4,12 @@ var UserConstants = require('../constants/UserConstants.jsx');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var Util = require('../util.jsx');
-var Season = require('../../lib/Season.js');
+var Season = require('../../lib/Season');
 var Stat = require('../../lib/Stat');
-var Division = require('../../lib/Division.js');
-var Team = require('../../lib/Team.js');
-var User = require('../../lib/User.js');
+var Slot = require('../../lib/Slot');
+var Division = require('../../lib/Division');
+var Team = require('../../lib/Team');
+var User = require('../../lib/User');
 var Status = require('../../lib/Status');
 var TeamMatch = require('../../lib/TeamMatch');
 var Result = require('../../lib/Result');
@@ -22,7 +23,8 @@ function resetData() {
         seasons: [],
         users: [],
         teamMatches: [],
-        results: []
+        results: [],
+	slots: []
     }
 }
 
@@ -42,13 +44,22 @@ var DataStore = assign({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     },
+    _findSlot: function(id){
+        for (var i = 0; i < data.slots.length; i++) {
+            if (data.slots[i].id == id) {
+                return data.slots[i];
+            }
+        }
+	return undefined;
+    },
     _findSeason: function(id){
         for (var i = 0; i < data.seasons.length; i++) {
             if (data.seasons[i].id == id) {
                 return data.seasons[i];
             }
         }
-
+        debugger;
+        return undefined;
     },
     _findDivision: function(id){
         for (var i = 0; i < data.divisions.length; i++) {
@@ -56,7 +67,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
                 return data.divisions[i];
             }
         }
-
+	return undefined;
     },
      _findUser: function(id){
         for (var i = 0; i < data.users.length; i++) {
@@ -64,13 +75,54 @@ var DataStore = assign({}, EventEmitter.prototype, {
                 return data.users[i];
             }
         }
-
+	 return undefined;
     },
      _findTeam: function(id){
         for (var i = 0; i < data.teams.length; i++) {
             if (data.teams[i].id == id) {
                 return data.teams[i];
             }
+        }
+	 return undefined;
+    },
+    processUser: function(user,data) {
+        user.reset();
+        var i;
+        for (i = 0; i < data.seasons.length ; i++) {
+            user.addSeason(DataStore._findSeason(data.seasons[i]));
+        }
+        for (i = 0; i < data.teams.length ; i++) {
+            user.addTeam(DataStore._findTeam(data.teams[i]));
+        }
+        for(var type in data.challenges) {
+            var cg = data.challenges[type];
+            if (cg.length == 0) {
+                continue;
+            }
+
+            cg.forEach(function(group){
+                var ch = DataStore._findUser(group.challenger);
+                var op = DataStore._findUser(group.opponent);
+                var challengeGroup = null;
+                challengeGroup = new ChallengeGroup(ch, op, group.date, type, null,  0);
+                if (group.games.length == 1) {
+                    challengeGroup.selectedGame = group.games[0];
+                }
+                if (group.slots.length == 1) {
+                    challengeGroup.selectedSlot = group.slots[0];
+                }
+                group.games.forEach(function(g){
+                    challengeGroup.addGame(g);
+                });
+                group.slots.forEach(function(s) {
+                    challengeGroup.addSlot(DataStore._findSlot(s.id));
+                });
+                group.challenges.forEach(function(c){
+                    var challenge = new Challenge(c.id,ch,op,c.slot.id,c.game,c.status);
+                    challengeGroup.addChallenge(challenge);
+                });
+                user.addChallenge(type,challengeGroup);
+            });
         }
 
     },
@@ -96,13 +148,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
 
         d.users.forEach(function(u){
             var user = new User(u.userId,u.firstName,u.lastName);
-            var i;
-            for (i in u.seasons) {
-                user.addSeason(DataStore._findSeason(u.seasons[i]));
-            }
-            for (i in u.teams) {
-                user.addTeam(DataStore._findTeam(u.teams[i]));
-            }
+            DataStore.processUser(user,u);
             data.users.push(user);
         });
 
@@ -222,42 +268,23 @@ var DataStore = assign({}, EventEmitter.prototype, {
                }
             });
         });
+        d.slots.forEach(function(s){
+            data.slots.push(new Slot(s.id,s.localDateTime,s.allocated));
+        });
 
-        d.users.forEach(function(u){
+        d.users.forEach(function(u) {
             var user = DataStore._findUser(u.userId);
-            for(var type in u.challenges) {
-                var cg = u.challenges[type];
-                if (cg.length == 0) {
-                    continue;
-                }
-
-                cg.forEach(function(group){
-                    var ch = DataStore._findUser(group.challenger);
-                    var op = DataStore._findUser(group.opponent);
-                    var challengeGroup = new ChallengeGroup(ch,op,group.date,type,group.selectedGame,group.selectedSlot);
-                    group.games.forEach(function(g){
-                        challengeGroup.addGame(g);
-                    });
-                    group.slots.forEach(function(s){
-                        challengeGroup.addSlotId(s);
-                    });
-                    group.challenges.forEach(function(c){
-                        var challenge = new Challenge(c.id,ch,op,c.slot.id,c.game,c.status);
-                        challengeGroup.addChallenge(challenge);
-                    });
-                    user.addChallenge(type,challengeGroup);
-                });
-            }
+            DataStore.processUser(user, u);
         });
 
         data.users.push(User.DEFAULT_USER);
-
         console.log('Created ' + data.divisions.length + ' divisions');
         console.log('Created ' + data.seasons.length + ' seasons');
         console.log('Created ' + data.teams.length + ' teams');
         console.log('Created ' + data.users.length + ' users');
         console.log('Created ' + data.teamMatches.length + ' teamMatches');
         console.log('Created ' + data.results.length + ' userResults');
+        console.log('Created ' + data.slots.length + ' slots');
 
         _loading = false;
         _loaded = true;
@@ -278,6 +305,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getUsers: function() { return data.users;},
     getResults: function() {return data.results;},
     getTeamMatches: function() {return data.teamMatches;},
+    getSlots: function() {return data.slots;},
 
     isLoading: function() {
         return _loading;
@@ -290,15 +318,25 @@ var DataStore = assign({}, EventEmitter.prototype, {
     },
     setUser: function(u) {
         _authUserId = u.userId;
+        DataStore.emitChange();
     },
     getAuthUserId: function() {
         return _authUserId;
     },
+    replaceUser: function(user) {
+        for (var i = 0; i < data.users.length; i++) {
+            if (data.users[i].id == user.userId) {
+                DataStore.processUser(data.users[i],user);
+                DataStore.emitChange();
+                return;
+            }
+        }
+    },
     checkLogin: function() {
         console.log('Checking login stats');
         Util.getData('/api/user', function(d) {
-            console.log('User is logged');
             if (d.userId != 0) {
+                console.log('User is logged');
                 _authUserId = d.userId;
                 DataStore.emitChange();
             }
@@ -310,11 +348,11 @@ var DataStore = assign({}, EventEmitter.prototype, {
              var users = DataStore.getUsers();
              for (var i = 0; i<users.length;i++){
                  if (users[i].id == d.userId) {
-                     users[i] = d;
+                     DataStore.processUser(data.users[i],d);
+                     DataStore.emitChange();
                      break;
                  }
              }
-            DataStore.emitChange();
         }.bind(this));
     }
 });

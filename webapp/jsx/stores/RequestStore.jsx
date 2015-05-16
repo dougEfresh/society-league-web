@@ -93,8 +93,7 @@ var RequestStore = assign({}, EventEmitter.prototype, {
                     s.selected = false;
                 });
                 _request.game = defaultGame();
-                DataStore.getUsers()[d.userId] = d;
-                DataStore.emitChange();
+                DataStore.replaceUser(d);
                 RequestStore.emitAdd();
             }.bind(this),
             error: function (xhr, status, err) {
@@ -106,33 +105,14 @@ var RequestStore = assign({}, EventEmitter.prototype, {
 
     changeDate : function(date) {
         _request.date = date;
+        var slots = DataStore.getSlots();
         _request.slots = [];
-        this.getSlots();
-    },
-
-    getSlots: function() {
-        console.log("Getting data from " + window.location.origin + '/api/challenge/slot/');
-        $.ajax({
-            url: '/api/challenge/slots/' + _request.date,
-            dataType: 'json',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                }.bind(this)
-            },
-            success: function (d) {
-                d.forEach(function(s){
-                    s.selected = false;
-                });
-                _request.slots = d;
-                RequestStore.emitChange();
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('slots', status, err.toString());
-                console.log('Redirecting to error');
-                //this.redirect('error');
-            }.bind(this)
+        slots.forEach(function(s){
+            if (s.getDate() == date)
+                _request.slots.push(s);
         });
+        _request.anySlot = false;
+        _request.selectedSlot = 0;
     },
 
     anySlot: function(anySlot,slots) {
@@ -171,7 +151,6 @@ var RequestStore = assign({}, EventEmitter.prototype, {
             }
         });
     }
-
 });
 
 AppDispatcher.register(function(action) {

@@ -6,6 +6,7 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var LeagueNav = require('./LeagueNav.jsx');
 var LoginApp = require('../LoginApp.jsx');
 var DataStore = require('../../stores/DataStore.jsx');
+var RequestStore = require('../../stores/RequestStore.jsx');
 var DataActions= require('../../actions/DataActions.jsx');
 var LoadingApp  = require('../../components/LoadingApp.jsx');
 
@@ -19,9 +20,11 @@ var NavApp = React.createClass({
     },
     componentWillMount: function() {
         DataStore.addChangeListener(this._onChange);
+        RequestStore. addRequestListener(this._onChange);
     },
     componentWillUnmount: function() {
         DataStore.removeChangeListener(this._onChange);
+        RequestStore.removeListener(this._onChange);
     },
     componentDidMount: function() {
         DataStore.checkLogin();

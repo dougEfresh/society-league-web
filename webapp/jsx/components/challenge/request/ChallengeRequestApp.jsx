@@ -149,7 +149,7 @@ var ChallengeRequestApp = React.createClass({
         );
   },
     render: function(){
-        if (this.getUser().userId == 0 ) {
+        if (this.getUser().id == 0 ) {
             return null;
         }
         var c = this.state.challenge;
@@ -157,13 +157,13 @@ var ChallengeRequestApp = React.createClass({
             <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleToggle}>Request Challenge</Button>
         );
         return (
-            <div id="requestApp"  >
+            <Panel id="requestApp"  >
                 <ChallengeRequestDate  date={c.date} />
                 <ChallengeRequestOpponent opponent={c.opponent} />
                 <ChallengeRequestSlots any={c.anySlot} date={c.date} slots={c.slots} />
                 <ChallengeRequestGame game={c.game} />
                 {submit}
-            </div>
+            </Panel>
         )
     }
 });

@@ -7,10 +7,7 @@ var CHANGE_EVENT = 'change';
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../stores/ChallengeStore.jsx');
 var DataStore = require('../stores/DataStore.jsx');
-
-var _type = null; //ChallengeStatus tytpe
-var _lastStatusChange = null;
-var _lastStatusAction = null;
+var Status = require('../../lib/Status');
 
 var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
 
@@ -23,11 +20,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     },
-    setType: function(type) {
-        _type = type;
-    },
-
-    _sendRequest: function(url,data,newStatus,status) {
+    _sendRequest: function(url,data) {
         console.log('Sending to ' + url);
         console.log('Sending data: ' + JSON.stringify(data));
          $.ajax({
@@ -45,10 +38,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
                 }
             },
             success: function (d) {
-                _lastStatusChange = status;
-                _lastStatusAction = newStatus;
-                DataStore.getUsers()[d.userId] = d;
-                DataStore.emitChange();
+                DataStore.replaceUser(d);
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
@@ -60,9 +50,9 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     acceptChallenge: function(userId,challengeGroup) {
         var originalStatus = challengeGroup.status;
         var challenge = {id : 0};
-        challengeGroup.slots.forEach(function(c) {
-            if (c.slot.id == challengeGroup.selectedSlot &&
-                    c.opponent.division.type == challengeGroup.selectedGame) {
+        challengeGroup.challenges.forEach(function(c) {
+            if (c.slotId == challengeGroup.selectedSlot &&
+                    c.game == challengeGroup.selectedGame) {
                 challenge = {id: c.id};
             }
         });
@@ -71,12 +61,10 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
             return;
         }
 
-        this._sendRequest('/api/challenge/accepted/' + userId,challenge,ChallengeStatus.ACCEPTED,originalStatus);
+        this._sendRequest('/api/challenge/accepted/' + userId,challenge);
     },
 
-    _cancelOrNotifyChallenge: function(type,userId,challengeGroup) {
-        //TODO Move this to lib
-        var originalStatus = challengeGroup.status;
+      cancelChallenge: function(userId,challengeGroup) {
         var request = {
             challenger: null,
             opponent: null,
@@ -85,52 +73,16 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         challengeGroup.challenges.forEach(function(c) {
             request.challenges.push({id: c.id});
         });
-        this._sendRequest('/api/challenge/' + type.toLowerCase() + '/' + userId,request,type,originalStatus);
+        this._sendRequest('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + userId,request);
     },
 
-    cancelChallenge: function(userId,challengeGroup) {
-        this._cancelOrNotifyChallenge(ChallengeStatus.CANCELLED,userId,challengeGroup);
-    },
-
-    notifyChallenge: function(userId,challengeGroup) {
-        this._cancelOrNotifyChallenge(ChallengeStatus.NOTIFY,userId,challengeGroup);
-    },
-
-    selectChallengeGroupGame: function(challengeGroup,game,userId,type) {
-        
-        var id =  challengeGroup.challenges[0].id;
-        var user = DataStore.getUsers()[userId];
-        var groups = user.challenges[type];
-        groups.forEach(function(g) {
-            g.challenges.forEach(function(c) {
-                if (c.id == id) {
-                    g.selectedGame = game;
-                }
-            })
-        });
+    selectChallengeGroupGame: function(challengeGroup,game) {
+        challengeGroup.selectedGame = game;
         DataStore.emitChange();
     },
-
-    selectChallengeGroupSlot: function(challengeGroup,slot,userId,type) {
-        var id =  challengeGroup.challenges[0].id;
-        var user = DataStore.getUsers()[userId];
-        var groups = user.challenges[type];
-        groups.forEach(function(g) {
-            g.challenges.forEach(function(c) {
-                if (c.id == id) {
-                    g.selectedSlot = slot;
-                }
-            })
-        });
+    selectChallengeGroupSlot: function(challengeGroup,slot) {
+        challengeGroup.selectedSlot = slot;
         DataStore.emitChange();
-    },
-
-    lastStatusChange: function() {
-        return _lastStatusChange;
-    },
-
-    lastStatusAction: function() {
-        return _lastStatusAction;
     },
 
    newStatus: function() {
@@ -145,21 +97,17 @@ AppDispatcher.register(function(action) {
 
      switch(action.actionType) {
          case ChallengeConstants.SELECT_REQUEST_GAME:
-             ChallengeGroupStore.selectChallengeGroupGame(action.challengeGroup,action.game,action.userId,action.type);
+             ChallengeGroupStore.selectChallengeGroupGame(action.challengeGroup,action.game);
              ChallengeGroupStore.emitChange();
              break;
 
           case ChallengeConstants.SELECT_REQUEST_SLOT:
-              ChallengeGroupStore.selectChallengeGroupSlot(action.challengeGroup,action.slot,action.userId,action.type);
+              ChallengeGroupStore.selectChallengeGroupSlot(action.challengeGroup,action.slot);
               ChallengeGroupStore.emitChange();
              break;
 
          case ChallengeConstants.CANCEL:
              ChallengeGroupStore.cancelChallenge(action.userId,action.challengeGroup);
-             break;
-
-         case ChallengeConstants.NOTIFY:
-             ChallengeGroupStore.notifyChallenge(action.userId,action.challengeGroup);
              break;
 
          case ChallengeConstants.ACCEPT:
@@ -169,7 +117,6 @@ AppDispatcher.register(function(action) {
          case ChallengeConstants.NEW:
              ChallengeGroupStore.newStatus();
              break;
-
 
          default:
      }

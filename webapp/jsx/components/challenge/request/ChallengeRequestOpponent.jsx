@@ -26,12 +26,14 @@ var ChallengeRequestOpponent = React.createClass({
         }
     },
     componentDidMount: function() {
+        var potentials  = [];
         for(var u in this.getUsers()) {
             var user = this.getUser(u);
-            if (user.challenge && user.userId != this.getUserId() ) {
-                this.state.potentials.push(this.getUser(user.userId));
+            if (user.isChallenge() && user.userId != this.getUserId() ) {
+                potentials.push(this.getUser(user.userId));
             }
         }
+        this.setState({potentials: potentials});
     },
     onChange: function(e) {
         this.state.potentials.forEach(function(p) {
