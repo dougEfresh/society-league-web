@@ -52,7 +52,7 @@ var StatApp = React.createClass({
         if (this.getUserId() == null) {
             return null;
         }
-        return (null);
+        return null;
         /*
         var title = <span>Stats for {this.getUser(this.getParams().statsId).name}</span>;
         return (
@@ -68,6 +68,7 @@ var StatApp = React.createClass({
         );
     }
     */
+}
 
 });
 
