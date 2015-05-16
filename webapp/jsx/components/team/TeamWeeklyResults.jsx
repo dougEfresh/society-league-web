@@ -10,13 +10,15 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var TeamResult= require('../TeamResult.jsx');
+var TeamResults = require('./TeamResults.jsx');
 
 var TeamWeeklyResults = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,OverlayMixin],
      getInitialState: function() {
         return {
             isModalOpen: false,
-            teamMatchId: 0
+            teamMatchId: 0,
+            showResults: false
         };
     },
     handleToggle: function(e,id) {
@@ -45,6 +47,12 @@ var TeamWeeklyResults = React.createClass({
                  </div>
             </Modal>
         );
+    },
+    toggleResults: function() {
+        this.setState({showResults: !this.state.showResults});
+    },
+    renderResults: function() {
+        return (<TeamResults teamId={this.props.teamId} seasonId={this.props.seasonId}/>);
     },
     render: function() {
         var seasonMatches = this.getSeasonMatches(this.props.seasonId);
@@ -106,8 +114,19 @@ var TeamWeeklyResults = React.createClass({
         if (rows.length == 0) {
             return null;
         }
+        var showMatches = (<span><Button bsStyle={this.state.showResults ? 'success' : 'default'}
+                    onClick={this.toggleResults} bsSize='small' >{this.state.showResults ? ' Matches' : ' Results'}
+            </Button>
+        </span>);
+        if (this.state.showResults){
+            return (
+                <Panel className='teamWeeklyResults' header={showMatches}>
+                    {this.renderResults()}
+                </Panel>
+        );
+        }
         return (
-            <Panel className='teamWeeklyResults' header={'Weekly Results'}>
+            <Panel className='teamWeeklyResults' header={showMatches}>
             <Table>
                 <thead>
                 <th>Date</th>

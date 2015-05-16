@@ -1,5 +1,9 @@
 var React = require('react/addons');
 var Bootstrap = require('react-bootstrap');
+var Row = Bootstrap.Row;
+var Col = Bootstrap.Col;
+var Grid = Bootstrap.Grid;
+var Panel = Bootstrap.Panel;
 
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
@@ -17,7 +21,6 @@ var HomeChart = React.createClass({
         var lost = [];
         var user = this.getUser();
         var stats = user.getStats();
-
         if (stats.matches == 0) {
             return null;
         }
@@ -38,9 +41,25 @@ var HomeChart = React.createClass({
                 label: "Loses "
             }
         ];
+
         return (
             <div>
-                <Pie data={chartData} />
+                <Panel className="homeChar" header={'Overall Stats'} >
+                <Grid>
+                    <Row>
+                        <Col xs={2} md={2}>{'Matches: ' + stats.matches}</Col>
+                        <Col xs={2} md={2}>{'Wins: ' + stats.wins}</Col>
+                        <Col xs={2} md={2}>{'Loses: ' + stats.loses} </Col>
+                        <Col xs={2} md={2}>{'RW: ' + stats.racksFor}</Col>
+                        <Col xs={2} md={2}>{'RL:' + stats.racksAgainst}</Col>
+                    </Row>
+                    <Row >
+                        <Col xs={12} md={6}>
+                            <Pie data={chartData} />
+                        </Col>
+                    </Row>
+                </Grid>
+                </Panel>
            </div>
         );
     }

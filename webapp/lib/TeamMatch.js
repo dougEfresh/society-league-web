@@ -1,12 +1,15 @@
 
 function TeamMatch(teamMatchId,resultId,matchDate,season) {
     this.teamMatchId = teamMatchId;
+    this.id = teamMatchId;
     this.resultId = resultId;
     this.matchDate = matchDate;
     this.season = season;
 }
 
+TeamMatch.prototype.id = function() {return this.id; };
 TeamMatch.prototype.season = function() {return this.season; };
+TeamMatch.prototype.getSeason = function() {return this.season; };
 TeamMatch.prototype.winnerRacks = function() {return this.winnerRacks; };
 TeamMatch.prototype.loserRacks = function() {return this.loserRacks; };
 TeamMatch.prototype.resultId = function() {return this.resultId; };
@@ -17,6 +20,8 @@ TeamMatch.prototype.loserSetLoses = function() {return this.loserSetLoses; };
 TeamMatch.prototype.winnerSetLoses = function() {return this.winnerSetLoses; };
 TeamMatch.prototype.winner = function() {return this.winner; };
 TeamMatch.prototype.loser = function() {return this.loser; };
+TeamMatch.prototype.getWinner = function() {return this.winner; };
+TeamMatch.prototype.getLoser = function() {return this.loser; };
 TeamMatch.prototype.matchDate = function() {return this.matchDate; };
 TeamMatch.prototype.teamMatchId = function() {return this.teamMatchId; };
 

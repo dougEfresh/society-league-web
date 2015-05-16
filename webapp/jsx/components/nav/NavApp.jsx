@@ -68,6 +68,7 @@ var NavApp = React.createClass({
                 </div>
             );
         }
+
         return (
             <div>
                 <LeagueNav  />

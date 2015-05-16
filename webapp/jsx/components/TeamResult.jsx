@@ -55,12 +55,13 @@ var TeamResult = React.createClass({
         var key = 0;
         var matchResults =  [];
         results.forEach(function(m){
-            if (m.winnerTeam.id == this.props.teamId) {
+            if (m.getWinnerTeam().id == this.props.teamId) {
                 matchResults.push({
                     user: m.winner,
                     opponent: m.loser,
                     racksFor: m.winnerRacks,
                     racksAgainst: m.loserRacks,
+                    teamMatch: m.teamMatch,
                     win: true
                 });
             } else {
@@ -69,6 +70,7 @@ var TeamResult = React.createClass({
                     opponent: m.winner,
                     racksFor: m.loserRacks,
                     racksAgainst: m.winnerRacks,
+                    teamMatch: m.teamMatch,
                     win: false
                 });
             }
@@ -77,8 +79,8 @@ var TeamResult = React.createClass({
             matchResults.forEach(function (m) {
                 rows.push(
                     <tr key={key++}>
-                        <td><UserLink user={m.user}/></td>
-                        <td><UserLink user={m.opponent}/></td>
+                        <td><UserLink user={m.user} seasonId={m.teamMatch.getSeason().id} /></td>
+                        <td><UserLink user={m.opponent} seasonId={m.teamMatch.getSeason().id}/></td>
                         <td>{m.win ? 'W' : 'L'}</td>
                         <td>{m.racksFor}</td>
                         <td>{m.racksAgainst}</td>
@@ -88,8 +90,8 @@ var TeamResult = React.createClass({
              matchResults.forEach(function (m) {
                 rows.push(
                     <tr key={key++}>
-                        <td><UserLink user={m.user}/></td>
-                        <td><UserLink user={m.opponent}/></td>
+                        <td><UserLink user={m.user}  seasonId={m.teamMatch.getSeason().id}  /></td>
+                        <td><UserLink user={m.opponent} seasonId={m.teamMatch.getSeason().id}  /></td>
                         <td>{m.win ? 'W' : 'L'}</td>
                     </tr>);
             }.bind(this));

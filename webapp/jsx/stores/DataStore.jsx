@@ -254,13 +254,13 @@ var DataStore = assign({}, EventEmitter.prototype, {
                    var result = new Result(r.resultId,tm,winner,loser);
                    result.setLoserHandicap(r.loserHandicap);
                    result.setLoserRacks(r.loserRacks);
-                   result.setLoserTeam(DataStore._findTeam(r.loserTeam));
                    result.setLoserHandicap(r.loserHandicap);
+                   result.setLosersTeam(DataStore._findTeam(r.loserTeam));
 
                    result.setWinnerHandicap(r.winnerHandicap);
                    result.setWinnerRacks(r.winnerRacks);
-                   result.setWinnerTeam(DataStore._findTeam(r.winnerTeam));
                    result.setWinnerHandicap(r.winnerHandicap);
+                   result.setWinnersTeam(DataStore._findTeam(r.winnerTeam));;
 
                    winner.addResult(result);
                    loser.addResult(result);

@@ -40,9 +40,10 @@ var DivisionType = require('../../../lib/DivisionType');
 var Status = require('../../../lib/Status');
 var TeamMatch = require('../../../lib/TeamMatch');
 var Result = require('../../../lib/Result');
+var HomeApp = require('../home/HomeApp.jsx');
 
 var LeagueNav = React.createClass({
-    mixins: [UserContextMixin,Router.state],
+    mixins: [UserContextMixin,Router.state,Router.Navigation],
     getInitialState: function() {
         return {
             user: this.getUser()
@@ -74,10 +75,14 @@ var LeagueNav = React.createClass({
 });
 
 var HomeNav = React.createClass({
-    mixins: [UserContextMixin,Router.state],
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
     render: function() {
         if (this.getUser().id == 0) {
             return null;
+        }
+        var home = null;
+        if (this.isActive('default')) {
+            home = (<HomeApp />);
         }
         return (
             <div className="container"  >
@@ -105,6 +110,7 @@ var HomeNav = React.createClass({
                               </Nav>
                             </Col>
                             <Col xs={12} md={10}>
+                                {home}
                                 <RouteHandler />
                             </Col>
                         </Row>

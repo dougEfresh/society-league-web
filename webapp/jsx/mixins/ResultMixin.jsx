@@ -6,7 +6,17 @@ var ResultMixin = {
         var matches = DataStore.getResults();
         var results = [];
         for(var i=0;i<matches.length;i++) {
-            if (matches[i].teamMatch.teamMatchId == teamMatchId ) {
+            if (matches[i].teamMatch.id == teamMatchId ) {
+                results.push(matches[i]);
+            }
+        }
+        return results;
+    },
+     getSeasonResults: function(seasonId) {
+        var matches = DataStore.getResults();
+        var results = [];
+        for(var i=0;i<matches.length;i++) {
+            if (matches[i].getSeason().id == seasonId ) {
                 results.push(matches[i]);
             }
         }

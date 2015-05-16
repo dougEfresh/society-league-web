@@ -1,8 +1,10 @@
 var React = require('react/addons');
 var Bootstrap = require('react-bootstrap');
 var Table = Bootstrap.Table;
+var Panel = Bootstrap.Panel;
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var UserLink= require('../UserLink.jsx');
+var TeamLink= require('../TeamLink.jsx');
 var moment = require('moment');
 
 var HomeMatches = React.createClass({
@@ -50,15 +52,15 @@ var HomeMatches = React.createClass({
                         <td>{r.getMatchDate()}</td>
                         <td>{r.isWinner(user)? 'W' : 'L'}</td>
                         <td><UserLink user={r.getOpponent(user)} seasonId={r.getSeason().id}/></td>
-                        <td>{'blah'}</td>
+                        <td><TeamLink team={r.getOpponentTeam(user)} seasonId={r.getSeason().id} /></td>
                     </tr>
                 );
             }
         });
-        //<td>{r.getOpponentTeam(user)}</td>
         var resultTable = null;
         if (matchRows.length > 0) {
             resultTable = (
+                <Panel className='homeMatchResults' header={'Recent Matches'}>
                 <Table>
                     <thead>
                     <tr>
@@ -72,6 +74,7 @@ var HomeMatches = React.createClass({
                     {matchRows}
                     </tbody>
                 </Table>
+                </Panel>
             );
         }
         var upComingtable = null;
@@ -79,6 +82,7 @@ var HomeMatches = React.createClass({
             upComingtable = (
                      <Table>
                     <thead>
+                    <tr><th>Upcoming Matches</th></tr>
                     <tr>
                         <th>date</th>
                     </tr>
