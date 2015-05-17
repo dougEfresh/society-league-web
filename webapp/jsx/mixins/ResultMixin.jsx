@@ -35,6 +35,38 @@ var ResultMixin = {
            }
         });
         return teamMatchResults;
+    },
+    filterResults: function(results,filter) {
+         if (filter == undefined  || filter == null || filter.length < 2)
+             return results;
+
+        var filteredMatches = [];
+            results.forEach(function (m) {
+                if (m.winner.name.toLowerCase().indexOf(filter.toLowerCase())>=0) {
+                    filteredMatches.push(m);
+                    return;
+                }
+
+                if (m.loser.name.toLowerCase().indexOf(filter.toLowerCase())>=0) {
+                    filteredMatches.push(m);
+                    return;
+                }
+
+                if (m.losersTeam.name.toLowerCase().indexOf(filter.toLowerCase())>=0) {
+                    filteredMatches.push(m);
+                    return;
+                }
+
+                if (m.winnersTeam.name.toLowerCase().indexOf(filter.toLowerCase())>=0) {
+                    filteredMatches.push(m);
+                    return;
+                }
+                if (m.getShortMatchDate().indexOf(filter)>=0) {
+                    filteredMatches.push(m);
+                }
+            });
+
+        return filteredMatches;
     }
 };
 

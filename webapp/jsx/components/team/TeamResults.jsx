@@ -55,7 +55,7 @@ var firstBy = (function() {
 
 var sortDateFn = function(a,b) {
     return this.state.sort.sortDate.asc == 'true' ?  a.getMatchDate().localeCompare(b.getMatchDate()) : b.getMatchDate().localeCompare(a.getMatchDate());
-}
+};
 
 var sortPlayerFn = function(a,b) {
     var ateamMember = a.winnersTeam.id == this.props.teamId ? a.winner : a.loser;
@@ -64,7 +64,7 @@ var sortPlayerFn = function(a,b) {
         return ateamMember.name.localeCompare(bteamMember.name);
     }
     return bteamMember.name.localeCompare(ateamMember.name);
-}
+};
 
 var sortOpponentFn  = function(a,b){
     var ateamMember = a.winnersTeam.id == this.props.teamId ? a.winner : a.loser;
@@ -74,7 +74,7 @@ var sortOpponentFn  = function(a,b){
         return a.getOpponent(ateamMember).name.localeCompare(b.getOpponent(bteamMember).name);
     else
         return b.getOpponent(ateamMember).name.localeCompare(a.getOpponent(bteamMember).name);
-}
+};
 
 var sortOpponentTeamFn = function(a,b){
     var ateamMember = a.winnersTeam.id == this.props.teamId ? a.winner : a.loser;
@@ -83,7 +83,7 @@ var sortOpponentTeamFn = function(a,b){
         return a.getOpponentsTeam(ateamMember).name.localeCompare(b.getOpponentsTeam(bteamMember).name);
     else
         return b.getOpponentsTeam(ateamMember).name.localeCompare(a.getOpponentsTeam(bteamMember).name);
-}
+};
 
 var sortWinFn = function(a,b) {
     var ateamMember = a.winnersTeam.id == this.props.teamId ? a.winner : a.loser;
@@ -94,7 +94,7 @@ var sortWinFn = function(a,b) {
         return aWin.localeCompare(bWin);
     else
         return bWin.localeCompare(aWin);
-}
+};
 
 var TeamResults = React.createClass({
     mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin,Router.State,Router.Navigation],
@@ -144,23 +144,17 @@ var TeamResults = React.createClass({
         this.setState({firstBy: firstBy, sort, page, sortOrder: sortOrder});
     },
     componentWillReceiveProps: function(n,o) {
-        console.log(JSON.stringify(this.getQuery()));
         this.processQuery();
     },
     componentDidMount: function() {
         this.processQuery();
     },
-    onSort: function(e) {
+    firstBy: function(e) {
         e.preventDefault();
-        console.log('Sort:' + e.target.id);
         var query =this.getQuery();
-        query[e.target.id] = this.state.sort[e.target.id].asc == 'true' ? 'false' : 'true';
         query.firstBy = e.target.id;
-        this.state.sort[e.target.id].asc = query[e.target.id] ;
+        this.state.firstBy = query.firstBy;
         this.transitionTo('team',this.getParams(),query);
-    },
-    onOrderBy: function(e) {
-        //this.setState({sortDate: {asc: !this.state.sortDate.asc}});
     },
     onChange: function(e) {
         if (this.state.page.num > 0) {
@@ -172,21 +166,14 @@ var TeamResults = React.createClass({
         }
         this.setState({filter: e.target.value});
     },
-    previous: function(e) {
-        e.preventDefault();
-        var q = this.getQuery();
-        var page = this.state.page;
-        page.num = page.num-1;
-        q.num = page.num;
-        this.transitionTo('team',this.getParams(),q);
-    },
-    next: function(e) {
-        e.preventDefault();
-        var q = this.getQuery();
-        var page = this.state.page;
-        page.num = page.num+1;
-        q.num = page.num;
-        this.transitionTo('team',this.getParams(),q);
+
+    sortOrder: function(e) {
+         e.preventDefault();
+        var query =this.getQuery();
+        var type = e.target.id.replace('Order','');
+        query[type] = this.state.sort[type].asc == 'true' ? 'false' : 'true';
+        this.state.sort[type].asc = query[type] ;
+        this.transitionTo('team',this.getParams(),query);
     },
     render: function(){
         if (this.props.teamId == 0 || this.props.seasonId == 0) {
@@ -203,39 +190,10 @@ var TeamResults = React.createClass({
         var nine = season.isNine();
         var rows = [];
         var key = 0;
-
-        var filteredMatches = [];
-        if (this.state.filter.length > 1) {
-            results.forEach(function (m) {
-                if (m.winner.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-
-                if (m.loser.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-
-                if (m.losersTeam.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-
-                if (m.winnersTeam.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-                if (m.teamMatch.matchDate.indexOf(this.state.filter)>=0) {
-                    filteredMatches.push(m);
-                }
-            }.bind(this));
-        } else {
-            filteredMatches = results;
-        }
+        var filteredMatches = this.filterResults(results,this.state.filter);
 
         var order = firstBy(this.state.sort[this.state.firstBy].fx.bind(this));
-        for(var i=0; i< this.state.sortOrder; i++) {
+        for(var i=0; i< this.state.sortOrder.length; i++) {
             var type = this.state.sortOrder[i];
             order = order.thenBy(this.state.sort[type].fx.bind(this));
         }
@@ -282,76 +240,93 @@ var TeamResults = React.createClass({
             }.bind(this));
         }
 
-        if (nine) {
         return (
             <div>
                 <Input id='filter' onChange={this.onChange} value={this.state.filter} type='input' placeholder={'Filter....'}></Input>
-            <Table>
-                <thead>
-                <tr>
-                    <th><a href='#' id='sortDate' onClick={this.onSort} >{'Date'}</a></th>
-                    <th><a href='#' id='sortPlayer' onClick={this.onSort} >{'Player'}</a></th>
-                    <th><a href='#' id='sortOpponent' onClick={this.onSort} >{'Opponent'}</a></th>
-                    <th><a href='#' id='sortTeam' onClick={this.onSort} >{'Team'}</a></th>
-                    <th><a href='#' id='sortWin' onClick={this.onSort} >{'W/L'}</a></th>
-                    <th>RW</th>
-                    <th>RL</th>
-                </tr>
-                </thead>
-                <tfoot>
-                <Footer page={this.state.page.num} next={this.next} last={end >= filteredMatches.length} prev={this.previous} />
-                </tfoot>
-                <tbody>
-                {rows}
-                </tbody>
-
-            </Table>
-            </div>);
-        }
-        return (
-            <div>
-                <Input id='filter' onChange={this.onChange} value={this.state.filter} type='input' placeholder={'Filter....'}></Input>
-            <Table>
-                <thead>
-                <tr>
-                    <th><a href='#' id='sortDate' onClick={this.onSort} >{'Date'}</a></th>
-                    <th><a href='#' id='sortPlayer' onClick={this.onSort} >{'Player'}</a></th>
-                    <th><a href='#' id='sortOpponent' onClick={this.onSort} >{'Opponent'}</a></th>
-                    <th><a href='#' id='sortTeam' onClick={this.onSort} >{'Team'}</a></th>
-                    <th><a href='#' id='sortWin' onClick={this.onSort} >{'W/L'}</a></th>
-                </tr>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
+                <Table>
+                    <thead>
+                    <Header nine={nine} firstBy={this.firstBy} sortOrder={this.sortOrder} sort={this.state.sort} />
+                    </thead>
+                    <tfoot>
+                    <Footer page={this.state.page} last={end >= filteredMatches.length} />
+                    </tfoot>
+                    <tbody>
+                    {rows}
+                    </tbody>
             </Table>
             </div>
         );
     }
 });
 
+var Header = React.createClass({
+    render: function() {
+        var sort = this.props.sort;
+          return (
+              <tr>
+                  <th>
+                      <a href='#' onClick={this.props.firstBy} ><span id='sortDate'>Date </span></a>
+                      <a href='#' onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortDateOrder' glyph={sort.sortDate.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a>
+                  </th>
+                  <th>
+                      <a href='#'   onClick={this.props.firstBy} ><span id='sortPlayer'>Player </span></a>
+                       <a href='#'  onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortPlayerOrder' glyph={sort.sortPlayer.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a>
+                  </th>
+                  <th>
+                      <a href='#'  onClick={this.props.firstBy} ><span id='sortOpponent'>Opponent </span></a>
+                      <a href='#'  onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortOpponentOrder' glyph={sort.sortOpponent.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a></th>
+                  <th>
+                      <a href='#'  onClick={this.props.firstBy} ><span id='sortTeam'>Team </span></a>
+                      <a href='#'  onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortTeamOrder' glyph={sort.sortTeam.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a>
+                  </th>
+                  <th>
+                      <a href='#'  onClick={this.props.firstBy} ><span id='sortWin'>W/L </span></a>
+                      <a href='#'  onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortWinOrder' glyph={sort.sortWin.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a>
+                  </th>
+                  <th>RW</th>
+                  <th>RL</th>
+              </tr>);
+    }
+});
+
 var Footer = React.createClass({
-    getDefaultProps: function() {
+    mixins: [Router.State,Router.Navigation],
+   getDefaultProps: function() {
         return {
             page: 0,
             last: false
         }
     },
-    next: function(e) {
-        if (this.props.next) {
-            this.props.next(e);
-        }
-    },
-
     prev: function(e) {
-        if (this.props.prev) {
-            this.props.prev(e);
-        }
+        e.preventDefault();
+        var q = this.getQuery();
+        var page = this.props.page;
+        page.num = page.num-1;
+        q.num = page.num;
+        this.transitionTo('team',this.getParams(),q);
+    },
+    next: function(e) {
+        e.preventDefault();
+        var q = this.getQuery();
+        var page = this.props.page;
+        page.num = page.num+1;
+        q.num = page.num;
+        this.transitionTo('team',this.getParams(),q);
     },
     render: function() {
         return (
             <tr>
-                <td><Pager><PageItem disabled={this.props.page == 0} previous onClick={this.prev} href='#'>&larr; Previous</PageItem></Pager></td>
+                <td><Pager><PageItem disabled={this.props.page.num == 0} previous onClick={this.prev} href='#'>&larr; Previous</PageItem></Pager></td>
                 <td><Pager><PageItem disabled={this.props.last} next onClick={this.next} href='#'>Next &rarr; </PageItem></Pager></td>
             </tr>
         )
