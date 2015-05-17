@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var Router = require('react-router');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Table = Bootstrap.Table
@@ -13,7 +14,7 @@ var TeamResult= require('../TeamResult.jsx');
 var TeamResults = require('./TeamResults.jsx');
 
 var TeamWeeklyResults = React.createClass({
-    mixins: [UserContextMixin,SeasonMixin,OverlayMixin],
+    mixins: [UserContextMixin,SeasonMixin,OverlayMixin,Router.State,Router.Navigation],
      getInitialState: function() {
         return {
             isModalOpen: false,
@@ -48,8 +49,25 @@ var TeamWeeklyResults = React.createClass({
             </Modal>
         );
     },
+    componentWillReceiveProps: function(n,o) {
+        console.log(JSON.stringify(this.getQuery()));
+        this.setState({query: this.getQuery()});
+    },
     toggleResults: function() {
-        this.setState({showResults: !this.state.showResults});
+        var query = this.getQuery();
+        if (query.results == undefined) {
+            query.results = 'true';
+            this.transitionTo('team',this.getParams(),query);
+            return;
+        }
+        if (query.results == 'true') {
+            query.results = 'false';
+            this.transitionTo('team',this.getParams(),query);
+            return;
+        }
+        query.results = 'true';
+        console.log(query);
+        this.transitionTo('team',this.getParams(),query);
     },
     renderResults: function() {
         return (<TeamResults teamId={this.props.teamId} seasonId={this.props.seasonId}/>);
@@ -114,16 +132,27 @@ var TeamWeeklyResults = React.createClass({
         if (rows.length == 0) {
             return null;
         }
-        var showMatches = (<span><Button bsStyle={this.state.showResults ? 'success' : 'default'}
-                    onClick={this.toggleResults} bsSize='small' >{this.state.showResults ? ' Matches' : ' Results'}
-            </Button>
-        </span>);
-        if (this.state.showResults){
+        var showResults = true;
+        if (this.getQuery().results == undefined) {
+            showResults = false;
+        } else {
+            showResults = this.getQuery().results == 'true';
+        }
+        var showMatches = (
+            <span>
+                <Button bsStyle={'default'}
+                        onClick={this.toggleResults}
+                        bsSize='small' >
+                    {showResults ? ' Matches' : ' Results'}
+                </Button>
+            </span>);
+
+        if (showResults) {
             return (
                 <Panel className='teamWeeklyResults' header={showMatches}>
                     {this.renderResults()}
                 </Panel>
-        );
+            );
         }
         return (
             <Panel className='teamWeeklyResults' header={showMatches}>

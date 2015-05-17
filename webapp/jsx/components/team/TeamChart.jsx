@@ -14,11 +14,10 @@ var TeamChart = React.createClass({
         var team = this.getTeam(this.props.teamId);
         var stats = team.getStats(this.props.seasonId);
         var users = team.getMembers(this.props.seasonId);
-        var season = this.getSeason(this.props.seasonId);
         var wins = [];
         var lost = [];
 
-        label.push('W:' + stats.wins + ' L:' + stats.loses);
+        label.push('team');
         wins.push(stats.wins);
         lost.push(stats.loses);
         var userStats = [];
@@ -30,7 +29,7 @@ var TeamChart = React.createClass({
         });
 
         userStats.forEach(function(u) {
-            label.push(u.user.lName.substr(0,8) +'.');
+            label.push(u.user.fName + ' ' + u.user.lName.substr(0,1) + '.');
             wins.push(u.stat.wins);
             lost.push(u.stat.loses );
         });

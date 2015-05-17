@@ -72,7 +72,7 @@ var TeamApp = React.createClass({
         var standings = this.getSeasonStandings(this.getParams().seasonId);
         var rank = 0;
         for(; rank < standings.length; rank++ ) {
-            if (standings[rank].teamId == this.props.teamId) {
+            if (standings[rank].teamId == this.getParams().teamId) {
                 rank++;
                 break;
             }

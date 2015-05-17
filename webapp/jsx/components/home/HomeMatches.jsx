@@ -52,7 +52,7 @@ var HomeMatches = React.createClass({
                         <td>{r.getMatchDate()}</td>
                         <td>{r.isWinner(user)? 'W' : 'L'}</td>
                         <td><UserLink user={r.getOpponent(user)} seasonId={r.getSeason().id}/></td>
-                        <td><TeamLink team={r.getOpponentTeam(user)} seasonId={r.getSeason().id} /></td>
+                        <td><TeamLink team={r.getOpponentsTeam(user)} seasonId={r.getSeason().id} /></td>
                     </tr>
                 );
             }

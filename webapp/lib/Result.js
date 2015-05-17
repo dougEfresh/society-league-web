@@ -79,12 +79,11 @@ Result.prototype.getOpponent = function(user) {
     return this.winner;
 };
 
-
-Result.prototype.getOpponentTeam = function(user) {
+Result.prototype.getOpponentsTeam = function(user) {
     if (this.winner.id == user.id) {
-        return this.getLoserTeam();
+        return this.losersTeam;
     }
-    return this.getWinnerTeam();
+    return this.winnersTeam;
 };
 
 Result.prototype.getOpponentRacks = function(user) {

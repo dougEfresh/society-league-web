@@ -20,8 +20,8 @@ var UserLink = React.createClass({
             return null;
         }
         return (
-                <a className="userLink" href={'#/app/stats/' + this.props.user.userId}>
-                    {this.props.user.name + ' - ' + this.props.user.getCurrentHandicap(this.props.seasonId)}
+                <a className="userLink" href={'#/app/scout/' + this.props.user.userId}>
+                    {this.props.user.sName() + ' - ' + this.props.user.getCurrentHandicap(this.props.seasonId)}
                 </a>
         );
     }    //

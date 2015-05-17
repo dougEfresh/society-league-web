@@ -24,6 +24,7 @@ User.prototype.userId = function () { return this.userId ; };
 User.prototype.id = function () { return this.id ; };
 User.prototype.lName = function () { return this.lName ; };
 User.prototype.fName = function () { return this.fName ; };
+User.prototype.sName = function () { return this.fName + ' ' + this.lName.substr(0,1) + '.' };
 User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
 

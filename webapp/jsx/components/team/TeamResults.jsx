@@ -22,6 +22,8 @@ var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input
     ,Modal = Bootstrap.Modal
     ,OverlayMixin = Bootstrap.OverlayMixin
+    ,Pager = Bootstrap.Pager
+    ,PageItem = Bootstrap.PageItem
     ,ModalTrigger = Bootstrap.ModalTrigger
     ,Panel = Bootstrap.Panel;
 
@@ -34,7 +36,7 @@ var UserLink = require('../UserLink.jsx');
 var TeamLink = require('../TeamLink.jsx');
 
 var TeamResults = React.createClass({
-    mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin],
+    mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin,Router.State,Router.Navigation],
     getDefaultProps: function() {
         return {
             teamId: 0,
@@ -42,16 +44,38 @@ var TeamResults = React.createClass({
         }
     },
     getInitialState: function() {
-        return {filter: "",showMatches: false, sort: 'sortDate', asc: true}
+        return {filter: "",
+            showMatches: false,
+            sort: {
+                sortDate: 'true',
+                sortTeam: 'true',
+                sortPlayer: 'true',
+                sortOpponent: 'true',
+                sortWin: 'true',
+            },
+            page: {
+                size: 10,
+                num: 0
+            }
+        }
+    },
+    componentWillReceiveProps: function(n,o) {
+        console.log(JSON.stringify(this.getQuery()));
+        var sort = this.state.sort;
+        var page = this.state.page;
+
     },
     onSort: function(e) {
         e.preventDefault();
-        this.setState({sort: e.target.id , asc: !this.state.asc});
+        var query =this.getQuery();
+        query[e.target.id] = this.state.sort[e.target.id] == 'true' ? 'false' : 'true';
+        console.log(JSON.stringify(query));
+        this.transitionTo('team',this.getParams(),query);
     },
     onOrderBy: function(e) {
-        this.setState({asc: !this.state.asc});
+        //this.setState({sortDate: {asc: !this.state.sortDate.asc}});
     },
-    onChange: function(e,v) {
+    onChange: function(e) {
         this.setState({filter: e.target.value});
     },
     render: function(){
@@ -69,109 +93,113 @@ var TeamResults = React.createClass({
         var nine = season.isNine();
         var rows = [];
         var key = 0;
-        var matchResults =  [];
 
-        results.forEach(function(m){
-            if (m.winnersTeam.id == this.props.teamId) {
-                matchResults.push({
-                    user: m.winner,
-                    opponent: m.loser,
-                    racksFor: m.winnerRacks,
-                    racksAgainst: m.loserRacks,
-                    teamMatch: m.teamMatch,
-                    team: m.losersTeam,
-                    win: true
-                });
-            } else {
-                matchResults.push({
-                    user: m.loser,
-                    opponent: m.winner,
-                    racksFor: m.loserRacks,
-                    racksAgainst: m.winnerRacks,
-                    teamMatch: m.teamMatch,
-                    team: m.winnersTeam,
-                    win: false
-                });
-            }
-        }.bind(this));
         var filteredMatches = [];
         if (this.state.filter.length > 1) {
-            matchResults.forEach(function (m) {
-                if (m.user.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
+            results.forEach(function (m) {
+                if (m.winner.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
                     filteredMatches.push(m);
                     return;
                 }
 
-                if (m.opponent.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
+                if (m.loser.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
                     filteredMatches.push(m);
                     return;
                 }
 
-                if (m.team.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
+                if (m.losersTeam.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
+                    filteredMatches.push(m);
+                    return;
+                }
+
+                if (m.winnersTeam.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
                     filteredMatches.push(m);
                     return;
                 }
                 if (m.teamMatch.matchDate.indexOf(this.state.filter)>=0) {
                     filteredMatches.push(m);
-                    return;
                 }
             }.bind(this));
         } else {
-            filteredMatches = matchResults;
+            filteredMatches = results;
+        }
+        pageMatches = [];
+        if (this.state.page.size >= filteredMatches.length) {
+            pageMatches = filteredMatches;
+        } else {
+            for(var i = this.state.page.num; i<filteredMatches.length && i<this.state.page.size; i++) {
+                pageMatches.push(filteredMatches[i]);
+            }
         }
 
-        filteredMatches = filteredMatches.sort(function(a,b){
+        /*
+        pageMatches = pageMatches.sort(function(a,b){
+            var ateamMember = a.winnersTeam.id == this.props.teamId ?  a.winner : a.loser;
+            var bteamMember = b.winnersTeam.id == this.props.teamId ?  b.winner : b.loser;
+
             if (this.state.sort == 'sortDate') {
                 if (this.state.asc)
-                    return a.teamMatch.matchDate.localeCompare(b.teamMatch.matchDate);
+                    return a.getMatchDate().localeCompare(b.getMatchDate());
                 else
-                    return b.teamMatch.matchDate.localeCompare(a.teamMatch.matchDate);
+                    return b.getMatchDate().localeCompare(a.getMatchDate());
             }
 
             if (this.state.sort == 'sortPlayer') {
                 if (this.state.asc)
-                    return a.user.name.localeCompare(b.user.name);
+                    return ateamMember.name.localeCompare(bteamMember.name);
                 else
-                    return b.user.name.localeCompare(a.user.name);
-            }
-              if (this.state.sort == 'sortOpponent') {
-                if (this.state.asc)
-                    return a.opponent.name.localeCompare(b.opponent.name);
-                else
-                    return b.opponent.name.localeCompare(a.opponent.name);
+                    return bteamMember.name.localeCompare(ateamMember.name);
             }
 
-             if (this.state.sort == 'sortTeam') {
+            if (this.state.sort == 'sortOpponent') {
                 if (this.state.asc)
-                    return a.team.name.localeCompare(b.team.name);
+                    return a.getOpponent(ateamMember).name.localeCompare(b.getOpponent(bteamMember).name);
                 else
-                    return b.team.name.localeCompare(a.team.name);
+                    return b.getOpponent(ateamMember).name.localeCompare(a.getOpponent(bteamMember).name);
+            }
+
+            if (this.state.sort == 'sortTeam') {
+                if (this.state.asc)
+                    return a.getOpponentsTeam(ateamMember).name.localeCompare(b.getOpponentsTeam(bteamMember).name);
+                else
+                    return b.getOpponentsTeam(ateamMember).name.localeCompare(a.getOpponentsTeam(bteamMember).name);
+            }
+            if (this.state.sort == 'sortWin') {
+                aWin = (a.isWinner(ateamMember) ? 'W' : 'L');
+                bWin = (b.isWinner(bteamMember) ? 'W' : 'L');
+                if (this.state.asc)
+                    return aWin.localeCompare(bWin);
+                else
+                    return bWin.localeCompare(aWin);
             }
             return 0;
         }.bind(this));
+*/
         if (nine) {
-            filteredMatches.forEach(function (m) {
+            pageMatches.forEach(function (m) {
+                var teamMember = m.winnersTeam.id == this.props.teamId ?  m.winner : m.loser;
                 rows.push(
                     <tr key={key++}>
-                        <td>{m.teamMatch.matchDate}</td>
-                        <td><UserLink user={m.user} seasonId={m.teamMatch.getSeason().id} /></td>
-                        <td><UserLink user={m.opponent} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td><TeamLink team={m.team} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td>{m.win ? 'W' : 'L'}</td>
-                        <td>{m.racksFor}</td>
-                        <td>{m.racksAgainst}</td>
+                        <td>{m.getMatchDate()}</td>
+                        <td><UserLink user={teamMember} seasonId={m.teamMatch.getSeason().id} /></td>
+                        <td><UserLink user={m.getOpponent(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
+                        <td><TeamLink team={m.getOpponentsTeam(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
+                        <td>{m.isWinner(teamMember) ? 'W' : 'L'}</td>
+                        <td>{m.getRacks(teamMember)}</td>
+                        <td>{m.getOpponentRacks(teamMember)}</td>
                     </tr>);
             }.bind(this));
         } else {
-             filteredMatches.forEach(function (m) {
+             pageMatches.forEach(function (m) {
+                 var teamMember = m.winnersTeam.id == this.props.teamId ?  m.winner : m.loser;
                 rows.push(
                     <tr key={key++}>
-                        <td>{m.teamMatch.matchDate}</td>
-                        <td><UserLink user={m.user} seasonId={m.teamMatch.getSeason().id} /></td>
-                        <td><UserLink user={m.opponent} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td><TeamLink team={m.team} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td>{m.win ? 'W' : 'L'}</td>
-                    </tr>);
+                        <td>{m.getMatchDate()}</td>
+                        <td><UserLink user={teamMember} seasonId={m.teamMatch.getSeason().id} /></td>
+                        <td><UserLink user={m.getOpponent(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
+                        <td><TeamLink team={m.getOpponentsTeam(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
+                        <td>{m.isWinner(teamMember) ? 'W' : 'L'}</td>
+                </tr>);
             }.bind(this));
         }
 
@@ -186,16 +214,23 @@ var TeamResults = React.createClass({
                     <th><a href='#' id='sortPlayer' onClick={this.onSort} >{'Player'}</a></th>
                     <th><a href='#' id='sortOpponent' onClick={this.onSort} >{'Opponent'}</a></th>
                     <th><a href='#' id='sortTeam' onClick={this.onSort} >{'Team'}</a></th>
-                    <th>W/L</th>
+                    <th><a href='#' id='sortWin' onClick={this.onSort} >{'W/L'}</a></th>
                     <th>RW</th>
                     <th>RL</th>
                 </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <td><Pager><PageItem previous href='#'>&larr; Previous</PageItem></Pager></td>
+                    <td><Pager><PageItem next href='#'>Next &rarr; </PageItem></Pager></td>
+                </tr>
+                </tfoot>
                 <tbody>
                 {rows}
                 </tbody>
+
             </Table>
-                </div>);
+            </div>);
         }
         return (
             <div>
@@ -207,7 +242,7 @@ var TeamResults = React.createClass({
                     <th><a href='#' id='sortPlayer' onClick={this.onSort} >{'Player'}</a></th>
                     <th><a href='#' id='sortOpponent' onClick={this.onSort} >{'Opponent'}</a></th>
                     <th><a href='#' id='sortTeam' onClick={this.onSort} >{'Team'}</a></th>
-                    <th>W/L</th>
+                    <th><a href='#' id='sortWin' onClick={this.onSort} >{'W/L'}</a></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -218,6 +253,7 @@ var TeamResults = React.createClass({
         );
     }
 });
+
 
 
 module.exports = TeamResults;

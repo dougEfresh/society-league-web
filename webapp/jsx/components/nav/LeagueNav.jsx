@@ -101,8 +101,8 @@ var HomeNav = React.createClass({
                                       <TeamNav />
                                       <SeasonNav />
                                       <Button>
-                                      <Link className='statsNav' to='stats' params={{statsId: this.getUserId()}}>
-                                          <i className="fa fa-bar-chart">{' ' + 'Stats'}</i>
+                                      <Link className='scoutNav' to='scout' params={{statsId: this.getUserId()}}>
+                                          <i className="fa fa-bar-chart">{' ' + 'Scout'}</i>
                                       </Link>
                                       </Button>
                                       <ChallengeNav />

@@ -69,7 +69,6 @@ var StatApp = React.createClass({
     }
     */
 }
-
 });
 
 module.exports = StatApp;

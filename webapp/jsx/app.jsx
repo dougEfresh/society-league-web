@@ -56,7 +56,7 @@ var routes = (
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>
-            <Route name="stats" path="stats/:statsId"  handler={StatApp}/>
+            <Route name="scout" path="scout/:statsId"  handler={StatApp}/>
             <Route name="team" path="team/:teamId/:seasonId"  handler={TeamApp} />
             <Route name="season" path="season/:seasonId"  handler={SeasonApp} />
             <Route name="teamMatchResult" path="season/:seasonId/:teamId/:teamMatchId"  handler={SeasonApp} />
