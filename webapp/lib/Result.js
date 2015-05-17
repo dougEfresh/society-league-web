@@ -30,7 +30,6 @@ Result.formatHandicap = function(hc) {
         case 'SIX':
             return '6';
         case 'SEVEN':
-            ;
             return '7';
         case 'EIGHT':
             return '8';
@@ -51,6 +50,7 @@ Result.prototype.getLoserHandicap = function () {
 Result.prototype.getLoserTeam = function () { return this.teamMatch.loser; };
 Result.prototype.teamMatch = function () { return this.teamMatch ; };
 Result.prototype.getMatchDate = function () { return this.teamMatch.matchDate; };
+Result.prototype.getShortMatchDate = function () { return this.teamMatch.matchDate.substr(5,5).replace('-','/'); };
 Result.prototype.getSeason = function () { return this.teamMatch.season; };
 
 Result.prototype.setWinnerRacks = function (data) { this.winnerRacks = data ; };
