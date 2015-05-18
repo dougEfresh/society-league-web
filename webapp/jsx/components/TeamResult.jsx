@@ -32,6 +32,7 @@ var TeamMixin = require('../mixins/TeamMixin.jsx');
 var ResultMixin = require('../mixins/ResultMixin.jsx');
 var UserLink = require('./UserLink.jsx');
 
+
 var TeamResult = React.createClass({
     mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin],
     getDefaultProps: function() {

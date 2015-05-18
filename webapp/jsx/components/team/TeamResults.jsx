@@ -212,34 +212,19 @@ var TeamResults = React.createClass({
             }
         }
 
-        if (nine) {
-            pageMatches.forEach(function (m) {
-                var teamMember = m.winnersTeam.id == this.props.teamId ?  m.winner : m.loser;
-                rows.push(
-                    <tr key={key++}>
-                        <td>{m.getShortMatchDate()}</td>
-                        <td><UserLink user={teamMember} seasonId={m.teamMatch.getSeason().id} /></td>
-                        <td><UserLink user={m.getOpponent(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td><TeamLink team={m.getOpponentsTeam(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td>{m.isWinner(teamMember) ? 'W' : 'L'}</td>
-                        <td>{m.getRacks(teamMember)}</td>
-                        <td>{m.getOpponentRacks(teamMember)}</td>
-                    </tr>);
-            }.bind(this));
-        } else {
-             pageMatches.forEach(function (m) {
-                 var teamMember = m.winnersTeam.id == this.props.teamId ?  m.winner : m.loser;
-                rows.push(
-                    <tr key={key++}>
-                        <td>{m.getMatchDate()}</td>
-                        <td><UserLink user={teamMember} seasonId={m.teamMatch.getSeason().id} /></td>
-                        <td><UserLink user={m.getOpponent(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td><TeamLink team={m.getOpponentsTeam(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td>{m.isWinner(teamMember) ? 'W' : 'L'}</td>
+        pageMatches.forEach(function (m) {
+            var teamMember = m.winnersTeam.id == this.props.teamId ?  m.winner : m.loser;
+            rows.push(
+                <tr key={key++}>
+                    <td>{m.getShortMatchDate()}</td>
+                    <td><UserLink user={teamMember} seasonId={m.teamMatch.getSeason().id} /></td>
+                    <td><UserLink user={m.getOpponent(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
+                    <td><TeamLink team={m.getOpponentsTeam(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
+                    <td>{m.isWinner(teamMember) ? 'W' : 'L'}</td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.getRacks(teamMember)}</td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.getOpponentRacks(teamMember)}</td>
                 </tr>);
-            }.bind(this));
-        }
-
+        }.bind(this));
         return (
             <div>
                 <Input id='filter' onChange={this.onChange} value={this.state.filter} type='input' placeholder={'Filter....'}></Input>
@@ -247,13 +232,11 @@ var TeamResults = React.createClass({
                     <thead>
                     <Header nine={nine} firstBy={this.firstBy} sortOrder={this.sortOrder} sort={this.state.sort} />
                     </thead>
-                    <tfoot>
-                    <Footer page={this.state.page} last={end >= filteredMatches.length} />
-                    </tfoot>
                     <tbody>
                     {rows}
                     </tbody>
             </Table>
+                <Footer page={this.state.page} last={end >= filteredMatches.length} />
             </div>
         );
     }
@@ -272,29 +255,29 @@ var Header = React.createClass({
                   </th>
                   <th>
                       <a href='#'   onClick={this.props.firstBy} ><span id='sortPlayer'>Player </span></a>
-                       <a href='#'  onClick={this.props.sortOrder}>
+                       <a href='#' style={{display: 'none'}} onClick={this.props.sortOrder}>
                           <Glyphicon id='sortPlayerOrder' glyph={sort.sortPlayer.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a>
                   </th>
                   <th>
                       <a href='#'  onClick={this.props.firstBy} ><span id='sortOpponent'>Opponent </span></a>
-                      <a href='#'  onClick={this.props.sortOrder}>
+                      <a href='#' style={{display: 'none'}}  onClick={this.props.sortOrder}>
                           <Glyphicon id='sortOpponentOrder' glyph={sort.sortOpponent.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a></th>
                   <th>
                       <a href='#'  onClick={this.props.firstBy} ><span id='sortTeam'>Team </span></a>
-                      <a href='#'  onClick={this.props.sortOrder}>
+                      <a href='#' style={{display: 'none'}} onClick={this.props.sortOrder}>
                           <Glyphicon id='sortTeamOrder' glyph={sort.sortTeam.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a>
                   </th>
-                  <th>
+                  <th >
                       <a href='#'  onClick={this.props.firstBy} ><span id='sortWin'>W/L </span></a>
-                      <a href='#'  onClick={this.props.sortOrder}>
+                      <a style={{display: 'none'}} href='#'  onClick={this.props.sortOrder}>
                           <Glyphicon id='sortWinOrder' glyph={sort.sortWin.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a>
                   </th>
-                  <th>RW</th>
-                  <th>RL</th>
+                  <th style={{display: this.props.nine ? 'table-cell' : 'none'}}>RW</th>
+                  <th style={{display: this.props.nine ? 'table-cell' : 'none'}}>RL</th>
               </tr>);
     }
 });
@@ -311,8 +294,12 @@ var Footer = React.createClass({
         e.preventDefault();
         var q = this.getQuery();
         var page = this.props.page;
+        if (page.num <= 0) {
+            return;
+        }
         page.num = page.num-1;
         q.num = page.num;
+
         this.transitionTo('team',this.getParams(),q);
     },
     next: function(e) {
@@ -325,10 +312,10 @@ var Footer = React.createClass({
     },
     render: function() {
         return (
-            <tr>
-                <td><Pager><PageItem disabled={this.props.page.num == 0} previous onClick={this.prev} href='#'>&larr; Previous</PageItem></Pager></td>
-                <td><Pager><PageItem disabled={this.props.last} next onClick={this.next} href='#'>Next &rarr; </PageItem></Pager></td>
-            </tr>
+                <Pager>
+                    <PageItem disabled={this.props.page.num == 0} previous onClick={this.prev} href='#'>&larr; Previous</PageItem>
+                    <PageItem disabled={this.props.last} next onClick={this.next} href='#'>Next &rarr; </PageItem>
+                </Pager>
         )
     }
 });

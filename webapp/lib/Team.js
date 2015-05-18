@@ -28,6 +28,16 @@ Team.prototype.getStats = function(seasonId) {
     return s;
 };
 
+Team.prototype.hasSeason = function(seasonId) {
+    var found = false;
+    this.seasons.forEach(function (s) {
+        if (s.id == seasonId) {
+            found = true;
+        }
+    });
+    return found;
+};
+
 Team.prototype.getSeason = function() {
     var season = undefined;
     this.seasons.forEach(function (s) {

@@ -174,6 +174,21 @@ User.prototype.getHandicapStats = function() {
     return stats;
 };
 
+User.prototype.getTeamForSeason = function(seasonId) {
+    if (seasonId == undefined) {
+        console.warn('No SeasonId');
+        return undefined;
+    }
+    var teams = this.getCurrentTeams();
+    var team = undefined;
+    teams.forEach(function(t){
+        if (t.hasSeason(seasonId)) {
+            team = t;
+        }
+    });
+    return team;
+};
+
 User.prototype.addChallenge = function(type,cg) {
     if (type == undefined || type == null || cg == undefined) {
         console.warn('Unknown challenge group');
@@ -190,6 +205,16 @@ User.prototype.getChallenges = function(type) {
     return this.challenges[type];
 };
 
+
+User.prototype.hasSeason = function(seasonId) {
+    var found = false;
+    this.seasons.forEach(function(s){
+        if (s.id == seasonId) {
+            found=true;
+        }
+    });
+    return found;
+}
 
 User.prototype.reset = function(){
    for(var st in Status) {

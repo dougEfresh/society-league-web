@@ -52,12 +52,10 @@ var TeamApp = React.createClass({
     },
     handleClick: function() {
         var c = this.getQuery().chart;
-        if (c == undefined) {
-            c = false;
-        } else if (c  == 'true') {
-            c = false;
+        if (c == undefined || c == 'false') {
+            c = 'true';
         } else {
-            c = true;
+            c = 'false';
         }
         this.transitionTo('team',this.getParams(),{chart: c});
     },
@@ -67,7 +65,7 @@ var TeamApp = React.createClass({
         }
         var team = this.getTeam(this.getParams().teamId);
         var chart = this.getQuery().chart;
-        if (chart == undefined){ chart = 'true'}
+        if (chart == undefined){ chart = 'false'}
         var stats = team.getStats(this.getParams().seasonId);
         var standings = this.getSeasonStandings(this.getParams().seasonId);
         var rank = 0;

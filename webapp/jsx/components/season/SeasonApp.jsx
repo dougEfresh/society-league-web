@@ -31,6 +31,7 @@ var SeasonWeeklyResults= require('./SeasonWeeklyResults.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var StatsMixin = require('../../mixins/StatsMixin.jsx');
 var SeasonResults = require('./SeasonResults.jsx');
+var SeasonLeaders = require('./SeasonLeaders.jsx');
 
 var SeasonApp = React.createClass({
     mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State],
@@ -65,10 +66,21 @@ var SeasonApp = React.createClass({
                 <SeasonResults seasonId={this.getParams().seasonId} />
             </div>);
         }
+        if (this.getQuery().leaders != undefined && this.getQuery().leaders == 'true') {
+            return  (
+                <div id="seasonApp" className="seasonResults">
+                    <Panel header={this.getSeason(this.getParams().seasonId).name} >
+                        <SeasonLeaders />
+                    </Panel>
+                </div>
+            );
+        }
         return (
             <div id="seasonApp" className="seasonResults">
-                <SeasonStandings seasonId={this.getParams().seasonId} />
-                <SeasonWeeklyResults seasonId={this.getParams().seasonId}/>
+                <Panel header={this.getSeason(this.getParams().seasonId).name} >
+                    <SeasonStandings seasonId={this.getParams().seasonId} />
+                    <SeasonWeeklyResults seasonId={this.getParams().seasonId}/>
+                </Panel>
             </div>
         );
     }
