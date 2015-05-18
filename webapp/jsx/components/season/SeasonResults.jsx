@@ -22,6 +22,8 @@ var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input
     ,Modal = Bootstrap.Modal
     ,OverlayMixin = Bootstrap.OverlayMixin
+    ,Pager = Bootstrap.Pager
+    ,PageItem = Bootstrap.PageItem
     ,ModalTrigger = Bootstrap.ModalTrigger
     ,Panel = Bootstrap.Panel;
 
@@ -32,166 +34,271 @@ var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var ResultMixin = require('../../mixins/ResultMixin.jsx');
 var UserLink = require('../UserLink.jsx');
 var TeamLink = require('../TeamLink.jsx');
+var firstBy = require('../../FirstBy.jsx');
 
-var TeamResults = React.createClass({
-    mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin],
+var sortDateFn = function(a,b) {
+    return this.state.sort.sortDate.asc == 'true' ?  a.getMatchDate().localeCompare(b.getMatchDate()) : b.getMatchDate().localeCompare(a.getMatchDate());
+};
+
+var sortWinnerFn = function(a,b) {
+    if (this.state.sort.sortWinner.asc == 'true') {
+        return a.winner.name.localeCompare(b.winner.name);
+    }
+    return b.winner.name.localeCompare(a.winner.name);
+};
+
+var sortLoserFn  = function(a,b){
+    if (this.state.sort.sortLoser.asc == 'true') {
+        return a.loser.name.localeCompare(b.loser.name);
+    }
+    return b.loser.name.localeCompare(a.loser.name);
+};
+
+var sortWinnerTeamFn = function(a,b){
+    if (this.state.sort.sortWinnersTeam.asc == 'true')
+        return a.winnersTeam.name.localeCompare(b.winnersTeam.name);
+    else
+        return b.winnersTeam.name.localeCompare(a.winnersTeam.name);
+
+};
+var sortLoserTeamFn = function(a,b){
+    if (this.state.sort.sortLosersTeam.asc == 'true')
+        return a.losersTeam.name.localeCompare(b.losersTeam.name);
+    else
+        return b.losersTeam.name.localeCompare(a.losersTeam.name);
+};
+
+
+var SeasonResults = React.createClass({
+    mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin,Router.State,Router.Navigation],
     getDefaultProps: function() {
         return {
             seasonId: 0
         }
     },
     getInitialState: function() {
-        return {filter: "",showMatches: false, sort: 'sortDate', asc: true}
+
+        return {filter: "",
+            showMatches: false,
+            firstBy: 'sortDate',
+            sortOrder: ['sortDate','sortWinner','sortLoser','sortWinnersTeam','sortLosersTeam'],
+            sort: {
+                sortDate: {asc: 'true', fx : sortDateFn},
+                sortWinner: {asc: 'true', fx : sortWinnerFn},
+                sortLoser: {asc: 'true', fx : sortLoserFn},
+                sortWinnersTeam: {asc: 'true', fx : sortWinnerTeamFn},
+                sortLosersTeam: {asc: 'true', fx : sortLoserTeamFn}
+            },
+            page: {
+                size: 30,
+                num: 0
+            }
+        }
     },
-    onSort: function(e) {
+    processQuery: function() {
+        var q = this.getQuery();
+        var newSort = this.state.sort;
+        var newPage = this.state.page;
+        var type;
+        for(type in newSort) {
+            newSort[type].asc = q[type] == undefined ? newSort[type].asc : q[type];
+        }
+        for(type in newPage) {
+            newPage[type] = q[type] == undefined ? newPage[type] : parseInt(q[type]);
+        }
+        var firstBy = this.state.firstBy;
+        if (q.firstBy != undefined) {
+            firstBy = q.firstBy;
+        }
+
+        var newSortOrder = this.state.sortOrder;
+        if (q.sortOrder != undefined) {
+            newSortOrder = q.sortOrder.split(",");
+        }
+
+        this.setState({firstBy: firstBy, sort: newSort, page: newPage, sortOrder: newSortOrder});
+    },
+    componentWillReceiveProps: function(n,o) {
+        this.processQuery();
+    },
+    componentDidMount: function() {
+        this.processQuery();
+    },
+    firstBy: function(e) {
         e.preventDefault();
-        this.setState({sort: e.target.id , asc: !this.state.asc});
+        var query =this.getQuery();
+        query.firstBy = e.target.id;
+        this.state.firstBy = query.firstBy;
+        this.transitionTo('seasonResults',this.getParams(),query);
     },
-    onOrderBy: function(e) {
-        this.setState({asc: !this.state.asc});
-    },
-    onChange: function(e,v) {
+    onChange: function(e) {
+        if (this.state.page.num > 0) {
+            this.state.filter = e.target.value;
+            var q = this.getQuery();
+            q.num=0;
+            this.transitionTo('seasonResults',this.getParams(),q);
+            return
+        }
         this.setState({filter: e.target.value});
     },
+
+    sortOrder: function(e) {
+         e.preventDefault();
+        var query =this.getQuery();
+        var type = e.target.id.replace('Order','');
+        query[type] = this.state.sort[type].asc == 'true' ? 'false' : 'true';
+        this.state.sort[type].asc = query[type] ;
+        this.transitionTo('seasonResults',this.getParams(),query);
+    },
+    showStandings: function() {
+        this.transitionTo('team',this.getParams());
+    },
     render: function(){
-        if (this.props.teamId == 0 || this.props.seasonId == 0) {
+        if (this.getParams().seasonId == undefined) {
             return null;
         }
-        var results =this.getSeasonResults(this.props.seasonId);
-        var season  = this.getSeason(this.props.seasonId);
+
+        var results = this.getSeasonResults(this.getParams().seasonId);
+        var season  = this.getSeason(this.getParams().seasonId);
         var nine = season.isNine();
         var rows = [];
         var key = 0;
-        var matchResults =  [];
+        var filteredMatches = this.filterResults(results,this.state.filter);
 
-        var filteredMatches = [];
-        if (this.state.filter.length > 1) {
-            matchResults.forEach(function (m) {
-                if (m.winner.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-
-                if (m.opponent.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-
-                if (m.winnersTeam.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-                if (m.losersTeam.name.toLowerCase().indexOf(this.state.filter.toLowerCase())>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-                if (m.teamMatch.matchDate.indexOf(this.state.filter)>=0) {
-                    filteredMatches.push(m);
-                    return;
-                }
-            }.bind(this));
-        } else {
-            filteredMatches = matchResults;
+        var order = firstBy(this.state.sort[this.state.firstBy].fx.bind(this));
+        for(var i=0; i< this.state.sortOrder.length; i++) {
+            var type = this.state.sortOrder[i];
+            order = order.thenBy(this.state.sort[type].fx.bind(this));
         }
 
-        filteredMatches = filteredMatches.sort(function(a,b){
-            if (this.state.sort == 'sortDate') {
-                if (this.state.asc)
-                    return a.teamMatch.matchDate.localeCompare(b.teamMatch.matchDate);
-                else
-                    return b.teamMatch.matchDate.localeCompare(a.teamMatch.matchDate);
-            }
+        filteredMatches = filteredMatches.sort(order);
 
-            if (this.state.sort == 'sortPlayer') {
-                if (this.state.asc)
-                    return a.user.name.localeCompare(b.user.name);
-                else
-                    return b.user.name.localeCompare(a.user.name);
-            }
-              if (this.state.sort == 'sortOpponent') {
-                if (this.state.asc)
-                    return a.opponent.name.localeCompare(b.opponent.name);
-                else
-                    return b.opponent.name.localeCompare(a.opponent.name);
-            }
+        var pageMatches = [];
+        var start = this.state.page.num*this.state.page.size;
+        var end = start + this.state.page.size;
 
-             if (this.state.sort == 'sortTeam') {
-                if (this.state.asc)
-                    return a.team.name.localeCompare(b.team.name);
-                else
-                    return b.team.name.localeCompare(a.team.name);
+        if (this.state.page.size >= filteredMatches.length) {
+            pageMatches = filteredMatches;
+        } else {
+
+            for(i = start; i<filteredMatches.length && i < end ; i++) {
+                pageMatches.push(filteredMatches[i]);
             }
-            return 0;
+        }
+
+        pageMatches.forEach(function (m) {
+            rows.push(
+                <tr key={key++}>
+                    <td>{m.getShortMatchDate()}</td>
+                    <td><UserLink user={m.winner} seasonId={m.getSeason().id} /></td>
+                    <td><TeamLink team={m.winnersTeam} seasonId={m.getSeason().id}/></td>
+                    <td><UserLink user={m.loser} seasonId={m.getSeason().id}/></td>
+                    <td><TeamLink team={m.losersTeam} seasonId={m.getSeason().id}/></td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.winnerRacks}</td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.loserRacks}</td>
+                </tr>);
         }.bind(this));
-        if (nine) {
-            filteredMatches.forEach(function (m) {
-                rows.push(
-                    <tr key={key++}>
-                        <td>{m.teamMatch.matchDate}</td>
-                        <td><UserLink user={m.user} seasonId={m.teamMatch.getSeason().id} /></td>
-                        <td><UserLink user={m.opponent} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td><TeamLink team={m.team} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td>{m.win ? 'W' : 'L'}</td>
-                        <td>{m.racksFor}</td>
-                        <td>{m.racksAgainst}</td>
-                    </tr>);
-            }.bind(this));
-        } else {
-             filteredMatches.forEach(function (m) {
-                rows.push(
-                    <tr key={key++}>
-                        <td>{m.teamMatch.matchDate}</td>
-                        <td><UserLink user={m.user} seasonId={m.teamMatch.getSeason().id} /></td>
-                        <td><UserLink user={m.opponent} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td><TeamLink team={m.team} seasonId={m.teamMatch.getSeason().id}/></td>
-                        <td>{m.win ? 'W' : 'L'}</td>
-                    </tr>);
-            }.bind(this));
-        }
 
-        if (nine) {
         return (
-            <div>
+            <Panel className='teamWeeklyResults' header={'Blah'} footer={<Footer page={this.state.page} last={end >= filteredMatches.length} />}>
                 <Input id='filter' onChange={this.onChange} value={this.state.filter} type='input' placeholder={'Filter....'}></Input>
-            <Table>
-                <thead>
-                <tr>
-                    <th><a href='#' id='sortDate' onClick={this.onSort} >{'Date'}</a></th>
-                    <th><a href='#' id='sortPlayer' onClick={this.onSort} >{'Winner'}</a></th>
-                    <th><a href='#' id='sortOpponent' onClick={this.onSort} >{'Opponent'}</a></th>
-                    <th><a href='#' id='sortTeam' onClick={this.onSort} >{'Team'}</a></th>
-                    <th>W/L</th>
-                    <th>RW</th>
-                    <th>RL</th>
-                </tr>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </Table>
-                </div>);
-        }
-        return (
-            <div>
-                <Input id='filter' onChange={this.onChange} value={this.state.filter} type='input' placeholder={'Filter....'}></Input>
-            <Table>
-                <thead>
-                <tr>
-                    <th><a href='#' id='sortDate' onClick={this.onSort} >{'Date'}</a></th>
-                    <th><a href='#' id='sortPlayer' onClick={this.onSort} >{'Winner'}</a></th>
-                    <th><a href='#' id='sortOpponent' onClick={this.onSort} >{'Opponent'}</a></th>
-                    <th><a href='#' id='sortTeam' onClick={this.onSort} >{'Team'}</a></th>
-                    <th>W/L</th>
-                </tr>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </Table>
-            </div>
+                <Table>
+                    <thead>
+                    <Header nine={nine} firstBy={this.firstBy} sortOrder={this.sortOrder} sort={this.state} />
+                    </thead>
+                    <tbody>
+                    {rows}
+                    </tbody>
+                </Table>
+            </Panel>
         );
+    }
+});
+//
+var Header = React.createClass({
+    render: function() {
+        var sort = this.props.sort.sort;
+        var fb = this.props.sort.firstBy;
+          return (
+              <tr>
+                  <th>
+                      <a href='#' onClick={this.props.firstBy} >
+                          <span id='sortDate'>Date </span></a>
+                      <a href='#' style={{display: fb == 'sortDate' ? 'inline-block' : 'none'}} onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortDateOrder' glyph={sort.sortDate.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a>
+                  </th>
+                  <th>
+                      <a href='#'  onClick={this.props.firstBy} >
+                          <span id='sortWinner'>Winner </span></a>
+                       <a href='#' style={{display: fb == 'sortWinner' ? 'inline-block' : 'none'}}  onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortWinner' glyph={sort.sortWinner.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a>
+                  </th>
+                  <th>
+                      <a href='#'  onClick={this.props.firstBy} >
+                          <span id='sortWinnersTeam'>Team</span>
+                      </a>
+                      <a href='#' style={{display: fb == 'sortWinnersTeam' ? 'inline-block' : 'none'}}   onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortWinnersTeam' glyph={sort.sortWinnersTeam.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a></th>
+                  <th>
+                      <a href='#'  onClick={this.props.firstBy} >
+                          <span id='sortLoser'>Victim </span></a>
+                      <a href='#' style={{display: fb == 'sortLoser' ? 'inline-block' : 'none'}} onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortLoser' glyph={sort.sortLoser.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a>
+                  </th>
+                   <th>
+                      <a href='#'  onClick={this.props.firstBy} >
+                          <span id='sortLosersTeam'>Team </span></a>
+                      <a href='#' style={{display: fb == 'sortLosersTeam' ? 'inline-block' : 'none'}} onClick={this.props.sortOrder}>
+                          <Glyphicon id='sortLosersTeam' glyph={sort.sortLosersTeam.asc == 'true' ? 'arrow-up':'arrow-down'}/>
+                      </a>
+                  </th>
+                  <th style={{display: this.props.nine ? 'table-cell' : 'none'}}>RW</th>
+                  <th style={{display: this.props.nine ? 'table-cell' : 'none'}}>RL</th>
+              </tr>);
+    }
+});
+
+var Footer = React.createClass({
+    mixins: [Router.State,Router.Navigation],
+   getDefaultProps: function() {
+        return {
+            page: 0,
+            last: false
+        }
+    },
+    prev: function(e) {
+        e.preventDefault();
+        var q = this.getQuery();
+        var page = this.props.page;
+        if (page.num <= 0) {
+            return;
+        }
+        page.num = page.num-1;
+        q.num = page.num;
+        this.transitionTo(this.getRoutes()[this.getRoutes().length-1].name,this.getParams(),q);
+    },
+    next: function(e) {
+        e.preventDefault();
+        var q = this.getQuery();
+        var page = this.props.page;
+        page.num = page.num+1;
+        q.num = page.num;
+        this.transitionTo(this.getRoutes()[this.getRoutes().length-1].name,this.getParams(),q);
+    },
+    render: function() {
+        return (
+                <Pager>
+                    <PageItem disabled={this.props.page.num == 0} previous onClick={this.prev} href='#'>&larr; Previous</PageItem>
+                    <PageItem disabled={this.props.last} next onClick={this.next} href='#'>Next &rarr; </PageItem>
+                </Pager>
+        )
     }
 });
 
 
-module.exports = TeamResults;
+
+module.exports = SeasonResults;

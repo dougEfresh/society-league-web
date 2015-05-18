@@ -15,6 +15,9 @@ var TeamLink = React.createClass({
             seasonId: null
         }
     },
+    toString: function() {
+        return this.props.team.name;
+    },
     render: function() {
         if (this.props.team == null) {
             return null;

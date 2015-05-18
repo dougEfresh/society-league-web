@@ -26,6 +26,8 @@ var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var StatsMixin = require('../../mixins/StatsMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
+var ReactTable = require('reactable').Table;
+var Stat =  require('../../../lib/Stat');
 
 var SeasonStandings = React.createClass({
     mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin],
@@ -37,6 +39,40 @@ var SeasonStandings = React.createClass({
     render: function() {
         var season = this.getSeason(this.props.seasonId);
         var rows = [];
+        this.getSeasonStandings(this.props.seasonId).forEach(function (t) {
+                var stat = t.getStats(this.props.seasonId);
+            if (season.isNine()) {
+                rows.push(
+                    {
+                        Team: (<TeamLink team={t} seasonId={this.props.seasonId}/>),
+                        W: stat.wins,
+                        L: stat.loses,
+                        SW: stat.setWins,
+                        SL: stat.setLoses,
+                        RW: stat.racksFor,
+                        RL: stat.racksAgainst,
+                        PCT: stat.getWinRackPct()
+                    }
+                );
+            } else {
+                rows.push(
+                    {
+                        Team: (<TeamLink team={t} seasonId={this.props.seasonId}/>),
+                        W: stat.wins,
+                        L: stat.loses,
+                        RW: stat.racksFor,
+                        RL: stat.racksAgainst,
+                        PCT: stat.getWinRackPct()
+                    }
+                );
+            }
+
+            }.bind(this));
+
+        return (
+            <ReactTable className='table' data={rows} sortable={true} />
+        );
+        /*
         if (season.isNine()) {
             this.getSeasonStandings(this.props.seasonId).forEach(function (t) {
                 var teamLink = <TeamLink team={t} seasonId={this.props.seasonId}/>;
@@ -84,9 +120,10 @@ var SeasonStandings = React.createClass({
 
                    }
         }
+
         if (season.isNine()) {
             return (
-                <Panel header={'Standings'}>
+                <Panel >
                     <Table className="seasonStandings">
                         <thead>
                         <tr>
@@ -138,6 +175,8 @@ var SeasonStandings = React.createClass({
                 </Panel>
             );
         }
+        */
+
     }
 });
 

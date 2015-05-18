@@ -1,6 +1,8 @@
 var React = require('react/addons');
 var DataStore = require('./../stores/DataStore.jsx');
 var Status = require('../../lib/Status');
+var firstBy = require('../FirstBy.jsx');
+var Stat = require('../../lib/Stat');
 
 var SeasonMixin = {
     getSeason: function(id) {
@@ -25,21 +27,22 @@ var SeasonMixin = {
                 teamStandings.push(t);
             counter++;
         });
-        return  teamStandings.sort(function(a,b){
+        var order = firstBy(function(a,b) {
             var aStat = a.getStats(id);
             var bStat = b.getStats(id);
-            if (aStat.wins == bStat.wins) {
-                if (aStat.loses == bStat.loses) {
-                    if (bStat.racksFor == aStat.racksFor ) {
-                        return bStat.racksAgainst > aStat.racksAgainst ? 1 : -1;
-                    }
-                    return bStat.racksFor > aStat.racksFor ? 1 : -1;
-                } else {
-                    return bStat.loses > bStat.loses ? 1 : -1 ;
-                }
-            }
-            return bStat.wins > aStat.wins ? 1 : -1;
+            return Stat.sort.byWins(aStat,bStat);
         });
+        order = order.thenBy(function(a,b){
+            var aStat = a.getStats(id);
+            var bStat = b.getStats(id);
+            return Stat.sort.bySetWins(aStat,bStat);
+        });
+        order = order.thenBy(function(a,b){
+            var aStat = a.getStats(id);
+            var bStat = b.getStats(id);
+            return Stat.sort.byRacksFor(aStat,bStat);
+        });
+        return teamStandings.sort(order);
     },
 
     getCurrentSeasons: function() {

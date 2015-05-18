@@ -34,7 +34,7 @@ var Stat =  require('../../../lib/Stat');
 var ReactTable = require('reactable').Table;
 
 var SeasonLeaders = React.createClass({
-    mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State],
+    mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
             user: this.getUser(),
@@ -46,6 +46,18 @@ var SeasonLeaders = React.createClass({
     },
     componentWillReceiveProps: function() {
         this.setState({seasonId: this.getParams().seasonId});
+    },
+    handleClick: function(e) {
+        e.preventDefault();
+        var toggle = e.target.id;
+        if (toggle.indexOf('Teams') >= 0) {
+            this.transitionTo('season',this.getParams());
+            return;
+        }
+        if (toggle.indexOf('Results') >= 0) {
+            this.transitionTo('seasonResults',this.getParams());
+            return;
+        }
     },
     render: function() {
         if (this.getUserId() == 0) {
@@ -81,8 +93,22 @@ var SeasonLeaders = React.createClass({
                  }
              );
          }.bind(this));
+        var header =(
+            <div>
+                <Button  id="buttonToggleLeaders" bsSize='xsmall' bsStyle={'default'}
+                        onClick={this.handleClick}><i id="toggleTeams" className="fa fa-users"></i>
+                </Button>
+                <Button  id="buttonToggleResults" bsSize='xsmall' bsStyle={'default'}
+                        onClick={this.handleClick}><i id="toggleResults" className="fa fa-list-ol"></i>
+                </Button>
+            </div>
+        );
         return (
-            <ReactTable className='table' data={rows} sortable={true} />
+           <div id="seasonAppLeader" className="seasonResults">
+                    <Panel header={header} >
+                        <ReactTable className='table' data={rows} sortable={true} />
+                    </Panel>
+                </div>
         );
 
         /*

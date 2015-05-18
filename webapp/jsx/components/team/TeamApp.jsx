@@ -59,6 +59,9 @@ var TeamApp = React.createClass({
         }
         this.transitionTo('team',this.getParams(),{chart: c});
     },
+    showResults: function() {
+        this.transitionTo('teamResults',this.getParams());
+    },
     render: function () {
         if (this.getUserId() == 0) {
             return null;
@@ -87,6 +90,7 @@ var TeamApp = React.createClass({
                 {teamHeader}
                 <div style={{display: 'inline'}}>
                     <Button bsStyle={chart == 'true' ? 'success' : 'default'} onClick={this.handleClick}><i className="fa fa-bar-chart"></i></Button>
+                    <Button bsStyle={'default'} onClick={this.showResults}><i className="fa  fa-list-ol"></i></Button>
                 </div>
             </div>
         );

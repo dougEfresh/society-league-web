@@ -36,6 +36,18 @@ Stat.prototype.getWinPct = function() {
     }
     return pct;
 };
+Stat.prototype.getWinRackPct = function() {
+    if (this.matches == undefined || this.matches == 0) {
+        return 0;
+    }
+    var pct = this.racksFor/(this.racksFor+this.racksAgainst);
+    pct = pct.toFixed(3);
+    if (Number.NaN == pct) {
+        debugger;
+        return 0;
+    }
+    return pct;
+};
 
 Stat.DEFAULT = new Stat('none',{},null);
 Stat.getDefault = function() { var s =new Stat('none',{},null); return s;};
@@ -60,7 +72,11 @@ Stat.sort.byMatches = function(a,b) {
 };
 
 Stat.sort.byWins= function(a,b) {
-    return a.wins> b.wins ? -1 : 1;
+    return a.wins > b.wins ? -1 : 1;
+};
+
+Stat.sort.bySetWins= function(a,b) {
+    return a.setWins > b.setWins ? -1 : 1;
 };
 
 Stat.sort.byLoses= function(a,b) {

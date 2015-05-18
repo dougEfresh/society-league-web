@@ -34,7 +34,7 @@ var SeasonResults = require('./SeasonResults.jsx');
 var SeasonLeaders = require('./SeasonLeaders.jsx');
 
 var SeasonApp = React.createClass({
-    mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State],
+    mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
             user: this.getUser(),
@@ -57,27 +57,36 @@ var SeasonApp = React.createClass({
         console.log('onchange');
         this.setState({user: this.getUser()});
     },
+    handleClick: function(e) {
+        e.preventDefault();
+        var toggle = e.target.id;
+        if (toggle.indexOf('Leaders') >= 0) {
+            this.transitionTo('seasonLeaders',this.getParams());
+            return;
+        }
+
+        if (toggle.indexOf('Result')) {
+            this.transitionTo('seasonResults',this.getParams());
+            return;
+        }
+    },
     render: function() {
         if (this.getUserId() == 0) {
             return null;
         }
-        if (this.getQuery().results != undefined || this.getQuery().results =='true') {
-            return (<div id="seasonApp" className="seasonResults">
-                <SeasonResults seasonId={this.getParams().seasonId} />
-            </div>);
-        }
-        if (this.getQuery().leaders != undefined && this.getQuery().leaders == 'true') {
-            return  (
-                <div id="seasonApp" className="seasonResults">
-                    <Panel header={this.getSeason(this.getParams().seasonId).name} >
-                        <SeasonLeaders />
-                    </Panel>
-                </div>
-            );
-        }
+        var header =(
+            <div>
+                <Button  id="buttonToggleLeaders" bsSize='xsmall' bsStyle={'default'}
+                        onClick={this.handleClick}><i id="toggleLeaders" className="fa fa-trophy"></i>
+                </Button>
+                <Button  id="buttonToggleResults" bsSize='xsmall' bsStyle={'default'}
+                        onClick={this.handleClick}><i id="toggleResults" className="fa fa-list-ol"></i>
+                </Button>
+            </div>
+        );
         return (
             <div id="seasonApp" className="seasonResults">
-                <Panel header={this.getSeason(this.getParams().seasonId).name} >
+                <Panel header={header} >
                     <SeasonStandings seasonId={this.getParams().seasonId} />
                     <SeasonWeeklyResults seasonId={this.getParams().seasonId}/>
                 </Panel>

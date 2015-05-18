@@ -118,7 +118,7 @@ var TeamWeeklyResults = React.createClass({
             rows.push(
                 <tr key={i++}>
                     <td>
-                        <Button id={r.teamMatchId} bsStyle='primary' disabled={(rl+rw)== 0} onClick={this.handleToggle}>{r.matchDate.substr(5,6).replace('-','/')}</Button>
+                        <Button bsSize='xsmall' id={r.teamMatchId} bsStyle='primary' disabled={(rl+rw)== 0} onClick={this.handleToggle}>{r.matchDate.substr(5,6).replace('-','/')}</Button>
                     </td>
                     <td>
                         <TeamLink team={opponent} seasonId={this.props.seasonId}/>
@@ -132,30 +132,8 @@ var TeamWeeklyResults = React.createClass({
         if (rows.length == 0) {
             return null;
         }
-        var showResults = true;
-        if (this.getQuery().results == undefined) {
-            showResults = false;
-        } else {
-            showResults = this.getQuery().results == 'true';
-        }
-        var showMatches = (
-            <span>
-                <Button bsStyle={'default'}
-                        onClick={this.toggleResults}
-                        bsSize='small' >
-                    {showResults ? ' Matches' : ' Results'}
-                </Button>
-            </span>);
-
-        if (showResults) {
-            return (
-                <Panel className='teamWeeklyResults' header={showMatches}>
-                    {this.renderResults()}
-                </Panel>
-            );
-        }
         return (
-            <Panel className='teamWeeklyResults' header={showMatches}>
+            <Panel className='teamWeeklyResults' >
             <Table>
                 <thead>
                 <th>Date</th>

@@ -34,32 +34,15 @@ var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var ResultMixin = require('../../mixins/ResultMixin.jsx');
 var UserLink = require('../UserLink.jsx');
 var TeamLink = require('../TeamLink.jsx');
-var firstBy = (function() {
-    /* mixin for the `thenBy` property */
-    function extend(f) {
-        f.thenBy = tb;
-        return f;
-    }
-    /* adds a secondary compare function to the target function (`this` context)
-       which is applied in case the first one returns 0 (equal)
-       returns a new compare function, which has a `thenBy` method as well */
-    function tb(y) {
-        var x = this;
-        return extend(function(a, b) {
-            return x(a,b) || y(a,b);
-        });
-    }
-    return extend;
-})();
-
+var firstBy = require('../../FirstBy.jsx');
 
 var sortDateFn = function(a,b) {
     return this.state.sort.sortDate.asc == 'true' ?  a.getMatchDate().localeCompare(b.getMatchDate()) : b.getMatchDate().localeCompare(a.getMatchDate());
 };
 
 var sortPlayerFn = function(a,b) {
-    var ateamMember = a.winnersTeam.id == this.props.teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.props.teamId ? b.winner : b.loser;
+    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
     if (this.state.sort.sortPlayer.asc == 'true') {
         return ateamMember.name.localeCompare(bteamMember.name);
     }
@@ -67,8 +50,8 @@ var sortPlayerFn = function(a,b) {
 };
 
 var sortOpponentFn  = function(a,b){
-    var ateamMember = a.winnersTeam.id == this.props.teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.props.teamId ? b.winner : b.loser;
+    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
 
     if (this.state.sort.sortOpponent.asc == 'true')
         return a.getOpponent(ateamMember).name.localeCompare(b.getOpponent(bteamMember).name);
@@ -77,8 +60,8 @@ var sortOpponentFn  = function(a,b){
 };
 
 var sortOpponentTeamFn = function(a,b){
-    var ateamMember = a.winnersTeam.id == this.props.teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.props.teamId ? b.winner : b.loser;
+    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
     if (this.state.sort.sortTeam.asc == 'true')
         return a.getOpponentsTeam(ateamMember).name.localeCompare(b.getOpponentsTeam(bteamMember).name);
     else
@@ -86,8 +69,8 @@ var sortOpponentTeamFn = function(a,b){
 };
 
 var sortWinFn = function(a,b) {
-    var ateamMember = a.winnersTeam.id == this.props.teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.props.teamId ? b.winner : b.loser;
+    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
     aWin = (a.isWinner(ateamMember) ? 'W' : 'L');
     bWin = (b.isWinner(bteamMember) ? 'W' : 'L');
     if (this.state.sort.sortWin.asc == 'true')
@@ -118,7 +101,7 @@ var TeamResults = React.createClass({
                 sortWin: {asc: 'true', fx : sortWinFn}
             },
             page: {
-                size: 10,
+                size: 30,
                 num: 0
             }
         }
@@ -157,14 +140,14 @@ var TeamResults = React.createClass({
         var query =this.getQuery();
         query.firstBy = e.target.id;
         this.state.firstBy = query.firstBy;
-        this.transitionTo('team',this.getParams(),query);
+        this.transitionTo('teamResults',this.getParams(),query);
     },
     onChange: function(e) {
         if (this.state.page.num > 0) {
             this.state.filter = e.target.value;
             var q = this.getQuery();
             q.num=0;
-            this.transitionTo('team',this.getParams(),q);
+            this.transitionTo('teamResults',this.getParams(),q);
             return
         }
         this.setState({filter: e.target.value});
@@ -176,20 +159,23 @@ var TeamResults = React.createClass({
         var type = e.target.id.replace('Order','');
         query[type] = this.state.sort[type].asc == 'true' ? 'false' : 'true';
         this.state.sort[type].asc = query[type] ;
-        this.transitionTo('team',this.getParams(),query);
+        this.transitionTo('teamResults',this.getParams(),query);
+    },
+    showStandings: function() {
+        this.transitionTo('team',this.getParams());
     },
     render: function(){
-        if (this.props.teamId == 0 || this.props.seasonId == 0) {
+        if (this.getParams().teamId == undefined || this.getParams().seasonId == undefined) {
             return null;
         }
         var results = [];
-        this.getSeasonResults(this.props.seasonId).forEach(function(r){
-            if (r.teamMatch.getWinner().id == this.props.teamId ||r.teamMatch.getLoser().id == this.props.teamId ) {
+        this.getSeasonResults(this.getParams().seasonId).forEach(function(r){
+            if (r.teamMatch.getWinner().id == this.getParams().teamId ||r.teamMatch.getLoser().id == this.getParams().teamId ) {
                 results.push(r);
             }
         }.bind(this));
 
-        var season  = this.getSeason(this.props.seasonId);
+        var season  = this.getSeason(this.getParams().seasonId);
         var nine = season.isNine();
         var rows = [];
         var key = 0;
@@ -202,7 +188,7 @@ var TeamResults = React.createClass({
         }
 
         filteredMatches = filteredMatches.sort(order);
-        pageMatches = [];
+        var pageMatches = [];
         var start = this.state.page.num*this.state.page.size;
         var end = start + this.state.page.size;
 
@@ -216,7 +202,7 @@ var TeamResults = React.createClass({
         }
 
         pageMatches.forEach(function (m) {
-            var teamMember = m.winnersTeam.id == this.props.teamId ?  m.winner : m.loser;
+            var teamMember = m.winnersTeam.id == this.getParams().teamId ?  m.winner : m.loser;
             rows.push(
                 <tr key={key++}>
                     <td>{m.getShortMatchDate()}</td>
@@ -228,54 +214,77 @@ var TeamResults = React.createClass({
                     <td style={{display: nine ? 'table-cell' : 'none'}}>{m.getOpponentRacks(teamMember)}</td>
                 </tr>);
         }.bind(this));
+        var team = this.getTeam(this.getParams().teamId);
+        var stats = team.getStats(this.getParams().seasonId);
+        var standings = this.getSeasonStandings(this.getParams().seasonId);
+        var rank = 0;
+        for(; rank < standings.length; rank++ ) {
+            if (standings[rank].teamId == this.getParams().teamId) {
+                rank++;
+                break;
+            }
+        }
+        if (stats.matches == 0){
+            rank = 0;
+        }
+        var teamHeader = (<span>{team.name}</span>);
+        if (rank > 0) {
+            teamHeader = (<span>{team.name + ' - Rank '}<Badge>{rank}</Badge> </span>);
+        }
+        var header = (
+            <div style={{display: 'inline'}}>
+                <span>{teamHeader} </span>
+                    <Button bsStyle={'default'} onClick={this.showStandings}><i className="fa  fa-users"></i></Button>
+            </div>);
         return (
-            <div>
+            <Panel className='teamWeeklyResults' header={header} footer={<Footer page={this.state.page} last={end >= filteredMatches.length} />}>
                 <Input id='filter' onChange={this.onChange} value={this.state.filter} type='input' placeholder={'Filter....'}></Input>
                 <Table>
                     <thead>
-                    <Header nine={nine} firstBy={this.firstBy} sortOrder={this.sortOrder} sort={this.state.sort} />
+                    <Header nine={nine} firstBy={this.firstBy} sortOrder={this.sortOrder} sort={this.state} />
                     </thead>
                     <tbody>
                     {rows}
                     </tbody>
-            </Table>
-                <Footer page={this.state.page} last={end >= filteredMatches.length} />
-            </div>
+                </Table>
+            </Panel>
         );
     }
 });
-
+//
 var Header = React.createClass({
     render: function() {
-        var sort = this.props.sort;
+        var sort = this.props.sort.sort;
+        var fb = this.props.sort.firstBy;
           return (
               <tr>
                   <th>
-                      <a href='#' onClick={this.props.firstBy} ><span id='sortDate'>Date </span></a>
-                      <a href='#' onClick={this.props.sortOrder}>
+                      <a href='#' onClick={this.props.firstBy} >
+                          <span id='sortDate'>Date </span></a>
+                      <a href='#' style={{display: fb == 'sortDate' ? 'inline-block' : 'none'}} onClick={this.props.sortOrder}>
                           <Glyphicon id='sortDateOrder' glyph={sort.sortDate.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a>
                   </th>
                   <th>
-                      <a href='#'   onClick={this.props.firstBy} ><span id='sortPlayer'>Player </span></a>
-                       <a href='#' style={{display: 'none'}} onClick={this.props.sortOrder}>
+                      <a href='#'  onClick={this.props.firstBy} ><span id='sortPlayer'>Player </span></a>
+                       <a href='#' style={{display: fb == 'sortPlayer' ? 'inline-block' : 'none'}}  onClick={this.props.sortOrder}>
                           <Glyphicon id='sortPlayerOrder' glyph={sort.sortPlayer.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a>
                   </th>
                   <th>
                       <a href='#'  onClick={this.props.firstBy} ><span id='sortOpponent'>Opponent </span></a>
-                      <a href='#' style={{display: 'none'}}  onClick={this.props.sortOrder}>
+                      <a href='#' style={{display: fb == 'sortOpponent' ? 'inline-block' : 'none'}}   onClick={this.props.sortOrder}>
                           <Glyphicon id='sortOpponentOrder' glyph={sort.sortOpponent.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a></th>
                   <th>
                       <a href='#'  onClick={this.props.firstBy} ><span id='sortTeam'>Team </span></a>
-                      <a href='#' style={{display: 'none'}} onClick={this.props.sortOrder}>
+                      <a href='#' style={{display: fb == 'sortTeam' ? 'inline-block' : 'none'}} onClick={this.props.sortOrder}>
                           <Glyphicon id='sortTeamOrder' glyph={sort.sortTeam.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a>
                   </th>
                   <th >
                       <a href='#'  onClick={this.props.firstBy} ><span id='sortWin'>W/L </span></a>
-                      <a style={{display: 'none'}} href='#'  onClick={this.props.sortOrder}>
+                      <a style={{display: fb == 'sortWin' ? 'inline-block' : 'none'}} href='#'  onClick={this.props.sortOrder}>
                           <Glyphicon id='sortWinOrder' glyph={sort.sortWin.asc == 'true' ? 'arrow-up':'arrow-down'}/>
                       </a>
                   </th>
@@ -303,7 +312,7 @@ var Footer = React.createClass({
         page.num = page.num-1;
         q.num = page.num;
 
-        this.transitionTo('team',this.getParams(),q);
+        this.transitionTo('teamResults',this.getParams(),q);
     },
     next: function(e) {
         e.preventDefault();
@@ -311,7 +320,7 @@ var Footer = React.createClass({
         var page = this.props.page;
         page.num = page.num+1;
         q.num = page.num;
-        this.transitionTo('team',this.getParams(),q);
+        this.transitionTo('teamResults',this.getParams(),q);
     },
     render: function() {
         return (
