@@ -35,7 +35,7 @@ var LoginApp = React.createClass({
                 console.log(JSON.stringify(d));
                 DataStore.setUser(d);
                 //DataStore.init();
-                router.transitionTo('home',null,null);
+                //router.transitionTo('home',null,null);
             }.bind(this),
             error: function (xhr, status, err) {
                 this.setState({error: true});
