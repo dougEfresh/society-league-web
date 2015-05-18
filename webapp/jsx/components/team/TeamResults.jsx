@@ -125,23 +125,26 @@ var TeamResults = React.createClass({
     },
     processQuery: function() {
         var q = this.getQuery();
-        var sort = this.state.sort;
-        var page = this.state.page;
-        for(var type in sort) {
-            sort[type].asc = q[type] == undefined ? sort[type].asc : q[type];
+        var newSort = this.state.sort;
+        var newPage = this.state.page;
+        var type;
+        for(type in newSort) {
+            newSort[type].asc = q[type] == undefined ? newSort[type].asc : q[type];
         }
-        for(var type in page) {
-            page[type] = q[type] == undefined ? page[type] : parseInt(q[type]);
+        for(type in newPage) {
+            newPage[type] = q[type] == undefined ? newPage[type] : parseInt(q[type]);
         }
         var firstBy = this.state.firstBy;
         if (q.firstBy != undefined) {
             firstBy = q.firstBy;
         }
-        var sortOrder = this.state.sortOrder;
+
+        var newSortOrder = this.state.sortOrder;
         if (q.sortOrder != undefined) {
-            sortOrder = q.sortOrder.split(",");
+            newSortOrder = q.sortOrder.split(",");
         }
-        this.setState({firstBy: firstBy, sort, page, sortOrder: sortOrder});
+
+        this.setState({firstBy: firstBy, sort: newSort, page: newPage, sortOrder: newSortOrder});
     },
     componentWillReceiveProps: function(n,o) {
         this.processQuery();

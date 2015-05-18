@@ -15,6 +15,9 @@ var UserLink = React.createClass({
             seasonId: 0
         }
     },
+    toString: function() {
+        return this.props.user.sName();
+    },
     render: function() {
         if (this.props.user == null) {
             return null;
