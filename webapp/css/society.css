@@ -274,7 +274,6 @@ h2.form-signin-heading {
 	float: left;
 	display: block;
 	width: 100%;
-	height: 100%;
 	text-align: left;
 	margin: 0px 0px;
 	padding: 0px 0px;
@@ -285,7 +284,6 @@ h2.form-signin-heading {
 	float: left;
 	display: block;
 	width: 100%;
-	height: 100%;
 	text-align: left;
 	margin: 0px 0px;
 	padding: 0px 0px;
@@ -318,10 +316,19 @@ h2.form-signin-heading {
 .homeNav .panel-body li .badge {
 	text-indent: 0px;
 }
-
-
+.main-item {
+	display: none;
+}
 @media (min-width: 768px) 
 {
+.main-item {
+	display: inline-block;
+}
+
+/* remove container padding using class .outerWrapper for desktop so left and right sides are flush to upper nav */
+.outerWrapper {
+	padding: 0px 0px;
+}
 .navbar-wrapper {
 	background-color: transparent;
 }
