@@ -241,13 +241,15 @@ var ResultsApp = React.createClass({
                     width={1000}
                     height={1000}
                     headerHeight={50}>
-                    <Column
+                    <ColumnGroup width={100} label="Date">
+                        <Column
                         cellDataGetter={renderCell}
                         label="Date"
                         width={100}
                         dataKey={'date'}
                         />
-
+                      </ColumnGroup>
+                    <ColumnGroup width={500} label="Players">
                     <Column
                             label="Winner"
                             width={250}
@@ -258,14 +260,15 @@ var ResultsApp = React.createClass({
                             headerRenderer={renderHeader}
                         />
                     <Column
-                    label="Victim"
-                    width={250}
-                    cellRenderer={renderName}
-                    dataKey={'loser'}
-                    isResizable={true}
-                    cellDataGetter={renderCell}
-                    headerRenderer={renderHeader}
-                    />
+                        label="Victim"
+                        width={250}
+                        cellRenderer={renderName}
+                        dataKey={'loser'}
+                        isResizable={true}
+                        cellDataGetter={renderCell}
+                        headerRenderer={renderHeader}
+                        />
+                    </ColumnGroup>
                 </Table>
             </Panel>
         );
