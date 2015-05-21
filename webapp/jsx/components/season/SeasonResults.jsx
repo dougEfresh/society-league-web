@@ -235,7 +235,9 @@ var ResultsApp = React.createClass({
         return (
             <Panel className='teamWeeklyResults' header={'Blah'} footer={<Footer page={this.state.page} last={end >= filteredMatches.length} />}>
                 <Table
-                    rowHeight={50}
+                            groupHeaderHeight={30}
+                            rowHeight={50}
+                            headerHeight={30}
                     rowGetter={rowGetter}
                     rowsCount={tableData.length}
                     width={1000}
