@@ -27,80 +27,97 @@
       <div>
         <div id="">
           <div id="leagueApp">
-            <div class="container">
+            <div class="container outerWrapper">
               <div class="account-wrapper">
-                <div class="leagueNavGrid container" style="margin-width:30px;">
+                <div class="container leagueNavGrid">
                   <div class="row">
-                    <div class="col-md-2 col-xs-12">
-                      <nav class=""><ul class="nav">
-                          <div class="homeNav" aria-label="...">
-                            <button class="active btn-block user btn btn-default" type="button">
-                              g<a class="navName active" href="#/app/home"><span class="glyphicon glyphicon-home"></span><span>Doug Chimento</span></a></button>
-                            <div class="teamPanelNav panel panel-default">
-                              <div class="panel-heading">
-                                <div class="panel-title">
-                                  <i class="fa fa-users"> Teams </i>
-                                </div>
-                              </div>
-                              <div class="panel-body">
-                                <div class="teamLinkNav">
-                                  <li class="teamNavLink" role="presentation"><a href="#/app/team/125/63" tabindex="-1">The D List</a></li>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="seasonNavLink">
-                              <div class="seasonPanelNav panel panel-default">
-                                <div class="panel-heading">
-                                  <div class="panel-title">
-                                    <i class="fa fa-trophy"> Seasons </i>
-                                  </div>
-                                </div>
-                                <div class="panel-body">
-                                  <li class="" role="presentation"><a href="#/app/season/64" tabindex="-1">
-                                      <div>
-                                        <span class="eightBall badge">8</span><span> Wednesdays</span>
-                                      </div>
-                                  </a></li><li class="" role="presentation"><a href="#/app/season/65" tabindex="-1">
-                                      <div>
-                                        <span class="eightBall badge">8</span><span> Thursdays </span>
-                                      </div>
-                                  </a></li><li class="" role="presentation"><a href="#/app/season/66" tabindex="-1">
-                                      <div>
-                                        <span class="eightBall badge">8</span><span class="nineBall badge">9</span><span> Mondays </span>
-                                      </div>
-                                  </a></li><li class="" role="presentation"><a href="#/app/season/63" tabindex="-1">
-                                      <div>
-                                        <span class="nineBall badge">9</span><span> Tuesdays </span>
-                                      </div>
-                                  </a></li><li class="" role="presentation"><a href="#/app/season/0" tabindex="-1">
-                                      <div>
-                                        <span class="eightBall badge">8</span><span class="nineBall badge">9</span><span>Challenge</span>
-                                      </div>
-                                  </a></li>
-                                </div>
-                              </div>
-                            </div>
-                            <button type="button" class="btn btn-default"><a class="statsNav" href="#/app/stats/528"><i class="fa fa-bar-chart"> Stats</i></a></button>
-                            <div class="challengeStatusMenu">
-                              <div class="challengePanelStatus panel panel-default">
-                                <div class="panel-heading">
-                                  <div class="panel-title">
-                                    <span class="glyphicon glyphicon-cog"></span><span> Challenges </span><span class="badge">0</span>
-                                  </div>
-                                </div>
-                                <div class="panel-body">
-                                  <li class="requestNav" role="presentation"><a href="#/app/challenge/signup" tabindex="-1"><span class="glyphicon glyphicon-info-sign"></span><span>What's this?</span></a></li>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                      </ul></nav>
+                  <div class="col-md-12 col-xs-12n user-nav">
+              
+                      <ul class="nav nav-tabs">
+                                <li role="presentation" class="active">
+                                	<a href="#/app/home">
+                                    	<span class="glyphicon glyphicon-home"></span>&nbsp;<span class="main-item">Doug Chimento</span></a>
+                                </li>
+                                <li role="presentation" class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                    <span class="fa fa-users"></span>&nbsp;<span class="main-item">Teams</span>&nbsp;<span class="caret"></span>
+                                    </a>
+                                     <ul class="dropdown-menu" role="menu">
+                                       <li class="teamNavLink" role="presentation"><a href="#/app/team/125/63" tabindex="-1">The D List</a></li>
+                                    </ul>
+                                </li>
+                                    <li role="presentation" class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                    <span class="fa fa-trophy"></span>&nbsp;<span class="main-item">Seasons</span>&nbsp;<span class="caret"></span>
+                                    </a>
+                                     <ul class="dropdown-menu" role="menu">
+                                        <li class="" role="presentation">
+                                        <a href="#/app/season/66" tabindex="-1">
+                                     		 <span>Mondays</span> <span class="eightBall badge">8</span> <span class="nineBall badge">9</span>
+                                     	</a></li>
+                                       <li class="" role="presentation">
+                                       	<a href="#/app/season/63" tabindex="-1">
+                                   			<span>Tuesdays</span> <span class="nineBall badge">9</span>
+                                     	</a></li>
+                                       <li class="teamNavLink" role="presentation">
+                                       <a href="#/app/season/64" tabindex="-1">
+                                          <span>Wednesdays</span> <span class="eightBall badge">8</span>
+                                       </a>
+                                       </li>
+                                       <li class="" role="presentation">
+                                       	<a href="#/app/season/65" tabindex="-1">
+                                       		<span>Thursdays</span> <span class="eightBall badge">8</span>
+                                        </a></li>
+                                       <li class="" role="presentation">
+                                       	<a href="#/app/season/0" tabindex="-1">
+                                      		<span>Challenge</span> <span class="eightBall badge">8</span> <span class="nineBall badge">9</span>
+                                      	</a></li>
+                                    </ul>
+                                </li>
+                                <li role="presentation">
+                                	<a href="#/app/stats/528">
+                                    	<span class="fa fa-bar-chart"></span>&nbsp;<span class="main-item">Stats</span>
+                                    </a>
+                                </li>
+                                 <li role="presentation" class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-cog"></span>&nbsp;<span class="main-item">Challenges</span>&nbsp;<span class="badge">4</span>&nbsp;<span class="caret"></span>
+                                    </a>
+                                     <ul class="dropdown-menu" role="menu">
+                                       <li class="teamNavLink" role="presentation">
+                                       	<a href="#/app/team/125/63" tabindex="-1">
+                                        	<span class="glyphicon glyphicon-alert"></span> Pending <span class="badge">1</span>
+                                        </a></li>
+                                        <li class="teamNavLink" role="presentation">
+                                       	<a href="#/app/team/125/63" tabindex="-1">
+                                        	<span class="glyphicon glyphicon-calendar"></span> Accepted <span class="badge">2</span>
+                                        </a></li>
+                                        <li class="teamNavLink" role="presentation">
+                                       	<a href="#/app/team/125/63" tabindex="-1">
+                                        	<span class="glyphicon glyphicon-ok"></span> Sent <span class="badge">1</span>
+                                        </a></li>
+                                        <li class="teamNavLink" role="presentation">
+                                       	<a href="#/app/team/125/63" tabindex="-1">
+                                        	<span class="glyphicon glyphicon-flash"></span> Request
+                                        </a></li>
+                                    </ul>
+                                </li>
+                      </ul>
+                  </div>
+                  <div class="col-md-12 col-xs-12n user-nav">
+                  <div class="container user-content">
+					<div id="homeApp">
+                    <h2 class="welcome"><span class="glyphicon glyphicon-user"></span> Welcome Doug <button type="button" class="btn btn-default btn-responsive"><span class="glyphicon glyphicon-flash"></span> <b>Request</b></button></h2>
+                    <div class="panel panel-default">
+                     <div class="panel-heading">
+                    	Next Scheduled Match
                     </div>
-                    <div class="col-md-10 col-xs-12">
-                      <div id="homeApp">
+                    <div class="panel-body"> <span class="next-match">May 31, 2015 at 1:30pm vs. <a href="#">Jared Pereira</a></span> <button type="button" class="btn btn-sm btn-danger pull-right btn-responsive"><span class="glyphicon glyphicon-remove"></span> <b>Cancel</b></button>
+                    </div>
+                    </div>
                         <div class="panel panel-default">
                           <div class="panel-heading">
-                            Welcome, Doug Chimento
+                            Past Matches
                           </div>
                           <div class="panel-body">
                             <div>
@@ -165,14 +182,13 @@
                               <canvas width="300" height="150" style="width: 300px; height: 150px;"></canvas>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
+						</div>
                   </div>
+                  </div><!--container -->
                 </div>
-              </div>
-            </div>
-          </div>
+              </div><!-- row -->
+            </div><!--container leagueNavGrid-->
+          </div><!-- account-wrapper -->
           <div id="appReady">
           </div>
           <div id="528">

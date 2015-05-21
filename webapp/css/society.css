@@ -1,7 +1,12 @@
 @charset "UTF-8";
 /* CSS Document */
 /*#leagueApp > div > div > div > div > div.col-md-2.col-xs-12 > nav > ul > div > div.seasonNavLink > div > div.panel-body > li:nth-child(1) > a > div > span.eightBall.badge*/
-
+a:link, a:visited {
+	color: #9c302d;
+}
+a:hover, a:active {
+	color: #9c302d;
+}
 #leagueApp > .eightBall {
 	background-color: black; !important;
 }
@@ -274,7 +279,6 @@ h2.form-signin-heading {
 	float: left;
 	display: block;
 	width: 100%;
-	height: 100%;
 	text-align: left;
 	margin: 0px 0px;
 	padding: 0px 0px;
@@ -285,7 +289,6 @@ h2.form-signin-heading {
 	float: left;
 	display: block;
 	width: 100%;
-	height: 100%;
 	text-align: left;
 	margin: 0px 0px;
 	padding: 0px 0px;
@@ -318,10 +321,72 @@ h2.form-signin-heading {
 .homeNav .panel-body li .badge {
 	text-indent: 0px;
 }
+.main-item {
+	display: none;
+}
+.leagueNavGrid {
+	margin-top:30px;
+	padding:0px 0px;
+}
 
-
+/*
+.user-nav .nav {
+	border-bottom: none;
+	color: #9c302d;
+}
+*/
+.user-nav > .nav > li > a {
+	background: #999;
+	color: #fff;
+	border-color: #EBEBEB;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.user-nav > .nav > li > a:hover,.user-nav > .nav > li > a:focus {
+	background: #000;
+	color: #fff;
+}
+.user-nav > .nav > li.active a {
+	background: #EBEBEB;
+	color: #9c302d;
+}
+.user-nav > .nav > li > ul > li > a:hover {
+	background: #707070;
+	color: #fff;
+}
+.user-content {
+	background: #EBEBEB;
+	padding-top: 20px;
+}
+.user-nav > .nav-tabs > li.dropdown.open > a {
+    border-color: #fff;
+}
+.panel-heading {
+	font-size: 20px;
+}
+.panel-body > .next-match {
+	font-size: 20px;
+}
+.btn-responsive {
+	white-space: normal;
+    width: 100%;
+	margin-top: 10px;
+}
+.welcome > .btn-default:hover {
+	background-color: #9c302d;
+	color: #fff;
+	cursor: pointer!important;
+}
 @media (min-width: 768px) 
 {
+.main-item {
+	display: inline-block;
+}
+
+/* remove container padding using class .outerWrapper for desktop so left and right sides are flush to upper nav */
+.outerWrapper {
+	padding: 0px 0px;
+}
 .navbar-wrapper {
 	background-color: transparent;
 }
@@ -383,6 +448,15 @@ h2.form-signin-heading {
 	height: 114px;
 	background-image: url(../img/sbb-logo-2.jpg);
 	background-size:autos;	
+}
+.user-nav > .nav > li > a {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.btn-responsive {
+	white-space: normal;
+    width: auto;
+	margin-top: 0px;
 }
 .footer .container li {
 	float: left;
