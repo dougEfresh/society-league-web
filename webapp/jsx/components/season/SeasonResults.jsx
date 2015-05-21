@@ -5,13 +5,14 @@ var Router = require('react-router')
     , NotFoundRoute = Router.NotFoundRoute
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
+var FixedDataTable = require('fixed-data-table');
 
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,ButtonGroup = Bootstrap.ButtonGroup
     ,PanelGroup = Bootstrap.PanelGroup
     ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
+    //,Table = Bootstrap.Table
     ,Nav = Bootstrap.Nav
     ,Grid = Bootstrap.Grid
     ,Row = Bootstrap.Row
@@ -27,6 +28,11 @@ var Bootstrap = require('react-bootstrap')
     ,ModalTrigger = Bootstrap.ModalTrigger
     ,Panel = Bootstrap.Panel;
 
+
+var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
+var ColumnGroup = FixedDataTable.ColumnGroup;
+
 var DataStore= require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
@@ -37,7 +43,9 @@ var TeamLink = require('../TeamLink.jsx');
 var firstBy = require('../../FirstBy.jsx');
 
 var sortDateFn = function(a,b) {
-    return this.state.sort.sortDate.asc == 'true' ?  a.getMatchDate().localeCompare(b.getMatchDate()) : b.getMatchDate().localeCompare(a.getMatchDate());
+    return this.state.sort.sortDate.asc == 'true' ?
+        a.getMatchDate().localeCompare(b.getMatchDate()) :
+        b.getMatchDate().localeCompare(a.getMatchDate());
 };
 
 var sortWinnerFn = function(a,b) {
@@ -69,7 +77,7 @@ var sortLoserTeamFn = function(a,b){
 };
 
 
-var SeasonResults = React.createClass({
+var ResultsApp = React.createClass({
     mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin,Router.State,Router.Navigation],
     getDefaultProps: function() {
         return {
@@ -150,9 +158,6 @@ var SeasonResults = React.createClass({
         this.state.sort[type].asc = query[type] ;
         this.transitionTo('seasonResults',this.getParams(),query);
     },
-    showStandings: function() {
-        this.transitionTo('team',this.getParams());
-    },
     render: function(){
         if (this.getParams().seasonId == undefined) {
             return null;
@@ -185,10 +190,120 @@ var SeasonResults = React.createClass({
                 pageMatches.push(filteredMatches[i]);
             }
         }
+        var tableData = [];
+        pageMatches.forEach(function(m){
+            tableData.push(m);
+        });
+        var rowGetter = function(rowIndex) {
+            return tableData[rowIndex];
+        };
+        var renderDate = function(cellData){
+            if (cellData == undefined || cellData == null) {
+                return "";
+            }
+            debugger;
+            return cellData();
+        };
+        var renderName = function(cellData){
+            if (cellData == undefined || cellData == null) {
+                return null;
+            }
+            return (<UserLink user={cellData} />)
+        };
 
-        pageMatches.forEach(function (m) {
+         var renderCell = function(cellDataKey,rowData){
+             switch(cellDataKey) {
+                 case 'winner' : {
+                     return rowData.winner;
+                 }
+                 case 'loser' : {
+                     return rowData.loser;
+                 }
+                 case 'date' : {
+                     return rowData.getShortMatchDate();
+                 }
+             }
+             return null;
+        };
+
+        var renderHeader = function(label,cellDataKey,columnData,rowData) {
+            return (<Input type='input' placeholder='player' />);
+        };
+        /*
+
+            */
+        return (
+            <Panel className='teamWeeklyResults' header={'Blah'} footer={<Footer page={this.state.page} last={end >= filteredMatches.length} />}>
+                <Table
+                    rowHeight={50}
+                    rowGetter={rowGetter}
+                    rowsCount={tableData.length}
+                    width={1000}
+                    height={1000}
+                    headerHeight={50}>
+                    <Column
+                        cellDataGetter={renderCell}
+                        label="Date"
+                        width={100}
+                        dataKey={'date'}
+                        />
+
+                    <Column
+                            label="Winner"
+                            width={250}
+                            cellRenderer={renderName}
+                            dataKey={'winner'}
+                            isResizable={true}
+                            cellDataGetter={renderCell}
+                            headerRenderer={renderHeader}
+                        />
+                    <Column
+                    label="Victim"
+                    width={250}
+                    cellRenderer={renderName}
+                    dataKey={'loser'}
+                    isResizable={true}
+                    cellDataGetter={renderCell}
+                    headerRenderer={renderHeader}
+                    />
+                </Table>
+            </Panel>
+        );
+    }
+});
+//  </ColumnGroup>
+
+var UserResults = React.createClass({
+
+    render: function() {
+        var rows = [];
+        var user = this.props.user;
+        var key  = 0;
+        this.props.matches.forEach(function(m){
+            var nine = m.getSeason().isNine();
             rows.push(
                 <tr key={key++}>
+                    <td>{m.getShortMatchDate()}</td>
+                    <td><UserLink user={m.getOpponent(user)} seasonId={m.getSeason().id} /></td>
+                    <td><TeamLink team={m.getOpponentsTeam(user)} seasonId={m.getSeason().id}/></td>
+                    <td>{m.isWinner(user)}</td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.winnerRacks}</td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.loserRacks}</td>
+                </tr>);
+        }.bind(this));
+
+        return (rows);
+    }
+});
+
+var SeasonResults = React.createClass({
+ render: function() {
+     var rows = [];
+     var key  = 0;
+     this.props.matches.forEach(function (m) {
+         var nine = m.getSeason().isNine();
+           rows.push(
+          <tr key={key++}>
                     <td>{m.getShortMatchDate()}</td>
                     <td><UserLink user={m.winner} seasonId={m.getSeason().id} /></td>
                     <td><TeamLink team={m.winnersTeam} seasonId={m.getSeason().id}/></td>
@@ -197,29 +312,43 @@ var SeasonResults = React.createClass({
                     <td style={{display: nine ? 'table-cell' : 'none'}}>{m.winnerRacks}</td>
                     <td style={{display: nine ? 'table-cell' : 'none'}}>{m.loserRacks}</td>
                 </tr>);
-        }.bind(this));
-
-        return (
-            <Panel className='teamWeeklyResults' header={'Blah'} footer={<Footer page={this.state.page} last={end >= filteredMatches.length} />}>
-                <Input id='filter' onChange={this.onChange} value={this.state.filter} type='input' placeholder={'Filter....'}></Input>
-                <Table>
-                    <thead>
-                    <Header nine={nine} firstBy={this.firstBy} sortOrder={this.sortOrder} sort={this.state} />
-                    </thead>
-                    <tbody>
-                    {rows}
-                    </tbody>
-                </Table>
-            </Panel>
-        );
-    }
+     }.bind(this));
+     return (rows);
+ }
 });
-//
+
+
 var Header = React.createClass({
     render: function() {
         var sort = this.props.sort.sort;
         var fb = this.props.sort.firstBy;
+        var headers = this.props.headers;
+        var header = [];
+        var filters = [];
+        var key = 0;
+
+        headers.forEach(function(h){
+            header.push(<th key={key++}>{h.name}</th>)
+        }.bind(this));
+
+        headers.forEach(function(h){
+            var options = [];
+            h.values.forEach(function(v) {
+                options.push(<option key={key++} value={v.id}>{v.name}</option>)
+            });
+            filters.push(<th key={key++}><Input type='select' value={h.filter} >{options}</Input></th>)
+        }.bind(this));
+
+        return (
+            <thead>
+            {header}
+            {filters}
+            </thead>
+        )
+        /*
+
           return (
+              <thead>
               <tr>
                   <th>
                       <a href='#' onClick={this.props.firstBy} >
@@ -258,7 +387,10 @@ var Header = React.createClass({
                   </th>
                   <th style={{display: this.props.nine ? 'table-cell' : 'none'}}>RW</th>
                   <th style={{display: this.props.nine ? 'table-cell' : 'none'}}>RL</th>
-              </tr>);
+              </tr>
+              </thead>
+          );
+*/
     }
 });
 
@@ -301,4 +433,4 @@ var Footer = React.createClass({
 
 
 
-module.exports = SeasonResults;
+module.exports = ResultsApp;

@@ -24,7 +24,7 @@ var UserLink = React.createClass({
         }
         return (
                 <a className="userLink" href={'#/app/scout/' + this.props.user.userId}>
-                    {this.props.user.sName() + ' (' + this.props.user.getCurrentHandicap(this.props.seasonId) + ')'}
+                    {this.props.user.sName()}
                 </a>
         );
     }    //

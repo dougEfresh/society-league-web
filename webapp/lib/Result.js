@@ -49,6 +49,7 @@ Result.prototype.getLoserHandicap = function () {
 
 Result.prototype.getLoserTeam = function () { return this.teamMatch.loser; };
 Result.prototype.teamMatch = function () { return this.teamMatch ; };
+Result.prototype.matchDate = function () { return this.teamMatch.matchDate; };
 Result.prototype.getMatchDate = function () { return this.teamMatch.matchDate; };
 Result.prototype.getShortMatchDate = function () { return this.teamMatch.matchDate.substr(5,5).replace('-','/'); };
 Result.prototype.getSeason = function () { return this.teamMatch.season; };
