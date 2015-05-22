@@ -72,7 +72,7 @@ var LeagueNav = React.createClass({
                 <div className="account-wrapper">
                     <Grid className="leagueNavGrid" >
                         <Row>
-                            <Col xs={12} md={12} clasName="user-nav">
+                            <Col xs={12} md={12} className="user-nav">
                                 <ul className="nav nav-tabs">
                                     <HomeNav />
                                     <TeamNav />
