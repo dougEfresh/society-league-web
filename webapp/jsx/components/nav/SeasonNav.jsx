@@ -87,23 +87,33 @@ var SeasonNav = React.createClass({
                 default:
                     return;
             }
+            /*
+             <MenuItemLink key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
+             {title}
+             </MenuItemLink>
+            */
             seasons.push(
-                    <MenuItemLink key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
+                <li role="presentation">
+                    <Link key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
                         {title}
-                    </MenuItemLink>
+                    </Link>
+                </li>
             );
         }.bind(this));
-
-        seasons.push(
-            <MenuItemLink key={0} to="season" params={{userId: this.getUserId(),seasonId: 0}} >
-                <div>
-                    <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
-                    <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} />
-                    Challenge
-                </div>
-            </MenuItemLink>);
-
         var seasonHeader = (<div><i className='fa fa-trophy'> Seasons </i></div>);
+        return (
+             <li role="presentation" className="dropdown">
+                 <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                     <span className="fa fa-trophy"></span>&nbsp;
+                     <span className="main-item">Seasons</span>&nbsp;
+                     <span className="caret"></span>
+                 </a>
+                 <ul className="dropdown-menu" role="menu">
+                     {seasons}
+                 </ul>
+             </li>
+        );
+        /*
         return (
             <div className='seasonNavLink' >
                 <Panel  expanded={true} defaultExpanded={true} className='seasonPanelNav' header={seasonHeader} eventKey='1' >
@@ -111,6 +121,7 @@ var SeasonNav = React.createClass({
                 </Panel>
             </div>
         )
+        */
     }
 });
 

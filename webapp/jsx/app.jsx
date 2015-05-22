@@ -25,6 +25,7 @@ var SeasonApp = require('./components/season/SeasonApp.jsx');
 var SeasonLeaders = require('./components/season/SeasonLeaders.jsx');
 var SeasonResults = require('./components/season/SeasonResults.jsx');
 var ResultsApp = require('./components/result/ResultApp.jsx');
+var UserResultsApp = require('./components/result/UserResults.jsx');
 var ChallengeSignUp = require('./components/challenge/ChallengeSignUp.jsx');
 var LoadingApp = require('./components/LoadingApp.jsx');
 
@@ -66,6 +67,7 @@ var routes = (
             <Route name="season" path="season/:seasonId"  handler={SeasonApp} />
             <Route name="seasonLeaders" path="season/leaders/:seasonId"  handler={SeasonLeaders} />
             <Route name="seasonResults" path="season/results/:seasonId"  handler={ResultsApp} />
+            <Route name="userResults" path="user/results/:userId"  handler={ResultsApp} />
             <Route name="teamMatchResult" path="season/:seasonId/:teamId/:teamMatchId"  handler={SeasonApp} />
             <Route name="challengeSignUp" path="challenge/signup"  handler={ChallengeSignUp} />
             <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={'challenge/' + ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>

@@ -62,20 +62,42 @@ var TeamNav = React.createClass({
             return null;
         }
         var teams = [];
+        /*
+
+         <li role="presentation" class="dropdown">
+         <MenuItemLink key={t.name} className='teamNavLink' to={'team'} params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >
+         {t.name}
+         </MenuItemLink>
+         </li>
+
+         */
         this.getUser().getCurrentTeams().forEach(function(t) {
             teams.push(
-                <MenuItemLink key={t.name} className='teamNavLink' to={'team'} params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >
-                    {t.name}
-                </MenuItemLink>
+                <li className="teamNavLink" role="presentation">
+                    <Link key={t.name} to={'team'}  params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >{t.name}</Link>
+                </li>
             );
         }.bind(this));
         var teamHeader = (<div><i className="fa fa-users"> Teams </i></div>);
 
         return (
+              <li role="presentation" className="dropdown">
+                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                      <span className="fa fa-users"></span>&nbsp;
+                      <span className="main-item">Teams</span>&nbsp;
+                      <span className="caret"></span>
+                  </a>
+                  <ul className="dropdown-menu" role="menu">
+                      {teams}
+                  </ul>
+              </li>
+        );
+        /*
             <Panel expanded={true} defaultExpanded={true} className='teamPanelNav' header={teamHeader} eventKey='1' >
                 <div className='teamLinkNav' >{teams}</div>
             </Panel>
         )
+         */
     }
 });
 
