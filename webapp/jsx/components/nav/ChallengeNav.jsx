@@ -104,24 +104,26 @@ var ChallengeNav = React.createClass({
             + c[Status.ACCEPTED].length;
 
         var sentLink = (
-            <MenuItemLink className='sentNav' to={Status.SENT.toLowerCase()} >
+            <Link to={Status.SENT.toLowerCase()} >
                 <Glyphicon glyph='ok'/>
                 Sent
                 <Badge>
                     {c[Status.SENT].length}
                 </Badge>
-            </MenuItemLink>
+            </Link>
         );
 
-        var acceptedLink = (<MenuItemLink className='sentNav' to={Status.ACCEPTED.toLowerCase()} >
+        var acceptedLink = (<Link  to={Status.ACCEPTED.toLowerCase()} >
                 <Glyphicon glyph='calendar'/>
                 Accepted
                 <Badge>
                     {c[Status.ACCEPTED].length}
                 </Badge>
-            </MenuItemLink>);
+            </Link>);
 
-        var pendingLink = (<Link className='sentNav teamNavLink' to={Status.PENDING.toLowerCase()} >
+        var pendingLink = (
+
+            <Link to={Status.PENDING.toLowerCase()} >
             <Glyphicon glyph='alert'/>
             Pending
             <Badge>
@@ -129,7 +131,7 @@ var ChallengeNav = React.createClass({
             </Badge>
             </Link>);
         var requestLink = (
-            <Link className='requestNav' to={Status.REQUEST.toLowerCase()}>
+            <Link  to={Status.REQUEST.toLowerCase()}>
             <Glyphicon glyph='flash'/>
                 Request
             </Link>
@@ -138,6 +140,7 @@ var ChallengeNav = React.createClass({
              <li role="presentation" className="dropdown">
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                      <Glyphicon glyph='cog' /> Challenges <Badge>{counter}</Badge>
+                     <span className="caret"></span>
                  </a>
                  <ul className="dropdown-menu" role="menu">
                      <li className="teamNavLink" role="presentation">

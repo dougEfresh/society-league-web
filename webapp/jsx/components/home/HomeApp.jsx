@@ -3,6 +3,7 @@ var Router = require('react-router');
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
+    ,Glyphicon = Bootstrap.Glyphicon
     ,Button = Bootstrap.Button;
 
 var DataStore = require('../../stores/DataStore.jsx');
@@ -27,13 +28,19 @@ var HomeApp = React.createClass({
         if (this.getUser().id == 0) {
             return null;
         }
-        var header = 'Welcome, ' + this.getUser().name;
-        return (<div id="homeApp">
-            <Panel header={header}>
-                <HomeMatches />
-                <HomeChart />
-            </Panel>
-        </div>);
+        var welcome = ' Welcome ' + this.getUser().fName + ' ';
+        return (
+            <div id="homeApp">
+                <h2 className="welcome" >
+                    <Glyphicon glyph="user" />
+                    {welcome}
+                </h2>
+                <Panel >
+                    <HomeMatches />
+                    <HomeChart />
+                </Panel>
+            </div>
+        );
     }
 });
 

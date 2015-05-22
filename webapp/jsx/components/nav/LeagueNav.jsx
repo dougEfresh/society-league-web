@@ -85,9 +85,12 @@ var LeagueNav = React.createClass({
                                     <ChallengeNav />
                                 </ul>
                             </Col>
-                            <Col xs={12} md={10}>
-                                {home}
-                                <RouteHandler />
+
+                            <Col xs={12} md={12} className="user-nav">
+                                <div className="container user-content">
+                                    {home}
+                                    <RouteHandler />
+                                </div>
                             </Col>
                         </Row>
                     </Grid>
