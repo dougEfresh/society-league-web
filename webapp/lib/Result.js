@@ -35,6 +35,10 @@ Result.formatHandicap = function(hc) {
             return '8';
         case 'NINE':
             return '9';
+        case 'OPEN':
+            return 'O';
+        case 'PRO':
+            return 'P';
         default:
             return hc;
     }
