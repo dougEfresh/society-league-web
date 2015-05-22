@@ -26,7 +26,6 @@ var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var StatsMixin = require('../../mixins/StatsMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
-var ReactTable = require('reactable').Table;
 var Stat =  require('../../../lib/Stat');
 
 var SeasonStandings = React.createClass({
@@ -70,7 +69,7 @@ var SeasonStandings = React.createClass({
             }.bind(this));
 
         return (
-            <ReactTable className='table' data={rows} sortable={true} />
+            null 
         );
         /*
         if (season.isNine()) {

@@ -31,7 +31,6 @@ var StatsMixin = require('../../mixins/StatsMixin.jsx');
 var UserLink = require('../UserLink.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var Stat =  require('../../../lib/Stat');
-var ReactTable = require('reactable').Table;
 
 var SeasonLeaders = React.createClass({
     mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State,Router.Navigation],
@@ -103,13 +102,7 @@ var SeasonLeaders = React.createClass({
                 </Button>
             </div>
         );
-        return (
-           <div id="seasonAppLeader" className="seasonResults">
-                    <Panel header={header} >
-                        <ReactTable className='table' data={rows} sortable={true} />
-                    </Panel>
-                </div>
-        );
+        return null;
 
         /*
         users.forEach(function(u){

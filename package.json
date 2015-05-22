@@ -32,8 +32,6 @@
     "node-jsx": "0.13.3",
     "express": "4.12.3",
     "connect-browserify": "4.0.0",
-    "clean-html": "1.2.3",
-    "reactable": "0.10.1",
     "fixed-data-table": "0.2.0"
   },
   "devDependencies": {
