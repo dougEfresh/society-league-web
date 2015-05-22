@@ -29,16 +29,19 @@ var HomeApp = React.createClass({
             return null;
         }
         var welcome = ' Welcome ' + this.getUser().fName + ' ';
+        var button = null;
+        if (this.getUser().isChallenge()) {
+            button = <Button responsive={true}> <Glyphicon glyph="flash" /> <b>Request</b></Button>
+        }
         return (
             <div id="homeApp">
                 <h2 className="welcome" >
                     <Glyphicon glyph="user" />
                     {welcome}
+                    {button}
                 </h2>
-                <Panel >
-                    <HomeMatches />
-                    <HomeChart />
-                </Panel>
+                <HomeMatches />
+                <HomeChart />
             </div>
         );
     }

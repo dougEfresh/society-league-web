@@ -6,6 +6,9 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var UserLink= require('../UserLink.jsx');
 var TeamLink= require('../TeamLink.jsx');
 var moment = require('moment');
+var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
+var ColumnGroup = FixedDataTable.ColumnGroup;
 
 var HomeMatches = React.createClass({
     mixins: [UserContextMixin],
@@ -96,6 +99,7 @@ var HomeMatches = React.createClass({
         return (<div><div>{upComingtable}</div><div>{resultTable}</div></div>);
     }
 });
+
 
 
 module.exports = HomeMatches;
