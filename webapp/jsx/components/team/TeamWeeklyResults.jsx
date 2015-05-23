@@ -2,16 +2,20 @@ var React = require('react/addons');
 var Router = require('react-router');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
-    ,Table = Bootstrap.Table
     ,Modal = Bootstrap.Modal
     ,OverlayMixin = Bootstrap.OverlayMixin
     ,Panel = Bootstrap.Panel;
+
+var FixedDataTable = require('fixed-data-table');
+var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
 
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var TeamResult= require('../TeamResult.jsx');
 var TeamResults = require('./TeamResults.jsx');
+var WinLostColumn = require('../columns/WinLostColumn.jsx');
 
 var TeamWeeklyResults = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,OverlayMixin,Router.State,Router.Navigation],
@@ -116,35 +120,69 @@ var TeamWeeklyResults = React.createClass({
                 result = 'N/A';
             }
             rows.push(
-                <tr key={i++}>
-                    <td>
-                        <Button bsSize='xsmall' id={r.teamMatchId} bsStyle='primary' disabled={(rl+rw)== 0} onClick={this.handleToggle}>{r.matchDate.substr(5,6).replace('-','/')}</Button>
-                    </td>
-                    <td>
-                        <TeamLink team={opponent} seasonId={this.getParams().seasonId}/>
-                    </td>
-                    <td>{result}</td>
-                    <td>{rw}</td>
-                    <td>{rl}</td>
-                </tr>
+                {
+                    match: r,
+                    team: opponent,
+                    result: result,
+                    rw: rw,
+                    rl: rl
+                }
             )
         }.bind(this));
+        var renderDate = function(match) {
+            var disabled = (match.winnerRacks + match.loserRacks) == 0;
+            return (<Button bsSize='xsmall' id={match.teamMatchId} bsStyle='primary' disabled={disabled}
+                            onClick={this.handleToggle}>{match.matchDate.substr(5,6).replace('-','/')}
+            </Button>);
+        }.bind(this);
+        var renderTeam = function(team) {
+            return (<TeamLink team={team} seasonId={this.getParams().seasonId} />);
+        }.bind(this);
+
         if (rows.length == 0) {
             return null;
         }
-        return (
-            <Table>
-                <thead>
-                <th>Date</th>
-                <th>Opponent</th>
-                <th>W/L</th>
-                <th>RW</th>
-                <th>RL</th>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </Table>
+        var rowGetter= function(index) {
+            return rows[index];
+        }
+          return (
+                <Table
+                    groupHeaderHeight={30}
+                    rowHeight={50}
+                    headerHeight={30}
+                    rowGetter={rowGetter}
+                    rowsCount={rows.length}
+                    width={500}
+                    height={500}
+                    headerHeight={30}>
+                    <Column
+                        label="Date"
+                        width={75}
+                        dataKey={'match'}
+                        cellRenderer={renderDate}
+                        align='center'
+                        />
+                    <Column
+                        label="Opponent"
+                        width={90}
+                        dataKey={'team'}
+                        align={'center'}
+                        cellRenderer={renderTeam}
+                        />
+                    {WinLostColumn('W/L','result')}
+                    <Column
+                        label="RW"
+                        width={35}
+                        dataKey={'rw'}
+                        isResizable={false}
+                        />
+                    <Column
+                        label="RL"
+                        width={35}
+                        dataKey={'rl'}
+                        isResizable={false}
+                        />
+                </Table>
         );
     }
 });
