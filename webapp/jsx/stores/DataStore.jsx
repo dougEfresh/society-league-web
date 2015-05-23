@@ -44,13 +44,23 @@ var DataStore = assign({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     },
-    _findSlot: function(id){
+    _findSlot: function(id) {
         for (var i = 0; i < data.slots.length; i++) {
             if (data.slots[i].id == id) {
                 return data.slots[i];
             }
         }
-	return undefined;
+        return undefined;
+    },
+     _findOrCreateSlot: function(s) {
+        for (var i = 0; i < data.slots.length; i++) {
+            if (data.slots[i].id == s.id) {
+                return data.slots[i];
+            }
+        }
+         var slot = new Slot(s.id,s.localDateTime,s.allocated);
+         data.slots.push(slot);
+        return slot;
     },
     _findSeason: function(id){
         for (var i = 0; i < data.seasons.length; i++) {
@@ -95,6 +105,9 @@ var DataStore = assign({}, EventEmitter.prototype, {
             user.addTeam(DataStore._findTeam(data.teams[i]));
         }
         for(var type in data.challenges) {
+            if (!data.challenges.hasOwnProperty(type)) {
+                continue;
+            }
             var cg = data.challenges[type];
             if (cg.length == 0) {
                 continue;
@@ -105,20 +118,20 @@ var DataStore = assign({}, EventEmitter.prototype, {
                 var op = DataStore._findUser(group.opponent);
                 var challengeGroup = null;
                 challengeGroup = new ChallengeGroup(ch, op, group.date, type, null,  0);
+                group.slots.forEach(function(s) {
+                    challengeGroup.addSlot(DataStore._findOrCreateSlot(s));
+                });
                 if (group.games.length == 1) {
                     challengeGroup.selectedGame = group.games[0];
                 }
                 if (group.slots.length == 1) {
-                    challengeGroup.selectedSlot = group.slots[0];
+                    challengeGroup.selectedSlot = DataStore._findSlot(group.slots[0].id);
                 }
                 group.games.forEach(function(g){
                     challengeGroup.addGame(g);
                 });
-                group.slots.forEach(function(s) {
-                    challengeGroup.addSlot(DataStore._findSlot(s.id));
-                });
                 group.challenges.forEach(function(c){
-                    var challenge = new Challenge(c.id,ch,op,c.slot.id,c.game,c.status);
+                    var challenge = new Challenge(c.id,ch,op,DataStore._findSlot(c.slot.id),c.game,c.status);
                     challengeGroup.addChallenge(challenge);
                 });
                 user.addChallenge(type,challengeGroup);

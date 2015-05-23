@@ -237,17 +237,14 @@ var TeamResults = React.createClass({
                     <Button bsStyle={'default'} onClick={this.showStandings}><i className="fa  fa-users"></i></Button>
             </div>);
         return (
-            <Panel className='teamWeeklyResults' header={header} footer={<Footer page={this.state.page} last={end >= filteredMatches.length} />}>
-                <Input id='filter' onChange={this.onChange} value={this.state.filter} type='input' placeholder={'Filter....'}></Input>
-                <Table>
-                    <thead>
+            <Table>
+                <thead>
                     <Header nine={nine} firstBy={this.firstBy} sortOrder={this.sortOrder} sort={this.state} />
-                    </thead>
-                    <tbody>
-                    {rows}
-                    </tbody>
-                </Table>
-            </Panel>
+                </thead>
+                <tbody>
+                {rows}
+                </tbody>
+            </Table>
         );
     }
 });

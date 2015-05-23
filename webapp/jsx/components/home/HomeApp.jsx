@@ -41,7 +41,6 @@ var HomeApp = React.createClass({
                     {button}
                 </h2>
                 <HomeMatches />
-                <HomeChart />
             </div>
         );
     }

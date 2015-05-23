@@ -34,7 +34,7 @@ var User = require('../../../lib/User.js');
 var Status = require('../../../lib/Status');
 
 var ChallengeNav = React.createClass({
-    mixins: [UserContextMixin,Router.state,Bootstrap.OverlayMixin],
+    mixins: [UserContextMixin,Router.State,Bootstrap.OverlayMixin],
     getInitialState: function () {
         return {
             user: this.getUser(),
@@ -136,10 +136,14 @@ var ChallengeNav = React.createClass({
                 Request
             </Link>
         );
+        var active = "";
+        if (this.getPath().indexOf('challenge') >= 0) {
+            active = "active";
+        }
         return (
-             <li role="presentation" className="dropdown">
+             <li role="presentation" className={'dropdown ' + active}>
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                     <Glyphicon glyph='cog' /> Challenges <Badge>{counter}</Badge>
+                     <Glyphicon glyph='cog' /> <span className="main-item"> Challenges </span><Badge>{counter}</Badge>
                      <span className="caret"></span>
                  </a>
                  <ul className="dropdown-menu" role="menu">

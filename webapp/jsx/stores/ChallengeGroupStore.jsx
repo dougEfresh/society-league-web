@@ -48,10 +48,9 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
     },
 
     acceptChallenge: function(userId,challengeGroup) {
-        var originalStatus = challengeGroup.status;
         var challenge = {id : 0};
         challengeGroup.challenges.forEach(function(c) {
-            if (c.slotId == challengeGroup.selectedSlot &&
+            if (c.slot.id== challengeGroup.selectedSlot.id &&
                     c.game == challengeGroup.selectedGame) {
                 challenge = {id: c.id};
             }
@@ -81,7 +80,7 @@ var ChallengeGroupStore = assign({}, EventEmitter.prototype, {
         DataStore.emitChange();
     },
     selectChallengeGroupSlot: function(challengeGroup,slot) {
-        challengeGroup.selectedSlot = slot;
+        challengeGroup.selectedSlot = DataStore._findSlot(slot);
         DataStore.emitChange();
     },
 

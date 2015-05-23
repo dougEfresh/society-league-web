@@ -49,19 +49,19 @@ var UserResults = React.createClass({
         var renderCell = function(cellDataKey,rowData) {
             switch(cellDataKey) {
                 case 'win' : {
-                    return rowData.isWinner(this.getParams().userId);
+                    return rowData.isWinner(this.getUser());
                 }
                 case 'opponent' : {
-                    return rowData.getOpponent(this.getParams().userId);
+                    return rowData.getOpponent(this.getUser());
                 }
                 case 'opponentHandicap' : {
-                    return rowData.getOpponentHandicap(this.getParams().userId);
+                    return rowData.getOpponentHandicap(this.getUser());
                 }
                 case 'rw' : {
-                    return rowData.getRacks(this.getParams().userId);
+                    return rowData.getRacks(this.getUser());
                 }
                 case 'rl' : {
-                    return rowData.getOpponentRacks(this.getParams().userId);
+                    return rowData.getOpponentRacks(this.getUser());
                 }
                 case 'date' : {
                     return rowData.getShortMatchDate();
@@ -71,7 +71,7 @@ var UserResults = React.createClass({
                 }
             }
             return null;
-        };
+        }.bind(this);
 
         var rowGetter = function(rowIndex) {
             return tableData[rowIndex];
@@ -99,20 +99,19 @@ var UserResults = React.createClass({
         };
 
         return (
-            <Panel className='userResults' >
                 <Table
                     groupHeaderHeight={30}
                     rowHeight={50}
                     headerHeight={30}
                     rowGetter={rowGetter}
                     rowsCount={tableData.length}
-                    width={800}
-                    height={768}
-                    headerHeight={50}>
+                    width={500}
+                    height={500}
+                    headerHeight={30}>
                     <Column
                         cellDataGetter={renderCell}
                         label="Date"
-                        width={70}
+                        width={50}
                         dataKey={'date'}
                         />
                     <Column
@@ -123,46 +122,45 @@ var UserResults = React.createClass({
                         />
                     <Column
                             label="Opponent"
-                            width={50}
+                            width={90}
                             cellRenderer={renderName}
                             dataKey={'opponent'}
-                            isResizable={true}
-                            cellDataGetter={renderCell}
-                        />
-                        <Column
-                            label="HC"
-                            width={100}
-                            cellRenderer={renderHandicap}
-                            dataKey={'opponentHandicap'}
                             isResizable={false}
                             cellDataGetter={renderCell}
                         />
-                        <Column
-                            label="W"
-                            width={50}
-                            cellRenderer={renderWin}
-                            dataKey={'win'}
-                            isResizable={true}
-                            cellDataGetter={renderCell}
+                    <Column
+                        label="HC"
+                        width={30}
+                        cellRenderer={renderHandicap}
+                        dataKey={'opponentHandicap'}
+                        isResizable={false}
+                        cellDataGetter={renderCell}
+                        />
+                    <Column
+                        label="W/L"
+                        width={40}
+                        cellRenderer={renderWin}
+                        dataKey={'win'}
+                        isResizable={false}
+                        cellDataGetter={renderCell}
                         />
                     <Column
                         label="RW"
-                        width={50}
+                        width={30}
                         cellRenderer={renderRacks}
                         dataKey={'rw'}
-                        isResizable={true}
+                        isResizable={false}
                         cellDataGetter={renderCell}
                         />
                     <Column
                         label="RL"
-                        width={50}
+                        width={30}
                         cellRenderer={renderRacks}
                         dataKey={'rl'}
-                        isResizable={true}
+                        isResizable={false}
                         cellDataGetter={renderCell}
                         />
                 </Table>
-            </Panel>
         );
  }
 });

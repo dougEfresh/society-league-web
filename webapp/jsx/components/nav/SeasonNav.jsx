@@ -38,7 +38,7 @@ var TeamMatch = require('../../../lib/TeamMatch');
 var Result = require('../../../lib/Result');
 
 var SeasonNav = React.createClass({
-    mixins: [UserContextMixin,SeasonMixin,Router.state],
+    mixins: [UserContextMixin,SeasonMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
             user: this.getUser()
@@ -87,24 +87,22 @@ var SeasonNav = React.createClass({
                 default:
                     return;
             }
-            /*
-             <MenuItemLink key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
-             {title}
-             </MenuItemLink>
-            */
             seasons.push(
-                <li role="presentation">
-                    <Link key={t.id} to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
+                <li key={t.id} role="presentation">
+                    <Link  to="season" params={{userId: this.getUserId(),seasonId: t.id}} >
                         {title}
                     </Link>
                 </li>
             );
         }.bind(this));
-        var seasonHeader = (<div><i className='fa fa-trophy'> Seasons </i></div>);
+        var active = "";
+        if (this.isActive('season')) {
+            active = "active";
+        }
         return (
-             <li role="presentation" className="dropdown">
+             <li role="presentation" className={'dropdown ' + active} >
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                     <span className="fa fa-trophy"></span>&nbsp;
+                     <i className="fa fa-trophy"></i>&nbsp;
                      <span className="main-item">Seasons</span>&nbsp;
                      <span className="caret"></span>
                  </a>

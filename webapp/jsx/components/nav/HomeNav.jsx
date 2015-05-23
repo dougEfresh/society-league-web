@@ -20,12 +20,17 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 
 var HomeNav = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
+
     render: function() {
+        var active=null;
+        if (this.isActive('home') || this.isActive('default') ) {
+            active="active";
+        }
         return (
-            <li role="presentation" className="active">
+            <li role="presentation" className={active}>
                 <Link className='navName' to='home'>
                     <Glyphicon glyph='home' />
-                    {' ' + this.getUser().name}
+                    <span className="main-item">{' ' + this.getUser().name} </span>
                 </Link>
             </li>
         );

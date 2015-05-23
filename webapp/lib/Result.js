@@ -67,10 +67,16 @@ Result.prototype.setLoserHandicap = function (data) { this.loserHandicap = data 
 Result.prototype.setLosersTeam = function (data) { this.losersTeam = data ; };
 
 Result.prototype.isWinner = function(user) {
+    if (user == undefined || user == null) {
+        return undefined;
+    }
     return this.winner.id == user.id;
 };
 
 Result.prototype.getHandicap = function(user) {
+    if (user == undefined || user == null) {
+        return undefined;
+    }
     if (this.winner.id == user.id) {
         return this.getWinnerHandicap();
     }
@@ -78,6 +84,9 @@ Result.prototype.getHandicap = function(user) {
 };
 
 Result.prototype.getOpponent = function(user) {
+    if (user == undefined || user == null) {
+        return undefined;
+    }
     if (this.winner.id == user.id) {
         return this.loser;
     }
@@ -85,6 +94,9 @@ Result.prototype.getOpponent = function(user) {
 };
 
 Result.prototype.getOpponentsTeam = function(user) {
+    if (user == undefined || user == null) {
+        return undefined;
+    }
     if (this.winner.id == user.id) {
         return this.losersTeam;
     }
@@ -92,6 +104,9 @@ Result.prototype.getOpponentsTeam = function(user) {
 };
 
 Result.prototype.getOpponentRacks = function(user) {
+    if (user == undefined || user == null) {
+        return undefined;
+    }
     if (this.winner.id == user.id) {
         return this.loserRacks;
     }
@@ -99,6 +114,9 @@ Result.prototype.getOpponentRacks = function(user) {
 };
 
 Result.prototype.getOpponentHandicap = function(user) {
+    if (user == undefined || user == null) {
+        return undefined;
+    }
     if (this.winner.id == user.id) {
         return this.getLoserHandicap();
     }
@@ -106,6 +124,9 @@ Result.prototype.getOpponentHandicap = function(user) {
 };
 
 Result.prototype.getRacks = function(user) {
+    if (user == undefined || user == null) {
+        return undefined;
+    }
     if (this.winner.id == user.id) {
         return this.winnerRacks;
     }

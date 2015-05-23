@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var Router = require('react-router');
 var Bootstrap = require('react-bootstrap');
 
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
@@ -8,12 +9,12 @@ var Chart = require('../Chart.jsx');
 var Stat = require('../../../lib/Stat');
 
 var TeamChart = React.createClass({
-    mixins: [TeamMixin,SeasonMixin,UserContextMixin],
+    mixins: [TeamMixin,SeasonMixin,UserContextMixin,Router.State],
     render: function() {
         var label = [];
-        var team = this.getTeam(this.props.teamId);
-        var stats = team.getStats(this.props.seasonId);
-        var users = team.getMembers(this.props.seasonId);
+        var team = this.getTeam(this.getParams().teamId);
+        var stats = team.getStats(this.getParams().seasonId);
+        var users = team.getMembers(this.getParams().seasonId);
         var wins = [];
         var lost = [];
 
@@ -22,7 +23,7 @@ var TeamChart = React.createClass({
         lost.push(stats.loses);
         var userStats = [];
         users.forEach(function(u) {
-            userStats.push({user: u, stat : u.getSeasonStats(this.props.seasonId)});
+            userStats.push({user: u, stat : u.getSeasonStats(this.getParams().seasonId)});
         }.bind(this));
         userStats = userStats.sort(function(a,b) {
             return Stat.sortAsc(a.stat,b.stat);
@@ -55,9 +56,7 @@ var TeamChart = React.createClass({
              ]
          };
         return (
-            <div>
-                <Chart data={data} />
-           </div>
+            <Chart data={data} />
         );
     }
 });

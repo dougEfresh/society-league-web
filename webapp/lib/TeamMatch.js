@@ -24,6 +24,8 @@ TeamMatch.prototype.getWinner = function() {return this.winner; };
 TeamMatch.prototype.getLoser = function() {return this.loser; };
 TeamMatch.prototype.matchDate = function() {return this.matchDate; };
 TeamMatch.prototype.teamMatchId = function() {return this.teamMatchId; };
+TeamMatch.prototype.isChallenge = function() {return this.season.isChallenge(); };
+
 
 TeamMatch.prototype.setWinnerRacks = function(data) { this.winnerRacks = data; };
 TeamMatch.prototype.setLoserRacks = function(data) { this.loserRacks = data; };

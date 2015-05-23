@@ -1,7 +1,9 @@
 var React = require('react/addons');
 var Router = require('react-router')
     , State = Router.State
-    , Navigation = Router.Navigation;
+    , Navigation = Router.Navigation
+    , Link = Router.Link
+    , RouteHandler = Router.RouteHandler
 
 var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
@@ -51,13 +53,7 @@ var TeamApp = React.createClass({
         );
     },
     handleClick: function() {
-        var c = this.getQuery().chart;
-        if (c == undefined || c == 'false') {
-            c = 'true';
-        } else {
-            c = 'false';
-        }
-        this.transitionTo('team',this.getParams(),{chart: c});
+        this.transitionTo('teamChart',this.getParams());
     },
     showResults: function() {
         this.transitionTo('teamResults',this.getParams());
@@ -81,36 +77,40 @@ var TeamApp = React.createClass({
         if (stats.matches == 0){
             rank = 0;
         }
-        var teamHeader = (<span>{team.name}</span>);
+        var teamHeader = (<h2>{team.name}</h2>);
         if (rank > 0) {
-            teamHeader = (<span>{team.name + ' - Rank '}<Badge>{rank}</Badge> </span>);
+            teamHeader = (<h2>{team.name + ' - Rank '}<Badge>{rank}</Badge> </h2>);
         }
         var header = (
-            <div>
-                {teamHeader}
                 <div style={{display: 'inline'}}>
-                    <Button bsStyle={chart == 'true' ? 'success' : 'default'} onClick={this.handleClick}><i className="fa fa-bar-chart"></i></Button>
-                    <Button bsStyle={'default'} onClick={this.showResults}><i className="fa  fa-list-ol"></i></Button>
+                    <Link to='teamStandings' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('teamStandings') ? 'success' : 'default'} responsize>
+                            <i className="fa fa-users"></i>
+                        </Button>
+                    </Link>
+                    <Link to='teamWeeklyResults' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('teamWeeklyResults') ? 'success' : 'default'} responsize>
+                            <i className="fa fa-calendar"></i>
+                        </Button>
+                    </Link>
+                    <Link to='teamChart' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('teamChart') ? 'success' : 'default'} responsize>
+                            <i className="fa fa-bar-chart"></i>
+                        </Button>
+                    </Link>
+                    <Link to='teamResults' params={this.getParams()}>
+                    <Button bsStyle={this.isActive('teamResults') ? 'success' : 'default'} responsive>
+                        <i className="fa  fa-list-ol"></i>
+                    </Button>
+                    </Link>
                 </div>
-            </div>
         );
 
-        if (chart == 'true') {
             return (
-                <div id="teamApp">
-                    <Panel header={header}>
-                        <TeamChart teamId={this.getParams().teamId} seasonId={this.getParams().seasonId}/>
-                        <TeamWeeklyResults teamId={this.getParams().teamId} seasonId={this.getParams().seasonId}/>
-                    </Panel>
-                </div>
-            );
-        }
-
-        return (
-            <div id="teamApp">
+                <div id="team-app">
+                    {teamHeader}
                 <Panel header={header}>
-                    <TeamStandings teamId={this.getParams().teamId} seasonId={this.getParams().seasonId}/>
-                    <TeamWeeklyResults teamId={this.getParams().teamId} seasonId={this.getParams().seasonId}/>
+                    <RouteHandler />
                 </Panel>
             </div>
         );

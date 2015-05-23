@@ -23,4 +23,6 @@ Season.prototype.isNine = function() {
     return this.division.isNine();
 };
 
+Season.prototype.getDisplayName = function () { return this.name ; };
+
 module.exports = Season;

@@ -26,10 +26,10 @@ var GroupSlot = React.createClass({
         }
         var slots = [];
         slots.push(<option key={0} value={0}>{'choose'}</option>);
-        this.props.challengeGroup.slots.sort(function(a,b){
-            a.getTime().localeCompare(b.getTime());
+        var sorted = this.props.challengeGroup.slots.sort(function(a,b){
+           return a.getTime().localeCompare(b.getTime());
         });
-        this.props.challengeGroup.slots.forEach(function (s) {
+        sorted.forEach(function (s) {
             slots.push(<option key={s.id} value={s.id}>{s.getTime()}</option>);
         }.bind(this));
         return (<Input ref='slot' onChange={this.onSelectSlot}

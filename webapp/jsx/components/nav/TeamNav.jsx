@@ -37,7 +37,7 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 
 var TeamNav = React.createClass({
-    mixins: [UserContextMixin,TeamMixin,Router.state],
+    mixins: [UserContextMixin,TeamMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
             user: this.getUser()
@@ -62,28 +62,21 @@ var TeamNav = React.createClass({
             return null;
         }
         var teams = [];
-        /*
-
-         <li role="presentation" class="dropdown">
-         <MenuItemLink key={t.name} className='teamNavLink' to={'team'} params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >
-         {t.name}
-         </MenuItemLink>
-         </li>
-
-         */
         this.getUser().getCurrentTeams().forEach(function(t) {
             teams.push(
-                <li className="teamNavLink" role="presentation">
-                    <Link key={t.name} to={'team'}  params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >{t.name}</Link>
+                <li key={t.name} className="teamNavLink" role="presentation">
+                    <Link  to={'teamStandings'}  params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >{t.name}</Link>
                 </li>
             );
         }.bind(this));
-        var teamHeader = (<div><i className="fa fa-users"> Teams </i></div>);
-
+        var active = "";
+        if (this.getPath().indexOf('team') >= 0) {
+            active = "active";
+        }
         return (
-              <li role="presentation" className="dropdown">
+              <li role="presentation" className={'dropdown ' + active} >
                   <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                      <span className="fa fa-users"></span>&nbsp;
+                      <i className="fa fa-users"></i>&nbsp;
                       <span className="main-item">Teams</span>&nbsp;
                       <span className="caret"></span>
                   </a>
