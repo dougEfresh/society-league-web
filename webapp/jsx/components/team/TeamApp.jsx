@@ -93,15 +93,15 @@ var TeamApp = React.createClass({
                             <i className="fa fa-calendar"></i>
                         </Button>
                     </Link>
+                    <Link to='teamResults' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('teamResults') ? 'success' : 'default'} responsive>
+                            <i className="fa  fa-list-ol"></i>
+                        </Button>
+                    </Link>
                     <Link to='teamChart' params={this.getParams()}>
                         <Button bsStyle={this.isActive('teamChart') ? 'success' : 'default'} responsize>
                             <i className="fa fa-bar-chart"></i>
                         </Button>
-                    </Link>
-                    <Link to='teamResults' params={this.getParams()}>
-                    <Button bsStyle={this.isActive('teamResults') ? 'success' : 'default'} responsive>
-                        <i className="fa  fa-list-ol"></i>
-                    </Button>
                     </Link>
                 </div>
         );

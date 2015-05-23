@@ -22,7 +22,7 @@ var HomeApp = require('./components/home/HomeApp.jsx');
 var TeamApp = require('./components/team/TeamApp.jsx');
 var TeamStandings= require('./components/team/TeamStandings.jsx');
 var TeamResultApp = require('./components/team/TeamResults.jsx');
-var TeamWeeklyResultApp = require('./components/team/TeamWeeklyResults.jsx');
+var TeamWeeklyResultsApp = require('./components/team/TeamWeeklyResults.jsx');
 var SeasonApp = require('./components/season/SeasonApp.jsx');
 var SeasonLeaders = require('./components/season/SeasonLeaders.jsx');
 var SeasonResults = require('./components/season/SeasonResults.jsx');
@@ -69,7 +69,7 @@ var routes = (
                 <Route name="teamStandings" path="standings"  handler={TeamStandings} />
                 <Route name="teamChart" path="chart"  handler={TeamChart} />
                 <Route name="teamResults" path="weekly"  handler={TeamResultApp} />
-                <Route name="teamWeeklyResults" path="results"  handler={TeamResultApp} />
+                <Route name="teamWeeklyResults" path="results"  handler={TeamWeeklyResultsApp} />
             </Route>
             <Route name="season" path="season/:seasonId"  handler={SeasonApp} />
             <Route name="seasonLeaders" path="season/leaders/:seasonId"  handler={SeasonLeaders} />

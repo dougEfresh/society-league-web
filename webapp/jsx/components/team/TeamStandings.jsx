@@ -20,34 +20,6 @@ var TeamStandings = React.createClass({
         var users = team.getMembers(this.getParams().seasonId);
         var teamHeader = 'Team' ;
         var teamRow = [];
-
-         var renderCell = function(cellDataKey,rowData) {
-            switch(cellDataKey) {
-                case 'win' : {
-                    return rowData.isWinner(this.getUser());
-                }
-                case 'opponent' : {
-                    return rowData.getOpponent(this.getUser());
-                }
-                case 'opponentHandicap' : {
-                    return rowData.getOpponentHandicap(this.getUser());
-                }
-                case 'rw' : {
-                    return rowData.getRacks(this.getUser());
-                }
-                case 'rl' : {
-                    return rowData.getOpponentRacks(this.getUser());
-                }
-                case 'date' : {
-                    return rowData.getShortMatchDate();
-                }
-                case 'season' : {
-                    return rowData.getSeason().name;
-                }
-            }
-            return null;
-        }.bind(this);
-
         var rowGetter = function(rowIndex) {
             return teamData[rowIndex];
         };
@@ -55,34 +27,20 @@ var TeamStandings = React.createClass({
             if (cellData == undefined || cellData == null) {
                 return null;
             }
+            if (cellData == teamHeader) {
+                return <b>{cellData}</b>
+            }
             return (<UserLink user={cellData} />)
         };
-
-        var renderHandicap = function(cellData) {
-            return cellData;
-        };
-        /*
-        var renderHeader = function(label,cellDataKey,columnData,rowData) {
-            return (<span>Players</span>)
-        };
-        */
-        var renderRacks = function(cellData) {
-            return cellData;
-        };
-        var renderWin = function(cellData) {
-            return cellData == true ? 'W' : 'L';
-        };
-
         var teamData = [];
-        /*
         teamData.push({
             user: teamHeader,
             wins: stats.wins,
             loses: stats.loses,
             racksFor: stats.racksFor,
-            racksAgainst: stats.racksAgainst
+            racksAgainst: stats.racksAgainst,
+            handicap : ""
         })
-        */
         var i = 0;
         var userStats = [];
         users.forEach(function(u) {
@@ -115,20 +73,17 @@ var TeamStandings = React.createClass({
                     height={500}
                     headerHeight={30}>
                     <Column
-                        //cellDataGetter={renderCell}
-                        label="Name"
+                        label=""
                         width={90}
                         dataKey={'user'}
                         cellRenderer={renderName}
                         />
                     <Column
-                        //cellDataGetter={renderCell}
                         label="HC"
                         width={50}
                         dataKey={'handicap'}
                         />
                     <Column
-                        //cellDataGetter={renderCell}
                         label="W"
                         width={50}
                         dataKey={'wins'}
@@ -144,18 +99,14 @@ var TeamStandings = React.createClass({
                     <Column
                         label="RW"
                         width={35}
-                        //cellRenderer={renderHandicap}
                         dataKey={'racksFor'}
                         isResizable={false}
-                        //cellDataGetter={renderCell}
                         />
                     <Column
                         label="RL"
                         width={35}
-                        ///cellRenderer={renderWin}
                         dataKey={'racksAgainst'}
                         isResizable={false}
-                        //cellDataGetter={renderCell}
                         />
                 </Table>
         );

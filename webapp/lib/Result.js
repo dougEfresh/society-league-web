@@ -123,6 +123,16 @@ Result.prototype.getOpponentHandicap = function(user) {
     return this.getWinnerHandicap();
 };
 
+Result.prototype.getHandicap = function(user) {
+    if (user == undefined || user == null) {
+        return undefined;
+    }
+    if (this.winner.id != user.id) {
+        return this.getLoserHandicap();
+    }
+    return this.getWinnerHandicap();
+};
+
 Result.prototype.getRacks = function(user) {
     if (user == undefined || user == null) {
         return undefined;

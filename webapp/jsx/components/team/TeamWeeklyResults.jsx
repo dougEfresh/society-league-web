@@ -41,7 +41,7 @@ var TeamWeeklyResults = React.createClass({
         return (
              <Modal className="resultsModal" bsStyle={'success'} title={'Results'} onRequestHide={this.handleToggle}>
                  <div className='modal-body'>
-                     <TeamResult teamId={this.props.teamId} seasonId={this.props.seasonId} teamMatchId={this.state.teamMatchId} />
+                     <TeamResult teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} teamMatchId={this.state.teamMatchId} />
                  </div>
                  <div className='modal-footer'>
                      <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
@@ -70,13 +70,13 @@ var TeamWeeklyResults = React.createClass({
         this.transitionTo('team',this.getParams(),query);
     },
     renderResults: function() {
-        return (<TeamResults teamId={this.props.teamId} seasonId={this.props.seasonId}/>);
+        return (<TeamResults teamId={this.getParams().teamId} seasonId={this.getParams().seasonId}/>);
     },
     render: function() {
-        var seasonMatches = this.getSeasonMatches(this.props.seasonId);
+        var seasonMatches = this.getSeasonMatches(this.getParams().seasonId);
         var matches = [];
         seasonMatches.forEach(function(m) {
-            if (m.winner.id == this.props.teamId || m.loser.id == this.props.teamId) {
+            if (m.winner.id == this.getParams().teamId || m.loser.id == this.getParams().teamId) {
                 matches.push(m);
             }
         }.bind(this));
@@ -91,7 +91,7 @@ var TeamWeeklyResults = React.createClass({
 
         matches.forEach(function(m){
             var matchResult = {matchDate: m.matchDate, teamMatchId: m.teamMatchId};
-            if (m.winner.id == this.props.teamId) {
+            if (m.winner.id == this.getParams().teamId) {
                 matchResult.won = true;
             } else {
                 matchResult.won = false;
@@ -121,7 +121,7 @@ var TeamWeeklyResults = React.createClass({
                         <Button bsSize='xsmall' id={r.teamMatchId} bsStyle='primary' disabled={(rl+rw)== 0} onClick={this.handleToggle}>{r.matchDate.substr(5,6).replace('-','/')}</Button>
                     </td>
                     <td>
-                        <TeamLink team={opponent} seasonId={this.props.seasonId}/>
+                        <TeamLink team={opponent} seasonId={this.getParams().seasonId}/>
                     </td>
                     <td>{result}</td>
                     <td>{rw}</td>
@@ -133,7 +133,6 @@ var TeamWeeklyResults = React.createClass({
             return null;
         }
         return (
-            <Panel className='teamWeeklyResults' >
             <Table>
                 <thead>
                 <th>Date</th>
@@ -146,7 +145,6 @@ var TeamWeeklyResults = React.createClass({
                 {rows}
                 </tbody>
             </Table>
-            </Panel>
         );
     }
 });

@@ -6,12 +6,15 @@ var Router = require('react-router')
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
 
+var FixedDataTable = require('fixed-data-table');
+var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
+
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,ButtonGroup = Bootstrap.ButtonGroup
     ,PanelGroup = Bootstrap.PanelGroup
     ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
     ,Nav = Bootstrap.Nav
     ,Grid = Bootstrap.Grid
     ,Row = Bootstrap.Row
@@ -37,7 +40,7 @@ var TeamLink = require('../TeamLink.jsx');
 var firstBy = require('../../FirstBy.jsx');
 
 var sortDateFn = function(a,b) {
-    return this.state.sort.sortDate.asc == 'true' ?  a.getMatchDate().localeCompare(b.getMatchDate()) : b.getMatchDate().localeCompare(a.getMatchDate());
+    return b.getMatchDate().localeCompare(a.getMatchDate());
 };
 
 var sortPlayerFn = function(a,b) {
@@ -81,18 +84,11 @@ var sortWinFn = function(a,b) {
 
 var TeamResults = React.createClass({
     mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin,Router.State,Router.Navigation],
-    getDefaultProps: function() {
-        return {
-            teamId: 0,
-            seasonId: 0
-        }
-    },
     getInitialState: function() {
-
         return {filter: "",
             showMatches: false,
-            firstBy: 'sortDate',
-            sortOrder: ['sortDate','sortPlayer','sortTeam','sortOpponent','sortWin'],
+            firstBy: 'sortPlayer',
+            sortOrder: ['sortDate','sortPlayer','sortOpponent','sortWin'],
             sort: {
                 sortDate: {asc: 'true', fx : sortDateFn},
                 sortTeam: {asc: 'true', fx : sortOpponentTeamFn},
@@ -106,191 +102,135 @@ var TeamResults = React.createClass({
             }
         }
     },
-    processQuery: function() {
-        var q = this.getQuery();
-        var newSort = this.state.sort;
-        var newPage = this.state.page;
-        var type;
-        for(type in newSort) {
-            newSort[type].asc = q[type] == undefined ? newSort[type].asc : q[type];
-        }
-        for(type in newPage) {
-            newPage[type] = q[type] == undefined ? newPage[type] : parseInt(q[type]);
-        }
-        var firstBy = this.state.firstBy;
-        if (q.firstBy != undefined) {
-            firstBy = q.firstBy;
-        }
-
-        var newSortOrder = this.state.sortOrder;
-        if (q.sortOrder != undefined) {
-            newSortOrder = q.sortOrder.split(",");
-        }
-
-        this.setState({firstBy: firstBy, sort: newSort, page: newPage, sortOrder: newSortOrder});
-    },
     componentWillReceiveProps: function(n,o) {
-        this.processQuery();
     },
     componentDidMount: function() {
-        this.processQuery();
     },
-    firstBy: function(e) {
-        e.preventDefault();
-        var query =this.getQuery();
-        query.firstBy = e.target.id;
-        this.state.firstBy = query.firstBy;
-        this.transitionTo('teamResults',this.getParams(),query);
-    },
-    onChange: function(e) {
-        if (this.state.page.num > 0) {
-            this.state.filter = e.target.value;
-            var q = this.getQuery();
-            q.num=0;
-            this.transitionTo('teamResults',this.getParams(),q);
-            return
-        }
-        this.setState({filter: e.target.value});
-    },
-
-    sortOrder: function(e) {
-         e.preventDefault();
-        var query =this.getQuery();
-        var type = e.target.id.replace('Order','');
-        query[type] = this.state.sort[type].asc == 'true' ? 'false' : 'true';
-        this.state.sort[type].asc = query[type] ;
-        this.transitionTo('teamResults',this.getParams(),query);
-    },
-    showStandings: function() {
-        this.transitionTo('team',this.getParams());
-    },
-    render: function(){
+    render: function() {
         if (this.getParams().teamId == undefined || this.getParams().seasonId == undefined) {
             return null;
         }
         var results = [];
-        this.getSeasonResults(this.getParams().seasonId).forEach(function(r){
-            if (r.teamMatch.getWinner().id == this.getParams().teamId ||r.teamMatch.getLoser().id == this.getParams().teamId ) {
+        this.getSeasonResults(this.getParams().seasonId).forEach(function (r) {
+            if (r.teamMatch.getWinner().id == this.getParams().teamId || r.teamMatch.getLoser().id == this.getParams().teamId) {
                 results.push(r);
             }
         }.bind(this));
 
-        var season  = this.getSeason(this.getParams().seasonId);
+        var season = this.getSeason(this.getParams().seasonId);
         var nine = season.isNine();
         var rows = [];
         var key = 0;
-        var filteredMatches = this.filterResults(results,this.state.filter);
-
         var order = firstBy(this.state.sort[this.state.firstBy].fx.bind(this));
-        for(var i=0; i< this.state.sortOrder.length; i++) {
+        for (var i = 0; i < this.state.sortOrder.length; i++) {
             var type = this.state.sortOrder[i];
             order = order.thenBy(this.state.sort[type].fx.bind(this));
         }
 
-        filteredMatches = filteredMatches.sort(order);
+        results = results.sort(order);
         var pageMatches = [];
-        var start = this.state.page.num*this.state.page.size;
+        var start = this.state.page.num * this.state.page.size;
         var end = start + this.state.page.size;
-
-        if (this.state.page.size >= filteredMatches.length) {
-            pageMatches = filteredMatches;
+        if (this.state.page.size >= results.length) {
+            pageMatches = results;
         } else {
-
-            for(var i = start; i<filteredMatches.length && i < end ; i++) {
-                pageMatches.push(filteredMatches[i]);
+            for (var i = start; i < results.length && i < end; i++) {
+                pageMatches.push(results[i]);
             }
         }
 
         pageMatches.forEach(function (m) {
-            var teamMember = m.winnersTeam.id == this.getParams().teamId ?  m.winner : m.loser;
+            var teamMember = m.winnersTeam.id == this.getParams().teamId ? m.winner : m.loser;
             rows.push(
-                <tr key={key++}>
-                    <td>{m.getShortMatchDate()}</td>
-                    <td><UserLink user={teamMember} seasonId={m.teamMatch.getSeason().id} /></td>
-                    <td><UserLink user={m.getOpponent(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
-                    <td><TeamLink team={m.getOpponentsTeam(teamMember)} seasonId={m.teamMatch.getSeason().id}/></td>
-                    <td>{m.isWinner(teamMember) ? 'W' : 'L'}</td>
-                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.getRacks(teamMember)}</td>
-                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.getOpponentRacks(teamMember)}</td>
-                </tr>);
+                {
+                    date: m.getShortMatchDate(),
+                    user: teamMember,
+                    opponent: m.getOpponent(teamMember),
+                    team: m.getOpponentsTeam(teamMember),
+                    win: m.isWinner(teamMember) ? 'W' : 'L',
+                    racksFor: m.getRacks(teamMember),
+                    racksAgainst: m.getOpponentRacks(teamMember),
+                    handicap: m.getHandicap(teamMember)
+                });
         }.bind(this));
-        var team = this.getTeam(this.getParams().teamId);
-        var stats = team.getStats(this.getParams().seasonId);
-        var standings = this.getSeasonStandings(this.getParams().seasonId);
-        var rank = 0;
-        for(; rank < standings.length; rank++ ) {
-            if (standings[rank].teamId == this.getParams().teamId) {
-                rank++;
-                break;
+        var rowGetter = function (index) {
+            return rows[index];
+        };
+        var renderName = function (cellData) {
+            if (cellData == undefined || cellData == null) {
+                return null;
             }
-        }
-        if (stats.matches == 0){
-            rank = 0;
-        }
-        var teamHeader = (<span>{team.name}</span>);
-        if (rank > 0) {
-            teamHeader = (<span>{team.name + ' - Rank '}<Badge>{rank}</Badge> </span>);
-        }
-        var header = (
-            <div style={{display: 'inline'}}>
-                <span>{teamHeader} </span>
-                    <Button bsStyle={'default'} onClick={this.showStandings}><i className="fa  fa-users"></i></Button>
-            </div>);
-        return (
-            <Table>
-                <thead>
-                    <Header nine={nine} firstBy={this.firstBy} sortOrder={this.sortOrder} sort={this.state} />
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </Table>
-        );
-    }
-});
-//
-var Header = React.createClass({
-    render: function() {
-        var sort = this.props.sort.sort;
-        var fb = this.props.sort.firstBy;
-          return (
-              <tr>
-                  <th>
-                      <a href='#' onClick={this.props.firstBy} >
-                          <span id='sortDate'>Date </span></a>
-                      <a href='#' style={{display: fb == 'sortDate' ? 'inline-block' : 'none'}} onClick={this.props.sortOrder}>
-                          <Glyphicon id='sortDateOrder' glyph={sort.sortDate.asc == 'true' ? 'arrow-up':'arrow-down'}/>
-                      </a>
-                  </th>
-                  <th>
-                      <a href='#'  onClick={this.props.firstBy} ><span id='sortPlayer'>Player </span></a>
-                       <a href='#' style={{display: fb == 'sortPlayer' ? 'inline-block' : 'none'}}  onClick={this.props.sortOrder}>
-                          <Glyphicon id='sortPlayerOrder' glyph={sort.sortPlayer.asc == 'true' ? 'arrow-up':'arrow-down'}/>
-                      </a>
-                  </th>
-                  <th>
-                      <a href='#'  onClick={this.props.firstBy} ><span id='sortOpponent'>Opponent </span></a>
-                      <a href='#' style={{display: fb == 'sortOpponent' ? 'inline-block' : 'none'}}   onClick={this.props.sortOrder}>
-                          <Glyphicon id='sortOpponentOrder' glyph={sort.sortOpponent.asc == 'true' ? 'arrow-up':'arrow-down'}/>
-                      </a></th>
-                  <th>
-                      <a href='#'  onClick={this.props.firstBy} ><span id='sortTeam'>Team </span></a>
-                      <a href='#' style={{display: fb == 'sortTeam' ? 'inline-block' : 'none'}} onClick={this.props.sortOrder}>
-                          <Glyphicon id='sortTeamOrder' glyph={sort.sortTeam.asc == 'true' ? 'arrow-up':'arrow-down'}/>
-                      </a>
-                  </th>
-                  <th >
-                      <a href='#'  onClick={this.props.firstBy} ><span id='sortWin'>W/L </span></a>
-                      <a style={{display: fb == 'sortWin' ? 'inline-block' : 'none'}} href='#'  onClick={this.props.sortOrder}>
-                          <Glyphicon id='sortWinOrder' glyph={sort.sortWin.asc == 'true' ? 'arrow-up':'arrow-down'}/>
-                      </a>
-                  </th>
-                  <th style={{display: this.props.nine ? 'table-cell' : 'none'}}>RW</th>
-                  <th style={{display: this.props.nine ? 'table-cell' : 'none'}}>RL</th>
-              </tr>);
+            return (<UserLink user={cellData} />);
+        };
+        var renderTeam = function (cellData) {
+            if (cellData == undefined || cellData == null) {
+                return null;
+            }
+            return (<TeamLink team={cellData}  seasonId={this.getParams().seasonId} />);
+        }.bind(this);
+
+         return (
+         <Table
+         groupHeaderHeight={30}
+         rowHeight={50}
+         headerHeight={30}
+         rowGetter={rowGetter}
+         rowsCount={rows.length}
+         width={500}
+         height={500}
+         headerHeight={30}>
+             <Column
+                 label="Date"
+                 width={60}
+                 dataKey={'date'}
+                 />
+             <Column
+                 label="Name"
+                 width={90}
+                 dataKey={'user'}
+                 cellRenderer={renderName}
+         />
+
+         <Column
+         label="Opponent"
+         width={90}
+         dataKey={'opponent'}
+         cellRenderer={renderName}
+         />
+         <Column
+         label="HC"
+         width={40}
+         dataKey={'handicap'}
+         />
+         <Column
+         label="W"
+         width={35}
+         dataKey={'win'}
+         />
+         <Column
+         label="RW"
+         width={35}
+         dataKey={'racksFor'}
+         isResizable={false}
+         />
+         <Column
+         label="RL"
+         width={35}
+         dataKey={'racksAgainst'}
+         isResizable={false}
+         />
+         <Column
+         label="Team"
+         width={80}
+         dataKey={'team'}
+         cellRenderer={renderTeam}
+         />
+         </Table>
+         );
     }
 });
 
+/*
 var Footer = React.createClass({
     mixins: [Router.State,Router.Navigation],
    getDefaultProps: function() {
@@ -328,7 +268,6 @@ var Footer = React.createClass({
         )
     }
 });
-
-
+*/
 
 module.exports = TeamResults;
