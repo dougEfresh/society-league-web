@@ -3,7 +3,7 @@ var Table = FixedDataTable.Table;
 var Column = FixedDataTable.Column;
 var React = require('react/addons');
 
-var WinLostColumn = function(label,dataKey) {
+var winLost = function(label,dataKey) {
     return (
         <Column
             label={label}
@@ -14,4 +14,27 @@ var WinLostColumn = function(label,dataKey) {
     );
 }
 
-module.exports = WinLostColumn;
+var racksFor = function(label) {
+    return (
+        <Column
+            label={label}
+            cellClassName="racks-for"
+            width={35}
+            dataKey={'racksFor'}
+            />
+    );
+}
+
+var racksAgainst= function(label) {
+    return (
+        <Column
+            label={label}
+            cellClassName="racks-for"
+            width={35}
+            dataKey={'racksAgainst'}
+            />
+    );
+}
+
+
+module.exports = {winLost: winLost, racksFor: racksFor, racksAgainst: rackAgainst};

@@ -15,7 +15,7 @@ var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var TeamResult= require('../TeamResult.jsx');
 var TeamResults = require('./TeamResults.jsx');
-var WinLostColumn = require('../columns/WinLostColumn.jsx');
+var ColumnHelper = require('../columns/WinLostColumn.jsx');
 
 var TeamWeeklyResults = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,OverlayMixin,Router.State,Router.Navigation],
@@ -169,19 +169,9 @@ var TeamWeeklyResults = React.createClass({
                         align={'center'}
                         cellRenderer={renderTeam}
                         />
-                    {WinLostColumn('W/L','result')}
-                    <Column
-                        label="RW"
-                        width={35}
-                        dataKey={'rw'}
-                        isResizable={false}
-                        />
-                    <Column
-                        label="RL"
-                        width={35}
-                        dataKey={'rl'}
-                        isResizable={false}
-                        />
+                    {ColumnHelper.winLostColumn('W/L','result')}
+                    {ColumnHelper.racksFor('RW')}
+                    {ColumnHelper.racksAgainst('RL')}
                 </Table>
         );
     }
