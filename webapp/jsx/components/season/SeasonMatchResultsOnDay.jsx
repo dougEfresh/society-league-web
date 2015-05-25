@@ -31,7 +31,6 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var ResultMixin = require('../../mixins/ResultMixin.jsx');
-var TeamResult = require('../TeamResult.jsx');
 
 var MatchResultsOnDay = React.createClass({
     mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin,Router.State,Router.Navigation,Bootstrap.OverlayMixin],

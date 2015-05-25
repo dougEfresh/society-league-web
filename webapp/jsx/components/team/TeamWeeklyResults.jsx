@@ -14,8 +14,6 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
-var TeamResult= require('../TeamResult.jsx');
-var TeamResults = require('./TeamResults.jsx');
 var ColumnHelper = require('../columns/ColumnHelper.jsx');
 var ColumnConfig = require('../columns/ColumnConfig.jsx');
 
