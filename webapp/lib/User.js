@@ -102,7 +102,7 @@ User.prototype.getSeasons = function() {
 };
 User.prototype.addSeason = function(season) {
     if (season == null || season == undefined) {
-        debugger;
+        //debugger;
         return;
     }
     this.seasons.push(season);

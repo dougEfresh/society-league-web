@@ -9,7 +9,7 @@ var TeamMatch = require('./TeamMatch');
 var Result = require('./Result');
 var ChallengeGroup = require('./ChallengeGroup');
 var Challenge = require('./Challenge');
-
+var moment = require('moment');
 function resetData() {
     return  {
         divisions: [],
@@ -22,133 +22,178 @@ function resetData() {
     }
 }
 
-Database.data = resetData();
-Database.loading = false;
-Database.loaded = false;
+function Database() {
+    this.data = resetData();
+    this.loaded = false;
+    this.loading = false;
+    this.userMap = {};
+}
 
-Database.findSlot =  function (id) {
-    for (var i = 0; i < Database.data.slots.length; i++) {
-        if (Database.data.slots[i].id == id) {
-            return Database.data.slots[i];
+Database.prototype.data = function() {return this.data};
+Database.prototype.userMap = function() {return this.userMap};
+Database.prototype.loaded = function() {return this.loaded;};
+Database.prototype.loading = function() {return this.loading;};
+
+Database.prototype.findSlot =  function (id) {
+    for (var i = 0; i < this.data.slots.length; i++) {
+        if (this.data.slots[i].id == id) {
+            return this.data.slots[i];
         }
     }
     return undefined;
 };
 
-Database.findSeason =  function (id) {
-    for (var i = 0; i < Database.data.seasons.length; i++) {
-        if (Database.data.seasons[i].id == id) {
-            return Database.data.seasons[i];
+Database.prototype.findOrCreateSlot = function(s) {
+        for (var i = 0; i < this.data.slots.length; i++) {
+            if (this.data.slots[i].id == s.id) {
+                return this.data.slots[i];
+            }
         }
-    }
-    return undefined;
+         var slot = new Slot(s.id,s.localDateTime,s.allocated);
+         this.data.slots.push(slot);
+        return slot;
 };
-Database.findDivision = function (id) {
-    for (var i = 0; i < Database.data.divisions.length; i++) {
-        if (Database.data.divisions[i].id == id) {
-            return Database.data.divisions[i];
+
+Database.prototype.findSeason =  function (id) {
+    for (var i = 0; i < this.data.seasons.length; i++) {
+        if (this.data.seasons[i].id == id) {
+            return this.data.seasons[i];
         }
     }
     return undefined;
 };
 
-Database.findUser = function (id) {
-    for (var i = 0; i < Database.data.users.length; i++) {
-        if (Database.data.users[i].id == id) {
-            return Database.data.users[i];
+Database.prototype.findDivision = function (id) {
+    for (var i = 0; i < this.data.divisions.length; i++) {
+        if (this.data.divisions[i].id == id) {
+            return this.data.divisions[i];
         }
     }
     return undefined;
 };
 
-Database.findTeam = function (id) {
-    for (var i = 0; i < Database.data.teams.length; i++) {
-        if (Database.data.teams[i].id == id) {
-            return Database.data.teams[i];
+Database.prototype.findUser = function (id) {
+    if (this.userMap[id] != undefined) {
+        return this.userMap[id];
+    }
+    for (var i = 0; i < this.data.users.length; i++) {
+        if (this.data.users[i].id == id) {
+            return this.data.users[i];
         }
     }
     return undefined;
 };
 
-Database.processUser = function(user,data) {
+Database.prototype.findTeam = function (id) {
+    for (var i = 0; i < this.data.teams.length; i++) {
+        if (this.data.teams[i].id == id) {
+            return this.data.teams[i];
+        }
+    }
+    return undefined;
+};
+
+Database.prototype.addUser = function(u) {
+    this.data.users.push(u);
+    this.userMap[u.id] = u;
+};
+
+Database.prototype.processUser = function(user,userData) {
     user.reset();
-        var i;
-        for (i = 0; i < Database.data.seasons.length; i++) {
-            user.addSeason(Database.findSeason(Database.data.seasons[i]));
-        }
-        for (i = 0; i < Database.data.teams.length; i++) {
-            user.addTeam(Database.findTeam(Database.data.teams[i]));
-        }
-        for (var type in Database.data.challenges) {
-            var cg = Database.data.challenges[type];
+    var i;
+    for (i = 0; i < userData.seasons.length; i++) {
+        user.addSeason(this.findSeason(userData.seasons[i]));
+    }
+    for (i = 0; i < userData.teams.length; i++) {
+        user.addTeam(this.findTeam(userData.teams[i]));
+    }
+    for(var type in userData.challenges) {
+            if (!userData.challenges.hasOwnProperty(type)) {
+                continue;
+            }
+            var cg = userData.challenges[type];
             if (cg.length == 0) {
                 continue;
             }
 
-            cg.forEach(function (group) {
-                var ch = Database.findUser(group.challenger);
-                var op = Database.findUser(group.opponent);
+            cg.forEach(function(group){
+                var ch = this.findUser(group.challenger);
+                var op = this.findUser(group.opponent);
                 var challengeGroup = null;
-                challengeGroup = new ChallengeGroup(ch, op, group.date, type, null, 0);
+                challengeGroup = new ChallengeGroup(ch, op, group.date, type, null,  0);
+                group.slots.forEach(function(s) {
+                    challengeGroup.addSlot(this.findOrCreateSlot(s));
+                }.bind(this));
                 if (group.games.length == 1) {
                     challengeGroup.selectedGame = group.games[0];
                 }
                 if (group.slots.length == 1) {
-                    challengeGroup.selectedSlot = group.slots[0];
+                    challengeGroup.selectedSlot = this.findSlot(group.slots[0].id);
                 }
-                group.games.forEach(function (g) {
+                group.games.forEach(function(g){
                     challengeGroup.addGame(g);
                 });
-                group.slots.forEach(function (s) {
-                    challengeGroup.addSlot(Database.findSlot(s.id));
-                });
-                group.challenges.forEach(function (c) {
-                    var challenge = new Challenge(c.id, ch, op, c.slot.id, c.game, c.status);
+                group.challenges.forEach(function(c){
+                    var challenge = new Challenge(c.id,ch,op,this.findSlot(c.slot.id),c.game,c.status);
                     challengeGroup.addChallenge(challenge);
-                });
-                user.addChallenge(type, challengeGroup);
-            });
+                }.bind(this));
+                user.addChallenge(type,challengeGroup);
+            }.bind(this));
         }
 };
 
-Database.processData = function (d) {
+Database.prototype.processData = function (d) {
     var id;
+    var start = moment();
     for (id in d.divisions) {
-        Database.data.divisions.push(new Division(id, d.divisions[id].type));
+        this.data.divisions.push(new Division(id, d.divisions[id].type));
     }
+    console.log('Division: ' + start.diff(moment()));
+    start = moment();
     for (id in d.seasons) {
-        var division = Database.findDivision(d.seasons[id].division);
+        var division = this.findDivision(d.seasons[id].division);
         var season = d.seasons[id];
-        Database.data.seasons.push(new Season(season.id, season.name, season.startDate, season.endDate, season.status, division));
+        this.data.seasons.push(new Season(season.id, season.name, season.startDate, season.endDate, season.status, division));
     }
+    console.log('Season: ' + start.diff(moment()));
 
+    start = moment();
     d.teams.forEach(function (t) {
         var team = new Team(t.teamId, t.name);
         for (var sid in t.seasons) {
-            var season = Database.findSeason(sid);
+            var season = this.findSeason(sid);
             team.addSeason(season);
         }
-        Database.data.teams.push(team);
-    });
+        this.data.teams.push(team);
+    }.bind(this));
+    console.log('Team: '  + start.diff(moment()));
 
+    start = moment();
     d.users.forEach(function (u) {
         var user = new User(u.userId, u.firstName, u.lastName);
-        Database.processUser(user, u);
-        Database.data.users.push(user);
-    });
+        this.addUser(user);
+    }.bind(this));
+    d.users.forEach(function (u) {
+        this.processUser(this.findUser(u.userId), u);
+    }.bind(this));
 
+    console.log('Users: '  + start.diff(moment()));
+
+    start = moment();
     d.teams.forEach(function (t) {
-        var team = Database.findTeam(t.teamId);
+        var team = this.findTeam(t.teamId);
         for (var sid in t.seasons) {
             for (var i = 0; i < t.seasons[sid].length; i++) {
-                var u = Database.findUser(t.seasons[sid][i]);
+                var u = this.findUser(t.seasons[sid][i]);
                 team.addTeamMember(sid, u);
             }
         }
-    });
+    }.bind(this));
+    console.log('TeamMembers '  + start.diff(moment()));
 
+    start = moment();
     for (id in d.userStats) {
-        var user = Database.findUser(id);
+        var user = this.findUser(id);
         if (user == undefined) {
             //console.warn('Could not find user: ' + id);
             continue;
@@ -163,13 +208,13 @@ Database.processData = function (d) {
                 user.addStats(new Stat(type, stats[type]), null);
             } else if (type == 'season') {
                 stats[type].forEach(function (s) {
-                    user.addStats(new Stat(type, s, Database.findSeason(s.seasonId)));
-                });
+                    user.addStats(new Stat(type, s, this.findSeason(s.seasonId)));
+                }.bind(this));
 
             } else if (type == 'division') {
                 stats[type].forEach(function (s) {
-                    user.addStats(new Stat(type, s, Database.findDivision(s.divisionId)));
-                });
+                    user.addStats(new Stat(type, s, this.findDivision(s.divisionId)));
+                }.bind(this));
             } else if (type == 'handicapAll') {
                 if (stats[type] != undefined && stats[type] != null) {
                     stats[type].forEach(function (s) {
@@ -185,22 +230,22 @@ Database.processData = function (d) {
             }
         }
     }
-
+    console.log('UserStats '  + start.diff(moment()));
     for (id in d.teamStats) {
-        var season = Database.findSeason(id);
+        var season = this.findSeason(id);
         d.teamStats[id].forEach(function (s) {
-            Database.data.teams.forEach(function (t) {
+            this.data.teams.forEach(function (t) {
                 if (t.id == s.teamId) {
                     t.addStats(id, new Stat('team', s, season));
                 }
             });
-        });
+        }.bind(this));
     }
-
+    start = moment();
     d.teamResults.forEach(function (r) {
-        var season = Database.findSeason(r.seasonId);
+        var season = this.findSeason(r.seasonId);
         var tm = new TeamMatch(r.teamMatchId, r.resultId, r.matchDate, season);
-        Database.data.teams.forEach(function (t) {
+        this.data.teams.forEach(function (t) {
             if (t.id == r.winner) {
                 tm.setWinner(t);
                 t.addMatch(tm);
@@ -209,7 +254,7 @@ Database.processData = function (d) {
                 tm.setLoser(t);
                 t.addMatch(tm);
             }
-        });
+        }.bind(this));
 
         tm.setLoserRacks(r.loserRacks);
         tm.setWinnerRacks(r.winnerRacks);
@@ -220,106 +265,87 @@ Database.processData = function (d) {
         tm.setLoserSetWins(r.loserSetWins);
         tm.setWinnerSetWins(r.winnerSetWins);
 
-        Database.data.teamMatches.push(tm);
-    });
+        this.data.teamMatches.push(tm);
+    }.bind(this));
+    console.log('TeamResults '  + start.diff(moment()));
+    start  = moment();
 
     d.userResults.forEach(function (r) {
-        var winner = null;
-        var loser = null;
-        Database.data.users.forEach(function (u) {
-            if (r.winner == u.id) {
-                winner = u;
-            }
-            if (r.loser == u.id) {
-                loser = u;
-            }
-        });
-        Database.data.teamMatches.forEach(function (tm) {
+        var winner = this.findUser(r.winner);
+        var loser = this.findUser(r.loser);
+        this.data.teamMatches.forEach(function (tm) {
             if (tm.teamMatchId == r.teamMatchId) {
                 var result = new Result(r.resultId, tm, winner, loser);
                 result.setLoserHandicap(r.loserHandicap);
                 result.setLoserRacks(r.loserRacks);
                 result.setLoserHandicap(r.loserHandicap);
-                result.setLosersTeam(Database.findTeam(r.loserTeam));
+                result.setLosersTeam(this.findTeam(r.loserTeam));
 
                 result.setWinnerHandicap(r.winnerHandicap);
                 result.setWinnerRacks(r.winnerRacks);
                 result.setWinnerHandicap(r.winnerHandicap);
-                result.setWinnersTeam(Database.findTeam(r.winnerTeam));
-                ;
+                result.setWinnersTeam(this.findTeam(r.winnerTeam));
 
                 winner.addResult(result);
                 loser.addResult(result);
-                Database.data.results.push(result);
+                this.data.results.push(result);
             }
-        });
-    });
+        }.bind(this));
+    }.bind(this));
+    console.log('UseResults '  + start.diff(moment()));
+
     d.slots.forEach(function (s) {
-        Database.data.slots.push(new Slot(s.id, s.localDateTime, s.allocated));
-    });
+        this.data.slots.push(new Slot(s.id, s.localDateTime, s.allocated));
+    }.bind(this));
 
-    d.users.forEach(function (u) {
-        var user = Database.findUser(u.userId);
-        Database.processUser(user, u);
-    });
+    this.data.users.push(User.DEFAULT_USER);
 
-    Database.data.users.push(User.DEFAULT_USER);
-    console.log('Created ' + Database.data.divisions.length + ' divisions');
-    console.log('Created ' + Database.data.seasons.length + ' seasons');
-    console.log('Created ' + Database.data.teams.length + ' teams');
-    console.log('Created ' + Database.data.users.length + ' users');
-    console.log('Created ' + Database.data.teamMatches.length + ' teamMatches');
-    console.log('Created ' + Database.data.results.length + ' userResults');
-    console.log('Created ' + Database.data.slots.length + ' slots');
+    console.log('Created ' + this.data.divisions.length + ' divisions');
+    console.log('Created ' + this.data.seasons.length + ' seasons');
+    console.log('Created ' + this.data.teams.length + ' teams');
+    console.log('Created ' + this.data.users.length + ' users');
+    console.log('Created ' + this.data.teamMatches.length + ' teamMatches');
+    console.log('Created ' + this.data.results.length + ' userResults');
+    console.log('Created ' + this.data.slots.length + ' slots');
 
-    Database.loading  = false;
-    Database.loaded = true;
+    this.loading  = false;
+    this.loaded = true;
 };
 
-Database.init = function(data) {
-    Database.loading = true;
-    Database.loaded = false;
-    Database.data = resetData();
-    Database.processData(data);
+Database.prototype.init = function(data) {
+    this.loading = true;
+    this.loaded = false;
+    this.data = resetData();
+    this.processData(data);
     //Database.loaded = true;
 };
 
-function Database() {
+Database.prototype.getDivisions =  function () {
+        return this.data.divisions;
+};
+Database.prototype.getTeams = function () {
+        return this.data.teams;
+};
+Database.prototype.getSeasons= function () {
+    return this.data.seasons;
+};
+Database.prototype.getUsers= function () {
+    return this.data.users;
+};
+Database.prototype.getResults= function () {
+    return this.data.results;
+};
+Database.prototype.getTeamMatches= function () {
+    return this.data.teamMatches;
+};
+Database.prototype.getSlots= function () {
+    return this.data.slots;
 };
 
-Database.getDivisions =  function () {
-        return Database.data.divisions;
-};
-Database.getTeams = function () {
-        return Database.data.teams;
-};
-Database.getSeasons= function () {
-    return Database.data.seasons;
-};
-Database.getUsers= function () {
-    return Database.data.users;
-};
-Database.getResults= function () {
-    return Database.data.results;
-};
-Database.getTeamMatches= function () {
-    return Database.data.teamMatches;
-};
-Database.getSlots= function () {
-    return Database.data.slots;
-};
-
-Database.isLoading= function () {
-    return Database.loading;
-};
-Database.isLoaded= function () {
-    return Database.loaded;
-};
-
-Database.replaceUser= function (user) {
-    for (var i = 0; i < Database.data.users.length; i++) {
-        if (Database.data.users[i].id == user.userId) {
-            Database.processUser(Database.data.users[i], user);
+Database.prototype.replaceUser= function (user) {
+    for (var i = 0; i < this.data.users.length; i++) {
+        if (this.data.users[i].id == user.userId) {
+            this.processUser(this.data.users[i], user);
             return;
         }
     }

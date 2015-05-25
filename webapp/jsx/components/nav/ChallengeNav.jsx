@@ -86,8 +86,6 @@ var ChallengeNav = React.createClass({
             return null;
         }
         if (!u.isChallenge()) {
-
-            debugger;
             return (
                 <div className="challengeStatusMenu">
                     <Panel expanded={false} defaultExpanded={false} className='challengePanelStatus' header={null} eventKey='1' >
