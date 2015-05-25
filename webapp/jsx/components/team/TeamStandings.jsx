@@ -51,10 +51,13 @@ var TeamStandings = React.createClass({
                     {ColumnHelper.hc(this.getParams().seasonId)}
                     {ColumnHelper.wins()}
                     {ColumnHelper.loses()}
-                    {ColumnHelper.racksFor()}
-                    {ColumnHelper.racksAgainst()}
+                    {ColumnHelper.racksForStat()}
+                    {ColumnHelper.racksAgainstStat()}
                 </Table>
         );
+        //
+
+
     }
 });
 

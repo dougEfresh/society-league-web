@@ -156,15 +156,12 @@ var TeamResults = React.createClass({
              width={500}
              height={500}
              headerHeight={30}>
-
-             {ColumnHelper.date()}
              {ColumnHelper.user(team)}
              {ColumnHelper.opponent(team)}
              {ColumnHelper.opponentHandicap(team)}
-             {ColumnHelper.winLost(team)}
-             {ColumnHelper.racksFor(team)}
-             {ColumnHelper.racksAgainst(team)}
-
+             {ColumnHelper.winLostTeam(team)}
+             {ColumnHelper.racksForTeamMember(team)}
+             {ColumnHelper.racksAgainstTeamMember(team)}
          </Table>
         );
     }

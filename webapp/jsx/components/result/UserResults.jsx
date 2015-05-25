@@ -33,9 +33,9 @@ var UserResults = React.createClass({
                     {ColumnHelper.date()}
                     {ColumnHelper.opponent(this.getUser())}
                     {ColumnHelper.opponentHandicap(this.getUser())}
-                    {ColumnHelper.winLost(this.getUser())}
-                    {ColumnHelper.racksFor(this.getUser())}
-                    {ColumnHelper.racksAgainst(this.getUser())}
+                    {ColumnHelper.winLostUser(this.getUser())}
+                    {ColumnHelper.racksForUser(this.getUser())}
+                    {ColumnHelper.racksAgainstUser(this.getUser())}
                 </Table>
         );
  }

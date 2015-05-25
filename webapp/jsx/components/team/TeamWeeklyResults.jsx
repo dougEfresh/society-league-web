@@ -101,9 +101,9 @@ var TeamWeeklyResults = React.createClass({
                     headerHeight={30}>
                     {ColumnHelper.date()}
                     {ColumnHelper.opponentTeam(team,this.getParams().seasonId)}
-                    {ColumnHelper.winLost(team)}
-                    {ColumnHelper.racksFor(team)}
-                    {ColumnHelper.racksAgainst(team)}
+                    {ColumnHelper.winLostTeamMatch(team)}
+                    {ColumnHelper.racksForTeamMember(team)}
+                    {ColumnHelper.racksAgainstTeamMember(team)}
                 </Table>
           );
     }

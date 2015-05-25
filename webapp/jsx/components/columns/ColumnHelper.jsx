@@ -10,9 +10,9 @@ var TeamStat  = require('../../../lib/TeamStat');
 var User  = require('../../../lib/User');
 var Result = require('../../../lib/Result');
 var TeamMatch = require('../../../lib/TeamMatch');
-var Config = {
 
-};
+var RackColumnHelper = require('./RackColumnHelper.jsx');
+var WinLostColumnHelper = require('./WinLostColumnHelper.jsx');
 
 var renderName = function(cellData){
     if (cellData == undefined || cellData == null) {
@@ -203,110 +203,12 @@ var wins = function() {
     );
 };
 
-var winLost = function(userOrTeam) {
-    var renderCell = function(cellKey,result) {
-        //Could be
-        try {
-            if (result instanceof Result && userOrTeam instanceof User) {
-                return result.isWinner(userOrTeam) ? 'W' : 'L';
-            }
-            if (result instanceof Result && userOrTeam instanceof Team) {
-                return result.winnersTeam.id == userOrTeam.id ? 'W' : 'L';
-            }
-            if (result instanceof TeamMatch) {
-                return result.isWinner(userOrTeam) ? 'W' :'L';
-            }
-        } catch(e){
-            console.log(e);
-        }
-        return 'N/A';
-    };
-    return (
-        <Column
-            label={'W/L'}
-            cellClassName="win-lost"
-            width={35}
-            dataKey={'wl'}
-            cellDataGetter={renderCell}
-            />
-    );
-};
 
-var racksFor = function(userOrTeam) {
-    var render = function(cellKey,result) {
-        try {
-            if (result instanceof UsersStat) {
-                return result.stat.racksFor;
-            }
-            if (result instanceof Result && userOrTeam instanceof Team) {
-                return result.getRacks(userOrTeam.id == result.winnersTeam.id ? result.winner : result.loser);
-            }
-            if (result instanceof Result && userOrTeam instanceof User) {
-                return result.getRacks(user);
-            }
-            if (result instanceof TeamMatch) {
-                return result.getRacks(userOrTeam);
-            }
-        } catch(e) {
-            console.warn(e);
-        }
-        return 0;
-    };
-    return (
-            <Column
-                label={'RW'}
-                cellClassName="racks"
-                width={50}
-                dataKey={'racksFor'}
-                cellDataGetter={render}
-                />
-        );
-};
-
-var racksAgainst = function(userOrTeam) {
-    var renderCell = function(cellKey,result) {
-         try {
-            if (result instanceof UsersStat) {
-                return result.stat.racksAgainst;
-            }
-             if (result instanceof Result && userOrTeam instanceof Team) {
-                 return result.getOpponentRacks(userOrTeam.id == result.winnersTeam.id ? result.loser : result.winner);
-             }
-            if (result instanceof Result) {
-                var user = _findUser(userOrTeam,result);
-                return result.getOpponentRacks(user);
-            }
-             if (result instanceof TeamMatch) {
-                 return result.getOpponentRacks(userOrTeam);
-             }
-         } catch(e) {
-            console.warn(e);
-        }
-        return 0;
-    };
-    return (
-            <Column
-                label={'RL'}
-                cellClassName="racks"
-                width={50}
-                dataKey={'racksAgainst'}
-                cellDataGetter={renderCell}
-                />
-        );
-};
-
-function _findUser(userOrTeam,result){
-    var user = userOrTeam;
-    if (userOrTeam instanceof Team) {
-        user = result.winnersTeam.id == userOrTeam.id ? m.winner : m.loser;
-    }
-    return user;
-};
 
 module.exports = {
-    winLost: winLost,
-    racksFor: racksFor,
-    racksAgainst: racksAgainst,
+    winLostUser : WinLostColumnHelper.winLostUser,
+    winLostTeamMatch : WinLostColumnHelper.winLostTeamMatch,
+    winLostTeam : WinLostColumnHelper.winLostTeam,
     hc: hc,
     date: date,
     season: season,
@@ -317,5 +219,11 @@ module.exports = {
     wins: wins,
     loses: loses,
     opponentTeam: opponentTeam,
-    config: Config
+    config: {},
+    racksForUser: RackColumnHelper.racksForUser,
+    racksAgainstUser: RackColumnHelper.racksAgainstUser,
+    racksAgainstTeamMember: RackColumnHelper.racksAgainstTeamMember,
+    racksForTeamMember: RackColumnHelper.racksForTeamMember,
+    racksAgainstStat: RackColumnHelper.racksAgainstStat,
+    racksForStat: RackColumnHelper.racksForStat
 };
