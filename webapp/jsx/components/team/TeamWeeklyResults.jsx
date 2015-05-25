@@ -21,59 +21,8 @@ var ColumnConfig = require('../columns/ColumnConfig.jsx');
 
 var TeamWeeklyResults = React.createClass({
     mixins: [UserContextMixin,TeamMixin,SeasonMixin,Router.State,Router.Navigation],
-     getInitialState: function() {
-        return {
-            isModalOpen: false,
-            teamMatchId: 0,
-            showResults: false
-        };
-    },
-    handleToggle: function(e,id) {
-        if (e != undefined && e != null) {
-            this.setState({
-                isModalOpen: !this.state.isModalOpen,
-                teamMatchId: e.target.id == undefined || e.target.id == "" ? 0 : e.target.id
-            });
-        } else {
-             this.setState({
-                isModalOpen: !this.state.isModalOpen
-            });
-        }
-    },
-    renderOverlay: function () {
-        if (!this.state.isModalOpen) {
-            return <span/>;
-        }
-        return (
-             <Modal className="resultsModal" bsStyle={'success'} title={'Results'} onRequestHide={this.handleToggle}>
-                 <div className='modal-body'>
-                     <TeamResult teamId={this.getParams().teamId} seasonId={this.getParams().seasonId} teamMatchId={this.state.teamMatchId} />
-                 </div>
-                 <div className='modal-footer'>
-                     <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
-                 </div>
-            </Modal>
-        );
-    },
     componentWillReceiveProps: function(n,o) {
-        console.log(JSON.stringify(this.getQuery()));
-        this.setState({query: this.getQuery()});
-    },
-    toggleResults: function() {
-        var query = this.getQuery();
-        if (query.results == undefined) {
-            query.results = 'true';
-            this.transitionTo('team',this.getParams(),query);
-            return;
-        }
-        if (query.results == 'true') {
-            query.results = 'false';
-            this.transitionTo('team',this.getParams(),query);
-            return;
-        }
-        query.results = 'true';
-        console.log(query);
-        this.transitionTo('team',this.getParams(),query);
+    
     },
     render: function() {
         var seasonMatches = this.getSeasonMatches(this.getParams().seasonId);
