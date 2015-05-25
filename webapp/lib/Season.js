@@ -23,6 +23,9 @@ Season.prototype.isNine = function() {
     return this.division.isNine();
 };
 
-Season.prototype.getDisplayName = function () { return this.name ; };
+Season.prototype.getDisplayName = function () {
+    var name = this.name.split(',');
+    return name[0].replace('20',"'") + ' ' +  name[1] + ' ' + name[2];
+};
 
 module.exports = Season;

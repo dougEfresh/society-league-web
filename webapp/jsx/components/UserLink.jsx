@@ -19,7 +19,7 @@ var UserLink = React.createClass({
         return this.props.user.sName();
     },
     render: function() {
-        if (this.props.user == null) {
+        if (this.props.user == null || !(this.props.user instanceof Object)) {
             return null;
         }
         return (

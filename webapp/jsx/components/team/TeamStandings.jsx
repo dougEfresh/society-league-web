@@ -10,56 +10,30 @@ var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var UserLink = require('../UserLink.jsx');
 var Stat = require('../../../lib/Stat');
+var UsersStat = require('../../../lib/UsersStat');
+var ColumnHelper = require('../columns/ColumnHelper.jsx');
 
 var TeamStandings = React.createClass({
     mixins: [TeamMixin,SeasonMixin,UserContextMixin,Router.State],
     render: function() {
-
         var team = this.getTeam(this.getParams().teamId);
         var stats = team.getStats(this.getParams().seasonId);
         var users = team.getMembers(this.getParams().seasonId);
-        var teamHeader = 'Team' ;
-        var teamRow = [];
         var rowGetter = function(rowIndex) {
             return teamData[rowIndex];
         };
-        var renderName = function(cellData){
-            if (cellData == undefined || cellData == null) {
-                return null;
-            }
-            if (cellData == teamHeader) {
-                return <b>{cellData}</b>
-            }
-            return (<UserLink user={cellData} />)
-        };
         var teamData = [];
-        teamData.push({
-            user: teamHeader,
-            wins: stats.wins,
-            loses: stats.loses,
-            racksFor: stats.racksFor,
-            racksAgainst: stats.racksAgainst,
-            handicap : ""
-        })
-        var i = 0;
-        var userStats = [];
+        //Create a fake user with a name of 'team'
+        teamData.push(new UsersStat('team',stats));
+        var usersStat = [];
         users.forEach(function(u) {
-            userStats.push({user: u,
-                stats: u.getSeasonStats(this.getParams().seasonId),
-            });
+            usersStat.push(new UsersStat(u,u.getSeasonStats(this.getParams().seasonId)));
         }.bind(this));
-        userStats = userStats.sort(function(a,b) {
-            return Stat.sortAsc(a.stats,b.stats);
+        usersStat = usersStat.sort(function(a,b) {
+            return Stat.sortAsc(a.stat,b.stat);
         });
-        userStats.forEach(function(us){
-            teamData.push({
-                user: us.user ,
-                wins: us.stats.wins,
-                loses: us.stats.loses,
-                racksFor: us.stats.racksFor,
-                racksAgainst: us.stats.racksAgainst,
-                handicap:  us.user.getCurrentHandicap(this.getParams().seasonId)
-            })
+        usersStat.forEach(function(us){
+            teamData.push(us);
         }.bind(this));
 
         return (
@@ -69,49 +43,23 @@ var TeamStandings = React.createClass({
                     headerHeight={30}
                     rowGetter={rowGetter}
                     rowsCount={teamData.length}
-                    width={500}
+                    width={300}
                     height={500}
                     headerHeight={30}>
                     <Column
                         label=""
                         width={90}
                         dataKey={'user'}
-                        cellRenderer={renderName}
+                        cellRenderer={ColumnHelper.name}
                         />
-                    <Column
-                        label="HC"
-                        width={50}
-                        dataKey={'handicap'}
-                        />
-                    <Column
-                        label="W"
-                        width={50}
-                        dataKey={'wins'}
-                        />
-                    <Column
-                            label="L"
-                            width={35}
-                            //cellRenderer={renderName}
-                            dataKey={'loses'}
-                            isResizable={false}
-                            //cellDataGetter={renderCell}
-                        />
-                    <Column
-                        label="RW"
-                        width={35}
-                        dataKey={'racksFor'}
-                        isResizable={false}
-                        />
-                    <Column
-                        label="RL"
-                        width={35}
-                        dataKey={'racksAgainst'}
-                        isResizable={false}
-                        />
+                    {ColumnHelper.hc(this.getParams().seasonId)}
+                    {ColumnHelper.wins()}
+                    {ColumnHelper.loses()}
+                    {ColumnHelper.racksFor()}
+                    {ColumnHelper.racksAgainst()}
                 </Table>
         );
     }
 });
-
 
 module.exports = TeamStandings;

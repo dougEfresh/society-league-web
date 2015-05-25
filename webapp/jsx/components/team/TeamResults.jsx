@@ -38,6 +38,7 @@ var ResultMixin = require('../../mixins/ResultMixin.jsx');
 var UserLink = require('../UserLink.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var firstBy = require('../../FirstBy.jsx');
+var ColumnHelper = require('../columns/ColumnHelper.jsx');
 
 var sortDateFn = function(a,b) {
     return b.getMatchDate().localeCompare(a.getMatchDate());
@@ -171,36 +172,23 @@ var TeamResults = React.createClass({
 
          return (
          <Table
-         groupHeaderHeight={30}
-         rowHeight={50}
-         headerHeight={30}
-         rowGetter={rowGetter}
-         rowsCount={rows.length}
-         width={500}
-         height={500}
-         headerHeight={30}>
+             groupHeaderHeight={30}
+             rowHeight={50}
+             headerHeight={30}
+             rowGetter={rowGetter}
+             rowsCount={rows.length}
+             width={500}
+             height={500}
+             headerHeight={30}>
              <Column
                  label="Date"
                  width={60}
                  dataKey={'date'}
                  />
              <Column
-                 label="Name"
-                 width={90}
-                 dataKey={'user'}
-                 cellRenderer={renderName}
-         />
-
-         <Column
-         label="Opponent"
-         width={90}
-         dataKey={'opponent'}
-         cellRenderer={renderName}
-         />
-         <Column
          label="HC"
          width={40}
-         dataKey={'handicap'}
+         dataKey={'handfunctionicap'}
          />
          <Column
          label="W"
@@ -243,7 +231,7 @@ var Footer = React.createClass({
         e.preventDefault();
         var q = this.getQuery();
         var page = this.props.page;
-        if (page.num <= 0) {
+        if (page.num <= 0) {win
             return;
         }
         page.num = page.num-1;
@@ -261,8 +249,8 @@ var Footer = React.createClass({
     },
     render: function() {
         return (
-                <Pager>
-                    <PageItem disabled={this.props.page.num == 0} previous onClick={this.prev} href='#'>&larr; Previous</PageItem>
+                <Pager>x
+                    <PageItem disabled={this.props.page.num == 0} pwinrevious onClick={this.prev} href='#'>&larr; Previous</PageItem>
                     <PageItem disabled={this.props.last} next onClick={this.next} href='#'>Next &rarr; </PageItem>
                 </Pager>
         )

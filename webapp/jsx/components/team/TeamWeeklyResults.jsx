@@ -15,7 +15,7 @@ var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var TeamResult= require('../TeamResult.jsx');
 var TeamResults = require('./TeamResults.jsx');
-var ColumnHelper = require('../columns/WinLostColumn.jsx');
+var ColumnHelper = require('../columns/ColumnHelper.jsx');
 
 var TeamWeeklyResults = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,OverlayMixin,Router.State,Router.Navigation],
@@ -124,8 +124,8 @@ var TeamWeeklyResults = React.createClass({
                     match: r,
                     team: opponent,
                     result: result,
-                    rw: rw,
-                    rl: rl
+                    racksFor: rw,
+                    racksAgainst: rl
                 }
             )
         }.bind(this));
@@ -169,11 +169,12 @@ var TeamWeeklyResults = React.createClass({
                         align={'center'}
                         cellRenderer={renderTeam}
                         />
-                    {ColumnHelper.winLostColumn('W/L','result')}
-                    {ColumnHelper.racksFor('RW')}
-                    {ColumnHelper.racksAgainst('RL')}
                 </Table>
-        );
+              //{ColumnHelper.winLost()}
+              ///{ColumnHelper.racksFor('RW')}
+              //{ColumnHelper.racksAgainst('RL')}
+
+          );
     }
 });
 
