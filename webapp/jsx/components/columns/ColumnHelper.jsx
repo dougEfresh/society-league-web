@@ -13,6 +13,10 @@ var TeamMatch = require('../../../lib/TeamMatch');
 var RackColumnHelper = require('./RackColumnHelper.jsx');
 var WinLostColumnHelper = require('./WinLostColumnHelper.jsx');
 var ColumnConfig = require('./ColumnConfig.jsx');
+var Router = require('react-router');
+var Bootstrap = require('react-bootstrap');
+var Link = Router.Link;
+var Button = Bootstrap.Button;
 
 var renderName = function(cellData){
     if (cellData == undefined || cellData == null) {
@@ -68,6 +72,7 @@ var user = function(team) {
           <Column
               label="Player"
               width={ColumnConfig.name.width}
+              align={ColumnConfig.name.align}
               cellRenderer={renderName}
               dataKey={'user'}
               isResizable={false}
@@ -87,6 +92,7 @@ var opponentTeam = function(team,seasonId) {
           <Column
               label="Opponent"
               width={ColumnConfig.name.width}
+              align={ColumnConfig.name.align}
               cellRenderer={renderTeamName}
               dataKey={'opponentTeam'}
               isResizable={false}
@@ -112,6 +118,7 @@ var opponent = function(userOrTeam) {
           <Column
               label="Opponent"
               width={ColumnConfig.name.width}
+              align={ColumnConfig.name.align}
               cellRenderer={renderName}
               dataKey={'opponent'}
               isResizable={false}
@@ -148,6 +155,26 @@ var date = function() {
     };
     return (
     <Column
+        cellDataGetter={renderCell}
+        label="Date"
+        width={ColumnConfig.date.width}
+        dataKey={'date'}
+        />
+    );
+};
+
+
+var dateMatch = function(teamId,seasonId) {
+    var renderCell = function(cellKey,data) {
+        return data;
+    };
+    var renderLink = function(cellData) {
+        return (<Link to="teamMatchResult" params={{teamId: teamId,seasonId:seasonId,teamMatchId:cellData.teamMatchId}} >
+            <Button bsStyle={'primary'} bsSize='xsmall' >{cellData.getShortMatchDate()}</Button> </Link>);
+    };
+    return (
+    <Column
+        cellRenderer={renderLink}
         cellDataGetter={renderCell}
         label="Date"
         width={ColumnConfig.date.width}
@@ -211,6 +238,7 @@ module.exports = {
     winLostTeam : WinLostColumnHelper.winLostTeam,
     hc: hc,
     date: date,
+    dateMatch: dateMatch,
     season: season,
     opponent: opponent,
     opponentHandicap: opponentHandicap,
@@ -224,6 +252,8 @@ module.exports = {
     racksAgainstUser: RackColumnHelper.racksAgainstUser,
     racksAgainstTeamMember: RackColumnHelper.racksAgainstTeamMember,
     racksForTeamMember: RackColumnHelper.racksForTeamMember,
+    racksAgainstTeam: RackColumnHelper.racksAgainstTeam,
+    racksForTeam: RackColumnHelper.racksForTeam,
     racksAgainstStat: RackColumnHelper.racksAgainstStat,
     racksForStat: RackColumnHelper.racksForStat
 };

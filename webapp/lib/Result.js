@@ -142,6 +142,24 @@ Result.prototype.getRacks = function(user) {
     }
     return this.loserRacks;
 };
+Result.prototype.getRacksTeamMember = function(team) {
+    if (team == undefined || team == null) {
+        return undefined;
+    }
+    if (this.winnersTeam.id == team.id) {
+        return this.winnerRacks;
+    }
+    return this.loserRacks;
+};
 
+Result.prototype.getOpponentRacksTeamMember = function(team) {
+    if (team == undefined || team == null) {
+        return undefined;
+    }
+    if (this.winnersTeam.id == team.id) {
+        return this.loserRacks;
+    }
+    return this.winnerRacks;
+};
 
 module.exports = Result;

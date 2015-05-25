@@ -49,9 +49,9 @@ var racksTeamMember = function(type,team) {
         try {
             if (result instanceof Result && team instanceof Team) {
                 if (type == 'racksFor')
-                    return result.getRacks(team.id == result.winnersTeam.id ? result.winner : result.loser);
+                    return result.getRacksTeamMember(team);
 
-                return result.getOpponentRacks(team.id == result.winnersTeam.id ? result.loser : result.winner);
+                return result.getOpponentRacksTeamMember(team);
             }
         } catch(e) {
             console.warn(e);
@@ -61,11 +61,35 @@ var racksTeamMember = function(type,team) {
     return renderRackColumn(type,render);
 };
 var racksAgainstTeamMember = function(team) {
-    return racksTeamMember('racksFor',team);
+    return racksTeamMember('racksAgainst',team);
 };
 var racksForTeamMember = function(team) {
     return racksTeamMember('racksFor',team);
 };
+
+var racksTeam = function(type,team) {
+    var render = function(cellKey,result) {
+        try {
+            if (result instanceof TeamMatch && team instanceof Team) {
+                if (type == 'racksFor')
+                    return result.getRacks(team);
+
+                return result.getOpponentRacks(team);
+            }
+        } catch(e) {
+            console.warn(e);
+        }
+        return 0;
+    };
+    return renderRackColumn(type,render);
+};
+var racksAgainstTeam = function(team) {
+    return racksTeam('racksAgainst',team);
+};
+var racksForTeam = function(team) {
+    return racksTeam('racksFor',team);
+};
+
 
 var racksUser = function(type,user) {
     var render = function(cellKey,result) {
@@ -97,5 +121,7 @@ module.exports = {
     racksAgainstTeamMember: racksAgainstTeamMember,
     racksForTeamMember: racksForTeamMember,
     racksAgainstStat: racksAgainstStat,
-    racksForStat: racksForStat
+    racksForStat: racksForStat,
+    racksAgainstTeam: racksAgainstTeam,
+    racksForTeam: racksForTeam
 };

@@ -13,6 +13,7 @@ var Stat = require('../../../lib/Stat');
 var UsersStat = require('../../../lib/UsersStat');
 var TeamStat = require('../../../lib/TeamStat');
 var ColumnHelper = require('../columns/ColumnHelper.jsx');
+var ColumnConfig = require('../columns/ColumnConfig.jsx');
 
 var TeamStandings = React.createClass({
     mixins: [TeamMixin,SeasonMixin,UserContextMixin,Router.State],
@@ -36,7 +37,13 @@ var TeamStandings = React.createClass({
         usersStat.forEach(function(us){
             teamData.push(us);
         }.bind(this));
-
+        var width = ColumnConfig.name.width +
+            ColumnConfig.handicap.width +
+            ColumnConfig.wins.width +
+            ColumnConfig.wins.width +
+            ColumnConfig.racksFor.width +
+            ColumnConfig.racksAgainst.width +
+                1;
         return (
                 <Table
                     groupHeaderHeight={30}
@@ -44,8 +51,8 @@ var TeamStandings = React.createClass({
                     headerHeight={30}
                     rowGetter={rowGetter}
                     rowsCount={teamData.length}
-                    width={300}
-                    height={500}
+                    width={width}
+                    maxHeight={500}
                     headerHeight={30}>
                     {ColumnHelper.user()}
                     {ColumnHelper.hc(this.getParams().seasonId)}

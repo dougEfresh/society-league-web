@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var Router = require('react-router');
+var Link = Router.Link;
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel
@@ -31,7 +32,7 @@ var HomeApp = React.createClass({
         var welcome = <span id="welcome-name">{'Welcome ' + this.getUser().fName + ' '}</span>;
         var button = null;
         if (this.getUser().isChallenge()) {
-            button = <Button responsive={true}> <Glyphicon glyph="flash" /> <b>Request</b></Button>
+            button = <Link to="request"><Button responsive={true}> <Glyphicon glyph="flash" /> <b>Request</b></Button> </Link>
         }
         return (
             <div id="homeApp">

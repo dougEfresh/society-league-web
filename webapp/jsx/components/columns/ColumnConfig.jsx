@@ -1,11 +1,12 @@
 module.exports  = {
-    racksFor : {width: 50},
-    racksAgainst : {width: 50},
-    handicap : {width: 50},
-    wins : {width: 50},
-    loses : {width: 50},
-    winLost : {width: 50},
-    name: {width: 150},
+    racksFor : {width: 40},
+    racksAgainst : {width: 40},
+    handicap : {width: 40},
+    wins : {width: 40},
+    loses : {width: 40},
+    winLost : {width: 40},
+    name: {width: 100, align: 'center'},
     season: {width: 150},
-    date: {width: 60}
+    date: {width: 60},
+    dateMatch: {width: 90}
 };

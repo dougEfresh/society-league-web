@@ -17,9 +17,10 @@ var TeamLink = require('../TeamLink.jsx');
 var TeamResult= require('../TeamResult.jsx');
 var TeamResults = require('./TeamResults.jsx');
 var ColumnHelper = require('../columns/ColumnHelper.jsx');
+var ColumnConfig = require('../columns/ColumnConfig.jsx');
 
 var TeamWeeklyResults = React.createClass({
-    mixins: [UserContextMixin,TeamMixin,SeasonMixin,OverlayMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin,TeamMixin,SeasonMixin,Router.State,Router.Navigation],
      getInitialState: function() {
         return {
             isModalOpen: false,
@@ -89,6 +90,13 @@ var TeamWeeklyResults = React.createClass({
             return matches[index];
         };
         var team = this.getTeam(this.getParams().teamId);
+        var width = ColumnConfig.dateMatch.width +
+            ColumnConfig.name.width +
+            ColumnConfig.winLost.width +
+            ColumnConfig.racksFor.width +
+            ColumnConfig.racksAgainst.width +
+            2;
+
         return (
                 <Table
                     groupHeaderHeight={30}
@@ -96,14 +104,14 @@ var TeamWeeklyResults = React.createClass({
                     headerHeight={30}
                     rowGetter={rowGetter}
                     rowsCount={matches.length}
-                    width={500}
-                    height={500}
+                    width={width}
+                    maxHeight={500}
                     headerHeight={30}>
-                    {ColumnHelper.date()}
+                    {ColumnHelper.dateMatch(this.getParams().teamId,this.getParams().seasonId)}
                     {ColumnHelper.opponentTeam(team,this.getParams().seasonId)}
                     {ColumnHelper.winLostTeamMatch(team)}
-                    {ColumnHelper.racksForTeamMember(team)}
-                    {ColumnHelper.racksAgainstTeamMember(team)}
+                    {ColumnHelper.racksForTeam(team)}
+                    {ColumnHelper.racksAgainstTeam(team)}
                 </Table>
           );
     }
