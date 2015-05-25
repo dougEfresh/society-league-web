@@ -39,6 +39,7 @@ var UserLink = require('../UserLink.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var firstBy = require('../../FirstBy.jsx');
 var ColumnHelper = require('../columns/ColumnHelper.jsx');
+var ColumnConfig = require('../columns/ColumnConfig.jsx');
 
 var sortDateFn = function(a,b) {
     return b.getMatchDate().localeCompare(a.getMatchDate());
@@ -134,7 +135,7 @@ var TeamResults = React.createClass({
         if (this.state.page.size >= results.length) {
             pageMatches = results;
         } else {
-            for (var i = start; i < results.length && i < end; i++) {
+            for (var i = start; i < results.length; i++) {
                 pageMatches.push(results[i]);
             }
         }
@@ -146,6 +147,15 @@ var TeamResults = React.createClass({
             return rows[index];
         };
         var team = this.getTeam(this.getParams().teamId);
+        var width =
+            ColumnConfig.name.width +
+            ColumnConfig.name.width +
+            ColumnConfig.handicap.width +
+            ColumnConfig.winLost.width +
+            ColumnConfig.racksFor.width +
+            ColumnConfig.racksAgainst.width +
+            2;
+
         return (
          <Table
              groupHeaderHeight={30}
@@ -153,8 +163,8 @@ var TeamResults = React.createClass({
              headerHeight={30}
              rowGetter={rowGetter}
              rowsCount={rows.length}
-             width={500}
-             height={500}
+             width={width}
+             maxHeight={500}
              headerHeight={30}>
              {ColumnHelper.user(team)}
              {ColumnHelper.opponent(team)}

@@ -90,7 +90,8 @@ var TeamWeeklyResults = React.createClass({
             return matches[index];
         };
         var team = this.getTeam(this.getParams().teamId);
-        var width = ColumnConfig.dateMatch.width +
+        var width =
+            ColumnConfig.dateMatch.width +
             ColumnConfig.name.width +
             ColumnConfig.winLost.width +
             ColumnConfig.racksFor.width +
