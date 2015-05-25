@@ -121,7 +121,6 @@ var TeamResults = React.createClass({
         var season = this.getSeason(this.getParams().seasonId);
         var nine = season.isNine();
         var rows = [];
-        var key = 0;
         var order = firstBy(this.state.sort[this.state.firstBy].fx.bind(this));
         for (var i = 0; i < this.state.sortOrder.length; i++) {
             var type = this.state.sortOrder[i];
@@ -141,36 +140,13 @@ var TeamResults = React.createClass({
         }
 
         pageMatches.forEach(function (m) {
-            var teamMember = m.winnersTeam.id == this.getParams().teamId ? m.winner : m.loser;
-            rows.push(
-                {
-                    date: m.getShortMatchDate(),
-                    user: teamMember,
-                    opponent: m.getOpponent(teamMember),
-                    team: m.getOpponentsTeam(teamMember),
-                    win: m.isWinner(teamMember) ? 'W' : 'L',
-                    racksFor: m.getRacks(teamMember),
-                    racksAgainst: m.getOpponentRacks(teamMember),
-                    handicap: m.getHandicap(teamMember)
-                });
+            rows.push(m);
         }.bind(this));
         var rowGetter = function (index) {
             return rows[index];
         };
-        var renderName = function (cellData) {
-            if (cellData == undefined || cellData == null) {
-                return null;
-            }
-            return (<UserLink user={cellData} />);
-        };
-        var renderTeam = function (cellData) {
-            if (cellData == undefined || cellData == null) {
-                return null;
-            }
-            return (<TeamLink team={cellData}  seasonId={this.getParams().seasonId} />);
-        }.bind(this);
-
-         return (
+        var team = this.getTeam(this.getParams().teamId);
+        return (
          <Table
              groupHeaderHeight={30}
              rowHeight={50}
@@ -180,11 +156,21 @@ var TeamResults = React.createClass({
              width={500}
              height={500}
              headerHeight={30}>
-             <Column
-                 label="Date"
-                 width={60}
-                 dataKey={'date'}
-                 />
+
+             {ColumnHelper.date()}
+             {ColumnHelper.user(team)}
+             {ColumnHelper.opponent(team)}
+             {ColumnHelper.opponentHandicap(team)}
+             {ColumnHelper.winLost(team)}
+             {ColumnHelper.racksFor(team)}
+             {ColumnHelper.racksAgainst(team)}
+
+         </Table>
+        );
+    }
+});
+             /*
+
              <Column
          label="HC"
          width={40}
@@ -207,16 +193,8 @@ var TeamResults = React.createClass({
          dataKey={'racksAgainst'}
          isResizable={false}
          />
-         <Column
-         label="Team"
-         width={80}
-         dataKey={'team'}
-         cellRenderer={renderTeam}
-         />
-         </Table>
-         );
-    }
-});
+
+              */
 
 /*
 var Footer = React.createClass({

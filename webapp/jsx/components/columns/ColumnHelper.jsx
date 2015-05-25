@@ -51,13 +51,16 @@ var season = function() {
     );
 };
 
-var user = function(user) {
+var user = function(team) {
     var renderCell = function(cellKey,result) {
         if (result instanceof UsersStat) {
             return result.user;
         }
         if (result instanceof TeamStat) {
             return result.team;
+        }
+        if (result instanceof Result) {
+            return result.winnersTeam.id == team.id ? result.winner : result.loser;
         }
         return "N/A";
     };
@@ -92,10 +95,14 @@ var opponentTeam = function(team,seasonId) {
     );
 };
 
-var opponent = function(user,teamId,seasonId) {
+var opponent = function(userOrTeam) {
     var renderCell = function(cellKey,data) {
-        if (data instanceof Result) {
-            return data.getOpponent(user);
+        if (data instanceof Result && userOrTeam instanceof User) {
+            return data.getOpponent(userOrTeam);
+        }
+        if (data instanceof Result && userOrTeam instanceof Team) {
+            return (data.winnersTeam.id == userOrTeam.id) ?  data.getOpponent(data.winner)
+                : data.getOpponent(data.loser);
         }
         if (data instanceof TeamMatch) {
 
@@ -115,8 +122,14 @@ var opponent = function(user,teamId,seasonId) {
 
 var opponentHandicap = function(userOrTeam) {
     var renderCell = function(cellKey,result) {
-        var user = _findUser(userOrTeam,result);
-        return result.getOpponentHandicap(user);
+        if (result instanceof Result && userOrTeam instanceof User) {
+            return result.getOpponentHandicap(userOrTeam);
+        }
+        if (result instanceof Result && userOrTeam instanceof Team) {
+            return (result.winnersTeam.id == userOrTeam.id) ?  result.getOpponentHandicap(result.winner)
+                : result.getOpponentHandicap(result.loser);
+        }
+        return "N/A";
     };
     return (
           <Column
@@ -194,9 +207,11 @@ var winLost = function(userOrTeam) {
     var renderCell = function(cellKey,result) {
         //Could be
         try {
-            if (result instanceof Result) {
-                var user = _findUser(userOrTeam, result);
-                return result.isWinner(user) ? 'W' : 'L';
+            if (result instanceof Result && userOrTeam instanceof User) {
+                return result.isWinner(userOrTeam) ? 'W' : 'L';
+            }
+            if (result instanceof Result && userOrTeam instanceof Team) {
+                return result.winnersTeam.id == userOrTeam.id ? 'W' : 'L';
             }
             if (result instanceof TeamMatch) {
                 return result.isWinner(userOrTeam) ? 'W' :'L';
@@ -223,8 +238,10 @@ var racksFor = function(userOrTeam) {
             if (result instanceof UsersStat) {
                 return result.stat.racksFor;
             }
-            if (result instanceof Result) {
-                var user = _findUser(userOrTeam, result);
+            if (result instanceof Result && userOrTeam instanceof Team) {
+                return result.getRacks(userOrTeam.id == result.winnersTeam.id ? result.winner : result.loser);
+            }
+            if (result instanceof Result && userOrTeam instanceof User) {
                 return result.getRacks(user);
             }
             if (result instanceof TeamMatch) {
@@ -252,6 +269,9 @@ var racksAgainst = function(userOrTeam) {
             if (result instanceof UsersStat) {
                 return result.stat.racksAgainst;
             }
+             if (result instanceof Result && userOrTeam instanceof Team) {
+                 return result.getOpponentRacks(userOrTeam.id == result.winnersTeam.id ? result.loser : result.winner);
+             }
             if (result instanceof Result) {
                 var user = _findUser(userOrTeam,result);
                 return result.getOpponentRacks(user);
