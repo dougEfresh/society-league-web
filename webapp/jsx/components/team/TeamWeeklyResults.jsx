@@ -22,7 +22,7 @@ var ColumnConfig = require('../columns/ColumnConfig.jsx');
 var TeamWeeklyResults = React.createClass({
     mixins: [UserContextMixin,TeamMixin,SeasonMixin,Router.State,Router.Navigation],
     componentWillReceiveProps: function(n,o) {
-    
+
     },
     render: function() {
         var seasonMatches = this.getSeasonMatches(this.getParams().seasonId);

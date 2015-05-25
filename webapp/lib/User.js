@@ -224,6 +224,9 @@ User.prototype.reset = function(){
     this.seasons = [];
 };
 
+User.prototype.isAdmin = function() {
+    return false;
+};
 
 User.DEFAULT_USER = new User(0,'unknown','',{});
 

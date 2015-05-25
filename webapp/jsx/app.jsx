@@ -73,9 +73,10 @@ var routes = (
                 <Route name="teamWeeklyResults" path="weekly"  handler={TeamWeeklyResultsApp} />
                 <Route name="teamMatchResult" path="match/:teamMatchId"  handler={TeamMatchResult} />
             </Route>
-            <Route name="season" path="season/:seasonId"  handler={SeasonApp} />
-            <Route name="seasonLeaders" path="season/leaders/:seasonId"  handler={SeasonLeaders} />
-            <Route name="seasonResults" path="season/results/:seasonId"  handler={ResultsApp} />
+            <Route name="season" path="season/:seasonId"  handler={SeasonApp} >
+                <Route name="seasonLeaders" path="leaders"  handler={SeasonLeaders} />
+                <Route name="seasonResults" path="results"  handler={ResultsApp} />
+            </Route>
             <Route name="userResults" path="user/results/:userId"  handler={ResultsApp} />
             <Route name="challengeSignUp" path="challenge/signup"  handler={ChallengeSignUp} />
             <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={'challenge/' + ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>

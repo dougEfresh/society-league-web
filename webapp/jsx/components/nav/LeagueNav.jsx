@@ -77,7 +77,7 @@ var LeagueNav = React.createClass({
                                     <HomeNav />
                                     <TeamNav />
                                     <SeasonNav />
-                                    <li role="presentation">
+                                    <li id="stat-nav" role="presentation">
                                         <Link className='scoutNav' to='scout' params={{statsId: this.getUserId()}}>
                                             <i className="fa fa-bar-chart"><span className="main-item">{ ' Stats'}</span></i>
                                         </Link>

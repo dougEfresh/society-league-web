@@ -62,12 +62,15 @@ var SeasonNav = React.createClass({
         if (this.getUser().id == 0) {
             return null;
         }
+        var user = this.getUser();
         var seasons = [];
         var currentSeasons = this.getCurrentSeasons();
         if (currentSeasons.length == 0) {
             return null;
         }
-
+        if (!user.isAdmin()) {
+            currentSeasons = user.getCurrentSeasons();
+        }
         currentSeasons.forEach(function(t) {
             var title = "unknown";
             switch (t.division.type) {
