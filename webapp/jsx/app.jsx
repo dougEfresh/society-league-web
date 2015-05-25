@@ -68,8 +68,8 @@ var routes = (
             <Route name="team" path="team/:teamId/:seasonId" handler={TeamApp} >
                 <Route name="teamStandings" path="standings"  handler={TeamStandings} />
                 <Route name="teamChart" path="chart"  handler={TeamChart} />
-                <Route name="teamResults" path="weekly"  handler={TeamResultApp} />
-                <Route name="teamWeeklyResults" path="results"  handler={TeamWeeklyResultsApp} />
+                <Route name="teamResults" path="results"  handler={TeamResultApp} />
+                <Route name="teamWeeklyResults" path="weekly"  handler={TeamWeeklyResultsApp} />
             </Route>
             <Route name="season" path="season/:seasonId"  handler={SeasonApp} />
             <Route name="seasonLeaders" path="season/leaders/:seasonId"  handler={SeasonLeaders} />

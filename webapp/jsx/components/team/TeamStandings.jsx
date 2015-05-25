@@ -11,6 +11,7 @@ var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var UserLink = require('../UserLink.jsx');
 var Stat = require('../../../lib/Stat');
 var UsersStat = require('../../../lib/UsersStat');
+var TeamStat = require('../../../lib/TeamStat');
 var ColumnHelper = require('../columns/ColumnHelper.jsx');
 
 var TeamStandings = React.createClass({
@@ -24,7 +25,7 @@ var TeamStandings = React.createClass({
         };
         var teamData = [];
         //Create a fake user with a name of 'team'
-        teamData.push(new UsersStat('team',stats));
+        teamData.push(new TeamStat(team,stats));
         var usersStat = [];
         users.forEach(function(u) {
             usersStat.push(new UsersStat(u,u.getSeasonStats(this.getParams().seasonId)));
@@ -46,12 +47,7 @@ var TeamStandings = React.createClass({
                     width={300}
                     height={500}
                     headerHeight={30}>
-                    <Column
-                        label=""
-                        width={90}
-                        dataKey={'user'}
-                        cellRenderer={ColumnHelper.name}
-                        />
+                    {ColumnHelper.user()}
                     {ColumnHelper.hc(this.getParams().seasonId)}
                     {ColumnHelper.wins()}
                     {ColumnHelper.loses()}

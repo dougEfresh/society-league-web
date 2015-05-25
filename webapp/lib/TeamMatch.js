@@ -39,5 +39,34 @@ TeamMatch.prototype.setWinner = function(data) { this.winner = data; };
 TeamMatch.prototype.setLoser = function(data) { this.loser = data; };
 TeamMatch.prototype.setMatchDate = function(data) { this.matchDate = data; };
 
+TeamMatch.prototype.getShortMatchDate = function() { return this.matchDate.substr(5,5).replace('-','/'); };
+
+TeamMatch.prototype.isWinner = function(team) {
+    if (this.winnerRacks + this.loserRacks == 0) {
+        return false;
+    }
+    return this.winnerRacks > this.loserRacks && this.winner.id == team.id;
+};
+
+TeamMatch.prototype.getRacks = function(team) {
+    if (this.winner.id == team.id) {
+        return this.winnerRacks;
+    }
+    return this.loserRacks;
+};
+
+TeamMatch.prototype.getOpponentRacks = function(team) {
+    if (this.winner.id == team.id) {
+        return this.loserRacks;
+    }
+    return this.winnerRacks;
+};
+TeamMatch.prototype.getOpponent = function(team) {
+    if (this.winner.id == team.id) {
+        return this.loser;
+    }
+    return this.winner;
+};
+
 
 module.exports = TeamMatch;
