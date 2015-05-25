@@ -10,14 +10,15 @@ var TeamStat  = require('../../../lib/TeamStat');
 var User  = require('../../../lib/User');
 var Result = require('../../../lib/Result');
 var TeamMatch = require('../../../lib/TeamMatch');
+var ColumnConfig = require('./ColumnConfig.jsx');
 
 
 var renderRackColumn = function (type,render) {
     return (
         <Column
             label={type == 'racksFor' ? 'RW' : 'RL'}
-            cellClassName={type}
-            width={50}
+            width={ColumnConfig.racksFor.width}
+            cellClassName="racks"
             dataKey={type}
             cellDataGetter={render}
             />
@@ -83,11 +84,11 @@ var racksUser = function(type,user) {
     return renderRackColumn(type,render);
 };
 var racksForUser = function(user) {
-    racksUser('racksFor',user);
+    return racksUser('racksFor',user);
 };
 
 var racksAgainstUser = function(user) {
-    racksUser('racksAgainst',user);
+    return racksUser('racksAgainst',user);
 };
 
 module.exports = {

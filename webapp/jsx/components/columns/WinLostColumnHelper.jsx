@@ -8,14 +8,14 @@ var Team = require('../../../lib/Team');
 var User  = require('../../../lib/User');
 var Result = require('../../../lib/Result');
 var TeamMatch = require('../../../lib/TeamMatch');
-
+var ColumnConfig = require('./ColumnConfig.jsx');
 
 var renderWinLost = function(render) {
     return (
         <Column
             label={'W/L'}
             cellClassName="win-lost"
-            width={35}
+            width={ColumnConfig.winLost.width}
             dataKey={'wl'}
             cellDataGetter={render}
             />

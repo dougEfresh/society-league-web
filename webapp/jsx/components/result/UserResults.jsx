@@ -3,12 +3,14 @@ var FixedDataTable = require('fixed-data-table');
 var Table = FixedDataTable.Table;
 var Column = FixedDataTable.Column;
 var ColumnHelper = require('../columns/ColumnHelper.jsx');
+var RackColumnHelper = require('../columns/RackColumnHelper.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var ResultMixin = require('../../mixins/ResultMixin.jsx');
 var UserLink = require('../UserLink.jsx');
+var ColumnConfig = require('../columns/ColumnConfig.jsx');
 
 var UserResults = React.createClass({
     mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin],
@@ -20,6 +22,13 @@ var UserResults = React.createClass({
         var rowGetter = function(rowIndex) {
             return tableData[rowIndex];
         };
+        var width  = ColumnConfig.date.width +
+            ColumnConfig.name.width +
+            ColumnConfig.handicap.width +
+            ColumnConfig.winLost.width +
+            ColumnConfig.racksFor.width +
+            ColumnConfig.racksAgainst.width +
+                1;
         return (
                 <Table
                     groupHeaderHeight={30}
@@ -27,8 +36,8 @@ var UserResults = React.createClass({
                     headerHeight={30}
                     rowGetter={rowGetter}
                     rowsCount={tableData.length}
-                    width={600}
-                    height={500}
+                    width={width}
+                    maxHeight={500}
                     headerHeight={30}>
                     {ColumnHelper.date()}
                     {ColumnHelper.opponent(this.getUser())}
@@ -36,9 +45,12 @@ var UserResults = React.createClass({
                     {ColumnHelper.winLostUser(this.getUser())}
                     {ColumnHelper.racksForUser(this.getUser())}
                     {ColumnHelper.racksAgainstUser(this.getUser())}
+
                 </Table>
         );
- }
+        //
+
+    }
 });
 
 module.exports = UserResults;

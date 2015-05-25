@@ -10,9 +10,9 @@ var TeamStat  = require('../../../lib/TeamStat');
 var User  = require('../../../lib/User');
 var Result = require('../../../lib/Result');
 var TeamMatch = require('../../../lib/TeamMatch');
-
 var RackColumnHelper = require('./RackColumnHelper.jsx');
 var WinLostColumnHelper = require('./WinLostColumnHelper.jsx');
+var ColumnConfig = require('./ColumnConfig.jsx');
 
 var renderName = function(cellData){
     if (cellData == undefined || cellData == null) {
@@ -45,7 +45,7 @@ var season = function() {
           <Column
               cellDataGetter={renderCell}
               label="Season"
-              width={125}
+              width={ColumnConfig.season.width}
               dataKey={'season'}
               />
     );
@@ -67,9 +67,9 @@ var user = function(team) {
     return (
           <Column
               label="Player"
-              width={90}
+              width={ColumnConfig.name.width}
               cellRenderer={renderName}
-              dataKey={'opponent'}
+              dataKey={'user'}
               isResizable={false}
               cellDataGetter={renderCell}
               />
@@ -86,9 +86,9 @@ var opponentTeam = function(team,seasonId) {
     return (
           <Column
               label="Opponent"
-              width={90}
+              width={ColumnConfig.name.width}
               cellRenderer={renderTeamName}
-              dataKey={'opponent'}
+              dataKey={'opponentTeam'}
               isResizable={false}
               cellDataGetter={renderCell}
               />
@@ -111,7 +111,7 @@ var opponent = function(userOrTeam) {
     return (
           <Column
               label="Opponent"
-              width={90}
+              width={ColumnConfig.name.width}
               cellRenderer={renderName}
               dataKey={'opponent'}
               isResizable={false}
@@ -134,7 +134,7 @@ var opponentHandicap = function(userOrTeam) {
     return (
           <Column
                label="HC"
-               width={30}
+               width={ColumnConfig.handicap.width}
                dataKey={'opponentHandicap'}
                isResizable={false}
                cellDataGetter={renderCell}
@@ -150,7 +150,7 @@ var date = function() {
     <Column
         cellDataGetter={renderCell}
         label="Date"
-        width={50}
+        width={ColumnConfig.date.width}
         dataKey={'date'}
         />
     );
@@ -166,7 +166,7 @@ var hc = function(seasonId) {
     return (
         <Column
              label="HC"
-             width={30}
+             width={ColumnConfig.handicap.width}
              dataKey={'opponentHandicap'}
              cellDataGetter={renderCell}
             />
@@ -181,7 +181,7 @@ var loses = function() {
         <Column
             label={'L'}
             cellClassName="loses"
-            width={35}
+            width={ColumnConfig.loses.width}
             dataKey={'loses'}
             cellDataGetter={render}
             />
@@ -196,7 +196,7 @@ var wins = function() {
         <Column
             label={'W'}
             cellClassName="wins"
-            width={35}
+            width={ColumnConfig.wins.width}
             dataKey={'wins'}
             cellDataGetter={render}
             />
