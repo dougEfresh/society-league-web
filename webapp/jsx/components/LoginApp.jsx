@@ -7,6 +7,7 @@ var Bootstrap = require('react-bootstrap')
 
 var UserContextMixin = require('./../mixins/UserContextMixin.jsx');
 var DataStore = require('../stores/DataStore.jsx');
+var login = require('../../lib/Login');
 
 var LoginApp = React.createClass({
     mixins: [UserContextMixin],
@@ -20,11 +21,16 @@ var LoginApp = React.createClass({
         };
     },
     handleSubmit: function(e){
-        var router = this.context.router;
         e.preventDefault();
         var user = this.refs.username.getValue();
         var password = this.refs.password.getValue();
         console.log('Logging in: ' + user);
+        /*
+        login(window.location.protocol + '//' + window.location.host , user,'password', function(err,resp,body){
+            console.log(JSON.stringify(JSON.parse(body)));
+            DataStore.setUser(JSON.parse(body));
+        });
+        */
         $.ajax({
             async: true,
             processData: true,
@@ -32,7 +38,6 @@ var LoginApp = React.createClass({
             data: {username: user, password: 'password'},
             method: 'post',
             success: function (d) {
-                console.log(JSON.stringify(d));
                 DataStore.setUser(d);
                 //DataStore.init();
                 //router.transitionTo('home',null,null);
@@ -42,7 +47,6 @@ var LoginApp = React.createClass({
                 console.error('authenticate', status, err.toString());
             }.bind(this)
         });
-
     },
     render: function () {
         var button = (<Button id='submit' onClick={this.handleSubmit} >Login</Button>);

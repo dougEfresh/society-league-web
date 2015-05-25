@@ -28,7 +28,7 @@ var HomeApp = React.createClass({
         if (this.getUser().id == 0) {
             return null;
         }
-        var welcome = ' Welcome ' + this.getUser().fName + ' ';
+        var welcome = <span id="welcome-name">{'Welcome ' + this.getUser().fName + ' '}</span>;
         var button = null;
         if (this.getUser().isChallenge()) {
             button = <Button responsive={true}> <Glyphicon glyph="flash" /> <b>Request</b></Button>

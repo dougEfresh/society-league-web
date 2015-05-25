@@ -27,7 +27,7 @@ var HomeNav = React.createClass({
             active="active";
         }
         return (
-            <li role="presentation" className={active}>
+            <li id="home-nav" role="presentation" className={active}>
                 <Link className='navName' to='home'>
                     <Glyphicon glyph='home' />
                     <span className="main-item">{' ' + this.getUser().name} </span>

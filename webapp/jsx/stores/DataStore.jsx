@@ -330,6 +330,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
         return _authUserId > 0;
     },
     setUser: function(u) {
+        console.log('Setting user: '+ u.userId);
         _authUserId = u.userId;
         DataStore.emitChange();
     },

@@ -16,14 +16,10 @@ casper.test.begin('Test Home Page', function suite(test) {
     casper.then(function() {
         testlib.login();
     });
-
     casper.thenOpen(testlib.server + '/index.html#/home', function(){
     });
     casper.then(function(){
         this.waitForSelector('#appReady',function(){},testlib.notReady,testlib.timeout);
-    });
-    casper.then(function() {
-        test.assertExists('#welcome-name');
     });
 
     casper.run(function(){

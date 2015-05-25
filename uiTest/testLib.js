@@ -7,6 +7,7 @@ var width =  casper.cli.has("width") ? casper.cli.get("width") : 1028;
 var height =  casper.cli.has("height") ? casper.cli.get("height") : 768;
 var timeout = casper.cli.has("timeout") ? casper.cli.get("timeout") : 10000;
 casper.options.viewportSize = {width:width, height: height};
+
 var notReady = function() {
   this.capture('test.png');
   this.die(this.getHTML() + ' !!!!Page not ready!!!');
@@ -48,6 +49,19 @@ if (!Fp.bind) {
 }
 
 };
-casper.on('page.initialized', shim);
+//casper.on('page.initialized', shim);
 
-module.exports = {notReady: notReady, casper: casper,user: user,pass:pass,server:server,width:width, height: height, timeout: timeout};
+var login = function() {
+    casper.then(function(){
+        this.fill('form#login', {
+            'username': 'dchimento@gmail.com',
+            'password': 'password'
+        }, false);
+    });
+    casper.then(function(){
+        this.click('#submit');
+        this.waitForSelector('#appReady',function(){},testlib.notReady,testlib.timeout);
+    });
+};
+
+module.exports = {notReady: notReady, user: user,pass:pass,server:server,width:width, height: height, timeout: timeout, login: login};

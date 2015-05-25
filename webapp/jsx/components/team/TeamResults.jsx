@@ -166,32 +166,6 @@ var TeamResults = React.createClass({
         );
     }
 });
-             /*
-
-             <Column
-         label="HC"
-         width={40}
-         dataKey={'handfunctionicap'}
-         />
-         <Column
-         label="W"
-         width={35}
-         dataKey={'win'}
-         />
-         <Column
-         label="RW"
-         width={35}
-         dataKey={'racksFor'}
-         isResizable={false}
-         />
-         <Column
-         label="RL"
-         width={35}
-         dataKey={'racksAgainst'}
-         isResizable={false}
-         />
-
-              */
 
 /*
 var Footer = React.createClass({
