@@ -66,13 +66,9 @@ var DataStore = assign({}, EventEmitter.prototype, {
         return _authUserId;
     },
     replaceUser: function(user) {
-        for (var i = 0; i < db.getUsers().length; i++) {
-            if (db.getUsers().users[i].id == user.userId) {
-                //DataStore.processUser(Database.data.users[i],user);
-                DataStore.emitChange();
-                return;
-            }
-        }
+        var u = db.findUser(user.userId);
+        db.processUser(u,user);
+        DataStore.emitChange();
     },
     checkLogin: function() {
         console.log('Checking login stats');
@@ -87,14 +83,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
     challengeSignUp: function(id) {
         console.log('Signing up ' + id);
          Util.getData('/api/challenge/signup/' + id, function(d) {
-             var users = DataStore.getUsers();
-             for (var i = 0; i<users.length;i++){
-                 if (users[i].id == d.userId) {
-                     //DataStore.processUser(Database.data.users[i],d);
-                     DataStore.emitChange();
-                     break;
-                 }
-             }
+             DataStore.replaceUser(d);
         }.bind(this));
     }
 });
