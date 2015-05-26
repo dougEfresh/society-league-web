@@ -112,22 +112,20 @@ var RequestStore = assign({}, EventEmitter.prototype, {
             if (s.getDate() == date)
                 _request.slots.push(s);
         });
-        _request.anySlot = false;
-        _request.selectedSlot = 0;
         _request.selectedSlots = [];
     },
 
     anySlot: function(anySlot,slots) {
         _request.anySlot = anySlot;
-        slots.forEach(function(s) {
-            s.selected = anySlot;
-        })
-        _request.selectedSlots = [];
-        _request.slots.forEach(function(s) {
-            if (s.selected) {
-                _request.selectedSlots.push(s);
-            }
-        });
+        if (anySlot) {
+            var slots = DataStore.getSlots();
+            slots.forEach(function(s){
+                if (s.getDate() == _request.date)
+                    _request.selectedSlots.push(s);
+            });
+        } else {
+            _request.selectedSlots = [];
+        }
     },
 
     setOpponent: function(opponent) {
