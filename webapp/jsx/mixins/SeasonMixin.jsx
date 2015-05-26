@@ -16,7 +16,6 @@ var SeasonMixin = {
     getSeasonStandings: function(id) {
         var teams = DataStore.getTeams();
         var teamStandings = [];
-        var season = this.getSeason(id);
         var counter = 1;
         teams.forEach(function(t){
             var stats = t.getStats(id);

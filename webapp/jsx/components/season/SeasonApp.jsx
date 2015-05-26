@@ -57,38 +57,38 @@ var SeasonApp = React.createClass({
         console.log('onchange');
         this.setState({user: this.getUser()});
     },
-    handleClick: function(e) {
-        e.preventDefault();
-        var toggle = e.target.id;
-        if (toggle.indexOf('Leaders') >= 0) {
-            this.transitionTo('seasonLeaders',this.getParams());
-            return;
-        }
-
-        if (toggle.indexOf('Result')) {
-            this.transitionTo('seasonResults',this.getParams());
-            return;
-        }
-    },
     render: function() {
         if (this.getUserId() == 0) {
             return null;
         }
-        var header =(
-            <div>
-                <Button  id="buttonToggleLeaders" bsSize='xsmall' bsStyle={'default'}
-                        onClick={this.handleClick}><i id="toggleLeaders" className="fa fa-trophy"></i>
-                </Button>
-                <Button  id="buttonToggleResults" bsSize='xsmall' bsStyle={'default'}
-                        onClick={this.handleClick}><i id="toggleResults" className="fa fa-list-ol"></i>
-                </Button>
-            </div>
+        var header = (
+                <div style={{display: 'inline'}}>
+                    <Link to='seasonStandings' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('seasonStandings') ? 'success' : 'default'} responsize>
+                            <i className="fa fa-trophy"></i><span className="main-item">'{ ' Standings'}</span>
+                        </Button>
+                    </Link>
+                    <Link to='seasonResults' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('seasonResults') ? 'success' : 'default'} responsize>
+                            <i className="fa fa-calendar"></i><span className="main-item">'{ ' Weekly Results'}</span>
+                        </Button>
+                    </Link>
+                    <Link to='seasonLeaders' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('seasonLeaders') ? 'success' : 'default'} responsive>
+                            <i className="fa  fa-list-ol"></i><span className="main-item">'{ ' Leaders'}</span>
+                        </Button>
+                    </Link>
+                    <Link to='seasonMatches' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('seasonLeaders') ? 'success' : 'default'} responsive>
+                            <i className="fa  fa-list-ol"></i><span className="main-item">'{ ' Matches'}</span>
+                        </Button>
+                    </Link>
+                </div>
         );
         return (
-            <div id="seasonApp" className="seasonResults">
-                <Panel header={header} >
-                    <SeasonStandings seasonId={this.getParams().seasonId} />
-                    <SeasonWeeklyResults seasonId={this.getParams().seasonId}/>
+              <div id="season-app">
+                <Panel header={header}>
+                    <RouteHandler />
                 </Panel>
             </div>
         );

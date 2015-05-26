@@ -37,7 +37,7 @@ var ChallengePendingApp = React.createClass({
         var user = this.getUser();
         var challenges = user.getChallenges(Status.PENDING);
         if (challenges.length == 0) {
-            return (<Panel><div><p>You have no challenges pending</p></div></Panel>)
+            return (<Panel><div><p>You have no pending challenges</p></div></Panel>)
         }
         return (
             <div id="pendingApp">

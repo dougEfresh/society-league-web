@@ -23,28 +23,26 @@ var ChallengeRequestDate = React.createClass({
                 }
             }.bind(this)
         );
-            //Add the prop date if it isn't found
-        if (!found) {
-            dates.push(this.props.date);
-        }
         var dateOptions = [];
+        dateOptions.push(<option key={-1} value={-1}>{'Choose date'}</option>);
         dates.forEach(function(d) {
             dateOptions.push(<option key={d} value={d}>{d}</option>);
         });
+
         return dateOptions;
     },
 
     componentDidMount: function() {
         //Init the date
-        RequestActions.changeDate(Util.nextChallengeDate());
+        //RequestActions.changeDate(Util.nextChallengeDate());
     },
     onChange: function() {
         RequestActions.changeDate(this.refs.date.getValue());
     },
     render: function() {
-        if (this.props.date)
+        if (this.props.challengeGroup)
             return (
-                <Input type='select' ref='date' value={this.props.date} label={'Choose Date'} onChange={this.onChange} >{this.getOptions()}</Input>
+                <Input type='select' ref='date' value={this.props.challengeGroup.date} label={'Choose Date'} onChange={this.onChange} >{this.getOptions()}</Input>
             );
         return null;
     }

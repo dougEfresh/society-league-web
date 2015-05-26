@@ -9,61 +9,37 @@ var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,SplitButton = Bootstrap.SplitButton;
 var BallIcon = require('../../../BallMixin.jsx');
-
+var DivisionType = require('../../../../lib/DivisionType');
 var RequestActions = require('../../../actions/RequestActions.jsx');
 
 var ChallengeRequestGame = React.createClass({
     mixins: [BallIcon],
     propTypes: {
-        game: ReactPropTypes.object.isRequired
-    },
-    onChange: function() {
-        var g = this.props.game;
-        ['nine','eight'].forEach(function(type) {
-                g[type].selected = this.refs[type] ? this.refs[type].getChecked() : false;
-            }.bind(this)
-        );
-        RequestActions.setGame(g);
-    },
-    getLabel: function(type) {
-        return (<Badge>{type == 'nine' ? '9' : '8'}</Badge>);
-    },
-    getOptions: function() {
-        var options = [];
-        ['nine','eight'].forEach(function(type) {
-            if (this.props.game[type].available) {
-                options.push(
-                    <Input key={type}
-                           className={type}
-                           ref={type}
-                           type='checkbox'
-                           label={this.getLabel(type)}
-                           onChange={this.onChange}
-                        />
-                );
-            }
-        }.bind(this));
-        return options;
+        challengeGroup: ReactPropTypes.object.isRequired
     },
     onSelect: function(e) {
-        var type = e.target.textContent == '9' ? 'nine' : 'eight';
-        var g = this.props.game;
-        g[type].selected = !g[type].selected;
-        RequestActions.setGame(g);
+        var type = e.target.textContent == '9' ? DivisionType.NINE_BALL_CHALLENGE : DivisionType.EIGHT_BALL_CHALLENGE;
+        RequestActions.setGame(type)
+    },
+    isSelected: function(type) {
+        var found = false;
+        this.props.challengeGroup.selectedGames.forEach(function(g){
+            if (g == type) {
+                found = true;
+            }
+        });
+        return found;
     },
     render: function() {
-        var g = this.props.game;
-        if (!g.nine.available && !g.eight.available) {
-            return null;
-        }
-
-        var eight = this.getEightButton(g.eight.selected);
-        var nine = this.getNineButton(g.nine.selected);
 
         return (
-            <div >
-                {eight}
-                {nine}
+            <div>
+                <Button bsSize='small' bsStyle={this.isSelected(DivisionType.EIGHT_BALL_CHALLENGE) ? 'success' : 'default'} onClick={this.onSelect}>
+                    <Badge className="eight-ball">8</Badge>
+                </Button>
+                <Button bsSize='small' bsStyle={this.isSelected(DivisionType.NINE_BALL_CHALLENGE)? 'success' : 'default'} onClick={this.onSelect}>
+                   <Badge className="nine-ball">9</Badge>
+               </Button>
             </div>
         );
     }

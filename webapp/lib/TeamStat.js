@@ -8,4 +8,5 @@ function TeamStat(team,stat) {
 TeamStat.prototype.team = function() {return this.team;};
 TeamStat.prototype.stat = function() {return this.stat;};
 
+
 module.exports =  TeamStat;

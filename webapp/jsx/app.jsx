@@ -26,6 +26,7 @@ var TeamWeeklyResultsApp = require('./components/team/TeamWeeklyResults.jsx');
 var TeamMatchResult= require('./components/team/TeamMatchResult.jsx');
 var SeasonApp = require('./components/season/SeasonApp.jsx');
 var SeasonLeaders = require('./components/season/SeasonLeaders.jsx');
+var SeasonStandings = require('./components/season/SeasonStandings.jsx');
 var SeasonResults = require('./components/season/SeasonResults.jsx');
 var ResultsApp = require('./components/result/ResultApp.jsx');
 var UserResultsApp = require('./components/result/UserResults.jsx');
@@ -77,7 +78,9 @@ var routes = (
             </Route>
             <Route name="season" path="season/:seasonId"  handler={SeasonApp} >
                 <Route name="seasonLeaders" path="leaders"  handler={SeasonLeaders} />
+                <Route name="seasonStandings" path="standings"  handler={SeasonStandings} />
                 <Route name="seasonResults" path="results"  handler={ResultsApp} />
+                <Route name="seasonMatches" path="matches"  handler={ResultsApp} />
             </Route>
             <Route name="userResults" path="user/results/:userId"  handler={ResultsApp} />
             <Route name="challenge" path="challenge" handler={ChallengeApp} >

@@ -46,36 +46,19 @@ var ChallengeConfirm = React.createClass({
     },
     _onAdd: function() {
         console.log('onAdd');
-        this.setState({
-            submitted : true,
-            challenges: RequestStore.get()
-        });
-        //ChallengeActions.initChallenges(this.getUserId());
+        this.transitionTo('sent');
     },
     _onChange: function() {
         this.setState({challenge: RequestStore.get()});
     },
     render: function() {
-        if (this.state.challenge == null) {
+        if (this.state.challenge == undefined || this.state.challenge.opponent == undefined) {
             return null;
         }
-        var c = this.state.challenge;
-        var cg = new ChallengeGroup(c.challenger,c.opponent,c.date,null,null);
-        c.slots.forEach(function(s){
-            if (s.selected)
-                cg.addSlot(s)
-        });
-        if (c.game.nine.selected) {
-            cg.addGame(DivisionType.NINE_BALL_CHALLENGE)
-        }
-        if (c.game.eight.selected) {
-            cg.addGame(DivisionType.EIGHT_BALL_CHALLENGE)
-        }
-        var challengeGroups = [cg];
         return (
             <div>
                 <h2>{'Confirm Challenge'} </h2>
-                <GroupList noSelect={true} challengeGroups={challengeGroups} type='CONFIRM'/>
+                <GroupList noSelect={true} challengeGroups={[this.state.challenge]} type='CONFIRM'/>
             </div>
         );
     }

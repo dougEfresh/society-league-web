@@ -22,6 +22,7 @@ var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../../stores/ChallengeStore.jsx');
 var GroupMixin = require('./GroupListMixin.jsx');
 var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
+var DivisionType = require('../../../../lib/DivisionType');
 
 var GroupAction = React.createClass({
     mixins: [GroupMixin,Router.Navigation],
@@ -46,12 +47,36 @@ var GroupAction = React.createClass({
         this.goBack();
     },
     confirm: function() {
-
+        var opponent = { id: 0};
+        var c = this.props.challengeGroup;
+        opponent.id = c.opponent.userId;
+        var slots = [];
+        c.selectedSlots.forEach(function(s) {
+            var slot = { id: 0 };
+            slot.id = s.id;
+            slots.push(slot);
+        });
+        var nine = false;
+        var eight = false;
+        c.selectedGames.forEach(function(g){
+            if (g == DivisionType.EIGHT_BALL_CHALLENGE)
+                eight = true;
+            if (g == DivisionType.NINE_BALL_CHALLENGE)
+                nine = true;
+        });
+        var request = {
+            challenger: {id : this.getUserId()},
+            opponent: opponent,
+            nine: nine,
+            eight: eight,
+            slots: slots
+        };
+        ChallengeActions.request(request);
     },
     render: function() {
         var buttons = {
             accept:   <Button bsSize='xsmall'  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'danger' : 'success'} >Accept</Button>,
-            confirm:   <Button bsSize='xsmall' responsive onClick={this.confirm} key={'confirm'} bsStyle={'primary'} >Confirm</Button>,
+            confirm:  <Button bsSize='xsmall'  responsive onClick={this.confirm} key={'challenge'} bsStyle={'primary'} >challenge</Button>,
             deny:     <Button bsSize='xsmall'  onClick={this.cancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,

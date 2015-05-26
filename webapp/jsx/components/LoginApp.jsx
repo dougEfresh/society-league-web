@@ -22,7 +22,7 @@ var LoginApp = React.createClass({
     },
     handleSubmit: function(e){
         e.preventDefault();
-        var user = this.refs.username.getValue();
+        var user = this.refs.username.getValue().toLowerCase();
         var password = this.refs.password.getValue();
         console.log('Logging in: ' + user);
         /*

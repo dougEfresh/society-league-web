@@ -8,7 +8,7 @@ var ADD_EVENT = 'add';
 var ChallengeActions = require('../actions/ChallengeActions.jsx');
 var ChallengeGroupStore = require('./ChallengeGroupStore.jsx');
 var DataStore = require('../stores/DataStore.jsx');
-
+var ChallengeGroup = require('../../lib/ChallengeGroup');
 /**
  * Returns the default game type, which is neither 9 or 8
  * @returns object
@@ -21,14 +21,12 @@ function defaultGame() {
 }
 function defaultOpponent() {return {user: {id: 0, name: '-----'}}}
 function defaultRequest() {
-    return  {
-        date: undefined,
-        opponent: defaultOpponent(),
-        slots: [],
-        selectedSlots: [],
-        game: defaultGame(),
-        anySlot: false
-    };
+    var cg = new ChallengeGroup();
+    cg.selectedSlots = [];
+    cg.selectedGames = [];
+    cg.date = '-';
+    cg.anySlot = false;
+    return cg;
 }
 var _request = defaultRequest();
 
@@ -107,22 +105,18 @@ var RequestStore = assign({}, EventEmitter.prototype, {
     changeDate : function(date) {
         _request.date = date;
         var slots = DataStore.getSlots();
+        _request.selectedSlots = [];
         _request.slots = [];
         slots.forEach(function(s){
             if (s.getDate() == date)
                 _request.slots.push(s);
         });
-        _request.selectedSlots = [];
     },
 
-    anySlot: function(anySlot,slots) {
+    anySlot: function(anySlot) {
         _request.anySlot = anySlot;
         if (anySlot) {
-            var slots = DataStore.getSlots();
-            slots.forEach(function(s){
-                if (s.getDate() == _request.date)
-                    _request.selectedSlots.push(s);
-            });
+            _request.selectedSlots = _request.slots;
         } else {
             _request.selectedSlots = [];
         }
@@ -130,38 +124,50 @@ var RequestStore = assign({}, EventEmitter.prototype, {
 
     setOpponent: function(opponent) {
         _request.opponent = opponent;
-        var g = defaultGame();
-        //TODO FIX ME
-        //if (opponent.nineBallPlayer) {
-            g.nine.available = true;
-        //}
-        //if (opponent.eightBallPlayer) {
-            g.eight.available = true;
-        //}
-        _request.game = g;
     },
 
     setGame: function(game) {
-        _request.game.nine.selected  = game.nine.selected;
-        _request.game.eight.selected = game.eight.selected;
-    },
+        var found = false;
+        _request.selectedGames.forEach(function(g){
+            if (g == game) {
+                found = true;
+            }
+        });
+        if (found) {
+            var newGames = [];
+            _request.selectedGames.forEach(function(g){
+                if (g != game) {
+                    newGames.push(g);
+                }
+            });
+            _request.selectedGames = newGames;
+            return;
+        }
 
+        _request.selectedGames.push(game);
+    },
     get: function() {
         return _request;
     },
     
     changeSlotStatus: function(slot) {
-        _request.slots.forEach(function(s) {
-            if (s.id == slot.id) {
-                s.selected = slot.selected;
+        var newSlots = [];
+        var found = false;
+        for(var i = 0 ; i < _request.selectedSlots.length; i++) {
+            if (_request.selectedSlots[i].id == slot.id) {
+                found = true;
             }
-        });
-        _request.selectedSlots = [];
-        _request.slots.forEach(function(s) {
-            if (s.selected) {
-                _request.selectedSlots.push(s);
+        }
+        if (found) {
+            for(var i = 0 ; i < _request.selectedSlots.length; i++) {
+                if (_request.selectedSlots[i].id != slot.id) {
+                    newSlots.push(_request.selectedSlots[i]);
+                }
             }
-        });
+            _request.selectedSlots = newSlots;
+            return;
+        }
+         _request.selectedSlots.push(slot);
     }
 });
 

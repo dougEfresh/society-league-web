@@ -10,7 +10,6 @@ var Bootstrap = require('react-bootstrap')
     ,ButtonGroup = Bootstrap.ButtonGroup
     ,PanelGroup = Bootstrap.PanelGroup
     ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
     ,Nav = Bootstrap.Nav
     ,Grid = Bootstrap.Grid
     ,Row = Bootstrap.Row
@@ -19,6 +18,13 @@ var Bootstrap = require('react-bootstrap')
     ,Accordion = Bootstrap.Accordion
     ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
+
+var ColumnHelper = require('../columns/ColumnHelper.jsx');
+var ColumnConfig = require('../columns/ColumnConfig.jsx');
+
+var FixedDataTable = require('fixed-data-table');
+var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
 
 var ReactRouterBootstrap = require('react-router-bootstrap')
     ,NavItemLink = ReactRouterBootstrap.NavItemLink
@@ -31,6 +37,7 @@ var StatsMixin = require('../../mixins/StatsMixin.jsx');
 var UserLink = require('../UserLink.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var Stat =  require('../../../lib/Stat');
+var UserStat =  require('../../../lib/UsersStat');
 
 var SeasonLeaders = React.createClass({
     mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State,Router.Navigation],
@@ -77,70 +84,37 @@ var SeasonLeaders = React.createClass({
 
         var rows = [];
          users.forEach(function(u) {
-             var seasonId = this.getParams().seasonId;
-             var stat = u.getStatsForSeason(seasonId);
-             rows.push(
-                 {
-                     Name: (<UserLink user={u} seasonId={seasonId}/>),
-                     Team: (<TeamLink team={u.getTeamForSeason(seasonId)} seasonId={seasonId}/>),
-                     M: stat.matches,
-                     W: stat.wins,
-                     L: stat.loses,
-                     RW: stat.racksFor,
-                     RL: stat.racksAgainst,
-                     PCT: stat.getWinPct()
-                 }
-             );
+             rows.push(new UserStat(u,u.getStatsForSeason(this.getParams().seasonId)));
          }.bind(this));
-        var header =(
-            <div>
-                <Button  id="buttonToggleLeaders" bsSize='xsmall' bsStyle={'default'}
-                        onClick={this.handleClick}><i id="toggleTeams" className="fa fa-users"></i>
-                </Button>
-                <Button  id="buttonToggleResults" bsSize='xsmall' bsStyle={'default'}
-                        onClick={this.handleClick}><i id="toggleResults" className="fa fa-list-ol"></i>
-                </Button>
-            </div>
-        );
-        return null;
-
-        /*
-        users.forEach(function(u){
-            var seasonId = this.getParams().seasonId;
-            var stat = u.getStatsForSeason(seasonId);
-
-            rows.push(
-                <tr key={u.id}>
-                    <td><UserLink user={u} seasonId={seasonId} /></td>
-                    <td></td>
-                    <td>{stat.matches}</td>
-                    <td>{stat.wins}</td>
-                    <td>{stat.loses}</td>
-                    <td>{stat.racksFor}</td>
-                    <td>{stat.racksAgainst}</td>
-                    <td>{stat.getWinPct()}</td>
-                </tr>
-            );
-        }.bind(this));
-
+          var width =
+              ColumnConfig.name.width +
+              ColumnConfig.name.width +
+              ColumnConfig.wins.width +
+              ColumnConfig.wins.width +
+              ColumnConfig.racksFor.width +
+              ColumnConfig.racksAgainst.width +
+              1;
+        var rowGetter = function(index) {
+            return rows[index];
+        };
         return (
-            <Table>
-                <thead>
-                <th>Name</th>
-                <th>Team</th>
-                <th>M</th>
-                <th>W</th>
-                <th>L</th>
-                <th>RW</th>
-                <th>RL</th>
-                <th>Pct</th>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </Table>
+                <Table
+                    groupHeaderHeight={30}
+                    rowHeight={50}
+                    headerHeight={30}
+                    rowGetter={rowGetter}
+                    rowsCount={rows.length}
+                    width={width}
+                    maxHeight={500}
+                    headerHeight={30}>
+                    {ColumnHelper.user()}
+                    {ColumnHelper.usersTeam(this.getParams().seasonId)}
+                    {ColumnHelper.wins()}
+                    {ColumnHelper.loses()}
+                    {ColumnHelper.racksForStat()}
+                    {ColumnHelper.racksAgainstStat()}
+                </Table>
         );
-        */
     }
 });
 

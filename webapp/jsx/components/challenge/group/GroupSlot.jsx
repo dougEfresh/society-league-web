@@ -15,9 +15,16 @@ var GroupSlot = React.createClass({
     },
     renderNoSelect: function() {
         var slots = [];
-        this.props.challengeGroup.slots.forEach(function (s) {
-            slots.push(<Label key={s.id}>{s.getTime()}</Label>);
-        }.bind(this));
+        if ( this.props.challengeGroup.selectedSlots != undefined) {
+            this.props.challengeGroup.selectedSlots.forEach(function (s) {
+                slots.push(<Label key={s.id}>{s.getTime()}</Label>);
+            }.bind(this));
+        } else {
+            this.props.challengeGroup.slots.forEach(function (s) {
+                slots.push(<Label key={s.id}>{s.getTime()}</Label>);
+            }.bind(this));
+        }
+
         return slots;
     },
     renderSelectOptions: function(){

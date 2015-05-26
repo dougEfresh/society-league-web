@@ -14,13 +14,19 @@ var GroupGame = React.createClass({
     },
     renderNoSelect: function() {
         var games = [];
-        this.props.challengeGroup.games.forEach(function(g) {
-            games.push(<div key={g}>{this.getBall(g)}</div>);
-        }.bind(this));
+        if (this.props.challengeGroup.selectedGames != undefined) {
+            this.props.challengeGroup.selectedGames.forEach(function (g) {
+                games.push(<div key={g}>{this.getBall(g)}</div>);
+            }.bind(this));
+        } else {
+             this.props.challengeGroup.games.forEach(function (g) {
+                games.push(<div key={g}>{this.getBall(g)}</div>);
+            }.bind(this));
+        }
         return (<div>{games}</div>);
     },
     renderSelectOptions: function(){
-        if (this.props.challengeGroup.games.length == 1) {
+        if (this.props.challengeGroup.games != undefined && this.props.challengeGroup.games.length == 1) {
             return (<div><BallIcon type={this.props.challengeGroup.games[0]} /></div>);
         }
         var games = [];
@@ -28,7 +34,11 @@ var GroupGame = React.createClass({
         this.props.challengeGroup.games.forEach(function(g) {
             games.push(<option key={g} value={g}><BallIcon type={g}/></option>);
         }.bind(this));
-        return (<Input ref='game' onChange={this.onSelectGame} value={this.props.challengeGroup.selectedGame} type='select' >{games}</Input>);
+        return (<Input ref='game'
+                       onChange={this.onSelectGame}
+                       value={this.props.challengeGroup.selectedGame}
+                       type='select' >{games}
+        </Input>);
     },
     render: function() {
         if (this.props.noSelect)

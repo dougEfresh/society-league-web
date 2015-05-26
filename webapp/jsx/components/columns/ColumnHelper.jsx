@@ -230,7 +230,46 @@ var wins = function() {
     );
 };
 
+var team = function() {
+    var render = function(cellKey,team) {
+        if (team instanceof TeamStat) {
+            return <TeamLink team={team.team} seasonId={team.stat.season.id} />
+        }
+    };
+    return (
+        <Column
+            label={'Team'}
+            cellClassName="team"
+            width={ColumnConfig.name.width}
+            align={ColumnConfig.name.align}
+            dataKey={'team'}
+            cellRenderer={renderTeamName}
+            cellDataGetter={render}
+            />
+    );
+};
 
+var usersTeam = function(seasonId) {
+    var render = function(cellKey,user) {
+        if (user instanceof UsersStat) {
+            return <TeamLink team={user.user.getTeamForSeason(seasonId)} seasonId={seasonId} />
+        }
+        if (user instanceof User) {
+            return <TeamLink team={user.getTeamForSeason(seasonId)} seasonId={seasonId} />
+        }
+    };
+    return (
+        <Column
+            label={'Team'}
+            cellClassName="team"
+            width={ColumnConfig.name.width}
+            align={ColumnConfig.name.align}
+            dataKey={'team'}
+            cellRenderer={renderTeamName}
+            cellDataGetter={render}
+            />
+    );
+};
 
 module.exports = {
     winLostUser : WinLostColumnHelper.winLostUser,
@@ -244,6 +283,8 @@ module.exports = {
     opponentHandicap: opponentHandicap,
     name: renderName,
     user: user,
+    usersTeam: usersTeam,
+    team: team,
     wins: wins,
     loses: loses,
     opponentTeam: opponentTeam,

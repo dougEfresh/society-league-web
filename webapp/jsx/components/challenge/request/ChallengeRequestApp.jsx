@@ -67,15 +67,13 @@ var ChallengeRequestApp = React.createClass({
         }
         if (c.opponent == null || c.opponent == undefined || c.opponent.userId == 0)
             errors.push('Need an opponent');
-        if (!c.game.nine.selected && !c.game.eight.selected)
+
+        if (c.selectedGames.length == 0)
             errors.push('Please choose game type');
-        var slotChosen = false;
-        c.slots.forEach(function(s){
-            if (s.selected)
-                slotChosen = true;
-        });
-        if (!slotChosen)
-            errors.push('Please choose a time');
+
+        if (c.selectedSlots.length == 0)
+            errors.push('Please choose a slot');
+
         if (!c.date)
             errors.push('Please choose a date');
 
@@ -158,10 +156,10 @@ var ChallengeRequestApp = React.createClass({
         );
         return (
             <div id="request-app"  >
-                <ChallengeRequestDate  date={c.date} />
+                <ChallengeRequestDate  challengeGroup={c} />
                 <ChallengeRequestOpponent opponent={c.opponent} />
-                <ChallengeRequestSlots any={c.anySlot} date={c.date} slots={c.slots} />
-                <ChallengeRequestGame game={c.game} />
+                <ChallengeRequestSlots  challengeGroup={c} />
+                <ChallengeRequestGame challengeGroup={c} />
                 <div>
                 {submit}
                 </div>

@@ -12,8 +12,7 @@ var ChallengeActions = require('../../../actions/ChallengeActions.jsx');
 var ChallengeRequestSlots = React.createClass({
     mixins: [UserContextMixin],
     propTypes: {
-        slots: ReactPropTypes.array.isRequired,
-        any:  ReactPropTypes.bool.isRequired
+        challengeGroup: ReactPropTypes.object.isRequired,
     },
     getOptions: function() {
         var options = [];
@@ -23,10 +22,10 @@ var ChallengeRequestSlots = React.createClass({
         return options;
     },
     onClickAny: function() {
-        ChallengeActions.anySlot(!this.props.any,this.props.slots);
+        ChallengeActions.anySlot(!this.props.challengeGroup.anySlot);
     },
     getAnyTime: function() {
-        if (!this.props.any) {
+        if (!this.props.challengeGroup.anySlot) {
             return (
             <Button key='any' bsStyle='default' onClick={this.onClickAny}>
                 <i className="fa fa-times">
@@ -46,10 +45,19 @@ var ChallengeRequestSlots = React.createClass({
     },
     render: function() {
         var buttons = [];
+        if (this.props.challengeGroup.slots.length == 0) {
+            return null;
+        }
         buttons.push(this.getAnyTime());
-        if (!this.props.any) {
-            this.props.slots.forEach(function (s) {
-                buttons.push(<SlotButton any={this.props.any} key={s.id} slot={s}> </SlotButton>);
+        if (!this.props.challengeGroup.anySlot) {
+            this.props.challengeGroup.slots.forEach(function (s) {
+                buttons.push(
+                    <SlotButton any={this.props.challengeGroup.anySlot}
+                                key={s.id}
+                                challengeGroup={this.props.challengeGroup}
+                                slot={s}
+                        />
+                );
             }.bind(this));
         }
         return (
@@ -63,11 +71,11 @@ var ChallengeRequestSlots = React.createClass({
 var SlotButton = React.createClass({
     mixins: [UserContextMixin],
     propTypes: {
+        challengeGroup: ReactPropTypes.object.isRequired,
         slot: ReactPropTypes.object.isRequired,
         any: ReactPropTypes.bool.isRequired
     },
     onClick: function(){
-        this.props.slot.selected = !this.props.slot.selected;
         ChallengeActions.changeSlotState(this.props.slot);
     },
     render: function() {
@@ -78,7 +86,13 @@ var SlotButton = React.createClass({
                 </i>
             </Button>);
         }
-        if (!this.props.slot.selected) {
+        var found = false;
+        for(var i=0; i< this.props.challengeGroup.selectedSlots.length; i++){
+            if (this.props.challengeGroup.selectedSlots[i].id == this.props.slot.id) {
+                found = true;
+            }
+        }
+        if (!found) {
             return (
                 <Button onClick={this.onClick}>
                     <i className="fa fa-times">
