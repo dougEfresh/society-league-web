@@ -25,6 +25,7 @@ function defaultRequest() {
         date: undefined,
         opponent: defaultOpponent(),
         slots: [],
+        selectedSlots: [],
         game: defaultGame(),
         anySlot: false
     };
@@ -113,6 +114,7 @@ var RequestStore = assign({}, EventEmitter.prototype, {
         });
         _request.anySlot = false;
         _request.selectedSlot = 0;
+        _request.selectedSlots = [];
     },
 
     anySlot: function(anySlot,slots) {
@@ -120,6 +122,12 @@ var RequestStore = assign({}, EventEmitter.prototype, {
         slots.forEach(function(s) {
             s.selected = anySlot;
         })
+        _request.selectedSlots = [];
+        _request.slots.forEach(function(s) {
+            if (s.selected) {
+                _request.selectedSlots.push(s);
+            }
+        });
     },
 
     setOpponent: function(opponent) {
@@ -148,6 +156,12 @@ var RequestStore = assign({}, EventEmitter.prototype, {
         _request.slots.forEach(function(s) {
             if (s.id == slot.id) {
                 s.selected = slot.selected;
+            }
+        });
+        _request.selectedSlots = [];
+        _request.slots.forEach(function(s) {
+            if (s.selected) {
+                _request.selectedSlots.push(s);
             }
         });
     }

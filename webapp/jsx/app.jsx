@@ -30,6 +30,8 @@ var SeasonResults = require('./components/season/SeasonResults.jsx');
 var ResultsApp = require('./components/result/ResultApp.jsx');
 var UserResultsApp = require('./components/result/UserResults.jsx');
 var ChallengeSignUp = require('./components/challenge/ChallengeSignUp.jsx');
+var ChallengeConfirmApp = require('./components/challenge/ChallengeConfirmApp.jsx');
+var ChallengeApp = require('./components/challenge/ChallengeApp.jsx');
 var LoadingApp = require('./components/LoadingApp.jsx');
 var TeamChart = require('./components/team/TeamChart.jsx');
 
@@ -78,8 +80,9 @@ var routes = (
                 <Route name="seasonResults" path="results"  handler={ResultsApp} />
             </Route>
             <Route name="userResults" path="user/results/:userId"  handler={ResultsApp} />
-            <Route name="challenge" path="challenge" handler={ChallengeRequestApp} >
+            <Route name="challenge" path="challenge" handler={ChallengeApp} >
                 <Route name="challengeSignUp" path="signup"  handler={ChallengeSignUp} />
+                <Route name="challengeConfirm" path="confirm"  handler={ChallengeConfirmApp} />
                 <Route name={ChallengeStatus.REQUEST.toLowerCase()} path={ChallengeStatus.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
                 <Route name={ChallengeStatus.PENDING.toLowerCase()} path={ChallengeStatus.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
                 <Route name={ChallengeStatus.ACCEPTED.toLowerCase()} path={ChallengeStatus.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>

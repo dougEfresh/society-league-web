@@ -6,6 +6,7 @@ var Bootstrap = require('react-bootstrap')
     ,Modal = Bootstrap.Modal
     ,OverlayMixin = Bootstrap.OverlayMixin
     ,ModalTrigger = Bootstrap.ModalTrigger
+    ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
 
 var Router = require('react-router')
@@ -25,7 +26,7 @@ var DataStore = require('../../../stores/DataStore.jsx');
 var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
-    mixins: [UserContextMixin,OverlayMixin],
+    mixins: [UserContextMixin,Router.Navigation],
     getInitialState: function() {
         return {
             isModalOpen: false,
@@ -104,10 +105,9 @@ var ChallengeRequestApp = React.createClass({
         ChallengeActions.request(request);
         console.log(JSON.stringify(request));
     },
-    handleToggle: function() {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        });
+    confirm: function() {
+        this.transitionTo('challengeConfirm');
+        return;
     },
     handleClose: function() {
       this.setState({submitted: false, isModalOpen: !this.state.isModalOpen});
@@ -154,16 +154,18 @@ var ChallengeRequestApp = React.createClass({
         }
         var c = this.state.challenge;
         var submit = (
-            <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.handleToggle}>Request Challenge</Button>
+            <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.confirm}><Glyphicon glyph="flash" /> Request</Button>
         );
         return (
-            <Panel id="requestApp"  >
+            <div id="request-app"  >
                 <ChallengeRequestDate  date={c.date} />
                 <ChallengeRequestOpponent opponent={c.opponent} />
                 <ChallengeRequestSlots any={c.anySlot} date={c.date} slots={c.slots} />
                 <ChallengeRequestGame game={c.game} />
+                <div>
                 {submit}
-            </Panel>
+                </div>
+            </div>
         )
     }
 });

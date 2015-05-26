@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
+var Router = require('react-router');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Panel = Bootstrap.Panel
@@ -23,7 +24,7 @@ var GroupMixin = require('./GroupListMixin.jsx');
 var UserContextMixin = require('../../../mixins/UserContextMixin.jsx');
 
 var GroupAction = React.createClass({
-    mixins: [GroupMixin],
+    mixins: [GroupMixin,Router.Navigation],
     sendStatus: function(s) {
         var status = {
             userId: this.getUserId(),
@@ -41,14 +42,22 @@ var GroupAction = React.createClass({
     disable: function() {
         return this.props.challengeGroup.selectedGame == null || this.props.challengeGroup.selectedSlot < 1;
     },
+    backUp: function() {
+        this.goBack();
+    },
+    confirm: function() {
+
+    },
     render: function() {
         var buttons = {
             accept:   <Button bsSize='xsmall'  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'danger' : 'success'} >Accept</Button>,
+            confirm:   <Button bsSize='xsmall' responsive onClick={this.confirm} key={'confirm'} bsStyle={'primary'} >Confirm</Button>,
             deny:     <Button bsSize='xsmall'  onClick={this.cancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,
             cancel:   <Button bsSize='xsmall'  onClick={this.cancel} key={'cancel'}  bsStyle={'warning'} >Cancel</Button>,
-            calender: null //<Button disabled bsSize='xsmall'  key={'calendar'}  bsStyle={'success'} >Calendar</Button>
+            calender: null, //<Button disabled bsSize='xsmall'  key={'calendar'}  bsStyle={'success'} >Calendar</Button>
+            back: <Button bsSize='xsmall'  bsStyle={'danger'} onClick={this.backUp}>Go Back</Button>
         };
 
         var actions = null;
@@ -73,6 +82,13 @@ var GroupAction = React.createClass({
                     (<div >
                         {buttons.change}
                         {buttons.cancel}
+                    </div>);
+                break;
+             case 'CONFIRM':
+                actions =
+                    (<div >
+                        {buttons.confirm}
+                        {buttons.back}
                     </div>);
                 break;
             default:
