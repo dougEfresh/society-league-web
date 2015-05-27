@@ -24,6 +24,8 @@ Stat.prototype.racksFor = function() {return this.racksFor; };
 Stat.prototype.racksAgainst = function() {return this.racksAgainst; };
 Stat.prototype.season = function() {return this.season; };
 
+Stat.prototype.getType = function() {return this.type;};
+
 Stat.prototype.getWinPct = function() {
     if (this.matches == undefined || this.matches == 0) {
         return 0;

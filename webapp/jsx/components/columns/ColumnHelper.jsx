@@ -9,6 +9,7 @@ var UsersStat = require('../../../lib/UsersStat');
 var TeamStat  = require('../../../lib/TeamStat');
 var User  = require('../../../lib/User');
 var Result = require('../../../lib/Result');
+var UserMatch = require('../../../lib/UserMatch');
 var TeamMatch = require('../../../lib/TeamMatch');
 var RackColumnHelper = require('./RackColumnHelper.jsx');
 var WinLostColumnHelper = require('./WinLostColumnHelper.jsx');
@@ -57,6 +58,9 @@ var season = function() {
 
 var user = function(team) {
     var renderCell = function(cellKey,result) {
+        if (result instanceof UserMatch) {
+            return result.user;
+        }
         if (result instanceof UsersStat) {
             return result.user;
         }
@@ -103,6 +107,9 @@ var opponentTeam = function(team,seasonId) {
 
 var opponent = function(userOrTeam) {
     var renderCell = function(cellKey,data) {
+        if (data instanceof UserMatch) {
+            return data.match.getOpponent(data.user);
+        }
         if (data instanceof Result && userOrTeam instanceof User) {
             return data.getOpponent(userOrTeam);
         }
@@ -129,6 +136,9 @@ var opponent = function(userOrTeam) {
 
 var opponentHandicap = function(userOrTeam) {
     var renderCell = function(cellKey,result) {
+        if (result instanceof UserMatch) {
+            return result.match.getOpponentHandicap(result.user);
+        }
         if (result instanceof Result && userOrTeam instanceof User) {
             return result.getOpponentHandicap(userOrTeam);
         }
@@ -185,6 +195,9 @@ var dateMatch = function(teamId,seasonId) {
 
 var hc = function(seasonId) {
     var renderCell = function(cellKey,data) {
+        if (data instanceof UserMatch) {
+            return data.user.getCurrentHandicap(seasonId);
+        }
         if (data instanceof UsersStat)
             return data.getCurrentHandicap(seasonId);
 
@@ -271,6 +284,30 @@ var usersTeam = function(seasonId) {
     );
 };
 
+var statType = function() {
+    var render = function(cellKey,user) {
+        if (user instanceof UsersStat) {
+            if (user.stat.getType() == 'season') {
+                return user.stat.season.getDisplayName();
+            }
+            if (user.stat.getType() == 'all') {
+                return 'overall';
+            }
+            return user.stat.getType();
+        }
+    };
+    return (
+        <Column
+            label={'Type'}
+            cellClassName="stat-type"
+            width={ColumnConfig.season.width}
+            align={ColumnConfig.name.align}
+            dataKey={'stat-type'}
+            cellDataGetter={render}
+            />
+    );
+};
+
 module.exports = {
     winLostUser : WinLostColumnHelper.winLostUser,
     winLostTeamMatch : WinLostColumnHelper.winLostTeamMatch,
@@ -283,6 +320,7 @@ module.exports = {
     opponentHandicap: opponentHandicap,
     name: renderName,
     user: user,
+    statType: statType,
     usersTeam: usersTeam,
     team: team,
     wins: wins,

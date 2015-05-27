@@ -41,6 +41,9 @@ var ResultMixin = require('../../mixins/ResultMixin.jsx');
 var UserLink = require('../UserLink.jsx');
 var TeamLink = require('../TeamLink.jsx');
 var firstBy = require('../../FirstBy.jsx');
+var ColumnHelper = require('../columns/ColumnHelper.jsx');
+var ColumnConfig = require('../columns/ColumnConfig.jsx');
+var UserMatch = require('../../../lib/UserMatch');
 
 var sortDateFn = function(a,b) {
     return this.state.sort.sortDate.asc == 'true' ?
@@ -98,7 +101,7 @@ var ResultsApp = React.createClass({
                 sortLosersTeam: {asc: 'true', fx : sortLoserTeamFn}
             },
             page: {
-                size: 30,
+                size: 500,
                 num: 0
             }
         }
@@ -162,121 +165,64 @@ var ResultsApp = React.createClass({
         if (this.getParams().seasonId == undefined) {
             return null;
         }
-
+        var userMatches = {};
         var results = this.getSeasonResults(this.getParams().seasonId);
         var season  = this.getSeason(this.getParams().seasonId);
-        var nine = season.isNine();
-        var rows = [];
-        var key = 0;
-        var filteredMatches = this.filterResults(results,this.state.filter);
-
-        var order = firstBy(this.state.sort[this.state.firstBy].fx.bind(this));
-        for(var i=0; i< this.state.sortOrder.length; i++) {
-            var type = this.state.sortOrder[i];
-            order = order.thenBy(this.state.sort[type].fx.bind(this));
-        }
-
-        filteredMatches = filteredMatches.sort(order);
-
         var pageMatches = [];
         var start = this.state.page.num*this.state.page.size;
         var end = start + this.state.page.size;
 
-        if (this.state.page.size >= filteredMatches.length) {
-            pageMatches = filteredMatches;
-        } else {
-
-            for(i = start; i<filteredMatches.length && i < end ; i++) {
-                pageMatches.push(filteredMatches[i]);
-            }
+        for (var i = start; i < results.length && i < end ; i++) {
+            var r = results[i];
+            pageMatches.push(new UserMatch(r.winner,r));
+            pageMatches.push(new UserMatch(r.loser,r));
         }
-        var tableData = [];
-        pageMatches.forEach(function(m){
-            tableData.push(m);
+        for(var key in userMatches) {
+            pageMatches.push(userMatches[key]);
+        }
+        var order = firstBy(function(a,b){
+            return a.user.name.localeCompare(b.user.name);
         });
+        order = order.thenBy(function(a,b){
+            var aWin = a.match.isWinner(a.user) ? 'A' : 'B';
+            var bWin = b.match.isWinner(b.user) ? 'A' : 'B';
+            return aWin.localeCompare(bWin);
+        });
+        pageMatches = pageMatches.sort(order);
+
         var rowGetter = function(rowIndex) {
-            return tableData[rowIndex];
+            return pageMatches[rowIndex];
         };
-        var renderDate = function(cellData){
-            if (cellData == undefined || cellData == null) {
-                return "";
-            }
-            debugger;
-            return cellData();
-        };
-        var renderName = function(cellData){
-            if (cellData == undefined || cellData == null) {
-                return null;
-            }
-            return (<UserLink user={cellData} />)
-        };
-
-         var renderCell = function(cellDataKey,rowData){
-             switch(cellDataKey) {
-                 case 'winner' : {
-                     return rowData.winner;
-                 }
-                 case 'loser' : {
-                     return rowData.loser;
-                 }
-                 case 'date' : {
-                     return rowData.getShortMatchDate();
-                 }
-             }
-             return null;
-        };
-
-        var renderHeader = function(label,cellDataKey,columnData,rowData) {
-            return (<Input type='input' placeholder='player' />);
-        };
-        /*
-
-            */
+        var width =
+            ColumnConfig.name.width +
+            ColumnConfig.handicap.width +
+            ColumnConfig.name.width +
+            ColumnConfig.handicap.width +
+            ColumnConfig.winLost.width +
+            ColumnConfig.racksFor.width +
+            ColumnConfig.racksAgainst.width +
+            2;
         return (
-            <Panel className='teamWeeklyResults' header={'Blah'} footer={<Footer page={this.state.page} last={end >= filteredMatches.length} />}>
-                <Table
-                            groupHeaderHeight={30}
-                            rowHeight={50}
-                            headerHeight={30}
-                    rowGetter={rowGetter}
-                    rowsCount={tableData.length}
-                    width={1000}
-                    height={1000}
-                    headerHeight={50}>
-                    <ColumnGroup width={100} label="Date">
-                        <Column
-                        cellDataGetter={renderCell}
-                        label="Date"
-                        width={100}
-                        dataKey={'date'}
-                        />
-                      </ColumnGroup>
-                    <ColumnGroup width={500} label="Players">
-                    <Column
-                            label="Winner"
-                            width={250}
-                            cellRenderer={renderName}
-                            dataKey={'winner'}
-                            isResizable={true}
-                            cellDataGetter={renderCell}
-                            headerRenderer={renderHeader}
-                        />
-                    <Column
-                        label="Victim"
-                        width={250}
-                        cellRenderer={renderName}
-                        dataKey={'loser'}
-                        isResizable={true}
-                        cellDataGetter={renderCell}
-                        headerRenderer={renderHeader}
-                        />
-                    </ColumnGroup>
+            <Table
+                groupHeaderHeight={30}
+                rowHeight={30}
+                headerHeight={30}
+                rowGetter={rowGetter}
+                rowsCount={pageMatches.length}
+                width={width}
+                height={500}
+                headerHeight={30}>
+                {ColumnHelper.user()}
+                {ColumnHelper.hc(this.getParams().seasonId)}
+                {ColumnHelper.opponent()}
+                {ColumnHelper.opponentHandicap()}
+                {ColumnHelper.winLostUser()}
+                {ColumnHelper.racksForUser()}
+                {ColumnHelper.racksAgainstUser()}
                 </Table>
-            </Panel>
         );
     }
 });
-//  </ColumnGroup>
 
 var UserResults = React.createClass({
 
@@ -321,7 +267,6 @@ var SeasonResults = React.createClass({
      return (rows);
  }
 });
-
 
 var Header = React.createClass({
     render: function() {
@@ -435,7 +380,5 @@ var Footer = React.createClass({
         )
     }
 });
-
-
 
 module.exports = ResultsApp;

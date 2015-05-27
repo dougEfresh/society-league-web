@@ -67,21 +67,7 @@ var StatsDisplay = React.createClass({
             ColumnConfig.racksFor.width +
             ColumnConfig.racksAgainst.width + 10;
          return (
-                <Table
-                    groupHeaderHeight={30}
-                    rowHeight={50}
-                    headerHeight={30}
-                    rowGetter={rowGetter}
-                    rowsCount={userStats.length}
-                    width={width}
-                    maxHeight={500}
-                    headerHeight={30}>
-                    {ColumnHelper.statType()}
-                    {ColumnHelper.wins()}
-                    {ColumnHelper.loses()}
-                    {ColumnHelper.racksForStat()}
-                    {ColumnHelper.racksAgainstStat()}
-                </Table>
+               <h2>Coming Soon</h2>
         );
     }
 });

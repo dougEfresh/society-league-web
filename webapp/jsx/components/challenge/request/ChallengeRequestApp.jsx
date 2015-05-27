@@ -29,8 +29,6 @@ var ChallengeRequestApp = React.createClass({
     mixins: [UserContextMixin,Router.Navigation],
     getInitialState: function() {
         return {
-            isModalOpen: false,
-            submitted: false,
             challenge: RequestStore.get()
         };
     },
@@ -50,10 +48,8 @@ var ChallengeRequestApp = React.createClass({
     _onAdd: function() {
         console.log('onAdd');
         this.setState({
-            submitted : true,
             challenges: RequestStore.get()
         });
-        //ChallengeActions.initChallenges(this.getUserId());
     },
     _onChange: function() {
         this.setState({challenge: RequestStore.get()});
@@ -79,73 +75,12 @@ var ChallengeRequestApp = React.createClass({
 
         return errors;
     },
-
-    send: function() {
-        var opponent = { id: 0};
-        var c = this.state.challenge;
-        opponent.id = c.opponent.userId;
-        var slots = [];
-        c.slots.forEach(function(s) {
-            if (!s.selected){
-                return
-            }
-            var slot = { id: 0 };
-            slot.id = s.id;
-            slots.push(slot);
-        });
-        var request = {
-            challenger: {id : this.getUserId()},
-            opponent: opponent,
-            nine: c.game.nine.selected,
-            eight: c.game.eight.selected,
-            slots: slots
-        };
-        ChallengeActions.request(request);
-        console.log(JSON.stringify(request));
-    },
     confirm: function() {
         this.transitionTo('challengeConfirm');
-        return;
-    },
-    handleClose: function() {
-      this.setState({submitted: false, isModalOpen: !this.state.isModalOpen});
     },
     isValid: function() {
         return this.getErrors().length == 0;
     },
-    renderOverlay: function () {
-        if (!this.state.isModalOpen) {
-            return <span/>;
-        }
-        var c = this.state.challenge;
-        var msg = 'Send request to '
-            + this.getUser(c.opponent.userId).name + ' for' +
-            ' match on ' + c.date ;
-        var title = 'Notify Opponent?';
-        if (this.state.submitted) {
-            title = 'Success';
-        }
-        var body = (
-            <div>
-                <div className='modal-body'>
-                    {msg}
-                </div>
-                <div className='modal-footer'>
-                    <Button bsStyle={'success'} onClick={this.send}>Send Request</Button>
-                </div>
-            </div>);
-        if (this.state.submitted) {
-            body = (<div>
-                <Alert>Request Sent! See <a href='#/app/challenge/sent'>sent</a> page for details</Alert>
-                <Button bsStyle={'success'} onClick={this.handleClose}>Close</Button>
-            </div>);
-        }
-        return (
-            <Modal className="requestModal" bsStyle={this.state.submitted ? 'success' : 'warning'} title={title} onRequestHide={this.handleToggle}>
-                {body}
-            </Modal>
-        );
-  },
     render: function(){
         if (this.getUser().id == 0 ) {
             return null;

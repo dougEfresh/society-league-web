@@ -18,6 +18,8 @@ var LogoutApp = require('./components/LogoutApp.jsx');
 var ErrorApp = require('./components/ErrorApp.jsx');
 var AdminApp = require('./components/admin/AdminApp.jsx');
 var StatApp = require('./components/stats/StatApp.jsx');
+var StatDisplay = require('./components/stats/StatsDisplay.jsx');
+var StatHistory = require('./components/stats/StatHistory.jsx');
 var HomeApp = require('./components/home/HomeApp.jsx');
 var TeamApp = require('./components/team/TeamApp.jsx');
 var TeamStandings= require('./components/team/TeamStandings.jsx');
@@ -68,7 +70,10 @@ var routes = (
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>
-            <Route name="scout" path="scout/:statsId"  handler={StatApp}/>
+            <Route name="scout" path="scout/:statsId"  handler={StatApp}>
+                <Route name="stats" path="stats" handler={StatDisplay} />
+                <Route name="history" path="history" handler={StatHistory} />
+            </Route>
             <Route name="team" path="team/:teamId/:seasonId" handler={TeamApp} >
                 <Route name="teamStandings" path="standings"  handler={TeamStandings} />
                 <Route name="teamChart" path="chart"  handler={TeamChart} />
@@ -79,8 +84,8 @@ var routes = (
             <Route name="season" path="season/:seasonId"  handler={SeasonApp} >
                 <Route name="seasonLeaders" path="leaders"  handler={SeasonLeaders} />
                 <Route name="seasonStandings" path="standings"  handler={SeasonStandings} />
-                <Route name="seasonResults" path="results"  handler={ResultsApp} />
-                <Route name="seasonMatches" path="matches"  handler={ResultsApp} />
+                <Route name="seasonResults" path="results"  handler={SeasonResults} />
+                <Route name="seasonWeeklyResults" path="matches"  handler={SeasonResults} />
             </Route>
             <Route name="userResults" path="user/results/:userId"  handler={ResultsApp} />
             <Route name="challenge" path="challenge" handler={ChallengeApp} >

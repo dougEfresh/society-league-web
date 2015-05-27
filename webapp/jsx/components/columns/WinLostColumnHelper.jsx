@@ -7,6 +7,7 @@ var TeamLink = require('../TeamLink.jsx');
 var Team = require('../../../lib/Team');
 var User  = require('../../../lib/User');
 var Result = require('../../../lib/Result');
+var UserMatch = require('../../../lib/UserMatch');
 var TeamMatch = require('../../../lib/TeamMatch');
 var ColumnConfig = require('./ColumnConfig.jsx');
 
@@ -25,6 +26,9 @@ var renderWinLost = function(render) {
 var winLostUser = function(user) {
     var render = function(cellKey,result) {
         try {
+            if (result instanceof UserMatch) {
+                return result.match.isWinner(result.user) ? 'W' : 'L';
+            }
             if (result instanceof Result && user instanceof User) {
                 return result.isWinner(user) ? 'W' : 'L';
             }

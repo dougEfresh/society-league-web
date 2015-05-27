@@ -61,26 +61,29 @@ var SeasonApp = React.createClass({
         if (this.getUserId() == 0) {
             return null;
         }
+        /*
+         <Link to='seasonWeeklyResults' params={this.getParams()}>
+         <Button bsStyle={this.isActive('seasonWeeklyResults') ? 'success' : 'default'} responsize>
+         <i className="fa fa-calendar"></i><span className="main-item">'{ ' Weekly Results'}</span>
+         </Button>
+         </Link>
+         */
         var header = (
                 <div style={{display: 'inline'}}>
                     <Link to='seasonStandings' params={this.getParams()}>
                         <Button bsStyle={this.isActive('seasonStandings') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-trophy"></i><span className="main-item">'{ ' Standings'}</span>
+                            <i className="fa fa-trophy"></i><span className="main-item">{ ' Standings'}</span>
+                        </Button>
+                    </Link>
+
+                    <Link to='seasonLeaders' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('seasonLeaders') ? 'success' : 'default'} responsive>
+                            <i className="fa  fa-list-ol"></i><span className="main-item">{ ' Leaders'}</span>
                         </Button>
                     </Link>
                     <Link to='seasonResults' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonResults') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-calendar"></i><span className="main-item">'{ ' Weekly Results'}</span>
-                        </Button>
-                    </Link>
-                    <Link to='seasonLeaders' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonLeaders') ? 'success' : 'default'} responsive>
-                            <i className="fa  fa-list-ol"></i><span className="main-item">'{ ' Leaders'}</span>
-                        </Button>
-                    </Link>
-                    <Link to='seasonMatches' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonLeaders') ? 'success' : 'default'} responsive>
-                            <i className="fa  fa-list-ol"></i><span className="main-item">'{ ' Matches'}</span>
+                        <Button bsStyle={this.isActive('seasonResults') ? 'success' : 'default'} responsive>
+                            <i className="fa  fa-history"></i><span className="main-item">{ ' Matches'}</span>
                         </Button>
                     </Link>
                 </div>

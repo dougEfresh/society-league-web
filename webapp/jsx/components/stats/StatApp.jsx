@@ -9,7 +9,9 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 var Router = require('react-router')
     ,State = Router.State
+    ,Link = Router.Link
     ,RouteHandler = Router.RouteHandler;
+
 
 var StatsDisplay = require('./StatsDisplay.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
@@ -52,7 +54,29 @@ var StatApp = React.createClass({
         if (this.getUserId() == null) {
             return null;
         }
-        return null;
+        var header = (
+                <div style={{display: 'inline'}}>
+                    <Link to='stats' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('stats') ? 'success' : 'default'} responsize>
+                            <i className="fa fa-bar-chart"></i><span className="main-item">{ ' Stats'}</span>
+                        </Button>
+                    </Link>
+                    <Link to='history' params={this.getParams()}>
+                        <Button bsStyle={this.isActive('history') ? 'success' : 'default'} responsize>
+                            <i className="fa fa-history"></i><span className="main-item">{ ' History'}</span>
+                        </Button>
+                    </Link>
+                </div>
+        );
+        return (
+              <div id="scout-app">
+                <Panel header={header}>
+                    <RouteHandler />
+                </Panel>
+            </div>
+        );
+        //<RouteHandler />
+
         /*
         var title = <span>Stats for {this.getUser(this.getParams().statsId).name}</span>;
         return (

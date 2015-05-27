@@ -11,7 +11,7 @@ var User  = require('../../../lib/User');
 var Result = require('../../../lib/Result');
 var TeamMatch = require('../../../lib/TeamMatch');
 var ColumnConfig = require('./ColumnConfig.jsx');
-
+var UserMatch = require('../../../lib/UserMatch');
 
 var renderRackColumn = function (type,render) {
     return (
@@ -94,6 +94,12 @@ var racksForTeam = function(team) {
 var racksUser = function(type,user) {
     var render = function(cellKey,result) {
         try {
+            if (result instanceof UserMatch) {
+                if (type == 'racksFor') {
+                    return result.match.getRacks(result.user);
+                }
+                return result.match.getOpponentRacks(result.user);
+            }
             if (result instanceof Result) {
                 if (type == 'racksFor') {
                     return result.getRacks(user);
