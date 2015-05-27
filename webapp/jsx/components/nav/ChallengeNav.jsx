@@ -69,6 +69,7 @@ var ChallengeNav = React.createClass({
         }
         console.warn('!! OPEN !!');
         return (
+
              <Modal className="challengeSignupModal" bsStyle={'success'} title={'Challenge Sign Up'} onRequestHide={this.handleToggle}>
                  <div className='modal-body'>
                      <Panel>Sign me up</Panel>
@@ -85,22 +86,10 @@ var ChallengeNav = React.createClass({
         if (u.userId == 0) {
             return null;
         }
-        if (!u.isChallenge()) {
-            return (
-                <div className="challengeStatusMenu">
-                    <Panel expanded={false} defaultExpanded={false} className='challengePanelStatus' header={null} eventKey='1' >
-                        <MenuItemLink className='requestNav' to={'challengeSignUp'}>
-                            <Glyphicon glyph='info-sign'/>
-                            {"What's this?"}
-                        </MenuItemLink>
-                    </Panel>
-                </div>);
-        }
         var c = u.challenges;
         var counter = c[Status.SENT].length
             + c[Status.PENDING].length
             + c[Status.ACCEPTED].length;
-
         var sentLink = (
             <Link to={Status.SENT.toLowerCase()} >
                 <Glyphicon glyph='ok'/>
@@ -128,6 +117,7 @@ var ChallengeNav = React.createClass({
                 {c[Status.PENDING].length}
             </Badge>
             </Link>);
+
         var requestLink = (
             <Link  to={Status.REQUEST.toLowerCase()}>
             <Glyphicon glyph='flash'/>
@@ -138,6 +128,24 @@ var ChallengeNav = React.createClass({
         if (this.getPath().indexOf('challenge') >= 0) {
             active = "active";
         }
+        var noChallenge = (<ul className="dropdown-menu" role="menu">
+                     <li className="teamNavLink" role="presentation">
+                         <Link to='signup' >What's This</Link>
+                     </li>
+        </ul>);
+
+        if (this.getUser().isChallenge()) {
+                 return (
+                     <li role="presentation" className={'dropdown ' + active}>
+                         <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                             <Glyphicon glyph='cog' /> <span className="main-item"> Challenges </span><Badge>{counter}</Badge>
+                             <span className="caret"></span>
+                         </a>
+                         {noChallenge}
+                     </li>
+                 )
+        };
+
         return (
              <li role="presentation" className={'dropdown ' + active}>
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">

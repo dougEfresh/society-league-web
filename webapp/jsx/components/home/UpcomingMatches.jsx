@@ -21,7 +21,7 @@ var UpcomingMatches = React.createClass({
             matches.forEach(function(m) {
                 var mDate = moment(m.matchDate);
                 if (mDate.isAfter(yesterday)) {
-                    upComingMatches.push(matches);
+                    upComingMatches.push(m);
                 }
             });
         });
@@ -32,13 +32,15 @@ var UpcomingMatches = React.createClass({
         var matches = [];
         for (var i=0; i < upComingMatches.length && i < 3; i++) {
             var match = upComingMatches[i];
+            var m = moment(match.matchDate);
+            debugger;
                 matches.push(
                     <span key={i} className="next-match">
-                    {m.format('ddd MMM Do ') }
-                        <TeamLink team={match.winner} />
+                        {m.format('ddd MMM Do ') }
+                        <TeamLink team={match.winner} seasonId={match.season.id}/>
                         {' vs. '}
-                        <TeamLink team={match.loser} />
-                </span>
+                        <TeamLink team={match.loser} seasonId={match.season.id}/>
+                    </span>
                 );
         }
         if (matches.length == 0) {
