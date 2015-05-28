@@ -10,17 +10,31 @@ var Bootstrap = require('react-bootstrap')
     ,SplitButton = Bootstrap.SplitButton;
 var DivisionType = require('../../../lib/DivisionType');
 var RequestActions = require('../../../jsx/actions/RequestActions.jsx');
+var UserContextMixin  = require('../../../jsx/mixins/UserContextMixin.jsx');
+var Router = require('react-router');
 
 var ChallengeRequestGame = React.createClass({
+    mixins: [UserContextMixin,Router.Navigation,Router.State],
     propTypes: {
         challengeGroup: ReactPropTypes.object.isRequired
     },
     onSelect: function(e) {
         var type = e.target.textContent == '9' ? DivisionType.NINE_BALL_CHALLENGE : DivisionType.EIGHT_BALL_CHALLENGE;
-        RequestActions.setGame(type)
+        //RequestActions.setGame(type)
+        var q = this.getQuery();
+        if (q.games == undefined)  {
+            q.games = {};
+            q.games[type] = 'true';
+        } else if (q.games.hasOwnProperty(type)) {
+            q.games[type] = q.games[type] == 'true' ? 'false' : 'true';
+        } else {
+            q.games[type] = 'true';
+        }
+        this.transitionTo('request',this.getParams(),q);
     },
     isSelected: function(type) {
         var found = false;
+        var q = this.getQuery();
         this.props.challengeGroup.selectedGames.forEach(function(g){
             if (g == type) {
                 found = true;
@@ -29,13 +43,23 @@ var ChallengeRequestGame = React.createClass({
         return found;
     },
     render: function() {
-
+        var q = this.getQuery();
+        var nine = "default";
+        var eight = "default";
+        if (q.games != undefined) {
+            if (q.games[DivisionType.EIGHT_BALL_CHALLENGE] != undefined) {
+                eight = q.games[DivisionType.EIGHT_BALL_CHALLENGE] == 'true' ? "success" : "default"
+            }
+            if (q.games[DivisionType.NINE_BALL_CHALLENGE] != undefined) {
+                nine = q.games[DivisionType.NINE_BALL_CHALLENGE] == 'true' ? "success" : "default";
+            }
+        }
         return (
             <div>
-                <Button bsSize='small' bsStyle={this.isSelected(DivisionType.EIGHT_BALL_CHALLENGE) ? 'success' : 'default'} onClick={this.onSelect}>
+                <Button bsSize='small' bsStyle={eight} onClick={this.onSelect}>
                     <Badge className="eight-ball">8</Badge>
                 </Button>
-                <Button bsSize='small' bsStyle={this.isSelected(DivisionType.NINE_BALL_CHALLENGE)? 'success' : 'default'} onClick={this.onSelect}>
+                <Button bsSize='small' bsStyle={nine} onClick={this.onSelect}>
                    <Badge className="nine-ball">9</Badge>
                </Button>
             </div>

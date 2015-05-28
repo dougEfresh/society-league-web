@@ -26,7 +26,7 @@ var DataStore = require('../../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 
 var ChallengeRequestApp = React.createClass({
-    mixins: [UserContextMixin,Router.Navigation],
+    mixins: [UserContextMixin,Router.Navigation,Router.State],
     getInitialState: function() {
         return {
             challenge: RequestStore.get()
@@ -89,6 +89,7 @@ var ChallengeRequestApp = React.createClass({
         var submit = (
             <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.confirm}><Glyphicon glyph="flash" /> Request</Button>
         );
+        var query = this.getQuery();
         return (
             <div id="request-app"  >
                 <ChallengeRequestDate  challengeGroup={c} />

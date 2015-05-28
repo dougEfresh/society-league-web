@@ -130,11 +130,11 @@ var ChallengeNav = React.createClass({
         }
         var noChallenge = (<ul className="dropdown-menu" role="menu">
                      <li className="teamNavLink" role="presentation">
-                         <Link to='signup' >What's This</Link>
+                         <Link to='challengeSignUp' >What's This</Link>
                      </li>
         </ul>);
 
-        if (this.getUser().isChallenge()) {
+        if (!this.getUser().isChallenge()) {
                  return (
                      <li role="presentation" className={'dropdown ' + active}>
                          <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">

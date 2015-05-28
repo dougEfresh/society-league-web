@@ -2,13 +2,13 @@ var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;
-
+var Router = require('react-router');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var RequestActions = require('../../../jsx/actions/RequestActions.jsx');
 
 
 var ChallengeRequestOpponent = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.Navigation,Router.State],
     propTypes: {
         opponent: ReactPropTypes.object.isRequired
     },
@@ -18,11 +18,6 @@ var ChallengeRequestOpponent = React.createClass({
     getInitialState: function(){
         return {
             potentials: []
-        }
-    },
-    getDefaultProps: function () {
-        return {
-            opponent : {userId:0}
         }
     },
     componentDidMount: function() {
@@ -36,11 +31,9 @@ var ChallengeRequestOpponent = React.createClass({
         this.setState({potentials: potentials});
     },
     onChange: function(e) {
-        this.state.potentials.forEach(function(p) {
-            if (p.userId == e.target.value) {
-                RequestActions.setOpponent(p);
-            }
-        }.bind(this));
+        var q = this.getQuery();
+        q.opponent = e.target.value;
+        this.transitionTo('request',this.getParams(),q);
     },
     getOptions: function() {
         var options = [];
@@ -51,8 +44,10 @@ var ChallengeRequestOpponent = React.createClass({
         return options;
     },
     render: function() {
+        var q = this.getQuery();
+        var opponent = q.opponent != undefined ? q.opponent : 0;
         return (
-            <Input type='select' value={this.props.opponent.userId} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
+            <Input type='select' value={opponent} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
         );
     }
 });

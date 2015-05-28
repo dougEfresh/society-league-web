@@ -51,7 +51,7 @@ User.prototype.getCurrentHandicap = function(seasonId) {
 User.prototype.isChallenge = function() {
     var challenge = false;
     this.seasons.forEach(function(s){
-        if (s.isChallenge() && s.isActive()) {
+        if (s.isChallenge()) {
             challenge = true;
         }
     });
