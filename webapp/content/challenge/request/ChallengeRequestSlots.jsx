@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
+var Router = require('react-router');
 var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input
     ,Button = Bootstrap.Button
@@ -8,9 +9,10 @@ var Bootstrap = require('react-bootstrap')
 
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var ChallengeActions = require('../../../jsx/actions/ChallengeActions.jsx');
+var Datastore = require('../../../jsx/stores/DataStore.jsx');
 
 var ChallengeRequestSlots = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
     propTypes: {
         challengeGroup: ReactPropTypes.object.isRequired,
     },
@@ -22,44 +24,56 @@ var ChallengeRequestSlots = React.createClass({
         return options;
     },
     onClickAny: function() {
-        ChallengeActions.anySlot(!this.props.challengeGroup.anySlot);
+        var q = this.getQuery();
+        if (q.anyTime == undefined) {
+            q.anyTime = 'true';
+            this.transitionTo('request',this.getParams(),q);
+            return;
+        }
+        q.anyTime = q.anyTime == 'true' ? 'false': 'true';
+        this.transitionTo('request',this.getParams(),q);
     },
     getAnyTime: function() {
-        if (!this.props.challengeGroup.anySlot) {
-            return (
-            <Button key='any' bsStyle='default' onClick={this.onClickAny}>
-                <i className="fa fa-times">
+        var q = this.getQuery();
+        var anyTime = q.anyTime != undefined && q.anyTime == 'true';
+        return (
+            <Button key='any'
+                    bsStyle={anyTime ? 'success' : 'default'}
+                    onClick={this.onClickAny}
+                >
+                <i className={anyTime ? 'fa fa-check' : 'fa fa-times'}>
                     {'Any Time'}
                 </i>
             </Button>
-            );
-        } else {
-            return (
-              <Button key='any' bsStyle='success' onClick={this.onClickAny}>
-                <i className="fa fa-check">
-                    {'Any Time'}
-                </i>
-            </Button>
-            );
-        }
+        );
     },
     render: function() {
         var buttons = [];
-        if (this.props.challengeGroup.slots.length == 0) {
+        var q = this.getQuery();
+        var date = q.date;
+        if (date == undefined) {
             return null;
         }
+        var slots = Datastore.getSlots();
+        var slotsOnDay = [];
+        for(var i = 0; i < slots.length; i++) {
+            if (slots[i].getDate() == date ) {
+                slotsOnDay.push(slots[i]);
+            }
+        }
         buttons.push(this.getAnyTime());
-        if (!this.props.challengeGroup.anySlot) {
-            this.props.challengeGroup.slots.forEach(function (s) {
+
+        slotsOnDay.forEach(function (s) {
+            var selected = q.selected != undefined && q.selected[s.id] != undefined && q.selected[s.id] == 'true';
                 buttons.push(
-                    <SlotButton any={this.props.challengeGroup.anySlot}
+                    <SlotButton any={q.anyTime != undefined && q.anyTime == 'true'}
                                 key={s.id}
-                                challengeGroup={this.props.challengeGroup}
                                 slot={s}
+                                selected={selected}
                         />
                 );
             }.bind(this));
-        }
+
         return (
             <div>
                 {buttons}
@@ -69,46 +83,39 @@ var ChallengeRequestSlots = React.createClass({
 });
 
 var SlotButton = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
     propTypes: {
-        challengeGroup: ReactPropTypes.object.isRequired,
         slot: ReactPropTypes.object.isRequired,
         any: ReactPropTypes.bool.isRequired
     },
-    onClick: function(){
-        ChallengeActions.changeSlotState(this.props.slot);
+    onClick: function() {
+        var q = this.getQuery();
+        if (q.selected == undefined) {
+            q.selected = {};
+            q.selected[this.props.slot.id] = 'true';
+            this.transitionTo('request',this.getParams(),q);
+            return;
+        }
+        q.selected[this.props.slot.id] =  q.selected[this.props.slot.id] == 'true' ? 'false': 'true';
+        this.transitionTo('request',this.getParams(),q);
     },
     render: function() {
-        if (this.props.any){
+        if (this.props.any) {
             return (<Button bsStyle='success' disabled onClick={this.onClick}>
-                <i className="fa fa-check">
-                    {'Any time'}
-                </i>
-            </Button>);
-        }
-        var found = false;
-        for(var i=0; i< this.props.challengeGroup.selectedSlots.length; i++){
-            if (this.props.challengeGroup.selectedSlots[i].id == this.props.slot.id) {
-                found = true;
-            }
-        }
-        if (!found) {
-            return (
-                <Button onClick={this.onClick}>
-                    <i className="fa fa-times">
-                        {this.props.slot.getTime()}
-                    </i>
-                </Button>
-            );
-        }
-         return (<Button bsStyle='success' onClick={this.onClick}>
                 <i className="fa fa-check">
                     {this.props.slot.getTime()}
                 </i>
             </Button>);
+        }
+        var selected = this.props.selected == undefined ? {} : this.props.selected;
+        return (
+                <Button bsStyle={selected ? 'success' : 'default'} onClick={this.onClick}>
+                    <i className={selected ? "fa fa-check" : 'fa fa-times'}>
+                        {this.props.slot.getTime()}
+                    </i>
+                </Button>
+         );
     }
 });
-
-
 
 module.exports = ChallengeRequestSlots;
