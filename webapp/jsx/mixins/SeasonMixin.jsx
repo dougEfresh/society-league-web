@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var DataStore = require('./../stores/DataStore.jsx');
 var Status = require('../../lib/Status');
-var firstBy = require('../FirstBy.jsx');
+var firstBy = require('../../lib/FirstBy.js');
 var Stat = require('../../lib/Stat');
 
 var SeasonMixin = {

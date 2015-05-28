@@ -30,15 +30,20 @@ var Bootstrap = require('react-bootstrap')
 
 
 var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
+var ColumnGroup = FixedDataTable.ColumnGroup;
 
-var DataStore= require('../../stores/DataStore.jsx');
-var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
-var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
-var TeamMixin = require('../../mixins/TeamMixin.jsx');
-var ResultMixin = require('../../mixins/ResultMixin.jsx');
-var firstBy = require('../../../lib/FirstBy.js');
-var SeasonResults = require('./SeasonResults.jsx');
-var UserResults = require('./UserResults.jsx');
+var DataStore= require('../../jsx/stores/DataStore.jsx');
+var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
+var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
+var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
+var ResultMixin = require('../../jsx/mixins/ResultMixin.jsx');
+var UserLink = require('../../jsx/components/UserLink.jsx');
+var TeamLink = require('../../jsx/components/TeamLink.jsx');
+var firstBy = require('../../lib/FirstBy.js');
+var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
+var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
+var UserMatch = require('../../lib/UserMatch');
 
 var sortDateFn = function(a,b) {
     return this.state.sort.sortDate.asc == 'true' ?
@@ -96,7 +101,7 @@ var ResultsApp = React.createClass({
                 sortLosersTeam: {asc: 'true', fx : sortLoserTeamFn}
             },
             page: {
-                size: 30,
+                size: 500,
                 num: 0
             }
         }
@@ -107,14 +112,10 @@ var ResultsApp = React.createClass({
         var newPage = this.state.page;
         var type;
         for(type in newSort) {
-            if (newSort.hasOwnProperty(type)) {
-                newSort[type].asc = q[type] == undefined ? newSort[type].asc : q[type];
-            }
+            newSort[type].asc = q[type] == undefined ? newSort[type].asc : q[type];
         }
         for(type in newPage) {
-            if (newSort.hasOwnProperty(type)) {
-                newPage[type] = q[type] == undefined ? newPage[type] : parseInt(q[type]);
-            }
+            newPage[type] = q[type] == undefined ? newPage[type] : parseInt(q[type]);
         }
         var firstBy = this.state.firstBy;
         if (q.firstBy != undefined) {
@@ -164,46 +165,108 @@ var ResultsApp = React.createClass({
         if (this.getParams().seasonId == undefined) {
             return null;
         }
-        if (this.getParams().userId != undefined) {
-
-        }
-
+        var userMatches = {};
         var results = this.getSeasonResults(this.getParams().seasonId);
         var season  = this.getSeason(this.getParams().seasonId);
-        var nine = season.isNine();
-        var rows = [];
-        var key = 0;
-        var filteredMatches = this.filterResults(results,this.state.filter);
-
-        var order = firstBy(this.state.sort[this.state.firstBy].fx.bind(this));
-        for(var i=0; i< this.state.sortOrder.length; i++) {
-            var type = this.state.sortOrder[i];
-            order = order.thenBy(this.state.sort[type].fx.bind(this));
-        }
-
-        filteredMatches = filteredMatches.sort(order);
-
         var pageMatches = [];
         var start = this.state.page.num*this.state.page.size;
         var end = start + this.state.page.size;
 
-        if (this.state.page.size >= filteredMatches.length) {
-            pageMatches = filteredMatches;
-        } else {
+        for (var i = start; i < results.length && i < end ; i++) {
+            var r = results[i];
+            pageMatches.push(new UserMatch(r.winner,r));
+            pageMatches.push(new UserMatch(r.loser,r));
+        }
+        for(var key in userMatches) {
+            pageMatches.push(userMatches[key]);
+        }
+        var order = firstBy(function(a,b){
+            return a.user.name.localeCompare(b.user.name);
+        });
+        order = order.thenBy(function(a,b){
+            var aWin = a.match.isWinner(a.user) ? 'A' : 'B';
+            var bWin = b.match.isWinner(b.user) ? 'A' : 'B';
+            return aWin.localeCompare(bWin);
+        });
+        pageMatches = pageMatches.sort(order);
 
-            for(i = start; i<filteredMatches.length && i < end ; i++) {
-                pageMatches.push(filteredMatches[i]);
-            }
-        }
-        if (this.getParams().userId != undefined) {
-            return (<UserResults matches={pageMatches} />);
-        }
+        var rowGetter = function(rowIndex) {
+            return pageMatches[rowIndex];
+        };
+        var width =
+            ColumnConfig.name.width +
+            ColumnConfig.handicap.width +
+            ColumnConfig.name.width +
+            ColumnConfig.handicap.width +
+            ColumnConfig.winLost.width +
+            ColumnConfig.racksFor.width +
+            ColumnConfig.racksAgainst.width +
+            2;
         return (
-            <SeasonResults matches={pageMatches} />
+            <Table
+                groupHeaderHeight={30}
+                rowHeight={30}
+                headerHeight={30}
+                rowGetter={rowGetter}
+                rowsCount={pageMatches.length}
+                width={width}
+                height={500}
+                headerHeight={30}>
+                {ColumnHelper.user()}
+                {ColumnHelper.hc(this.getParams().seasonId)}
+                {ColumnHelper.opponent()}
+                {ColumnHelper.opponentHandicap()}
+                {ColumnHelper.winLostUser()}
+                {ColumnHelper.racksForUser()}
+                {ColumnHelper.racksAgainstUser()}
+                </Table>
         );
     }
 });
 
+var UserResults = React.createClass({
+
+    render: function() {
+        var rows = [];
+        var user = this.props.user;
+        var key  = 0;
+        this.props.matches.forEach(function(m){
+            var nine = m.getSeason().isNine();
+            rows.push(
+                <tr key={key++}>
+                    <td>{m.getShortMatchDate()}</td>
+                    <td><UserLink user={m.getOpponent(user)} seasonId={m.getSeason().id} /></td>
+                    <td><TeamLink team={m.getOpponentsTeam(user)} seasonId={m.getSeason().id}/></td>
+                    <td>{m.isWinner(user)}</td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.winnerRacks}</td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.loserRacks}</td>
+                </tr>);
+        }.bind(this));
+
+        return (rows);
+    }
+});
+
+var SeasonResults = React.createClass({
+ render: function() {
+     var rows = [];
+     var key  = 0;
+     this.props.matches.forEach(function (m) {
+         var nine = m.getSeason().isNine();
+           rows.push(
+          <tr key={key++}>
+                    <td>{m.getShortMatchDate()}</td>
+                    <td><UserLink user={m.winner} seasonId={m.getSeason().id} /></td>
+                    <td><TeamLink team={m.winnersTeam} seasonId={m.getSeason().id}/></td>
+                    <td><UserLink user={m.loser} seasonId={m.getSeason().id}/></td>
+                    <td><TeamLink team={m.losersTeam} seasonId={m.getSeason().id}/></td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.winnerRacks}</td>
+                    <td style={{display: nine ? 'table-cell' : 'none'}}>{m.loserRacks}</td>
+                </tr>);
+     }.bind(this));
+     return (rows);
+ }
+});
 
 var Header = React.createClass({
     render: function() {
@@ -317,7 +380,5 @@ var Footer = React.createClass({
         )
     }
 });
-
-
 
 module.exports = ResultsApp;

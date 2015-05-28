@@ -36,7 +36,8 @@ function getData(url, callback) {
             }.bind(this)
         });
     }
- function sendData(data, url, callback) {
+
+function sendData(data, url, callback) {
         console.log("Sending data: " + JSON.stringify(data));
         $.ajax({
             async: true,

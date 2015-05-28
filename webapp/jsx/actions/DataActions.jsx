@@ -1,4 +1,4 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher.jsx');
+var AppDispatcher = require('../AppDispatcher.jsx');
 
 var DataActions = {
     init: function() {

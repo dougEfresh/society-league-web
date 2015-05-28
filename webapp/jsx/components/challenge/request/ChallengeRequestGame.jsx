@@ -8,7 +8,7 @@ var Bootstrap = require('react-bootstrap')
     ,MenuItem = Bootstrap.MenuItem
     ,Button = Bootstrap.Button
     ,SplitButton = Bootstrap.SplitButton;
-var BallIcon = require('../../../BallMixin.jsx');
+var BallIcon = require('../../BallMixin.jsx');
 var DivisionType = require('../../../../lib/DivisionType');
 var RequestActions = require('../../../actions/RequestActions.jsx');
 

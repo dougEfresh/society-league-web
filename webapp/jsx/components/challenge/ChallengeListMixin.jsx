@@ -15,7 +15,7 @@ var Bootstrap = require('react-bootstrap')
     ,Badge = Bootstrap.Badge
     ,SplitButton = Bootstrap.SplitButton;
 
-var BallIcon = require('../../BallMixin.jsx');
+var BallIcon = require('../BallMixin.jsx');
 var ChallengeStatus = require('../../constants/ChallengeStatus.jsx');
 var ChallengeActions = require('../../actions/ChallengeActions.jsx');
 var ChallengeStore = require('../../stores/ChallengeStore.jsx');
