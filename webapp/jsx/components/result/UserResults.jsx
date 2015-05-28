@@ -9,7 +9,7 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var ResultMixin = require('../../mixins/ResultMixin.jsx');
-var UserLink = require('../UserLink.jsx');
+var UserLink = require('../links/UserLink.jsx');
 var ColumnConfig = require('../columns/ColumnConfig.jsx');
 
 var UserResults = React.createClass({

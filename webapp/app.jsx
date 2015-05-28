@@ -7,10 +7,10 @@ var Router = require('react-router')
     , DefaultRoute = Router.DefaultRoute;
 
 var Status = require('./lib/Status');
-var ChallengeRequestApp = require('./jsx/components/challenge/request/ChallengeRequestApp.jsx');
-var ChallengePendingApp = require('./jsx/components/challenge/pending/ChallengePendingApp.jsx');
-var ChallengeAcceptedApp = require('./jsx/components/challenge/approved/ChallengeApprovedApp.jsx');
-var ChallengeSentApp = require('./jsx/components/challenge/sent/ChallengeSentApp.jsx');
+var ChallengeRequestApp = require('./content/challenge/request/ChallengeRequestApp.jsx');
+var ChallengePendingApp = require('./content/challenge/pending/ChallengePendingApp.jsx');
+var ChallengeAcceptedApp = require('./content/challenge/approved/ChallengeApprovedApp.jsx');
+var ChallengeSentApp = require('./content/challenge/sent/ChallengeSentApp.jsx');
 
 var NavApp = require('./content/nav/NavApp.jsx');
 var LoginApp = require('./jsx/../content/login/LoginApp.jsx');
@@ -30,11 +30,10 @@ var SeasonApp = require('./content/season/SeasonApp.jsx');
 var SeasonLeaders = require('./content/season/SeasonLeaders.jsx');
 var SeasonStandings = require('./content/season/SeasonStandings.jsx');
 var SeasonResults = require('./content/season/SeasonResults.jsx');
-var ResultsApp = require('./jsx/components/result/ResultApp.jsx');
 var UserResultsApp = require('./jsx/components/result/UserResults.jsx');
-var ChallengeSignUp = require('./jsx/components/challenge/ChallengeSignUp.jsx');
-var ChallengeConfirmApp = require('./jsx/components/challenge/ChallengeConfirmApp.jsx');
-var ChallengeApp = require('./jsx/components/challenge/ChallengeApp.jsx');
+var ChallengeSignUp = require('./content/challenge/ChallengeSignUp.jsx');
+var ChallengeConfirmApp = require('./content/challenge/ChallengeConfirmApp.jsx');
+var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
 
@@ -87,7 +86,6 @@ var routes = (
                 <Route name="seasonResults" path="results"  handler={SeasonResults} />
                 <Route name="seasonWeeklyResults" path="matches"  handler={SeasonResults} />
             </Route>
-            <Route name="userResults" path="user/results/:userId"  handler={ResultsApp} />
             <Route name="challenge" path="challenge" handler={ChallengeApp} >
                 <Route name="challengeSignUp" path="signup"  handler={ChallengeSignUp} />
                 <Route name="challengeConfirm" path="confirm"  handler={ChallengeConfirmApp} />

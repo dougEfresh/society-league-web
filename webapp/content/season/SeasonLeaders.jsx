@@ -34,8 +34,8 @@ var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var StatsMixin = require('../../jsx/mixins/StatsMixin.jsx');
-var UserLink = require('../../jsx/components/UserLink.jsx');
-var TeamLink = require('../../jsx/components/TeamLink.jsx');
+var UserLink = require('../../jsx/components/links/UserLink.jsx');
+var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Stat =  require('../../lib/Stat');
 var UserStat =  require('../../lib/UsersStat');
 
