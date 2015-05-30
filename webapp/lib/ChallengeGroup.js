@@ -20,6 +20,13 @@ ChallengeGroup.prototype.selectedGame = function() {return this.selectedGame;};
 ChallengeGroup.prototype.selectedSlot = function() {return this.selectedSlot;};
 ChallengeGroup.prototype.challenges = function() {return this.challenges;};
 
+ChallengeGroup.prototype.getId = function() {
+    if (this.challenges.length > 0) {
+        return this.challenges[0].id;
+    }
+    return 0;
+};
+
 ChallengeGroup.prototype.getUserOpponent = function(user) {
     if (user.id == this.challenger.id) {
         return this.opponent;

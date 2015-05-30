@@ -44,6 +44,7 @@ var ChallengeRequestDate = React.createClass({
     onChange: function() {
         var q = this.getQuery();
         q.date = this.refs.date.getValue();
+        q.selectedSlots = undefined;
         this.transitionTo('request',this.getParams(),q);
         //RequestActions.changeDate(this.refs.date.getValue());
     },

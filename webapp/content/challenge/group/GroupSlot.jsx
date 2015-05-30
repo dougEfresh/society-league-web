@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var Router = require('react-router');
 var GroupMixin = require('./GroupListMixin.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Label = Bootstrap.Label
@@ -6,12 +7,12 @@ var Bootstrap = require('react-bootstrap')
 var ChallengeActions = require('../../../jsx/actions/ChallengeActions.jsx');
 
 var GroupSlot = React.createClass({
-    mixins: [GroupMixin],
+    mixins: [GroupMixin,Router.State,Router.Navigation],
     onSelectSlot: function() {
-        ChallengeActions.selectChallengeGroupSlot(
-            this.props.challengeGroup,
-            this.refs.slot.getValue()
-        );
+        var q = this.getQuery();
+        q.id = this.props.challengeGroup.getId();
+        q.selectedSlot = this.refs.slot.getValue();
+        this.transitionTo(this.getPathname(),this.getParams(),q);
     },
     renderNoSelect: function() {
         var slots = [];
@@ -39,8 +40,9 @@ var GroupSlot = React.createClass({
         sorted.forEach(function (s) {
             slots.push(<option key={s.id} value={s.id}>{s.getTime()}</option>);
         }.bind(this));
+        var q = this.getQuery();
         return (<Input ref='slot' onChange={this.onSelectSlot}
-                       value={this.props.challengeGroup.selectedSlot}
+                       value={q.selectedSlot}
                        type={'select'}> {slots}
 		</Input>);
     },

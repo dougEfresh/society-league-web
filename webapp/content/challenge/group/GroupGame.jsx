@@ -1,16 +1,17 @@
 var React = require('react/addons');
+var Router = require('react-router');
 var GroupMixin = require('./GroupListMixin.jsx');
 var ChallengeActions = require('../../../jsx/actions/ChallengeActions.jsx');
 var BallIcon = require('../../../jsx/components/BallIcon.jsx');
 var Input = require('react-bootstrap').Input
 
 var GroupGame = React.createClass({
-    mixins: [GroupMixin],
+    mixins: [GroupMixin,Router.Navigation,Router.State],
     onSelectGame: function() {
-        ChallengeActions.selectChallengeGroupGame(
-            this.props.challengeGroup,
-            this.refs.game.getValue()
-        );
+        var q = this.getQuery();
+        q.id = this.props.challengeGroup.getId();
+        q.selectedGame = this.refs.game.getValue();
+        this.transitionTo(this.getPathname(),this.getParams(),q);
     },
     renderNoSelect: function() {
         var games = [];
@@ -36,7 +37,7 @@ var GroupGame = React.createClass({
         }.bind(this));
         return (<Input ref='game'
                        onChange={this.onSelectGame}
-                       value={this.props.challengeGroup.selectedGame}
+                       value={this.getQuery().selectedGame}
                        type='select' >{games}
         </Input>);
     },

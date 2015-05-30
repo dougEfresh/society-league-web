@@ -23,28 +23,39 @@ var ChallengeStore = require('../../../jsx/stores/ChallengeStore.jsx');
 var GroupMixin = require('./GroupListMixin.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var DivisionType = require('../../../lib/DivisionType');
+var Status = require('../../../lib/Status');
+var challengeUtil = require('../challengeUtil');
+var Datastore = require('../../../jsx/stores/DataStore.jsx');
+var util = require('../challengeUtil');
 
 var GroupAction = React.createClass({
-    mixins: [GroupMixin,Router.Navigation],
-    sendStatus: function(s) {
-        var status = {
-            userId: this.getUserId(),
-            status : s,
-            group: this.props.challengeGroup
-        };
-        ChallengeActions.status(status);
-    },
+    mixins: [GroupMixin,Router.Navigation,Router.State],
     cancel: function() {
-        ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
+        //ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
+        var request = {
+            challenger: null,
+            opponent: null,
+            challenges: []
+        };
+        this.props.challengeGroup.challenges.forEach(function(c) {
+            request.challenges.push({id: c.id});
+        });
+        util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
     },
     accept: function() {
-        ChallengeActions.acceptChallenge(this.getUserId(),this.props.challengeGroup);
-    },
-    disable: function() {
-        return this.props.challengeGroup.selectedGame == null || this.props.challengeGroup.selectedSlot < 1;
-    },
-    backUp: function() {
-        this.goBack();
+        var challenge = {id : 0};
+        var q = this.getQuery();
+        this.props.challengeGroup.challenges.forEach(function(c) {
+            if ((c.slot.id== q.selectedSlot || c.slot.id == this.props.challengeGroup.selectedSlot.id)
+                && (c.game == q.selectedGame || c.game == this.props.challengeGroup.selectedGame)) {
+                challenge = {id: c.id};
+            }
+        }.bind(this));
+        if (challenge.id == 0) {
+            console.error('!!Could not find Challenge!!');
+            return;
+        }
+        util.sendStatus('/api/challenge/accepted/' + this.getUser().id,challenge);
     },
     confirm: function() {
         var opponent = { id: 0};
@@ -71,7 +82,30 @@ var GroupAction = React.createClass({
             eight: eight,
             slots: slots
         };
-        ChallengeActions.request(request);
+        challengeUtil.create(request,this._onAdd);
+    },
+    disable: function() {
+        var q = this.getQuery();
+        if (this.props.challengeGroup.selectedSlot != undefined
+            && this.props.challengeGroup.selectedSlot.id > 0 &&
+            this.props.challengeGroup.selectedGame != undefined) {
+            return false;
+        }
+        var disabled = (q.id == undefined
+            || q.selectedGame == undefined
+            || q.selectedSlot == undefined) && q.selectedSlot != 0;
+        if (disabled)
+            return disabled;
+
+        return this.props.challengeGroup.getId() != q.id
+    },
+    backUp: function() {
+        this.transitionTo('request',this.getParams(),this.getQuery());
+    },
+    _onAdd: function(d) {
+        console.log('onAdd');
+        Datastore.replaceUser(d);
+        this.transitionTo('sent');
     },
     render: function() {
         var buttons = {

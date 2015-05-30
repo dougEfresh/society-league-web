@@ -24,6 +24,8 @@ var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
 var ChallengeRequestGame= require('./ChallengeRequestGame.jsx');
 var DataStore = require('../../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
+var ChallengeGroup = require('../../../lib/ChallengeGroup');
+var util = require('../challengeUtil');
 
 var ChallengeRequestApp = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
@@ -55,10 +57,11 @@ var ChallengeRequestApp = React.createClass({
         this.setState({challenge: RequestStore.get()});
     },
     getErrors: function() {
+        var q = this.getQuery();
+        var c = util.convertToChallenge(this.getQuery());
         var errors = [];
-        var c = this.state.challenge;
         if (c == undefined) {
-            errors.push('Nothing Selected');
+            errors.push('no challeng');
             return errors;
         }
         if (c.opponent == null || c.opponent == undefined || c.opponent.userId == 0)
@@ -67,7 +70,7 @@ var ChallengeRequestApp = React.createClass({
         if (c.selectedGames.length == 0)
             errors.push('Please choose game type');
 
-        if (c.selectedSlots.length == 0)
+        if (q.anyTime != 'true' && c.selectedSlots.length == 0)
             errors.push('Please choose a slot');
 
         if (!c.date)
@@ -87,9 +90,8 @@ var ChallengeRequestApp = React.createClass({
         }
         var c = this.state.challenge;
         var submit = (
-            <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.confirm}><Glyphicon glyph="flash" /> Request</Button>
+            <Link to="challengeConfirm" params={this.getParams()} query={this.getQuery()}> <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.confirm}><Glyphicon glyph="flash" /> Request</Button></Link>
         );
-        var query = this.getQuery();
         return (
             <div id="request-app"  >
                 <ChallengeRequestDate  challengeGroup={c} />

@@ -23,42 +23,36 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var GroupList = require('./group/GroupList.jsx');
 var ChallengeGroup = require('../../lib/ChallengeGroup');
 var DivisionType = require('../../lib/DivisionType');
+var util = require('./challengeUtil');
 
 var ChallengeConfirm = React.createClass({
-    mixins: [UserContextMixin,Router.Navigation],
+    mixins: [UserContextMixin,Router.Navigation,Router.State],
     getInitialState: function() {
       return {
           challenge: RequestStore.get()
       }
     },
      componentWillMount: function() {
-        RequestStore.addChangeListener(this._onChange);
         DataStore.addChangeListener(this._onChange);
-        RequestStore.addRequestListener(this._onAdd);
     },
     componentWillUnmount: function() {
-        RequestStore.removeChangeListener(this._onChange);
-        RequestStore.removeRequestListener(this._onAdd);
         DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
-        this.setState({challenge: RequestStore.get()});
     },
     _onAdd: function() {
         console.log('onAdd');
         this.transitionTo('sent');
     },
     _onChange: function() {
-        this.setState({challenge: RequestStore.get()});
+
     },
     render: function() {
-        if (this.state.challenge == undefined || this.state.challenge.opponent == undefined) {
-            return null;
-        }
+        var cg = util.convertToChallenge(this.getQuery());
         return (
             <div>
                 <h2>{'Confirm Challenge'} </h2>
-                <GroupList noSelect={true} challengeGroups={[this.state.challenge]} type='CONFIRM'/>
+                <GroupList noSelect={true} challengeGroups={[cg]} type='CONFIRM'/>
             </div>
         );
     }

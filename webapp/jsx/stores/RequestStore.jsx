@@ -68,39 +68,6 @@ var RequestStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-    newChallenge: function(request) {
-        //TODO Move this to lib
-        //TODO ADD UserId to URL
-        $.ajax({
-            async: true,
-            processData: false,
-            url: '/api/challenge/request',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(request),
-            method: 'post',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                    //this.redirect('login');
-                }
-            },
-            success: function (d) {
-                _request.opponent = defaultOpponent();
-                _request.anySlot = false;
-                _request.slots.forEach(function(s) {
-                    s.selected = false;
-                });
-                _request.game = defaultGame();
-                DataStore.replaceUser(d);
-                RequestStore.emitAdd();
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('/api/challenge/request', status, err.toString());
-                //this.redirect('error');
-            }.bind(this)
-        });
-    },
 
     changeDate : function(date) {
         _request.date = date;
