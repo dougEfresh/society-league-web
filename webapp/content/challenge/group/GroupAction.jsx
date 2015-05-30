@@ -18,8 +18,6 @@ var Bootstrap = require('react-bootstrap')
 
 var ChallengeStatus = require('../../../jsx/constants/ChallengeStatus.jsx');
 var ChallengeConstants = require('../../../jsx/constants/ChallengeConstants.jsx');
-var ChallengeActions = require('../../../jsx/actions/ChallengeActions.jsx');
-var ChallengeStore = require('../../../jsx/stores/ChallengeStore.jsx');
 var GroupMixin = require('./GroupListMixin.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var DivisionType = require('../../../lib/DivisionType');

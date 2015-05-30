@@ -38,18 +38,6 @@ var StatApp = React.createClass({
     _onChange: function() {
         this.setState({user: this.state.user});
     },
-    onSelect: function(e) {
-        this.transitionTo('stats',{statsId: e.target.value},null);
-    },
-    getOptions: function() {
-        var options = [];
-        options.push(<option key={0} value={0}>{'------'}</option>);
-        var users = this.getUsers();
-        for(var p in users) {
-            options.push(<option key={p} value={p}>{users[p].firstName + ' '+ users[p].lastName}</option>);
-        }
-        return options;
-    },
     render: function() {
         if (this.getUserId() == null) {
             return null;

@@ -1,17 +1,15 @@
 var React = require('react/addons');
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
-var State = Router.state;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var LeagueNav = require('./LeagueNav.jsx');
 var LoginApp = require('../login/LoginApp.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
-var RequestStore = require('../../jsx/stores/RequestStore.jsx');
 var DataActions= require('../../jsx/actions/DataActions.jsx');
 var LoadingApp  = require('../../jsx/components/LoadingApp.jsx');
 
 var NavApp = React.createClass({
-    mixins: [State,UserContextMixin,Router.Navigation,Router.State],
+    mixins: [UserContextMixin,Router.Navigation,Router.State],
     getInitialState: function() {
          return {
              loading: false,
@@ -20,16 +18,14 @@ var NavApp = React.createClass({
     },
     componentWillMount: function() {
         DataStore.addChangeListener(this._onChange);
-        RequestStore. addRequestListener(this._onChange);
     },
     componentWillUnmount: function() {
         DataStore.removeChangeListener(this._onChange);
-        RequestStore.removeListener(this._onChange);
     },
     componentDidMount: function() {
         DataStore.checkLogin();
     },
-    componentWillReceiveProps: function(p,n) {
+    componentWillReceiveProps: function() {
         if (!DataStore.isAuthenticated()) {
             return;
         }

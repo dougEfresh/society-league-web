@@ -8,20 +8,12 @@ var Bootstrap = require('react-bootstrap')
     ,ListGroupItem = Bootstrap.ListGroupItem;
 
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
-var ChallengeActions = require('../../../jsx/actions/ChallengeActions.jsx');
 var Datastore = require('../../../jsx/stores/DataStore.jsx');
 
 var ChallengeRequestSlots = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
     propTypes: {
         challengeGroup: ReactPropTypes.object.isRequired,
-    },
-    getOptions: function() {
-        var options = [];
-        for (var key in this.state.available) {
-            options.push(<option key={key} value={key}>{this.state.available[key].getTime()}</option>);
-        }
-        return options;
     },
     onClickAny: function() {
         var q = this.getQuery();

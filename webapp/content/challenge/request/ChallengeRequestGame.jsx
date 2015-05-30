@@ -9,7 +9,6 @@ var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,SplitButton = Bootstrap.SplitButton;
 var DivisionType = require('../../../lib/DivisionType');
-var RequestActions = require('../../../jsx/actions/RequestActions.jsx');
 var UserContextMixin  = require('../../../jsx/mixins/UserContextMixin.jsx');
 var Router = require('react-router');
 
@@ -31,16 +30,6 @@ var ChallengeRequestGame = React.createClass({
             q.games[type] = 'true';
         }
         this.transitionTo('request',this.getParams(),q);
-    },
-    isSelected: function(type) {
-        var found = false;
-        var q = this.getQuery();
-        this.props.challengeGroup.selectedGames.forEach(function(g){
-            if (g == type) {
-                found = true;
-            }
-        });
-        return found;
     },
     render: function() {
         var q = this.getQuery();

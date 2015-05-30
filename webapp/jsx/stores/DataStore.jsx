@@ -25,9 +25,15 @@ var DataStore = assign({}, EventEmitter.prototype, {
         this.emit(CHANGE_EVENT);
     },
     addChangeListener: function(callback) {
+        if (callback == undefined) {
+            debugger;
+        }
         this.on(CHANGE_EVENT, callback);
     },
     removeChangeListener: function(callback) {
+        if (callback == undefined) {
+            debugger;
+        }
         this.removeListener(CHANGE_EVENT, callback);
     },
     init: function() {

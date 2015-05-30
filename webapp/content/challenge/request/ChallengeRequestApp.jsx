@@ -4,7 +4,6 @@ var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Alert = Bootstrap.Alert
     ,Modal = Bootstrap.Modal
-    ,OverlayMixin = Bootstrap.OverlayMixin
     ,ModalTrigger = Bootstrap.ModalTrigger
     ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
@@ -13,11 +12,7 @@ var Router = require('react-router')
     ,Link = Router.Link
     ,RouteHandler = Router.RouteHandler;
 
-var RequestStore = require('../../../jsx/stores/RequestStore.jsx');
-var ChallengeGroupStore = require('../../../jsx/stores/ChallengeGroupStore.jsx');
 var ChallengeStatus = require('../../../jsx/constants/ChallengeStatus.jsx');
-var ChallengeActions = require('../../../jsx/actions/ChallengeActions.jsx');
-
 var ChallengeRequestDate = require('./ChallengeRequestDate.jsx');
 var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
@@ -29,39 +24,21 @@ var util = require('../challengeUtil');
 
 var ChallengeRequestApp = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
-    getInitialState: function() {
-        return {
-            challenge: RequestStore.get()
-        };
-    },
     componentDidMount: function () {
         this.setState({user: this.getUser()});
     },
     componentWillMount: function() {
-        RequestStore.addChangeListener(this._onChange);
-        DataStore.addChangeListener(this._onChange);
-        RequestStore.addRequestListener(this._onAdd);
+        //DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function() {
-        RequestStore.removeChangeListener(this._onChange);
-        RequestStore.removeRequestListener(this._onAdd);
-        DataStore.removeChangeListener(this._onChange);
-    },
-    _onAdd: function() {
-        console.log('onAdd');
-        this.setState({
-            challenges: RequestStore.get()
-        });
-    },
-    _onChange: function() {
-        this.setState({challenge: RequestStore.get()});
+        //DataStore.removeChangeListener(this._onChange);
     },
     getErrors: function() {
         var q = this.getQuery();
         var c = util.convertToChallenge(this.getQuery());
         var errors = [];
         if (c == undefined) {
-            errors.push('no challeng');
+            errors.push('no challenge');
             return errors;
         }
         if (c.opponent == null || c.opponent == undefined || c.opponent.userId == 0)
@@ -88,9 +65,15 @@ var ChallengeRequestApp = React.createClass({
         if (this.getUser().id == 0 ) {
             return null;
         }
-        var c = this.state.challenge;
+        var c = util.convertToChallenge(this.getQuery());
+        if (c == undefined || c == null) {
+            c = new ChallengeGroup();
+        }
         var submit = (
-            <Link to="challengeConfirm" params={this.getParams()} query={this.getQuery()}> <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.confirm}><Glyphicon glyph="flash" /> Request</Button></Link>
+            <Link to="challengeConfirm" params={this.getParams()} query={this.getQuery()}>
+                <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.confirm}>
+                    <Glyphicon glyph="flash" /> Request </Button>
+            </Link>
         );
         return (
             <div id="request-app"  >

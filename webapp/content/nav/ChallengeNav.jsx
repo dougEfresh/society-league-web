@@ -34,11 +34,10 @@ var User = require('../../lib/User.js');
 var Status = require('../../lib/Status');
 
 var ChallengeNav = React.createClass({
-    mixins: [UserContextMixin,Router.State,Bootstrap.OverlayMixin],
+    mixins: [UserContextMixin,Router.State],
     getInitialState: function () {
         return {
-            user: this.getUser(),
-            isModalOpen: false
+            user: this.getUser()
         }
     },
     componentWillMount: function () {
@@ -54,32 +53,6 @@ var ChallengeNav = React.createClass({
         this.setState({
             user: this.getUser()
         });
-    },
-    handleToggle: function(e) {
-        if (e != undefined  && e != null) {
-            e.preventDefault();
-        }
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        });
-    },
-    renderOverlay: function () {
-        if (!this.state.isModalOpen) {
-            return <span/>;
-        }
-        console.warn('!! OPEN !!');
-        return (
-
-             <Modal className="challengeSignupModal" bsStyle={'success'} title={'Challenge Sign Up'} onRequestHide={this.handleToggle}>
-                 <div className='modal-body'>
-                     <Panel>Sign me up</Panel>
-                 </div>
-                 <div className='modal-footer'>
-                     <Button bsStyle={'success'} onClick={this.handleToggle}>Sign Up</Button>
-                     <Button bsStyle={'warning'} onClick={this.handleToggle}>Cancel</Button>
-                 </div>
-            </Modal>
-        );
     },
     render: function() {
         var u = this.getUser();
@@ -144,7 +117,7 @@ var ChallengeNav = React.createClass({
                          {noChallenge}
                      </li>
                  )
-        };
+        }
 
         return (
              <li role="presentation" className={'dropdown ' + active}>

@@ -4,14 +4,9 @@ var Bootstrap = require('react-bootstrap')
     ,Input = Bootstrap.Input;
 var Router = require('react-router');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
-var RequestActions = require('../../../jsx/actions/RequestActions.jsx');
-
 
 var ChallengeRequestOpponent = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
-    propTypes: {
-        opponent: ReactPropTypes.object.isRequired
-    },
     contextTypes: {
         router: React.PropTypes.func
     },

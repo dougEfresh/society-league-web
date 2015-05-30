@@ -11,10 +11,7 @@ var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 var Pie = require("react-chartjs").Pie;
 
-var StatActions = require('../../jsx/actions/StatActions.jsx');
-var StatStore = require('../../jsx/stores/StatsStore.jsx');
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var StatsDisplay = require('./StatsDisplay.jsx');
 var StatsRecord = require('./StatsRecord.jsx');
 var StatsHandicap = require('./StatsHandicap.jsx');
 var StatsChart = require('./StatsPie.jsx');
@@ -26,7 +23,7 @@ var Table = FixedDataTable.Table;
 var Column = FixedDataTable.Column;
 var UserStat = require('../../lib/UsersStat');
 
-var StatsDisplay = React.createClass({
+var StatHistory = React.createClass({
     mixins: [UserContextMixin,Router.State],
     render: function() {
         var user = this.getUser(this.getParams().statsId);
@@ -56,6 +53,7 @@ var StatsDisplay = React.createClass({
 
             return 0;
         });
+        /*
         var rowGetter = function(rowIndex) {
             return userStats[rowIndex];
         };
@@ -66,10 +64,11 @@ var StatsDisplay = React.createClass({
             ColumnConfig.wins.width +
             ColumnConfig.racksFor.width +
             ColumnConfig.racksAgainst.width + 10;
+            */
          return (
                <h2>Coming Soon</h2>
         );
     }
 });
 
-module.exports = StatsDisplay;
+module.exports = StatHistory;

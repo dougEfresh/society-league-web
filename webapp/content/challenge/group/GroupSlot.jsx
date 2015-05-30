@@ -4,7 +4,6 @@ var GroupMixin = require('./GroupListMixin.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Label = Bootstrap.Label
     ,Input = Bootstrap.Input;
-var ChallengeActions = require('../../../jsx/actions/ChallengeActions.jsx');
 
 var GroupSlot = React.createClass({
     mixins: [GroupMixin,Router.State,Router.Navigation],

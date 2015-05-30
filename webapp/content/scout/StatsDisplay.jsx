@@ -11,10 +11,7 @@ var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 var Pie = require("react-chartjs").Pie;
 
-var StatActions = require('../../jsx/actions/StatActions.jsx');
-var StatStore = require('../../jsx/stores/StatsStore.jsx');
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var StatsDisplay = require('./StatsDisplay.jsx');
 var StatsRecord = require('./StatsRecord.jsx');
 var StatsHandicap = require('./StatsHandicap.jsx');
 var StatsChart = require('./StatsPie.jsx');

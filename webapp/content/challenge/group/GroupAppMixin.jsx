@@ -2,8 +2,6 @@ var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 
 var ChallengeStatus = require('../../../jsx/constants/ChallengeStatus.jsx');
-var ChallengeStore = require('../../../jsx/stores/ChallengeStore.jsx');
-var ChallengeGroupStore = require('../../../jsx/stores/ChallengeGroupStore.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../../../jsx/stores/DataStore.jsx');
 
