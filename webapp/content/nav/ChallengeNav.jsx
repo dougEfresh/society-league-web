@@ -120,7 +120,7 @@ var ChallengeNav = React.createClass({
         }
 
         return (
-             <li role="presentation" className={'dropdown ' + active}>
+             <li id="challenge-nav" role="presentation" className={'dropdown ' + active}>
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                      <Glyphicon glyph='cog' /> <span className="main-item"> Challenges </span><Badge>{counter}</Badge>
                      <span className="caret"></span>

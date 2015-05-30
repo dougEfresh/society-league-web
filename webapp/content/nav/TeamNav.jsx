@@ -74,7 +74,7 @@ var TeamNav = React.createClass({
             active = "active";
         }
         return (
-              <li role="presentation" className={'dropdown ' + active} >
+              <li id="team-nav" role="presentation" className={'dropdown ' + active} >
                   <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                       <i className="fa fa-users"></i>&nbsp;
                       <span className="main-item">Teams</span>&nbsp;

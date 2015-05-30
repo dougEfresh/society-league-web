@@ -103,7 +103,7 @@ var SeasonNav = React.createClass({
             active = "active";
         }
         return (
-             <li role="presentation" className={'dropdown ' + active} >
+             <li id="season-nav" role="presentation" className={'dropdown ' + active} >
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                      <i className="fa fa-trophy"></i>&nbsp;
                      <span className="main-item">Seasons</span>&nbsp;

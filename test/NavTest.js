@@ -33,6 +33,15 @@ casper.test.begin('Test Home Page', function suite(test) {
     casper.then(function(){
         test.assertExists('#home-nav');
     });
+    casper.then(function(){
+        test.assertExists('#team-nav');
+    });
+    casper.then(function(){
+        test.assertExists('#season-nav');
+    });
+    casper.then(function(){
+        test.assertExists('#challenge-nav');
+    });
 
     casper.run(function(){
         test.done();
