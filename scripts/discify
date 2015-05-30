@@ -1,0 +1,3 @@
+#!/bin/bash
+./node_modules/.bin/discify webapp/js/bundle.js > webapp/size.html 
+
