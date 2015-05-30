@@ -7,5 +7,5 @@ build/
 *~
 .idea/
 .gradle/
-
+size.html
 derby.log
