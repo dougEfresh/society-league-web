@@ -24,10 +24,10 @@ var util = require('./challengeUtil');
 var ChallengeConfirm = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
      componentWillMount: function() {
-        DataStore.addChangeListener(this._onChange);
+        //DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function() {
-        DataStore.removeChangeListener(this._onChange);
+        //DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
     },

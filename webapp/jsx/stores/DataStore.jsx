@@ -53,7 +53,9 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getResults: function() {return db.getResults();},
     getTeamMatches: function() {return db.getTeamMatches();},
     getSlots: function() {return db.getSlots();},
-
+    getDb: function() {
+        return db;
+    },
     isLoading: function() {
         return db.loading;
     },

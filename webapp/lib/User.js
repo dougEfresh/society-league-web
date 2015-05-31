@@ -1,17 +1,22 @@
 var Status = require('./Status');
 var Stat = require('./Stat');
+var ChallengeGroup = require('./ChallengeGroup');
 
 function User(id,first_name,last_name) {
     this.id = id;
     this.userId = id;
     this.fName = first_name;
+    this.firstName = first_name;
     this.lName = last_name;
+    this.lastName = last_name;
     this.name = first_name + ' ' + last_name;
     this.seasons = [];
     this.teamMatches = [];
     this.results = [];
     this.stats = [];
     this.teams = [];
+    this.role = 'PLAYER';
+    this.password = null;
     this.challenges = {};
     for(var st in Status) {
         this.challenges[st] = [];
@@ -27,6 +32,8 @@ User.prototype.fName = function () { return this.fName ; };
 User.prototype.sName = function () { return this.fName + ' ' + this.lName.substr(0,1) + '.' };
 User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
+User.prototype.role = function () { return this.role ; };
+User.prototype.password = function () { return this.password ; };
 
 User.prototype.getCurrentHandicap = function(seasonId) {
     if (this.handicaps[seasonId] != undefined) {
@@ -229,5 +236,50 @@ User.prototype.isAdmin = function() {
 };
 
 User.DEFAULT_USER = new User(0,'unknown','',{});
+User.create = function(userData,db)  {
+var user = new User(userData.userId,userData.firstName,userData.lastName);
+ var i;
+    for (i = 0; i < userData.seasons.length; i++) {
 
+        user.addSeason(db.findSeason(userData.seasons[i]));
+    }
+    for (i = 0; i < userData.teams.length; i++) {
+        user.addTeam(db.findTeam(userData.teams[i]));
+    }
+    for(var type in userData.challenges) {
+            if (!userData.challenges.hasOwnProperty(type)) {
+                continue;
+            }
+            var cg = userData.challenges[type];
+            if (cg.length == 0) {
+                continue;
+            }
+
+            cg.forEach(function(group){
+                var ch = this.findUser(group.challenger);
+                var op = this.findUser(group.opponent);
+                var challengeGroup = null;
+                challengeGroup = new ChallengeGroup(ch, op, group.date, type, null,  0);
+                group.slots.forEach(function(s) {
+                    challengeGroup.addSlot(db.findOrCreateSlot(s));
+                }.bind(this));
+                if (group.games.length == 1) {
+                    challengeGroup.selectedGame = group.games[0];
+                }
+                if (group.slots.length == 1) {
+                    challengeGroup.selectedSlot = db.findSlot(group.slots[0].id);
+                }
+                group.games.forEach(function(g){
+                    challengeGroup.addGame(g);
+                });
+                group.challenges.forEach(function(c){
+                    var challenge = new Challenge(c.id,ch,op,db.findSlot(c.slot.id),c.game,c.status);
+                    challengeGroup.addChallenge(challenge);
+                }.bind(this));
+                user.addChallenge(type,challengeGroup);
+            }.bind(this));
+        }
+
+        return user;
+}
 module.exports = User;

@@ -54,6 +54,23 @@ var ChallengeNav = React.createClass({
             user: this.getUser()
         });
     },
+    genLink: function(c,type,glyph,name) {
+        return c[type].length != 0 ? (
+            <Link to={type.toLowerCase()} >
+            <Glyphicon glyph={glyph}/>
+                {name}
+            <Badge>
+                {c[type].length}
+            </Badge>
+            </Link>) : (
+            <div>
+                <Glyphicon glyph={glyph}/>
+                {name}
+            <Badge>
+                {c[type].length}
+            </Badge>
+            </div>);
+    },
     render: function() {
         var u = this.getUser();
         if (u.userId == 0) {
@@ -63,40 +80,7 @@ var ChallengeNav = React.createClass({
         var counter = c[Status.SENT].length
             + c[Status.PENDING].length
             + c[Status.ACCEPTED].length;
-        var sentLink = (
-            <Link to={Status.SENT.toLowerCase()} >
-                <Glyphicon glyph='ok'/>
-                Sent
-                <Badge>
-                    {c[Status.SENT].length}
-                </Badge>
-            </Link>
-        );
 
-        var acceptedLink = (<Link  to={Status.ACCEPTED.toLowerCase()} >
-                <Glyphicon glyph='calendar'/>
-                Accepted
-                <Badge>
-                    {c[Status.ACCEPTED].length}
-                </Badge>
-            </Link>);
-
-        var pendingLink = (
-
-            <Link to={Status.PENDING.toLowerCase()} >
-            <Glyphicon glyph='alert'/>
-            Pending
-            <Badge>
-                {c[Status.PENDING].length}
-            </Badge>
-            </Link>);
-
-        var requestLink = (
-            <Link  to={Status.REQUEST.toLowerCase()}>
-            <Glyphicon glyph='flash'/>
-                Request
-            </Link>
-        );
         var active = "";
         if (this.getPath().indexOf('challenge') >= 0) {
             active = "active";
@@ -122,36 +106,31 @@ var ChallengeNav = React.createClass({
         return (
              <li id="challenge-nav" role="presentation" className={'dropdown ' + active}>
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                     <Glyphicon glyph='cog' /> <span className="main-item"> Challenges </span><Badge>{counter}</Badge>
+                     <Glyphicon glyph='cog' />
+                     <span className="main-item">
+                         Challenges
+                     </span>
+                     <Badge>
+                         {counter}
+                     </Badge>
                      <span className="caret"></span>
                  </a>
                  <ul className="dropdown-menu" role="menu">
                      <li className="teamNavLink" role="presentation">
-                         {pendingLink}
+                         {this.genLink(c,Status.PENDING,'alert','Pending')}
                      </li>
                      <li className="teamNavLink" role="presentation">
-                         {acceptedLink}
+                         {this.genLink(c,Status.ACCEPTED,'calendar','Accepted')}
                      </li>
                      <li className="teamNavLink" role="presentation">
-                         {sentLink}
+                         {this.genLink(c,Status.SENT,'ok','Sent')}
                      </li>
                      <li className="teamNavLink" role="presentation">
-                         {requestLink}
+                         {this.genLink(c,Status.REQUEST,'flash','Request')}
                      </li>
                  </ul>
              </li>
         );
-        /*
-        return (
-        <div className="challengeStatusMenu">
-            <Panel expanded={false} defaultExpanded={false} className='challengePanelStatus' header={header} eventKey='1' >
-                {pendingLink}
-                {acceptedLink}
-                {sentLink}
-            </Panel>
-        </div>
-        );
-        */
     }
 });
 

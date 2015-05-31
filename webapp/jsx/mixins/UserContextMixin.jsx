@@ -7,6 +7,9 @@ var Status = require('../../lib/Status');
 var Season = require('../../lib/Season');
 
 var UserContextMixin = {
+    getDb: function() {
+        return DataStore.getDb();
+    },
     getUserId: function() {
         var id = DataStore.getAuthUserId();
         if (id == undefined || isNaN(id))

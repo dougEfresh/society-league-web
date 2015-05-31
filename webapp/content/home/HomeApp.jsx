@@ -33,17 +33,17 @@ var HomeApp = React.createClass({
         var welcome = <span id="welcome-name">{'Welcome ' + this.getUser().fName + ' '}</span>;
         var button = null;
         if (this.getUser().isChallenge()) {
-            button = <Link to="request"><Button responsive={true}> <Glyphicon glyph="flash" /> <b>Request</b></Button> </Link>
+            button = <Link id="request-link" to="request"><Button responsive={true}> <Glyphicon glyph="flash" /> <b>Request</b></Button> </Link>
         }
+        //<UpcomingMatches />
         return (
-            <div id="homeApp">
+            <div id="home-app">
                 <h2 className="welcome" >
                     <Glyphicon glyph="user" />
                     {welcome}
                     {button}
                 </h2>
                 <UpcomingChallenges />
-                <UpcomingMatches />
                 <RecentMatches />
             </div>
         );

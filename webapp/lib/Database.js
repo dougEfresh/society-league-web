@@ -335,6 +335,16 @@ Database.prototype.getSeasons= function () {
 Database.prototype.getUsers= function () {
     return this.data.users;
 };
+
+Database.prototype.getUser= function (id) {
+    var user = User.DEFAULT_USER;
+    this.data.users.forEach(function(u){
+        if (u.userId == id) {
+            user = u;
+        }
+    });
+    return user;
+};
 Database.prototype.getResults= function () {
     return this.data.results;
 };

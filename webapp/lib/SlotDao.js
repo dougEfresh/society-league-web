@@ -1,13 +1,17 @@
-var DataStore = require('../jsx/stores/DataStore.jsx');
+function SlotDao(db) {
+    this.db = db;
+};
 
-function getSlot(id) {
-    var slots = DataStore.getSlots();
+SlotDao.prototype.db = function() {return this.db;};
+
+SlotDao.prototype.getSlot = function(id) {
+    var slots = this.db.getSlots();
     for (var i = 0; i<slots.length; i++) {
         if (slots[i].id == id) {
             return slots[i];
         }
     }
     return undefined;
-}
+};
 
-module.exports = {getSlot: getSlot()};
+module.exports = SlotDao;

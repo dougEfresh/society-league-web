@@ -8,6 +8,8 @@ var height =  casper.cli.has("height") ? casper.cli.get("height") : 768;
 var timeout = casper.cli.has("timeout") ? casper.cli.get("timeout") : 10000;
 casper.options.viewportSize = {width:width, height: height};
 var authUser = null;
+var Database = require('../webapp/lib/Database');
+var db = new Database();
 
 var notReady = function() {
   this.capture('test.png');
@@ -65,7 +67,13 @@ login = function () {
         this.waitForSelector('#appReady', function () {
         }, testlib.notReady, testlib.timeout);
     });
-
 };
 
-module.exports = {notReady: notReady, user: user,pass:pass,server:server,width:width, height: height, timeout: timeout, login: login, authUser: authUser};
+
+var init = function() {
+    casper.thenOpen(testlib.server + '/api/data', function() {
+        //this.echo(JSON.parse(this.getPageContent()).seasons.length);
+        db.init(JSON.parse(this.getPageContent()));
+    });
+};
+module.exports = {notReady: notReady, user: user,pass:pass,server:server,width:width, height: height, timeout: timeout, login: login, authUser: authUser, db:db, init: init};

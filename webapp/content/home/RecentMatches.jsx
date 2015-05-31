@@ -10,6 +10,7 @@ var moment = require('moment');
 var Bootstrap = require('react-bootstrap');
 var Panel = Bootstrap.Panel;
 var UserResults = require('../../jsx/components/result/UserResults.jsx');
+var MatchDao = require('../../lib/dao/MatchDao');
 
 var UpcomingMatches = React.createClass({
     mixins: [UserContextMixin],
@@ -17,28 +18,23 @@ var UpcomingMatches = React.createClass({
         if (this.getUser().id == 0) {
             return null;
         }
-        var results = this.getUser().getResults();
-        var today = moment();
-        var recent = [];
-        results.forEach(function(m){
-            var mDate = moment(m.getMatchDate());
-            if (mDate.isBefore(today)) {
-                recent.push(m);
-            }
-        });
-        recent = recent.sort(function(a,b){
-            return b.getMatchDate().localeCompare(a.getMatchDate());
-        });
+        var matchDao = new MatchDao(this.getDb());
+        var recent = matchDao.getResults(this.getUser());
         if (recent.length == 0) {
-            return (<Panel header={'Recent Matches'}>
-                <span>You have not played any matches</span>
-            </Panel>
+            return (
+                <div id={'no-recent-matches'}>
+                    <Panel header={'Recent Matches'}>
+                        <span>You have not played any matches</span>
+                    </Panel>
+                </div>
             )
         }
         return (
+            <div id = {'recent-matches'} >
             <Panel header={'Recent Matches'}>
                 <UserResults matches={recent} />
             </Panel>
+            </div>
         )
     }
 });

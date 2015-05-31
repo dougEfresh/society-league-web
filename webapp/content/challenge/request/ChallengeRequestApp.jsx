@@ -56,7 +56,7 @@ var ChallengeRequestApp = React.createClass({
         return errors;
     },
     confirm: function() {
-        this.transitionTo('challengeConfirm');
+        this.transitionTo('challengeConfirm',this.getParams(),this.getQuery());
     },
     isValid: function() {
         return this.getErrors().length == 0;

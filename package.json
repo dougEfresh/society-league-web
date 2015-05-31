@@ -41,6 +41,7 @@
     "watchify": "3.2.1",
     "uglify-js": "2.4.21",
     "json-proxy": "0.3.1",
-    "morgan": "1.5.2"
+    "morgan": "1.5.2",
+"unirest":"0.4.2"
   }
 }
