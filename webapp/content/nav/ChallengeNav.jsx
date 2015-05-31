@@ -56,7 +56,9 @@ var ChallengeNav = React.createClass({
     },
     genLink: function(c,type,glyph,name) {
         if (type == Status.REQUEST) {
-            return (<Link to={type.toLowerCase()} > <Glyphicon glyph={glyph}/>{'Request'}</Link>)
+            return (<Link to={type.toLowerCase()} >
+                <Glyphicon glyph={glyph}/>{'Request'}</Link>
+            )
         }
         return c[type].length != 0 ? (
 
@@ -82,7 +84,7 @@ var ChallengeNav = React.createClass({
             + c[Status.ACCEPTED].length;
 
         var active = "";
-        if (this.getPath().indexOf('challenge') >= 0) {
+        if (this.getPath().indexOf('/challenge/') >= 0) {
             active = "active";
         }
         var noChallenge = (

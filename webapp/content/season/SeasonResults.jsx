@@ -288,13 +288,16 @@ var Header = React.createClass({
             });
             filters.push(<th key={key++}><Input type='select' value={h.filter} >{options}</Input></th>)
         }.bind(this));
+        return (<h2>Coming Soon</h2>);
 
+        /*
         return (
             <thead>
             {header}
             {filters}
             </thead>
-        )
+        );
+        */
         /*
 
           return (

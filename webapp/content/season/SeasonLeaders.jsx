@@ -97,7 +97,28 @@ var SeasonLeaders = React.createClass({
         var rowGetter = function(index) {
             return rows[index];
         };
-        return (
+        var season = this.getSeason(this.getParams().seasonId);
+        if (season.isChallenge()) {
+            width -= ColumnConfig.name.width;
+            return (
+                <Table
+                    groupHeaderHeight={30}
+                    rowHeight={50}
+                    headerHeight={30}
+                    rowGetter={rowGetter}
+                    rowsCount={rows.length}
+                    width={width}
+                    maxHeight={500}
+                    headerHeight={30}>
+                    {ColumnHelper.user()}
+                    {ColumnHelper.wins()}
+                    {ColumnHelper.loses()}
+                    {ColumnHelper.racksForStat()}
+                    {ColumnHelper.racksAgainstStat()}
+                </Table>
+            );
+        } else {
+            return (
                 <Table
                     groupHeaderHeight={30}
                     rowHeight={50}
@@ -114,7 +135,9 @@ var SeasonLeaders = React.createClass({
                     {ColumnHelper.racksForStat()}
                     {ColumnHelper.racksAgainstStat()}
                 </Table>
-        );
+            );
+        }
+
     }
 });
 

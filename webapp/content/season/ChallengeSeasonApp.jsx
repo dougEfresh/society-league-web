@@ -33,7 +33,7 @@ var StatsMixin = require('../../jsx/mixins/StatsMixin.jsx');
 var SeasonResults = require('./SeasonResults.jsx');
 var SeasonLeaders = require('./SeasonLeaders.jsx');
 
-var SeasonApp = React.createClass({
+var ChallengeSeasonApp = React.createClass({
     mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
@@ -61,6 +61,28 @@ var SeasonApp = React.createClass({
         if (this.getUserId() == 0) {
             return null;
         }
+
+        var header = (
+            <div style={{display: 'inline'}}>
+                <Link to='challengeStandings' params={this.getParams()}>
+                    <Button bsStyle={this.isActive('challengeStandings') ? 'success' : 'default'} responsize>
+                        <i className="fa fa-trophy"></i><span className="main-item">{ ' Standings'}</span>
+                    </Button>
+                </Link>
+
+                <Link to='challengeLeaders' params={this.getParams()}>
+                    <Button bsStyle={this.isActive('challengeStandings') ? 'success' : 'default'} responsive>
+                        <i className="fa  fa-list-ol"></i><span className="main-item">{ ' Leaders'}</span>
+                    </Button>
+                </Link>
+                <Link to='challengeResults' params={this.getParams()}>
+                    <Button bsStyle={this.isActive('challengeStandings') ? 'success' : 'default'} responsive>
+                        <i className="fa  fa-history"></i><span className="main-item">{ ' Matches'}</span>
+                    </Button>
+                </Link>
+            </div>
+        );
+        return (<div id="challenge-season-app"><h2>Blha</h2></div>);
         /*
          <Link to='seasonWeeklyResults' params={this.getParams()}>
          <Button bsStyle={this.isActive('seasonWeeklyResults') ? 'success' : 'default'} responsize>
@@ -68,37 +90,17 @@ var SeasonApp = React.createClass({
          </Button>
          </Link>
          */
-        var season = this.getSeason(this.getParams().seasonId);
-        var display = season.isChallenge() ? 'none' : 'inline';
-        var header = (
-                <div style={{display: 'inline'}}>
-                    <div style={{display:display}}>
-                    <Link to='seasonStandings' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonStandings') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-trophy"></i><span className="main-item">{ ' Standings'}</span>
-                        </Button>
-                    </Link>
-                    </div>
-                    <Link to='seasonLeaders' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonLeaders') ? 'success' : 'default'} responsive>
-                            <i className="fa  fa-list-ol"></i><span className="main-item">{ ' Leaders'}</span>
-                        </Button>
-                    </Link>
-                    <Link to='seasonResults' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonResults') ? 'success' : 'default'} responsive>
-                            <i className="fa  fa-history"></i><span className="main-item">{ ' Matches'}</span>
-                        </Button>
-                    </Link>
-                </div>
-        );
+        /*
+
         return (
-              <div id="season-app">
+            <div id="season-app">
                 {header}
-                    <RouteHandler />
+                <RouteHandler />
             </div>
         );
+        */
     }
 });
 
-module.exports = SeasonApp;
+module.exports = ChallengeSeasonApp;
 

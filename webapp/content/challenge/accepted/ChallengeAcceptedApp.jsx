@@ -5,9 +5,10 @@ var ChallengeStatus  = require('../../../jsx/constants/ChallengeStatus.jsx');
 var DataStore = require('../../../jsx/stores/DataStore.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
+var Router = require('react-router');
 
 var ChallengeAcceptedApp = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.Navigation],
     getInitialState: function () {
         return  {
             challengeGroups: []
@@ -31,7 +32,10 @@ var ChallengeAcceptedApp = React.createClass({
             this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.ACCEPTED]});
     },
     render: function(){
-        if (this.state.challengeGroups.length == 0) {
+        if (this.getUser().challenges[ChallengeStatus.ACCEPTED].length == 0) {
+            setTimeout(function() {
+                this.transitionTo('request');
+                }.bind(this),250);
             return (<Panel><div><p>You have no challenges accepted</p></div></Panel>)
         }
         return (

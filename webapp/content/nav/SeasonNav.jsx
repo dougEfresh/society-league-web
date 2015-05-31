@@ -91,16 +91,30 @@ var SeasonNav = React.createClass({
                     return;
             }
             seasons.push(
-                <li key={t.id} role="presentation">
-                    <Link  to="seasonStandings" params={{userId: this.getUserId(),seasonId: t.id}} >
+                <li id={'season-link-'+ t.id} key={t.id} role="presentation">
+                    <Link  to="seasonStandings" params={{seasonId: t.id}} >
                         {title}
                     </Link>
                 </li>
             );
         }.bind(this));
         var active = "";
-        if (this.isActive('season')) {
+        if (this.isActive('season') || this.isActive('challengeSeason')) {
             active = "active";
+        }
+        if (this.getUser().isChallenge()) {
+            var challengeSeason = null;
+            this.getUser().getCurrentSeasons().forEach(function(s){
+                if (s.isChallenge()) {
+                    challengeSeason = s;
+                }
+            });
+            seasons.push(
+                <li id={'challenge-season-link'} key={'challenge'} role="presentation">
+                    <Link to="seasonLeaders" params={{seasonId: challengeSeason.id}} >
+                        {'Challenge'}
+                    </Link>
+                </li>)
         }
         return (
              <li id="season-nav" role="presentation" className={'dropdown ' + active} >

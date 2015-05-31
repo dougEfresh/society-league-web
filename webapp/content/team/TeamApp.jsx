@@ -109,9 +109,8 @@ var TeamApp = React.createClass({
             return (
                 <div id="team-app">
                     {teamHeader}
-                <Panel header={header}>
+                    {header}
                     <RouteHandler />
-                </Panel>
             </div>
         );
 

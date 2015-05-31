@@ -156,6 +156,9 @@ var TeamResults = React.createClass({
             ColumnConfig.racksAgainst.width +
             2;
 
+        return (<h2>Coming Soon</h2>);
+
+        /*
         return (
          <Table
              groupHeaderHeight={30}
@@ -174,6 +177,7 @@ var TeamResults = React.createClass({
              {ColumnHelper.racksAgainstTeamMember(team)}
          </Table>
         );
+        */
     }
 });
 

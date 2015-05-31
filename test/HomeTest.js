@@ -12,7 +12,7 @@ casper.test.begin('Test Home Page', function suite(test) {
     casper.thenOpen(testlib.server + '/index.html#/app/home', function(){
     });
     casper.then(function(){
-        this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
     });
     casper.then(function() {
         test.assertExists('#home-app');
@@ -21,16 +21,16 @@ casper.test.begin('Test Home Page', function suite(test) {
         this.click('#request-link');
     });
     casper.then(function(){
-        this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
     });
 
     casper.then(function(){
-        this.waitForSelector('#request-app',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#request-app',function(){},testlib.notReady('request-app'),testlib.timeout);
     });
     casper.thenOpen(testlib.server + '/index.html#/app/home', function(){
     });
     casper.then(function(){
-        this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
     });
     casper.then(function() {
         test.assertExists('#home-app');

@@ -12,7 +12,7 @@ casper.test.begin('Test ChallengeNav Page', function suite(test) {
     casper.thenOpen(testlib.server + '/index.html#/app/home', function(){
     });
     casper.then(function(){
-        this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready').bind(this),testlib.timeout);
     });
     casper.then(function(){
         var c = testlib.authUser.challenges;
@@ -73,7 +73,7 @@ casper.test.begin('Test ChallengeNav Page', function suite(test) {
         this.clickLabel('Request');
     });
     casper.then(function(){
-        this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
     });
     casper.then(function(){
         test.assertExists('#request-app','Found Request App');
@@ -89,7 +89,7 @@ casper.test.begin('Test ChallengeNav Page', function suite(test) {
         var c = testlib.authUser.challenges;
         var counter = c[Status.ACCEPTED].length;
         if (counter > 0)
-            this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
+            this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
     });
     casper.then(function(){
         var c = testlib.authUser.challenges;
@@ -108,7 +108,7 @@ casper.test.begin('Test ChallengeNav Page', function suite(test) {
         var c = testlib.authUser.challenges;
         var counter = c[Status.PENDING].length;
         if (counter > 0)
-            this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
+            this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
     });
     casper.then(function(){
         var c = testlib.authUser.challenges;
@@ -128,7 +128,7 @@ casper.test.begin('Test ChallengeNav Page', function suite(test) {
         var c = testlib.authUser.challenges;
         var counter = c[Status.SENT].length;
         if (counter > 0)
-            this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
+            this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
     });
     casper.then(function(){
         var c = testlib.authUser.challenges;

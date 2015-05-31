@@ -158,6 +158,22 @@ User.prototype.getSeasonStats = function(seasonId) {
 };
 
 User.prototype.getStatsForSeason = function(seasonId) {
+    var isChallenge = false;
+    this.seasons.forEach(function(s){
+        if (s.isChallenge())
+            isChallenge = true;
+    });
+    if (isChallenge) {
+        var stat = null;
+        this.stats.forEach(function(s){
+            if (s.type == 'challenge') {
+                stat = s;
+            }
+        });
+        if (stat == null) {
+            return Stat.DEFAULT;
+        }
+    }
     for(var i =0 ; i < this.stats.length; i++) {
         if (this.stats[i].season != null && this.stats[i].season != undefined) {
             if (seasonId != undefined && seasonId != null && this.stats[i].season.id == seasonId) {

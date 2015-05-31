@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var Router = require('react-router');
 var GroupList = require('../group/GroupList.jsx');
 var UserContextMixin = require('../../.././jsx/mixins/UserContextMixin.jsx');
 var ChallengeStatus  = require('../../../jsx/constants/ChallengeStatus.jsx');
@@ -8,7 +9,7 @@ var Bootstrap = require('react-bootstrap')
 var Status = require('../../../lib/Status');
 
 var ChallengePendingApp = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.Navigation],
     getInitialState: function () {
         return  {
             challengeGroups: []
@@ -37,6 +38,9 @@ var ChallengePendingApp = React.createClass({
         var user = this.getUser();
         var challenges = user.getChallenges(Status.PENDING);
         if (challenges.length == 0) {
+             setTimeout(function() {
+                this.transitionTo('accepted');
+                }.bind(this),250);
             return (<Panel><div><p>You have no pending challenges</p></div></Panel>)
         }
         return (

@@ -213,7 +213,11 @@ Database.prototype.processData = function (d) {
 
             } else if (type == 'division') {
                 stats[type].forEach(function (s) {
-                    user.addStats(new Stat(type, s, this.findDivision(s.divisionId)));
+                    user.addStats(new Stat(type, s,null));
+                }.bind(this));
+            } else if (type == 'challenge') {
+                stats[type].forEach(function (s) {
+                    user.addStats(new Stat(type, s,null));
                 }.bind(this));
             } else if (type == 'handicapAll') {
                 if (stats[type] != undefined && stats[type] != null) {

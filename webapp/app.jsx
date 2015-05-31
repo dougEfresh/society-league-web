@@ -36,13 +36,14 @@ var ChallengeConfirmApp = require('./content/challenge/ChallengeConfirmApp.jsx')
 var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
+var ChallengeSeasonApp = require('./content/season/ChallengeSeasonApp.jsx');
 
 var App = React.createClass({
     render: function () {
         return (
             <div>
                 <RouteHandler/>
-                <div id='pageReady'></div>
+                <div id='page-ready'></div>
             </div>
         );
     }

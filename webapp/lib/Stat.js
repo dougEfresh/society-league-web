@@ -6,7 +6,8 @@ function Stat(type,obj,season) {
     this.racksAgainst = obj.racksAgainst == undefined ? 0 : parseInt(obj.racksAgainst);
     this.setLoses = obj.setLoses == undefined ? 0 :  parseInt(obj.setLoses);
     this.setWins = obj.setWins== undefined ? 0 :  parseInt(obj.setWins);
-
+    this.team = undefined;
+    this.user = undefined;
     this.handicap = obj.handicap;
     this.season = season;
     this.type = type;
@@ -23,6 +24,12 @@ Stat.prototype.setLoses = function() {return this.setLoses; };
 Stat.prototype.racksFor = function() {return this.racksFor; };
 Stat.prototype.racksAgainst = function() {return this.racksAgainst; };
 Stat.prototype.season = function() {return this.season; };
+
+Stat.prototype.team = function() {return this.team; };
+Stat.prototype.user = function() {return this.user; };
+Stat.prototype.setTeam = function(t) {return this.team = t; };
+Stat.prototype.setUser = function(u) {return this.user = u; };
+
 
 Stat.prototype.getType = function() {return this.type;};
 
@@ -84,7 +91,6 @@ Stat.sort.bySetWins= function(a,b) {
 Stat.sort.byLoses= function(a,b) {
     return a.loses> b.loses ? -1 : 1;
 };
-
 
 Stat.sort.byRacksFor= function(a,b) {
     return a.racksFor> b.racksFor ? -1 : 1;

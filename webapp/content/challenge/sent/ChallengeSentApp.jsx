@@ -3,12 +3,12 @@ var GroupList = require('../group/GroupList.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var ChallengeStatus  = require('../../../jsx/constants/ChallengeStatus.jsx');
 var DataStore = require('../../../jsx/stores/DataStore.jsx');
-
+var Router = require('react-router');
 var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 
 var ChallengeSentApp = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.Navigation],
     getInitialState: function () {
         return  {
             challengeGroups: []
@@ -35,7 +35,10 @@ var ChallengeSentApp = React.createClass({
         }
     },
     render: function(){
-        if (this.state.challengeGroups.length == 0) {
+        if (this.getUser().challenges[ChallengeStatus.SENT].length == 0) {
+            setTimeout(function() {
+                this.transitionTo('request');
+                }.bind(this),250);
             return (<Panel><div><p>You have not sent any challenges</p></div></Panel>)
         }
         return (

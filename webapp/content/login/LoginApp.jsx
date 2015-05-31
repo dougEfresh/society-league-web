@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var Router = require('react-router');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Input = Bootstrap.Input
@@ -10,7 +11,7 @@ var DataStore = require('../../jsx/stores/DataStore.jsx');
 var login = require('../../lib/Login');
 
 var LoginApp = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
     contextTypes: {
         router: React.PropTypes.func
     },
@@ -40,7 +41,9 @@ var LoginApp = React.createClass({
             success: function (d) {
                 DataStore.setUser(d);
                 //DataStore.init();
-                //router.transitionTo('home',null,null);
+                if (this.isActive('login')) {
+                    this.transitionTo('home', null, null);
+                }
             }.bind(this),
             error: function (xhr, status, err) {
                 this.setState({error: true});
@@ -51,7 +54,7 @@ var LoginApp = React.createClass({
     render: function () {
         var button = (<Button id='submit' onClick={this.handleSubmit} >Login</Button>);
         return (
-            <div id="loginApp" className="login-container well col-lg-5 col-md-5 col-sm-6">
+            <div id="login-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form id='login' className="login-form form-signin">
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="form-field form-group">

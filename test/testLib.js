@@ -11,48 +11,12 @@ var authUser = null;
 var Database = require('../webapp/lib/Database');
 var db = new Database();
 
-var notReady = function() {
-  this.capture('test.png');
-  this.die(this.getHTML() + ' !!!!Page not ready!!!');
+var notReady = function(id) {
+    return function() {
+        this.capture('test.png');
+        this.die(this.getHTML() + ' !!!!Page not ready!!!\n' + id);
+    };
 };
-
-var shim =  function() {
-
-
-var Ap = Array.prototype;
-var slice = Ap.slice;
-var Fp = Function.prototype;
-
-if (!Fp.bind) {
-  // PhantomJS doesn't support Function.prototype.bind natively, so
-  // polyfill it whenever this module is required.
-  Fp.bind = function(context) {
-    var func = this;
-    var args = slice.call(arguments, 1);
-
-    function bound() {
-      var invokedAsConstructor = func.prototype && (this instanceof func);
-      return func.apply(
-        // Ignore the context parameter when invoking the bound function
-        // as a constructor. Note that this includes not only constructor
-        // invocations using the new keyword but also calls to base class
-        // constructors such as BaseClass.call(this, ...) or super(...).
-        !invokedAsConstructor && context || this,
-        args.concat(slice.call(arguments))
-      );
-    }
-
-    // The bound function must share the .prototype of the unbound
-    // function so that any object created by one constructor will count
-    // as an instance of both constructors.
-    bound.prototype = func.prototype;
-
-    return bound;
-  };
-}
-
-};
-//casper.on('page.initialized', shim);
 
 var login;
 login = function () {
@@ -64,13 +28,15 @@ login = function () {
     });
     casper.then(function () {
         this.click('#submit');
-        this.waitForSelector('#app-ready', function () {
-        }, testlib.notReady, testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
     });
 
 };
 
 var init = function() {
+    if (authUser != null) {
+        return ;
+    }
     casper.thenOpen(testlib.server + '/api/data', function() {
         //this.echo(JSON.parse(this.getPageContent()).seasons.length);
         db.init(JSON.parse(this.getPageContent()));
@@ -81,11 +47,18 @@ var init = function() {
             this.die("No Db",1);
         }
     });
-    casper.thenOpen(testlib.server + '/index.html', function(){
-        this.waitForSelector('#loginApp',function(){},testlib.notReady,testlib.timeout);
+    casper.thenOpen(testlib.server + '/index.html#/login', function(){
+
+
     });
+    casper.then(function(){
+        console.log('Awaiting login page');
+        //
+    });
+
     casper.then(function() {
         testlib.login();
+        console.log('login');
     });
     casper.thenOpen(testlib.server + '/api/user', function () {
         var u  = JSON.parse(this.getPageContent());
