@@ -29,7 +29,12 @@ User.prototype.userId = function () { return this.userId ; };
 User.prototype.id = function () { return this.id ; };
 User.prototype.lName = function () { return this.lName ; };
 User.prototype.fName = function () { return this.fName ; };
-User.prototype.sName = function () { return this.fName + ' ' + this.lName.substr(0,1) + '.' };
+User.prototype.sName = function () {
+ if (this.lName != undefined && this.lName.length > 0) {
+return        this.fName + ' ' + this.lName.substr(0,1) + '.'
+        }
+        return "";
+};
 User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
 User.prototype.role = function () { return this.role ; };

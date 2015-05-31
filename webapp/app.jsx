@@ -13,6 +13,7 @@ var ChallengeAcceptedApp = require('./content/challenge/accepted/ChallengeAccept
 var ChallengeSentApp = require('./content/challenge/sent/ChallengeSentApp.jsx');
 
 var NavApp = require('./content/nav/NavApp.jsx');
+var ResetApp = require('./jsx/../content/ResetApp.jsx');
 var LoginApp = require('./jsx/../content/login/LoginApp.jsx');
 var LogoutApp = require('./jsx/components/LogoutApp.jsx');
 var ErrorApp = require('./jsx/components/ErrorApp.jsx');
@@ -66,6 +67,7 @@ var routes = (
         <NotFoundRoute handler={RouteNotFound}/>
         <DefaultRoute name="default" handler={NavApp} />
         <Route name="login" path="login" handler={LoginApp} />
+        <Route name="reset" path="reset" handler={ResetApp} />
         <Route name="error" path="error" handler={ErrorApp} />
         <Route name="logout" path="logout" handler={LogoutApp} />
         <Route name="nav" path="/app" handler={NavApp}>

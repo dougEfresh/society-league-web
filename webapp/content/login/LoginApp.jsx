@@ -21,6 +21,9 @@ var LoginApp = React.createClass({
             loggedIn: false
         };
     },
+       handleReset: function(e){
+       this.transitionTo('reset', null, null);
+       },
     handleSubmit: function(e){
         e.preventDefault();
         var user = this.refs.username.getValue().toLowerCase();
@@ -62,6 +65,7 @@ var LoginApp = React.createClass({
                             <Input id="password" ref='password' type='password' name='password' placeholder='enter password'> </Input>
                         </div>
                     {button}
+                    <Button id='reset-password' onClick={this.handleReset} >Forget Password?</Button>
                 </form>
             </div>
         );

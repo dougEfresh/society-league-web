@@ -98,7 +98,7 @@ var ChallengeNav = React.createClass({
                  return (
                      <li role="presentation" className={'dropdown ' + active}>
                          <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                             <Glyphicon glyph='cog' /> <span className="main-item"> Challenges </span><Badge>{counter}</Badge>
+                             <Glyphicon glyph='king' /> <span className="main-item"> Challenges </span><Badge>{counter}</Badge>
                              <span className="caret"></span>
                          </a>
                          {noChallenge}
@@ -109,7 +109,7 @@ var ChallengeNav = React.createClass({
         return (
              <li id="challenge-nav" role="presentation" className={'dropdown ' + active}>
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                     <Glyphicon glyph='cog' />
+                     <Glyphicon glyph='king' />
                      <span className="main-item">
                          Challenges
                      </span>
@@ -129,7 +129,7 @@ var ChallengeNav = React.createClass({
                          {this.genLink(c,Status.SENT,'ok','Sent')}
                      </li>
                      <li className="teamNavLink" role="presentation">
-                         {this.genLink(c,Status.REQUEST,'flash','Request')}
+                         {this.genLink(c,Status.REQUEST,'knight','Request')}
                      </li>
                  </ul>
              </li>
