@@ -242,13 +242,15 @@ Database.prototype.processData = function (d) {
             }
         }
     }
-    console.log('UserStats '  + start.diff(moment()));
+    console.log('UserStats '  + start.diff(moment())*-1);
     for (id in d.teamStats) {
         var season = this.findSeason(id);
         d.teamStats[id].forEach(function (s) {
             this.data.teams.forEach(function (t) {
                 if (t.id == s.teamId) {
-                    t.addStats(id, new Stat('team', s, season));
+                    var stat = new Stat('team', s, season);
+                    stat.setTeam(t);
+                    t.addStats(id,stat);
                 }
             });
         }.bind(this));

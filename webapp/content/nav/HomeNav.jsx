@@ -23,7 +23,7 @@ var HomeNav = React.createClass({
 
     render: function() {
         var active=null;
-        if (this.isActive('home') || this.isActive('default') ) {
+        if (this.isActive('home') || this.isActive('default') | this.isActive('user')) {
             active="active";
         }
         return (

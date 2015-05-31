@@ -63,10 +63,7 @@ var user = function(team) {
             return result.user;
         }
         if (result instanceof Stat) {
-            return result.user;
-        }
-        if (result instanceof TeamStat) {
-            return result.team;
+            return result.user != undefined ? result.user : result.team;
         }
         if (result instanceof Result) {
             return result.winnersTeam.id == team.id ? result.winner : result.loser;
@@ -199,8 +196,8 @@ var hc = function(seasonId) {
         if (data instanceof UserMatch) {
             return data.user.getCurrentHandicap(seasonId);
         }
-        if (data instanceof UsersStat)
-            return data.getCurrentHandicap(seasonId);
+        if (data instanceof Stat && (data.user != undefined || data.user != null))
+            return data.user.getCurrentHandicap(seasonId);
 
         return "";
     };
@@ -258,9 +255,9 @@ var points = function() {
 };
 
 var team = function() {
-    var render = function(cellKey,team) {
-        if (team instanceof TeamStat) {
-            return <TeamLink team={team.team} seasonId={team.stat.season.id} />
+    var render = function(cellKey,data) {
+        if (data instanceof Stat) {
+            return <TeamLink team={data.team} seasonId={data.season.id} />
         }
     };
     return (
@@ -277,12 +274,12 @@ var team = function() {
 };
 
 var usersTeam = function(seasonId) {
-    var render = function(cellKey,user) {
-        if (user instanceof UsersStat) {
-            return <TeamLink team={user.user.getTeamForSeason(seasonId)} seasonId={seasonId} />
+    var render = function(cellKey,data) {
+        if (data instanceof Stat) {
+            return <TeamLink team={data.user.getTeamForSeason(seasonId)} seasonId={seasonId} />
         }
-        if (user instanceof User) {
-            return <TeamLink team={user.getTeamForSeason(seasonId)} seasonId={seasonId} />
+        if (data instanceof User) {
+            return <TeamLink team={data.getTeamForSeason(seasonId)} seasonId={seasonId} />
         }
     };
     return (
@@ -299,16 +296,14 @@ var usersTeam = function(seasonId) {
 };
 
 var statType = function() {
-    var render = function(cellKey,user) {
-        if (user instanceof UsersStat) {
-            if (user.stat.getType() == 'season') {
-                return user.stat.season.getDisplayName();
-            }
-            if (user.stat.getType() == 'all') {
-                return 'overall';
-            }
-            return user.stat.getType();
+    var render = function(cellKey,data) {
+        if (data.getType() == 'season') {
+            return data.season.getDisplayName();
         }
+        if (data.getType() == 'all') {
+            return 'overall';
+        }
+        return data.getType();
     };
     return (
         <Column

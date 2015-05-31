@@ -58,9 +58,8 @@ var StatApp = React.createClass({
         );
         return (
               <div id="scout-app">
-                <Panel header={header}>
-                    <RouteHandler />
-                </Panel>
+                  {header}
+                  <RouteHandler />
             </div>
         );
     }

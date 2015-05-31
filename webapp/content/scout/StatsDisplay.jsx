@@ -33,22 +33,22 @@ var StatsDisplay = React.createClass({
             if (s.type.indexOf('handicap') >= 0 || s.type.indexOf('division') >=0 ) {
                 return;
             }
-            if (s.type.indexOf('challenge') >= 0 ) {
-                return ;
-            }
-            userStats.push(new UserStat(user,s));
+            //if (s.type.indexOf('challenge') >= 0 ) {
+//                return ;
+  //          }
+            userStats.push(s);
         });
         userStats.sort(function(a,b){
-            if (a.stat.type == 'all') {
+            if (a.type == 'all') {
                 return -1;
             }
 
-            if (b.stat.type == 'all') {
+            if (b.type == 'all') {
                 return 0;
             }
 
-            if (b.stat.type == 'season') {
-                return  b.stat.season.startDate.localeCompare(a.stat.season.startDate);
+            if (b.type == 'season') {
+                return  b.season.startDate.localeCompare(a.season.startDate);
             }
 
             return 0;

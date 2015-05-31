@@ -252,8 +252,8 @@ h2.form-signin-heading {
 	width: 100%;
 }
 
-
-.account-wrapper .btn-group-vertical { max-width: 1000px;padding: 0px 0px; }
+.account-wrapper { max-width: 700px;padding: 0px 0px; }
+.account-wrapper .btn-group-vertical { max-width: 700px;padding: 0px 0px; }
 .account-wrapper .btn-group-vertical a { text-align: left;}
 .account-wrapper .btn-group-vertical a:hover, .account-wrapper .btn-group-vertical .active { background-color: #000; color: #fff;}
 
@@ -355,8 +355,11 @@ h2.form-signin-heading {
 	color: #fff;
 }
 .user-content {
+	width: 600px;
+	align-content: space-around;
 	background: #EBEBEB;
-	padding-top: 20px;
+	padding-top: 10px;
+	margin-left: 1px;
 }
 .user-nav > .nav-tabs > li.dropdown.open > a {
     border-color: #fff;

@@ -45,7 +45,7 @@ var SeasonStandings = React.createClass({
         var season = this.getSeason(this.getParams().seasonId);
         var rows = [];
         this.getSeasonStandings(this.getParams().seasonId).forEach(function (t) {
-            rows.push(new TeamStat(t,t.getStats(this.getParams().seasonId)));
+            rows.push(t.getStats(this.getParams().seasonId));
         }.bind(this));
         var width = ColumnConfig.name.width +
             ColumnConfig.wins.width +

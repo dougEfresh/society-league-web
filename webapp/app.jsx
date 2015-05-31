@@ -37,6 +37,9 @@ var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
 var ChallengeSeasonApp = require('./content/season/ChallengeSeasonApp.jsx');
+var UserApp  = require('./content/user/UserApp.jsx');
+var UserPasswordApp = require('./content/user/UserPasswordApp.jsx');
+var UserInfo= require('./content/user/UserInfo.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -70,6 +73,10 @@ var routes = (
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="admin" path="admin" handler={AdminApp}/>
+            <Route name="user" path="user/:userId"  handler={UserApp}>
+                <Route name="info" path="info" handler={UserInfo} />
+                <Route name="password" path="password" handler={UserPasswordApp} />
+            </Route>
             <Route name="scout" path="scout/:statsId"  handler={StatApp}>
                 <Route name="stats" path="stats" handler={StatDisplay} />
                 <Route name="history" path="history" handler={StatHistory} />

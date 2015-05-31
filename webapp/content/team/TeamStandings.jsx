@@ -26,13 +26,13 @@ var TeamStandings = React.createClass({
         };
         var teamData = [];
         //Create a fake user with a name of 'team'
-        teamData.push(new TeamStat(team,stats));
+        teamData.push(stats);
         var usersStat = [];
         users.forEach(function(u) {
-            usersStat.push(new UsersStat(u,u.getSeasonStats(this.getParams().seasonId)));
+            usersStat.push(u.getSeasonStats(this.getParams().seasonId));
         }.bind(this));
         usersStat = usersStat.sort(function(a,b) {
-            return Stat.sortAsc(a.stat,b.stat);
+            return Stat.sortAsc(a,b);
         });
         usersStat.forEach(function(us){
             teamData.push(us);
@@ -43,7 +43,7 @@ var TeamStandings = React.createClass({
             ColumnConfig.wins.width +
             ColumnConfig.racksFor.width +
             ColumnConfig.racksAgainst.width +
-                1;
+            1;
         return (
                 <Table
                     groupHeaderHeight={30}

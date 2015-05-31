@@ -5,6 +5,7 @@ var MatchDao = require('../webapp/lib/dao/MatchDao');
 var Status = require('../webapp/lib/Status');
 var SlotDao = require('../webapp/lib/SlotDao');
 var selectedDay = null;
+var selectedOp = 0;
 
 casper.test.begin('Test RequestApp', function suite(test) {
     casper.start();
@@ -27,9 +28,22 @@ casper.test.begin('Test RequestApp', function suite(test) {
         }, false);
     });
 
+
     casper.then(function() {
-        this.fillSelectors('form#request-app', {
-            'select[name="challenge-opponent"]' : '212'
+        var opponents = this.evaluate(function(){
+            var ops = [];
+            var children = document.getElementById('challenge-opponent').children;
+            for (var i = 0; i < children.length; i++ ) {
+                if (children[i].value != '-1')
+                    ops.push(children[i].value);
+            }
+            return ops;
+        });
+        test.assert(opponents != null ,'Op != null');
+        test.assert(opponents.length > 0,'Op > 0');
+        selectedOp = opponents[1];
+         this.fillSelectors('form#request-app', {
+            'select[name="challenge-opponent"]' : selectedOp
         }, false);
     });
 
@@ -103,7 +117,7 @@ casper.test.begin('Test RequestApp', function suite(test) {
         this.clickLabel('Cancel');
     });
     casper.then(function() {
-    //    testlib.refreshUser();
+        testlib.refreshUser();
     });
     casper.thenOpen(testlib.server + '/index.html#/app/challenge/sent', function(){
     });
