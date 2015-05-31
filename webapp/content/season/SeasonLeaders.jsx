@@ -32,15 +32,11 @@ var ReactRouterBootstrap = require('react-router-bootstrap')
 
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
-var StatsMixin = require('../../jsx/mixins/StatsMixin.jsx');
-var UserLink = require('../../jsx/components/links/UserLink.jsx');
-var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Stat =  require('../../lib/Stat');
-var UserStat =  require('../../lib/UsersStat');
+var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 
 var SeasonLeaders = React.createClass({
-    mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin,SeasonMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
             user: this.getUser(),
@@ -48,22 +44,8 @@ var SeasonLeaders = React.createClass({
         }
     },
     componentDidMount: function () {
-        this.setState({user: this.getUser()});
     },
     componentWillReceiveProps: function() {
-        this.setState({seasonId: this.getParams().seasonId});
-    },
-    handleClick: function(e) {
-        e.preventDefault();
-        var toggle = e.target.id;
-        if (toggle.indexOf('Teams') >= 0) {
-            this.transitionTo('season',this.getParams());
-            return;
-        }
-        if (toggle.indexOf('Results') >= 0) {
-            this.transitionTo('seasonResults',this.getParams());
-            return;
-        }
     },
     render: function() {
         if (this.getUserId() == 0) {
@@ -84,7 +66,7 @@ var SeasonLeaders = React.createClass({
 
         var rows = [];
          users.forEach(function(u) {
-             rows.push(new UserStat(u,u.getStatsForSeason(this.getParams().seasonId)));
+             rows.push(u.getStatsForSeason(this.getParams().seasonId));
          }.bind(this));
           var width =
               ColumnConfig.name.width +
@@ -100,6 +82,7 @@ var SeasonLeaders = React.createClass({
         var season = this.getSeason(this.getParams().seasonId);
         if (season.isChallenge()) {
             width -= ColumnConfig.name.width;
+            width += ColumnConfig.wins.width;
             return (
                 <Table
                     groupHeaderHeight={30}
@@ -111,6 +94,7 @@ var SeasonLeaders = React.createClass({
                     maxHeight={500}
                     headerHeight={30}>
                     {ColumnHelper.user()}
+                    {ColumnHelper.points()}
                     {ColumnHelper.wins()}
                     {ColumnHelper.loses()}
                     {ColumnHelper.racksForStat()}

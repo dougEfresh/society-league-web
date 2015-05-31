@@ -171,8 +171,10 @@ User.prototype.getStatsForSeason = function(seasonId) {
             }
         });
         if (stat == null) {
-            return Stat.DEFAULT;
+            stat = new Stat('none',{},null);
+            stat.setUser(this);
         }
+        return stat;
     }
     for(var i =0 ; i < this.stats.length; i++) {
         if (this.stats[i].season != null && this.stats[i].season != undefined) {

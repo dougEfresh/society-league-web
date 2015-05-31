@@ -14,4 +14,8 @@ SlotDao.prototype.getSlot = function(id) {
     return undefined;
 };
 
+SlotDao.prototype.getSlots = function() {
+    return this.db.getSlots();
+};
+
 module.exports = SlotDao;

@@ -6,6 +6,7 @@ var UserLink = require('../links/UserLink.jsx');
 var TeamLink = require('../links/TeamLink.jsx');
 var Team = require('../../../lib/Team');
 var UsersStat = require('../../../lib/UsersStat');
+var Stat = require('../../../lib/Stat');
 var TeamStat  = require('../../../lib/TeamStat');
 var User  = require('../../../lib/User');
 var Result = require('../../../lib/Result');
@@ -61,7 +62,7 @@ var user = function(team) {
         if (result instanceof UserMatch) {
             return result.user;
         }
-        if (result instanceof UsersStat) {
+        if (result instanceof Stat) {
             return result.user;
         }
         if (result instanceof TeamStat) {
@@ -215,7 +216,7 @@ var hc = function(seasonId) {
 
 var loses = function() {
     var render = function(cellKey,userStats) {
-        return userStats.stat.loses;
+        return userStats.loses;
     };
     return (
         <Column
@@ -230,7 +231,7 @@ var loses = function() {
 
 var wins = function() {
     var render = function(cellKey,userStats) {
-        return userStats.stat.wins;
+        return userStats.wins;
     };
     return (
         <Column
@@ -240,6 +241,19 @@ var wins = function() {
             dataKey={'wins'}
             cellDataGetter={render}
             />
+    );
+};
+var points = function() {
+    var renderCell = function(cellKey,data) {
+        return data.getPoints();
+    };
+    return (
+    <Column
+        cellDataGetter={renderCell}
+        label="Points"
+        width={ColumnConfig.wins.width}
+        dataKey={'points'}
+        />
     );
 };
 
@@ -313,6 +327,7 @@ module.exports = {
     winLostTeamMatch : WinLostColumnHelper.winLostTeamMatch,
     winLostTeam : WinLostColumnHelper.winLostTeam,
     hc: hc,
+    points: points,
     date: date,
     dateMatch: dateMatch,
     season: season,

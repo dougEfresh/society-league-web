@@ -30,7 +30,7 @@ var ChallengeRequestDate = React.createClass({
         var dateOptions = [];
         dateOptions.push(<option key={-1} value={-1}>{'Choose date'}</option>);
         dates.forEach(function(d) {
-            dateOptions.push(<option key={d} value={d}>{d}</option>);
+            dateOptions.push(<option id={'date-' + d } key={d} value={d}>{d}</option>);
         });
 
         return dateOptions;
@@ -55,7 +55,7 @@ var ChallengeRequestDate = React.createClass({
         }
         if (this.props.challengeGroup)
             return (
-                <Input type='select' ref='date' value={dt} label={'Choose Date'} onChange={this.onChange} >{this.getOptions()}</Input>
+                <Input name={'challenge-date'} id={'challenge-date'} type='select' ref='date' value={dt} label={'Choose Date'} onChange={this.onChange} >{this.getOptions()}</Input>
             );
         return null;
     }

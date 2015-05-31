@@ -193,6 +193,9 @@ var ResultsApp = React.createClass({
         var rowGetter = function(rowIndex) {
             return pageMatches[rowIndex];
         };
+        if (pageMatches.length == 0) {
+            return <h4>There have been no matches played yet</h4>
+        }
         var width =
             ColumnConfig.name.width +
             ColumnConfig.handicap.width +

@@ -10,20 +10,7 @@ var ChallengeRequestOpponent = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
-    getInitialState: function(){
-        return {
-            potentials: []
-        }
-    },
     componentDidMount: function() {
-        var potentials  = [];
-        for(var u in this.getUsers()) {
-            var user = this.getUser(u);
-            if (user.isChallenge() && user.userId != this.getUserId() ) {
-                potentials.push(this.getUser(user.userId));
-            }
-        }
-        this.setState({potentials: potentials});
     },
     onChange: function(e) {
         var q = this.getQuery();
@@ -32,8 +19,16 @@ var ChallengeRequestOpponent = React.createClass({
     },
     getOptions: function() {
         var options = [];
+        var potentials  = [];
+        var users = this.getUsers();
+        for(var i = 0; i < users.length ; i++) {
+            var user = users[i];
+            if (user.isChallenge() && user.userId != this.getUserId() ) {
+                potentials.push(user);
+            }
+        }
         options.push(<option key={0} value={0}>{'------'}</option>);
-        this.state.potentials.forEach(function(p) {
+        potentials.forEach(function(p) {
             options.push(<option key={p.userId} value={p.userId}>{p.name}</option>);
         }.bind(this));
         return options;
@@ -42,7 +37,7 @@ var ChallengeRequestOpponent = React.createClass({
         var q = this.getQuery();
         var opponent = q.opponent != undefined ? q.opponent : 0;
         return (
-            <Input type='select' value={opponent} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
+            <Input name='challenge-opponent' id='challenge-opponent' type='select' value={opponent} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
         );
     }
 });

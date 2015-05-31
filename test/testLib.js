@@ -32,6 +32,17 @@ login = function () {
     });
 
 };
+var refreshUser = function() {
+    casper.thenOpen(testlib.server + '/api/user', function () {
+        var u  = JSON.parse(this.getPageContent());
+        var users = testlib.db.getUsers();
+        users.forEach(function(user){
+            if (u.userId == user.userId) {
+                testlib.authUser = user;
+            }
+        })
+    });
+};
 
 var init = function() {
     if (authUser != null) {
@@ -86,5 +97,6 @@ module.exports = {notReady: notReady,
     login: login,
     authUser: authUser,
     db:db,
-    init: init
+    init: init,
+    refreshUser: refreshUser
 };

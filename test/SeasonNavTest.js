@@ -34,7 +34,8 @@ casper.test.begin('Test SeasonNav', function suite(test) {
 
   casper.then(function(){
         if (testlib.authUser.isChallenge()) {
-            test.assertExists('#challenge-season-app');
+            test.assertExists('#season-app');
+            test.assertExists('#season-standings-link-hidden');
         }
   });
 

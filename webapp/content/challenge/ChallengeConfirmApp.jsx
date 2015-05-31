@@ -38,7 +38,7 @@ var ChallengeConfirm = React.createClass({
     render: function() {
         var cg = util.convertToChallenge(this.getQuery());
         return (
-            <div>
+            <div id="challenge-confirm">
                 <h2>{'Confirm Challenge'} </h2>
                 <GroupList noSelect={true} challengeGroups={[cg]} type='CONFIRM'/>
             </div>

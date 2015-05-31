@@ -61,6 +61,12 @@ Stat.prototype.getWinRackPct = function() {
 Stat.DEFAULT = new Stat('none',{},null);
 Stat.getDefault = function() { var s =new Stat('none',{},null); return s;};
 
+Stat.prototype.getPoints = function() {
+    if (this.wins == 0) {
+        return 0;
+    }
+};
+
 Stat.sortAsc = function(a,b) {
     if (a.wins == b.wins) {
         if (a.loses == b.loses) {
@@ -103,6 +109,8 @@ Stat.sort.byRacksAgainst= function(a,b) {
 Stat.sort.byWinPct= function(a,b) {
     return a.getWinPct() > b.getWinPct() ? -1 : 1;
 };
+
+
 
 
 module.exports = Stat;

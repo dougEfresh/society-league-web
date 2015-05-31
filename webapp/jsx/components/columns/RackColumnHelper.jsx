@@ -28,8 +28,8 @@ var renderRackColumn = function (type,render) {
 var rackStat = function(type) {
     var render = function(cellKey,result) {
         try {
-            if (result.stat.hasOwnProperty(type))
-                return result.stat[type];
+            if (result.hasOwnProperty(type))
+                return result[type];
         } catch (e) {
             console.warn(e);
         }

@@ -72,7 +72,8 @@ var SeasonApp = React.createClass({
         var display = season.isChallenge() ? 'none' : 'inline';
         var header = (
                 <div style={{display: 'inline'}}>
-                    <div style={{display:display}}>
+                    <div id={display == 'none' ? 'season-standings-link-hidden' : 'season-standings-link'}
+                         style={{display:display}}>
                     <Link to='seasonStandings' params={this.getParams()}>
                         <Button bsStyle={this.isActive('seasonStandings') ? 'success' : 'default'} responsize>
                             <i className="fa fa-trophy"></i><span className="main-item">{ ' Standings'}</span>

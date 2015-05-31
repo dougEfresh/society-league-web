@@ -205,19 +205,27 @@ Database.prototype.processData = function (d) {
                     //console.warn('Could not find all stats for '+ id);
                     continue;
                 }
-                user.addStats(new Stat(type, stats[type]), null);
+                var stat = new Stat(type, stats[type]);
+                stat.setUser(stat);
+                user.addStats(stat);
             } else if (type == 'season') {
                 stats[type].forEach(function (s) {
-                    user.addStats(new Stat(type, s, this.findSeason(s.seasonId)));
+                    var stat = new Stat(type, s, this.findSeason(s.seasonId));
+                    stat.setUser(user);
+                    user.addStats(stat);
                 }.bind(this));
 
             } else if (type == 'division') {
                 stats[type].forEach(function (s) {
-                    user.addStats(new Stat(type, s,null));
+                    var stat = new Stat(type, s);
+                    stat.setUser(stat);
+                    user.addStats(stat);
                 }.bind(this));
             } else if (type == 'challenge') {
                 stats[type].forEach(function (s) {
-                    user.addStats(new Stat(type, s,null));
+                    var stat = new Stat(type, s);
+                    stat.setUser(stat);
+                    user.addStats(stat);
                 }.bind(this));
             } else if (type == 'handicapAll') {
                 if (stats[type] != undefined && stats[type] != null) {
