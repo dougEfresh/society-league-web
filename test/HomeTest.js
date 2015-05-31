@@ -9,32 +9,10 @@ casper.test.begin('Test Home Page', function suite(test) {
     casper.then(function(){
         testlib.init();
     });
-    casper.then(function(){
-        test.assert(testlib.db.loaded);
-    });
-    casper.thenOpen(testlib.server + '/index.html', function(){
-        this.waitForSelector('#loginApp',function(){},testlib.notReady,testlib.timeout);
-    });
-    casper.then(function() {
-        testlib.login();
-    });
-    casper.thenOpen(testlib.server + '/api/user', function () {
-        var u  = JSON.parse(this.getPageContent());
-        var users = testlib.db.getUsers();
-        users.forEach(function(user){
-            if (u.userId == user.userId) {
-                authUser = user;
-            }
-        })
-    });
-    casper.then(function () {
-        test.assert(authUser != null, "AuthUser is not null");
-    });
-
     casper.thenOpen(testlib.server + '/index.html#/app/home', function(){
     });
     casper.then(function(){
-        this.waitForSelector('#appReady',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
     });
     casper.then(function() {
         test.assertExists('#home-app');
@@ -43,7 +21,7 @@ casper.test.begin('Test Home Page', function suite(test) {
         this.click('#request-link');
     });
     casper.then(function(){
-        this.waitForSelector('#appReady',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
     });
 
     casper.then(function(){
@@ -52,7 +30,7 @@ casper.test.begin('Test Home Page', function suite(test) {
     casper.thenOpen(testlib.server + '/index.html#/app/home', function(){
     });
     casper.then(function(){
-        this.waitForSelector('#appReady',function(){},testlib.notReady,testlib.timeout);
+        this.waitForSelector('#app-ready',function(){},testlib.notReady,testlib.timeout);
     });
     casper.then(function() {
         test.assertExists('#home-app');
@@ -64,7 +42,7 @@ casper.test.begin('Test Home Page', function suite(test) {
 
     casper.then(function() {
         var matchDao = new MatchDao(testlib.db);
-        var matches = matchDao.getUpcomingChallenges(authUser);
+        var matches = matchDao.getUpcomingChallenges(testlib.authUser);
         if (matches.length == 0) {
             test.assertExists('#no-challenges');
         } else {
@@ -76,7 +54,7 @@ casper.test.begin('Test Home Page', function suite(test) {
 
     casper.then(function() {
         var matchDao = new MatchDao(testlib.db);
-        var recent = matchDao.getResults(authUser);
+        var recent = matchDao.getResults(testlib.authUser);
         if (recent.length == 0) {
             test.assertExists('#no-recent-matches');
         } else {

@@ -9,7 +9,7 @@ var Router = require('react-router')
 var Status = require('./lib/Status');
 var ChallengeRequestApp = require('./content/challenge/request/ChallengeRequestApp.jsx');
 var ChallengePendingApp = require('./content/challenge/pending/ChallengePendingApp.jsx');
-var ChallengeAcceptedApp = require('./content/challenge/approved/ChallengeApprovedApp.jsx');
+var ChallengeAcceptedApp = require('./content/challenge/accepted/ChallengeAcceptedApp.jsx');
 var ChallengeSentApp = require('./content/challenge/sent/ChallengeSentApp.jsx');
 
 var NavApp = require('./content/nav/NavApp.jsx');

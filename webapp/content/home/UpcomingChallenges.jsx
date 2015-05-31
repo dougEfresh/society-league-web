@@ -33,10 +33,17 @@ var UpcomingChallenges = React.createClass({
             var match = upComingMatches[i];
             var m = moment(match.selectedSlot.date);
             matches.push(
-                <span key={match.getId()} id={'challenge-'+ match.getId()} className="next-match">
+                <div key={match.getId()} >
+                <span id={'challenge-'+ match.getId()} className="next-match">
                     {m.format('ddd MMM Do ') + ' at '  + m.format('HH:mm a') + ' vs. '}
-                    <UserLink user={match.getUserOpponent(this.getUser())} />
+                    <UserLink user={match.getUserOpponent(this.getUser())}/>
                 </span>
+                    <Link to={Status.ACCEPTED.toLowerCase()}>
+                        <button type="button" className="btn btn-sm btn-danger pull-right btn-responsive">
+                            <span className="glyphicon glyphicon-remove"></span> <b>Cancel</b>
+                        </button>
+                    </Link>
+                </div>
             );
         }
         if (matches.length == 0) {
@@ -48,16 +55,10 @@ var UpcomingChallenges = React.createClass({
                 </div>
             )
         }
-        //<Button bsSize='small' responsive={true}  >cancel</Button>
         return (
             <div id="upcoming-challenges">
                 <Panel  header={'Upcoming Challenges'}>
                     {matches}
-                    <Link to={Status.ACCEPTED.toLowerCase()}>
-                        <button type="button" className="btn btn-sm btn-danger pull-right btn-responsive">
-                            <span className="glyphicon glyphicon-remove"></span> <b>Cancel</b>
-                        </button>
-                    </Link>
                 </Panel>
             </div>
         )

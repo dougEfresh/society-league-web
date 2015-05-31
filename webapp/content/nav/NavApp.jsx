@@ -68,7 +68,7 @@ var NavApp = React.createClass({
         return (
             <div>
                 <LeagueNav  />
-                <div id='appReady' ></div>
+                <div id='app-ready' ></div>
                 <div id={this.getUser().id} ></div>
             </div>
 

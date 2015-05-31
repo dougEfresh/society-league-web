@@ -64,16 +64,54 @@ login = function () {
     });
     casper.then(function () {
         this.click('#submit');
-        this.waitForSelector('#appReady', function () {
+        this.waitForSelector('#app-ready', function () {
         }, testlib.notReady, testlib.timeout);
     });
-};
 
+};
 
 var init = function() {
     casper.thenOpen(testlib.server + '/api/data', function() {
         //this.echo(JSON.parse(this.getPageContent()).seasons.length);
         db.init(JSON.parse(this.getPageContent()));
     });
+
+    casper.then(function(){
+        if (!testlib.db.loaded) {
+            this.die("No Db",1);
+        }
+    });
+    casper.thenOpen(testlib.server + '/index.html', function(){
+        this.waitForSelector('#loginApp',function(){},testlib.notReady,testlib.timeout);
+    });
+    casper.then(function() {
+        testlib.login();
+    });
+    casper.thenOpen(testlib.server + '/api/user', function () {
+        var u  = JSON.parse(this.getPageContent());
+        var users = testlib.db.getUsers();
+        users.forEach(function(user){
+            if (u.userId == user.userId) {
+                testlib.authUser = user;
+            }
+        })
+    });
+    casper.then(function () {
+        if (testlib.authUser == null) {
+            this.die('No User',2);
+        }
+    });
 };
-module.exports = {notReady: notReady, user: user,pass:pass,server:server,width:width, height: height, timeout: timeout, login: login, authUser: authUser, db:db, init: init};
+
+module.exports = {notReady: notReady,
+    user: user,
+    pass:pass,
+    server:server,
+    width:width,
+    height: height,
+    timeout: timeout,
+    login: login,
+    authUser: authUser,
+    db:db,
+    init: init
+};

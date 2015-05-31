@@ -35,7 +35,7 @@ var ChallengeAcceptedApp = React.createClass({
             return (<Panel><div><p>You have no challenges accepted</p></div></Panel>)
         }
         return (
-            <div id="approvedApp">
+            <div id="accepted-app">
                 <GroupList type={ChallengeStatus.ACCEPTED} noSelect={false} challengeGroups={this.state.challengeGroups}/>
             </div>
         )

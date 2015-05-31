@@ -55,21 +55,21 @@ var ChallengeNav = React.createClass({
         });
     },
     genLink: function(c,type,glyph,name) {
+        if (type == Status.REQUEST) {
+            return (<Link to={type.toLowerCase()} > <Glyphicon glyph={glyph}/>{'Request'}</Link>)
+        }
         return c[type].length != 0 ? (
-            <Link to={type.toLowerCase()} >
-            <Glyphicon glyph={glyph}/>
-                {name}
-            <Badge>
-                {c[type].length}
-            </Badge>
-            </Link>) : (
-            <div>
-                <Glyphicon glyph={glyph}/>
-                {name}
-            <Badge>
-                {c[type].length}
-            </Badge>
-            </div>);
+
+                <Link to={type.toLowerCase()} >
+                    <span id={type.toLowerCase() +'-link'}>
+                    <Glyphicon glyph={glyph}/>
+                    {name}
+                    <Badge id={type.toLowerCase() +'-counter'}>
+                        {c[type].length}
+                    </Badge></span>
+                </Link>
+            )
+            : null;
     },
     render: function() {
         var u = this.getUser();
@@ -85,11 +85,12 @@ var ChallengeNav = React.createClass({
         if (this.getPath().indexOf('challenge') >= 0) {
             active = "active";
         }
-        var noChallenge = (<ul className="dropdown-menu" role="menu">
-                     <li className="teamNavLink" role="presentation">
-                         <Link to='challengeSignUp' >What's This</Link>
-                     </li>
-        </ul>);
+        var noChallenge = (
+            <ul className="dropdown-menu" role="menu">
+                <li className="teamNavLink" role="presentation">
+                    <Link to='challengeSignUp' >What's This</Link>
+                </li>
+            </ul>);
 
         if (!this.getUser().isChallenge()) {
                  return (
@@ -110,7 +111,7 @@ var ChallengeNav = React.createClass({
                      <span className="main-item">
                          Challenges
                      </span>
-                     <Badge>
+                     <Badge id={'challenge-counter'}>
                          {counter}
                      </Badge>
                      <span className="caret"></span>

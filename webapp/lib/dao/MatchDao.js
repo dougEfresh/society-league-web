@@ -16,7 +16,7 @@ MatchDao.prototype.getResults = function(user) {
 };
 
 MatchDao.prototype.getUpcomingChallenges = function(user) {
-    if (!user.isChallenge()) {
+    if (user == null || !user.isChallenge()) {
         return [];
     }
     var slotDao = new SlotDao(this.db);

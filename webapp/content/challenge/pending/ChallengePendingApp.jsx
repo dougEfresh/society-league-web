@@ -40,7 +40,7 @@ var ChallengePendingApp = React.createClass({
             return (<Panel><div><p>You have no pending challenges</p></div></Panel>)
         }
         return (
-            <div id="pendingApp">
+            <div id="pending-app">
                 <GroupList type={ChallengeStatus.PENDING} noSelect={false} challengeGroups={challenges}/>
             </div>
         )
