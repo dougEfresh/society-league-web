@@ -94,8 +94,9 @@ var SeasonApp = React.createClass({
         );
         return (
               <div id="season-app">
-                {header}
-                    <RouteHandler />
+                  <h3>{season.getDisplayName()}</h3>
+                  {header}
+                  <RouteHandler />
             </div>
         );
     }

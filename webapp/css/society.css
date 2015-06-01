@@ -33,39 +33,9 @@ span.nineBall.badge {
 .challengeStatusTable {
    background-color: whitesmoke; !important;
 }
-
 .navName {
     color: whitesmoke; !important;
 }
-/*
-.challengeStatus {
-    color: black; !important;
-}
-
-.challengeStatus li {
-    color: black; !important;
-}
-.challengeStatus a {
-	color: black;
-}
-
-.challengeStatusMenu a .active {
-	color: whitesmoke; !important;
-}
-
-.challengeStatusMenu .active {
-    color: whitesmoke; !important;
-    background-color: black; !important;
-}
-
-li .challengeStatus .active {
-
-}
-
-.statsNav {
-    color: black; !important;
-}
-*/
 body {
     margin-top: 0px; /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
@@ -358,7 +328,7 @@ h2.form-signin-heading {
 	color: #fff;
 }
 .user-content {
-	width: 600px;
+	max-width: 600px;
 	align-content: space-around;
 	background: #EBEBEB;
 	padding-top: 10px;
@@ -383,7 +353,7 @@ h2.form-signin-heading {
 	color: #fff;
 	cursor: pointer!important;
 }
-@media (min-width: 768px) 
+@media (min-width: 768px)
 {
 .main-item {
 	display: inline-block;
