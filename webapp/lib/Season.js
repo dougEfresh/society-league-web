@@ -24,6 +24,9 @@ Season.prototype.isNine = function() {
 };
 
 Season.prototype.getDisplayName = function () {
+    if (this.isChallenge()) {
+        return "9 & 8 Challenge"
+    }
     var name = this.name.split(',');
     return name[0].replace('20',"'") + ' ' +  name[1] + ' ' + name[2];
 };
