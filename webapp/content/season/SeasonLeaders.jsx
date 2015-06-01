@@ -82,7 +82,7 @@ var SeasonLeaders = React.createClass({
         var season = this.getSeason(this.getParams().seasonId);
         if (season.isChallenge()) {
             width -= ColumnConfig.name.width;
-            width += ColumnConfig.wins.width;
+            width += ColumnConfig.points.width;
             return (
                 <Table
                     groupHeaderHeight={30}

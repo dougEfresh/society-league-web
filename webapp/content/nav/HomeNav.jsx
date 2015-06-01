@@ -52,7 +52,7 @@ var HomeNav = React.createClass({
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='password' params={{userId: this.getUserId()}}>
+                        <Link className='navName' to='reset' params={{userId: this.getUserId()}}>
                              <Glyphicon glyph='copyright-mark' />Change Password</Link>
                     </li>
                 </ul>

@@ -193,6 +193,9 @@ var ResultsApp = React.createClass({
         var rowGetter = function(rowIndex) {
             return pageMatches[rowIndex];
         };
+        if (!season.isChallenge()) {
+            return <h4>Coming Soon</h4>
+        }
         if (pageMatches.length == 0) {
             return <h4>There have been no matches played yet</h4>
         }

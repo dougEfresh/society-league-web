@@ -42,7 +42,7 @@ var ResetApp = React.createClass({
             dataType: 'json',
             contentType: 'application/json',
             url: '/api/reset/password/' + this.getQuery().token,
-            data: {login: user, password: password},
+            data: JSON.stringify({login: user, password: password}),
             method: 'post',
             success: function (d) {
                 //DataStore.setUser(d);
@@ -59,13 +59,13 @@ var ResetApp = React.createClass({
         return (
             <div id="login-reset-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form id='login' className="login-form form-signin">
-                    <h2 className="form-signin-heading">Please Log In</h2>
+                    <h2 className="form-signin-heading">Reset Password</h2>
                     <div className="form-field form-group">
                         <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
                         <Input id="password" ref='password' type='password' name='password' placeholder='enter password'> </Input>
                         <Input id="confirm-password" ref='confirm-password' type='password' name='confirm-password' placeholder='re-enter password'> </Input>
                     </div>
-                    <Button id='submit' onClick={this.handlePasswordReset} >Reset</Button>);
+                    <Button id='submit' onClick={this.handlePasswordReset} >Reset</Button>
                 </form>
             </div>
         );
@@ -73,7 +73,7 @@ var ResetApp = React.createClass({
     renderSentReset: function() {
         return (
             <div id="reset-sent-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
-                <h4>sent</h4>
+                <h4>Check email for password reset link</h4>
             </div>
         );
     },
@@ -88,11 +88,11 @@ var ResetApp = React.createClass({
         return (
             <div id="reset-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form id='reset' className="login-form form-signin">
-                        <h2 className="form-signin-heading">Reset Password</h2>
-                        <div className="form-field form-group">
-                           <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
-                        </div>
-                    <Button id='submit' onClick={this.handleSubmit}>Reset</Button>;
+                    <h2 className="form-signin-heading">Reset Password</h2>
+                    <div className="form-field form-group">
+                        <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
+                    </div>
+                    <Button id='submit' onClick={this.handleSubmit}>Reset</Button>
                 </form>
             </div>
         );

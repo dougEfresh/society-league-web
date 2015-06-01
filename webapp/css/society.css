@@ -257,6 +257,9 @@ h2.form-signin-heading {
 .account-wrapper .btn-group-vertical a { text-align: left;}
 .account-wrapper .btn-group-vertical a:hover, .account-wrapper .btn-group-vertical .active { background-color: #000; color: #fff;}
 
+.nav-tabs {
+  border-bottom: none;
+}
 
 .request {
 	margin: 0px 0px 30px 0px;

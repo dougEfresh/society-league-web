@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var Router = require('react-router');
+var Link = Router.Link;
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Input = Bootstrap.Input
@@ -49,7 +50,6 @@ var LoginApp = React.createClass({
         });
     },
     render: function () {
-        var button = (<Button id='submit' onClick={this.handleSubmit} >Login</Button>);
         return (
             <div id="login-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form id='login' className="login-form form-signin">
@@ -58,8 +58,12 @@ var LoginApp = React.createClass({
                             <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
                             <Input id="password" ref='password' type='password' name='password' placeholder='enter password'> </Input>
                         </div>
-                    {button}
-                    <Button id='reset-password' onClick={this.handleReset} >Forget Password?</Button>
+                    <Button id='submit' onClick={this.handleSubmit} >Login</Button>
+                    <Link to='reset'>
+                        <button type="button" className="btn btn-sm btn-default pull-right btn-responsive">
+                            <b>Forgot Password?</b>
+                        </button>
+                    </Link>
                 </form>
             </div>
         );

@@ -248,7 +248,7 @@ var points = function() {
     <Column
         cellDataGetter={renderCell}
         label="Points"
-        width={ColumnConfig.wins.width}
+        width={ColumnConfig.points.width}
         dataKey={'points'}
         />
     );

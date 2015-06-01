@@ -23,20 +23,19 @@ var UserApp = React.createClass({
                 <div style={{display: 'inline'}}>
                     <Link to='info' params={this.getParams()}>
                         <Button bsStyle={this.isActive('info') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-info"></i><span className="main-item">{ ' Info'}</span>
+                            <i className="fa fa-info"></i>Info
                         </Button>
                     </Link>
-                    <Link to='password' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('password') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-user"></i><span className="main-item">{ ' Change Password'}</span>
+                    <Link to='reset'>
+                        <Button bsStyle={this.isActive('reset') ? 'success' : 'default'} responsize>
+                            <i className="fa fa-user"></i>Change Password
                         </Button>
                     </Link>
-
                 </div>
         );
         return (
             <div id="user-app">
-            {header}
+                {header}
                 <RouteHandler />
             </div>
         );
