@@ -1,4 +1,4 @@
-var user = casper.cli.has("user") ? casper.cli.get("user") : "test";
+var user = casper.cli.has("user") ? casper.cli.get("user") : "dchimento@gmail.com";
 var pass = casper.cli.has("password") ? casper.cli.get("password") : "12345";
 var server = casper.cli.has("server") ? casper.cli.get("server") : "http://localhost:8080";
 var page = casper.cli.has("page") ? casper.cli.get("page") : "/index.html#/app/home";
@@ -22,8 +22,8 @@ var login;
 login = function () {
     casper.then(function () {
         this.fill('form#login', {
-            'username': 'dchimento@gmail.com',
-            'password': 'password'
+            'username': user,
+            'password': pass
         }, false);
     });
     casper.then(function () {

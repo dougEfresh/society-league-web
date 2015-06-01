@@ -21,20 +21,14 @@ var LoginApp = React.createClass({
             loggedIn: false
         };
     },
-       handleReset: function(e){
-       this.transitionTo('reset', null, null);
-       },
+    handleReset: function(e){
+        this.transitionTo('reset', null, null);
+    },
     handleSubmit: function(e){
         e.preventDefault();
         var user = this.refs.username.getValue().toLowerCase();
         var password = this.refs.password.getValue();
         console.log('Logging in: ' + user);
-        /*
-        login(window.location.protocol + '//' + window.location.host , user,'password', function(err,resp,body){
-            console.log(JSON.stringify(JSON.parse(body)));
-            DataStore.setUser(JSON.parse(body));
-        });
-        */
         $.ajax({
             async: true,
             processData: true,
