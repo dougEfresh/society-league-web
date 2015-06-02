@@ -18,8 +18,7 @@ var notReady = function(id) {
     };
 };
 
-var login;
-login = function () {
+var login = function () {
     casper.then(function () {
         this.fill('form#login', {
             'username': user,
@@ -64,7 +63,6 @@ var init = function() {
     });
     casper.then(function(){
         console.log('Awaiting login page');
-        //
     });
 
     casper.then(function() {
@@ -87,6 +85,14 @@ var init = function() {
     });
 };
 
+var exists = function(test,id) {
+    if (!casper.exists(id)) {
+        casper.echo(casper.getHTML());
+    }
+    test.assertExists(id)
+
+} ;
+
 module.exports = {notReady: notReady,
     user: user,
     pass:pass,
@@ -98,5 +104,6 @@ module.exports = {notReady: notReady,
     authUser: authUser,
     db:db,
     init: init,
-    refreshUser: refreshUser
+    refreshUser: refreshUser,
+    exists: exists
 };

@@ -108,12 +108,9 @@ casper.test.begin('Test RequestApp', function suite(test) {
     });
     casper.then(function(){
         this.clickLabel(' challenge');
-    });
-    casper.then(function(){
-        this.echo(this.getCurrentUrl());
         this.waitForSelector('#sent-app',function(){},testlib.notReady('sent-app'),testlib.timeout);
     });
-    casper.then(function(){
+      casper.then(function(){
         this.clickLabel('Cancel');
     });
     casper.then(function() {
@@ -126,7 +123,7 @@ casper.test.begin('Test RequestApp', function suite(test) {
         if (challenges.length == 0) {
             this.waitForSelector('#request-app',function(){},testlib.notReady('request-app'),testlib.timeout);
         } else {
-            this.waitForSelector('#request-app',function(){},testlib.notReady('sent-app'),testlib.timeout);
+            this.waitForSelector('#sent-app',function(){},testlib.notReady('sent-app'),testlib.timeout);
         }
     });
     casper.run(function(){

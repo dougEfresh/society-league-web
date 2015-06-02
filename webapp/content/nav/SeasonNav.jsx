@@ -73,6 +73,7 @@ var SeasonNav = React.createClass({
         }
         currentSeasons.forEach(function(t) {
             var title = "unknown";
+            var display = 'none'; //TODO remove to see all seasons
             switch (t.division.type) {
                 case DivisionConstants.NINE_BALL_TUESDAYS:
                     title = (<div><BallIcon type={t.division.type}/> Tuesdays </div>);
@@ -84,18 +85,22 @@ var SeasonNav = React.createClass({
                     title = (<div><BallIcon type={t.division.type} /> Thursdays </div>);
                     break;
                 case DivisionConstants.EIGHT_BALL_MIXED_MONDAYS:
-                    title = (<div><BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
-                        <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays </div>);
+                    title = (<div>
+                        <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
+                        <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays
+                    </div>);
                     break;
                 default:
                     return;
             }
             seasons.push(
+                <div style={{display: display}}>
                 <li id={'season-link-'+ t.id} key={t.id} role="presentation">
                     <Link  to="seasonStandings" params={{seasonId: t.id}} >
                         {title}
                     </Link>
                 </li>
+                </div>
             );
         }.bind(this));
         var active = "";
@@ -103,6 +108,7 @@ var SeasonNav = React.createClass({
             active = "active";
         }
         if (this.getUser().isChallenge()) {
+
             var challengeSeason = null;
             this.getUser().getCurrentSeasons().forEach(function(s){
                 if (s.isChallenge()) {
@@ -116,6 +122,7 @@ var SeasonNav = React.createClass({
                     </Link>
                 </li>)
         }
+
         return (
              <li id="season-nav" role="presentation" className={'dropdown ' + active} >
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">

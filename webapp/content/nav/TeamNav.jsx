@@ -74,6 +74,7 @@ var TeamNav = React.createClass({
             active = "active";
         }
         return (
+            <div style={{display: 'none'}}>
               <li id="team-nav" role="presentation" className={'dropdown ' + active} >
                   <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                       <i className="fa fa-users"></i>&nbsp;
@@ -84,6 +85,7 @@ var TeamNav = React.createClass({
                       {teams}
                   </ul>
               </li>
+            </div>
         );
     }
 });

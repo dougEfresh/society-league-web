@@ -20,10 +20,12 @@ casper.test.begin('Test Reset', function suite(test) {
     });
 
     casper.then(function(){
-        test.assertExists('#reset-app');
+        if (!test.assertExists('#reset-app')) {
+            this.die("reset-app");
+        }
     });
     casper.then(function () {
-        this.fill('form#reset', {'username': 'dchimento@gmail.com'}, false);
+        this.fill('form#reset', {'username': testlib.user}, false);
     });
     casper.then(function () {
         this.click('#submit');
@@ -32,7 +34,8 @@ casper.test.begin('Test Reset', function suite(test) {
         this.waitForSelector('#page-ready',function(){},testlib.notReady('page-ready'),testlib.timeout);
     });
     casper.then(function(){
-        test.assertExists('#reset-sent-app');
+        this.waitForSelector('#reset-sent-app',function(){},testlib.notReady('reset-sent-app'),testlib.timeout);
+        //testlib.exists(test,'#reset-sent-app');
     });
     casper.then(function(){
         test.assert(this.getCurrentUrl().indexOf('passwordReset=true') >= 0, 'password-reset is set');
@@ -49,8 +52,8 @@ casper.test.begin('Test Reset', function suite(test) {
     });
 
     casper.then(function(){
-        testlib.pass = 'dchimento';
-        this.fill('form#login', {'username': 'dchimento@gmail.com', 'password': 'dchimento','confirm-password':'dchimento'}, false);
+        testlib.pass = Math.random() + "";
+        this.fill('form#login', {'username': testlib.user, 'password': testlib.pass,'confirm-password': testlib.pass},false);
     });
     casper.then(function () {
         this.click('#submit');
@@ -62,14 +65,20 @@ casper.test.begin('Test Reset', function suite(test) {
     });
 
     casper.then(function () {
-        this.echo(this.getCurrentUrl());
-        this.echo(this.getHTML());
-        test.assertExists('#login-app');
+        this.waitForSelector('#login-app',function(){},testlib.notReady('login-app'),testlib.timeout);
     });
 
     casper.then(function () {
-        //this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
-        // this.echo(this.getHTML());
+        testlib.init();
+    });
+
+
+    casper.thenOpen(testlib.server + '/index.html#/app/home',function(){
+
+    });
+
+    casper.then(function () {
+        this.waitForSelector('#home-app',function(){},testlib.notReady('home-app'),testlib.timeout);
     });
 
     casper.run(function(){
