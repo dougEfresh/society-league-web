@@ -2,17 +2,9 @@ var React = require('react/addons');
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,Badge = Bootstrap.Badge
-    ,TabbedArea = Bootstrap.TabbedArea
-    ,TabPane = Bootstrap.TabPane
     ,Nav = Bootstrap.Nav
-    ,NavItem = Bootstrap.NavItem
-    ,Alert = Bootstrap.Alert
     ,Well = Bootstrap.Well
     ,Panel = Bootstrap.Panel;
-
-var ReactRouterBootstrap = require('react-router-bootstrap')
-    ,NavItemLink = ReactRouterBootstrap.NavItemLink
-    ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
@@ -42,6 +34,7 @@ var SignUp = React.createClass({
     },
     _onChange: function() {
         console.log('onchange');
+        this.transitionTo('home');
         this.setState({user: this.getUser()});
     },
     render: function() {
