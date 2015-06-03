@@ -75,6 +75,7 @@ var SeasonLeaders = React.createClass({
               ColumnConfig.wins.width +
               ColumnConfig.racksFor.width +
               ColumnConfig.racksAgainst.width +
+              ColumnConfig.winPct.width +
               1;
         var rowGetter = function(index) {
             return rows[index];
@@ -99,6 +100,7 @@ var SeasonLeaders = React.createClass({
                     {ColumnHelper.loses()}
                     {ColumnHelper.racksForStat()}
                     {ColumnHelper.racksAgainstStat()}
+                    {ColumnHelper.winPct()}
                 </Table>
             );
         } else {

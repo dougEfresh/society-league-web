@@ -317,6 +317,21 @@ var statType = function() {
     );
 };
 
+var winPct = function() {
+    var render = function(cellKey,data) {
+        return data.getWinPct();
+    };
+    return (
+        <Column
+            label={'%'}
+            cellClassName="win-pct"
+            width={ColumnConfig.winPct.width}
+            dataKey={'win-pct'}
+            cellDataGetter={render}
+            />
+    );
+};
+
 module.exports = {
     winLostUser : WinLostColumnHelper.winLostUser,
     winLostTeamMatch : WinLostColumnHelper.winLostTeamMatch,
@@ -337,6 +352,7 @@ module.exports = {
     loses: loses,
     opponentTeam: opponentTeam,
     config: {},
+    winPct: winPct,
     racksForUser: RackColumnHelper.racksForUser,
     racksAgainstUser: RackColumnHelper.racksAgainstUser,
     racksAgainstTeamMember: RackColumnHelper.racksAgainstTeamMember,

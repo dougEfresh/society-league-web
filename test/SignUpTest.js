@@ -17,9 +17,11 @@ casper.test.begin('Test Reset', function suite(test) {
     });
 
     casper.then(function(){
-       var dao = new UserDao(testlib.db,this,testlib.server);
-        var 
-        var user = new User(0,Match.random() * 1000,Math.random()*1000);
+        var dao = new UserDao(testlib.db,this,testlib.server);
+        var name = Match.random() * 1000;
+        var user = new User(0,name,name);
+        user.login = name + '@example.com';
+        user.email = name + '@example.com';
     });
 
     casper.thenOpen(testlib.server + '/index.html#/reset', function(){

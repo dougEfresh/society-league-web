@@ -61,7 +61,8 @@ var StatsDisplay = React.createClass({
              ColumnConfig.season.width +
             ColumnConfig.wins.width +
             ColumnConfig.wins.width +
-            ColumnConfig.racksFor.width +
+             ColumnConfig.racksFor.width +
+             ColumnConfig.winPct.width +
             ColumnConfig.racksAgainst.width + 10;
          return (
                 <Table
@@ -78,6 +79,7 @@ var StatsDisplay = React.createClass({
                     {ColumnHelper.loses()}
                     {ColumnHelper.racksForStat()}
                     {ColumnHelper.racksAgainstStat()}
+                    {ColumnHelper.winPct()}
                 </Table>
         );
     }

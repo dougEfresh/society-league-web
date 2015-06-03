@@ -45,6 +45,7 @@ Stat.prototype.getWinPct = function() {
     }
     return pct;
 };
+
 Stat.prototype.getWinRackPct = function() {
     if (this.matches == undefined || this.matches == 0) {
         return 0;
@@ -59,7 +60,7 @@ Stat.prototype.getWinRackPct = function() {
 };
 
 Stat.DEFAULT = new Stat('none',{},null);
-Stat.getDefault = function() { var s =new Stat('none',{},null); return s;};
+Stat.getDefault = function() {return new Stat('none',{},null);};
 
 Stat.prototype.getPoints = function() {
     if (this.wins == 0) {
@@ -109,8 +110,5 @@ Stat.sort.byRacksAgainst= function(a,b) {
 Stat.sort.byWinPct= function(a,b) {
     return a.getWinPct() > b.getWinPct() ? -1 : 1;
 };
-
-
-
 
 module.exports = Stat;

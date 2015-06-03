@@ -9,5 +9,6 @@ module.exports  = {
     name: {width: 100, align: 'center'},
     season: {width: 150},
     date: {width: 60},
+    winPct: {width: 60},
     dateMatch: {width: 90}
 };
