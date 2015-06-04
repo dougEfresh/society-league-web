@@ -18,11 +18,11 @@ var notReady = function(id) {
     };
 };
 
-var login = function () {
+var login = function (username,password) {
     casper.then(function () {
         this.fill('form#login', {
-            'username': user,
-            'password': pass
+            'username': username,
+            'password': password
         }, false);
     });
     casper.then(function () {
@@ -66,7 +66,7 @@ var init = function() {
     });
 
     casper.then(function() {
-        testlib.login();
+        testlib.login(testlib.user,testlib.pass);
         console.log('login');
     });
     casper.thenOpen(testlib.server + '/api/user', function () {

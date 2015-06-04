@@ -11,8 +11,10 @@ UserDao.prototype.host = function() {return this.host;};
 UserDao.prototype.db = function() {return this.db;};
 
 UserDao.prototype.create = function (user) {
-
     console.log(JSON.stringify(user));
+    return this.sender.evaluate(function(wsurl) {
+        return JSON.parse(__utils__.sendAJAX(wsurl, 'POST', user, true));
+    }, {user: user,wsurl: this.host + '/api/user/create/0' });
     /*
     unirest.post(this.server + '/api/user/create/0')
         .header('Content-type', 'application/json')

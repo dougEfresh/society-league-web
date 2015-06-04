@@ -45,8 +45,8 @@ var SignUp = React.createClass({
             this.transitionTo('request');
         }
         return (
-            <div id="challengeSignUp" >
-                <Well><Button onClick={this.onClick} bsStyle='primary'>Sign up now </Button></Well>
+            <div id="challenge-signup" >
+                <Well><Button onClick={this.onClick} bsStyle='primary'>Sign up now</Button></Well>
             </div>
         );
     }

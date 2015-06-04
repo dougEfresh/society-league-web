@@ -1,10 +1,14 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Table = Bootstrap.Table;
-
+var Bootstrap = require('react-bootstrap');
 var GroupRow = require('./GroupRow.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
+
+var ColumnHelper = require('../../../jsx/components/columns/ColumnHelper.jsx');
+var ColumnConfig = require('../../../jsx/components/columns/ColumnConfig.jsx');
+var FixedDataTable = require('fixed-data-table');
+var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
 
 var GroupList = React.createClass({
     mixins: [UserContextMixin],
@@ -25,8 +29,13 @@ var GroupList = React.createClass({
                 <GroupRow type={this.props.type} key={counter++} noSelect={this.props.noSelect} challengeGroup={g}/>
             );
         }.bind(this));
+
+        var rowGetter = function(index) {
+            return this.props.challengeGroups[index];
+        }.bind(this);
+
         return (
-            <Table className="challengeStatusTable striped">
+              <Table className="challengeStatusTable striped">
                 <thead>
                 <tr>
                     <th>Action</th>
@@ -40,8 +49,31 @@ var GroupList = React.createClass({
                 {rows}
                 </tbody>
             </Table>
+
         );
     }
 });
 
 module.exports = GroupList;
+
+/*
+ <Table
+ groupHeaderHeight={30}
+ rowHeight={50}
+ headerHeight={30}
+ rowGetter={rowGetter}
+ rowsCount={rows.length}
+ width={width}
+ maxHeight={500}
+ headerHeight={30}>
+ {ColumnHelper.user()}
+ {ColumnHelper.points()}
+ {ColumnHelper.wins()}
+ {ColumnHelper.loses()}
+ {ColumnHelper.racksForStat()}
+ {ColumnHelper.racksAgainstStat()}
+ {ColumnHelper.winPct()}
+ </Table>
+
+
+ */

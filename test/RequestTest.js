@@ -110,7 +110,7 @@ casper.test.begin('Test RequestApp', function suite(test) {
         this.clickLabel(' challenge');
         this.waitForSelector('#sent-app',function(){},testlib.notReady('sent-app'),testlib.timeout);
     });
-      casper.then(function(){
+    casper.then(function(){
         this.clickLabel('Cancel');
     });
     casper.then(function() {

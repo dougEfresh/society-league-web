@@ -89,8 +89,8 @@ var ChallengeNav = React.createClass({
         }
         var noChallenge = (
             <ul className="dropdown-menu" role="menu">
-                <li className="teamNavLink" role="presentation">
-                    <Link to='challengeSignUp' >What's This</Link>
+                <li id="challenge-signup-link" className="teamNavLink" role="presentation">
+                    <Link to='challengeSignUp'>What's This?</Link>
                 </li>
             </ul>);
 
