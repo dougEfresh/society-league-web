@@ -18,22 +18,9 @@ casper.test.begin('Test SignUp', function suite(test) {
     });
 
     casper.then(function(){
-        var dao = new UserDao(testlib.db,this,testlib.server);
-        var name = Math.random() * 1000;
-        var user = new User(0,name,name);
-        user.login = name + '@example.com';
-        user.email = name + '@example.com';
-        user.password = "password";
+        var user = testlib.createUser();
         testlib.user = user.login;
-        testlib.pass = user.password;
-        //var newUser = dao.create(user);
-        var newUser = this.evaluate(function(wsurl,user) {
-            return JSON.parse(__utils__.sendAJAX(wsurl, 'POST', JSON.stringify(user), false,{
-                contentType: "application/json"
-            }));
-        }, {wsurl: testlib.server + '/api/user/create/0',user: user });
-        test.assert(newUser != null,'NewUser != null');
-        console.log(JSON.stringify(newUser));
+        testlib.pass = user.pass;
     });
 
     casper.thenOpen(testlib.server + '/index.html#/login', function(){
@@ -63,7 +50,7 @@ casper.test.begin('Test SignUp', function suite(test) {
         this.waitForSelector('#home-app',function(){},testlib.notReady('home-app'),testlib.timeout);
     });
     casper.then(function(){
-        test.assertDoesntExist('#challenge-signup-link','Found challenge signup');
+        test.assertDoesntExist('#challenge-signup-link','Challenge signup doesn\'t exist');
     });
     casper.run(function(){
         test.done();

@@ -99,6 +99,10 @@ Database.prototype.addUser = function(u) {
 };
 
 Database.prototype.processUser = function(user,userData) {
+    if (user == null || user == undefined) {
+        user = new User(userData.userId,userData.firstName,userData.lastName);
+        this.data.users.push(user);
+    }
     user.reset();
     var i;
     for (i = 0; i < userData.seasons.length; i++) {
@@ -139,7 +143,8 @@ Database.prototype.processUser = function(user,userData) {
                 }.bind(this));
                 user.addChallenge(type,challengeGroup);
             }.bind(this));
-        }
+    }
+    return user;
 };
 
 Database.prototype.processData = function (d) {

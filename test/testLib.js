@@ -10,6 +10,8 @@ casper.options.viewportSize = {width:width, height: height};
 var authUser = null;
 var Database = require('../webapp/lib/Database');
 var db = new Database();
+var UserDao = require('../webapp/lib/UserDao');
+var User= require('../webapp/lib/User');
 
 var notReady = function(id) {
     return function() {
@@ -41,6 +43,43 @@ var refreshUser = function() {
             }
         })
     });
+};
+
+var createUser = function() {
+    var dao = new UserDao(testlib.db,this,testlib.server);
+    var name = Math.random() * 1000;
+    var user = new User(0,name,name);
+    user.login = name + '@example.com';
+    user.email = name + '@example.com';
+    user.password = "password";
+    //var newUser = dao.create(user);
+    var newUser = casper.evaluate(function(wsurl,user) {
+        return JSON.parse(__utils__.sendAJAX(wsurl, 'POST', JSON.stringify(user), false,{
+            contentType: "application/json"
+        }));
+    }, {wsurl: testlib.server + '/api/user/create/0',user: user });
+    newUser = db.processUser(null,newUser);
+    newUser.login = user.login;
+    newUser.password = user.password;
+    return newUser;
+};
+var createChallengeUser = function() {
+    var dao = new UserDao(testlib.db,this,testlib.server);
+    var name = Math.random() * 1000;
+    var user = new User(0,name,name);
+    user.login = name + '@example.com';
+    user.email = name + '@example.com';
+    user.password = "password";
+    //var newUser = dao.create(user);
+    var newUser = casper.evaluate(function(wsurl,user) {
+        return JSON.parse(__utils__.sendAJAX(wsurl, 'POST', JSON.stringify(user), false,{
+            contentType: "application/json"
+        }));
+    }, {wsurl: testlib.server + '/api/user/create/0/challenge',user: user });
+    newUser = db.processUser(null,newUser);
+    newUser.login = user.login;
+    newUser.password = user.password;
+    return newUser;
 };
 
 var init = function() {
@@ -105,5 +144,7 @@ module.exports = {notReady: notReady,
     db:db,
     init: init,
     refreshUser: refreshUser,
-    exists: exists
+    exists: exists,
+    createUser: createUser,
+    createChallengeUser: createChallengeUser
 };

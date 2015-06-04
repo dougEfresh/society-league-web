@@ -6,12 +6,32 @@ var Status = require('../webapp/lib/Status');
 var SlotDao = require('../webapp/lib/SlotDao');
 var selectedDay = null;
 var selectedOp = 0;
+var user1;
+var user2;
 
 casper.test.begin('Test RequestApp', function suite(test) {
     casper.start();
+
     casper.then(function(){
         testlib.init();
     });
+
+    casper.then(function(){
+        user1 = testlib.createChallengeUser();
+    });
+    casper.then(function(){
+        user2 = testlib.createChallengeUser();
+    });
+
+    casper.then(function(){
+        testlib.init();
+    });
+    casper.thenOpen(testlib.server + '/index.html#/login', function(){
+    });
+    casper.then(function(){
+        testlib.login(user1.login,user1.password);
+    });
+
     casper.thenOpen(testlib.server + '/index.html#/app/challenge/request', function(){
     });
     casper.then(function(){
@@ -24,10 +44,9 @@ casper.test.begin('Test RequestApp', function suite(test) {
     });
     casper.then(function() {
         this.fillSelectors('form#request-app', {
-            'select[name="challenge-opponent"]' : '212'
+            'select[name="challenge-opponent"]' : user2.id
         }, false);
     });
-
 
     casper.then(function() {
         var opponents = this.evaluate(function(){
@@ -43,7 +62,7 @@ casper.test.begin('Test RequestApp', function suite(test) {
         test.assert(opponents.length > 0,'Op > 0');
         selectedOp = opponents[1];
          this.fillSelectors('form#request-app', {
-            'select[name="challenge-opponent"]' : selectedOp
+            'select[name="challenge-opponent"]' : user2.id
         }, false);
     });
 
@@ -98,6 +117,7 @@ casper.test.begin('Test RequestApp', function suite(test) {
     });
 
     casper.then(function(){
+        this.echo(this.getCurrentUrl());
         this.waitForSelector('#request-app',function(){},testlib.notReady('request-app'),testlib.timeout);
     });
     casper.then(function(){

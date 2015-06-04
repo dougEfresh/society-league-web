@@ -2,9 +2,6 @@ var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
-    ,Alert = Bootstrap.Alert
-    ,Modal = Bootstrap.Modal
-    ,ModalTrigger = Bootstrap.ModalTrigger
     ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
 
@@ -12,7 +9,6 @@ var Router = require('react-router')
     ,Link = Router.Link
     ,RouteHandler = Router.RouteHandler;
 
-var ChallengeStatus = require('../../../jsx/constants/ChallengeStatus.jsx');
 var ChallengeRequestDate = require('./ChallengeRequestDate.jsx');
 var ChallengeRequestSlots = require('./ChallengeRequestSlots.jsx');
 var ChallengeRequestOpponent= require('./ChallengeRequestOpponent.jsx');
