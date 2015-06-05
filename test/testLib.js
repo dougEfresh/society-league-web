@@ -33,21 +33,18 @@ var login = function (username,password) {
     });
 
 };
-var refreshUser = function() {
+var refreshUser = function(user) {
     casper.thenOpen(testlib.server + '/api/user', function () {
         var u  = JSON.parse(this.getPageContent());
-        var users = testlib.db.getUsers();
-        users.forEach(function(user){
-            if (u.userId == user.userId) {
-                testlib.authUser = user;
-            }
-        })
+        return testlib.db.processUser(user,u);
     });
 };
 
 var createUser = function() {
     var dao = new UserDao(testlib.db,this,testlib.server);
-    var name = Math.random() * 1000;
+    var name = 'Test-' + (Math.random() * 1000);
+    name = name.substr(0,15);
+
     var user = new User(0,name,name);
     user.login = name + '@example.com';
     user.email = name + '@example.com';
@@ -63,9 +60,20 @@ var createUser = function() {
     newUser.password = user.password;
     return newUser;
 };
+
+var purgeUser = function(user) {
+    casper.evaluate(function(wsurl) {
+        return JSON.parse(__utils__.sendAJAX(wsurl, 'GET', null, false,{
+            contentType: "application/json"
+        }));
+    }, {wsurl: testlib.server + '/api/user/purge/0/' + user.userId });
+};
+
 var createChallengeUser = function() {
     var dao = new UserDao(testlib.db,this,testlib.server);
-    var name = Math.random() * 1000;
+    var name = 'Test-' + (Math.random() * 1000);
+    name = name.substr(0,15);
+
     var user = new User(0,name,name);
     user.login = name + '@example.com';
     user.email = name + '@example.com';
@@ -79,6 +87,7 @@ var createChallengeUser = function() {
     newUser = db.processUser(null,newUser);
     newUser.login = user.login;
     newUser.password = user.password;
+    console.log('Created new user: ' + newUser.login  + ' ' + newUser.password);
     return newUser;
 };
 
@@ -146,5 +155,6 @@ module.exports = {notReady: notReady,
     refreshUser: refreshUser,
     exists: exists,
     createUser: createUser,
-    createChallengeUser: createChallengeUser
+    createChallengeUser: createChallengeUser,
+    purgeUser: purgeUser
 };

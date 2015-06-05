@@ -26,7 +26,7 @@ var UserApp = React.createClass({
                             <i className="fa fa-info"></i>Info
                         </Button>
                     </Link>
-                    <Link to='reset'>
+                    <Link to='reset' query={{changePassword: true}}>
                         <Button bsStyle={this.isActive('reset') ? 'success' : 'default'} responsize>
                             <i className="fa fa-user"></i>Change Password
                         </Button>

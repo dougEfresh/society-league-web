@@ -108,7 +108,7 @@ var GroupAction = React.createClass({
     render: function() {
         var buttons = {
             accept:   <Button bsSize='xsmall'  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'danger' : 'success'} >Accept</Button>,
-            confirm:  <Button bsSize='xsmall'  responsive onClick={this.confirm} key={'challenge'} bsStyle={'primary'} > {' challenge'}</Button>,
+            confirm:  <Button bsSize='xsmall'  responsive onClick={this.confirm} key={'challenge'} bsStyle={'primary'} > {'challenge'}</Button>,
             deny:     <Button bsSize='xsmall'  onClick={this.cancel} key={'deny'}  bsStyle={'warning'} >Deny</Button>,
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,

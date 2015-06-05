@@ -9,7 +9,7 @@ var selectedOp = 0;
 var token = null;
 var UserDao = require('../webapp/lib/UserDao');
 var User= require('../webapp/lib/User');
-
+var user = null;
 casper.test.begin('Test SignUp', function suite(test) {
     casper.start();
 
@@ -18,15 +18,13 @@ casper.test.begin('Test SignUp', function suite(test) {
     });
 
     casper.then(function(){
-        var user = testlib.createUser();
-        testlib.user = user.login;
-        testlib.pass = user.pass;
+        user = testlib.createUser();
     });
 
     casper.thenOpen(testlib.server + '/index.html#/login', function(){
     });
     casper.then(function(){
-        testlib.login(testlib.user,testlib.pass);
+        testlib.login(user.login,user.password);
     });
     casper.thenOpen(testlib.server + '/index.html#/app/home', function(){
 

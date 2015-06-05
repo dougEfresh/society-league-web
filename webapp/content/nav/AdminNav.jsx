@@ -18,42 +18,34 @@ var Bootstrap = require('react-bootstrap')
     ,Panel = Bootstrap.Panel;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 
-var HomeNav = React.createClass({
+var AdminNav = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
-
     render: function() {
-        var active=null;
-        if (this.isActive('home') || this.isActive('default') | this.isActive('user')) {
+        var active = null;
+        if (this.isActive('admin')) {
             active="active";
         }
-        var icon = 'home';
-        if (this.isActive('info')) {
-            icon = 'info-sign';
-        }
-        if (this.isActive('password')) {
-            icon = 'copyright-mark';
-        }
         return (
-            <li id="home-nav" role="presentation" className={'dropdown ' + active}>
+            <li id="admin-nav" role="presentation" className={'dropdown ' + active}>
                <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                   <Glyphicon glyph={icon} />
-                   <span className="main-item">{' ' + this.getUser().name} </span>
+                   <span className="main-item">Admin</span>
                    <span className="caret"></span>
                </a>
                 <ul className="dropdown-menu" role="menu">
                     <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='home'>
-                            <Glyphicon glyph='home' />Home
+                        <Link className='navName' to='info' params={{userId: this.getUserId()}} >
+                            <Glyphicon glyph='king' />Challenge
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='info' params={{userId: this.getUserId()}} >
-                            <Glyphicon glyph='info-sign' /> User
+                        <Link className='navName' to='home'>
+                            <Glyphicon glyph='users' />Teams
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
                         <Link to='reset' query={{changePassword: true}}>
-                            <Glyphicon glyph='copyright-mark' />Change Password</Link>
+                            <i className="fa fa-trophy"></i>&nbsp;
+                            Seasons</Link>
                     </li>
                 </ul>
             </li>
@@ -61,4 +53,4 @@ var HomeNav = React.createClass({
     }
 });
 
-module.exports = HomeNav;
+module.exports = AdminNav;

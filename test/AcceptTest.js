@@ -100,6 +100,7 @@ casper.test.begin('Test RequestApp', function suite(test) {
         test.assert(slot != null,'Slot != null');
         this.clickLabel(slot.getTime());
     });
+
     casper.then(function(){
         this.clickLabel(' Confirm');
     });
@@ -107,52 +108,18 @@ casper.test.begin('Test RequestApp', function suite(test) {
     casper.then(function(){
         this.waitForSelector('#challenge-confirm',function(){},testlib.notReady('challenge-confirm'),testlib.timeout);
     });
-
     casper.then(function(){
-        this.clickLabel('Go Back');
-    });
-
-    casper.then(function(){
-        this.waitForSelector('#request-app',function(){},testlib.notReady('request-app'),testlib.timeout);
+        this.clickLabel(' challenge');
     });
     casper.then(function(){
-        this.clickLabel(' Confirm');
-    });
-    casper.then(function(){
-        this.waitForSelector('#challenge-confirm',function(){},testlib.notReady('challenge-confirm'),testlib.timeout);
-    });
-    casper.then(function(){
-        this.clickLabel('challenge');
-    });
-    casper.then(function(){
-        this.echo(this.getCurrentUrl());
         this.waitForSelector('#sent-app',function(){},testlib.notReady('sent-app'),testlib.timeout);
     });
-    casper.then(function(){
-        this.clickLabel('Cancel');
-    });
-    casper.then(function() {
-        testlib.refreshUser(user1);
-    });
-    casper.thenOpen(testlib.server + '/index.html#/app/challenge/sent', function(){
+    casper.thenOpen(testlib.server + '/index.html#/login', function(){
     });
     casper.then(function(){
-        this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
-    });
-
-    casper.then(function() {
-        var challenges = user1.getChallenges(Status.SENT);
-        if (challenges.length == 0) {
-            this.waitForSelector('#request-app',function(){},testlib.notReady('request-app'),testlib.timeout);
-        } else {
-            this.waitForSelector('#sent-app',function(){},testlib.notReady('sent-app'),testlib.timeout);
-        }
+        testlib.init();
     });
     casper.then(function(){
-        this.waitForSelector('#app-ready',function(){},testlib.notReady('app-ready'),testlib.timeout);
-    });
-
-     casper.then(function(){
         testlib.purgeUser(user2);
     });
 

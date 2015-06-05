@@ -85,14 +85,15 @@ var ResetApp = React.createClass({
         if (q.passwordReset != undefined) {
             return this.renderSentReset();
         }
+        var title = q.changePassword == undefined ? 'Reset Password' : 'Change Password';
         return (
             <div id="reset-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form id='reset' className="login-form form-signin">
-                    <h2 className="form-signin-heading">Reset Password</h2>
+                    <h2 className="form-signin-heading">{title}</h2>
                     <div className="form-field form-group">
                         <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
                     </div>
-                    <Button id='submit' onClick={this.handleSubmit}>Reset</Button>
+                    <Button id='submit' onClick={this.handleSubmit}>{title}</Button>
                 </form>
             </div>
         );

@@ -28,6 +28,7 @@ var DataStore= require('../../jsx/stores/DataStore.jsx');
 var ChallengeStatus = require('../../jsx/constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamNav = require('./TeamNav.jsx');
+var AdminNav = require('./AdminNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
 var HomeNav = require('./HomeNav.jsx');
 var ScoutNav = require('./ScoutNav.jsx');
@@ -80,6 +81,7 @@ var LeagueNav = React.createClass({
                                     <SeasonNav />
                                     <ScoutNav />
                                     <ChallengeNav />
+                                    <AdminNav />
                                 </ul>
                             </Col>
 
@@ -92,6 +94,7 @@ var LeagueNav = React.createClass({
                         </Row>
                     </Grid>
                 </div>
+                <div style={{display: 'none'}} >{this.getPath()}</div>
             </div>
         );
     }
