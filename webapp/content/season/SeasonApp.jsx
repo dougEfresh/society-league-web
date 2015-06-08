@@ -2,36 +2,12 @@ var React = require('react/addons');
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route
-    , NotFoundRoute = Router.NotFoundRoute
-    , Link = Router.Link
-    , DefaultRoute = Router.DefaultRoute;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Nav = Bootstrap.Nav
-    ,Grid = Bootstrap.Grid
-    ,Row = Bootstrap.Row
-    ,Col = Bootstrap.Col
-    ,MenuItem = Bootstrap.MenuItem
-    ,Accordion = Bootstrap.Accordion
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Panel = Bootstrap.Panel;
-
-var ReactRouterBootstrap = require('react-router-bootstrap')
-    ,NavItemLink = ReactRouterBootstrap.NavItemLink
-    ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
+    , Link = Router.Link;
 
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var SeasonStandings = require('./SeasonStandings.jsx');
-var SeasonWeeklyResults= require('./SeasonWeeklyResults.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var StatsMixin = require('../../jsx/mixins/StatsMixin.jsx');
-var SeasonResults = require('./SeasonResults.jsx');
-var SeasonLeaders = require('./SeasonLeaders.jsx');
 
 var SeasonApp = React.createClass({
     mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State,Router.Navigation],
@@ -61,34 +37,27 @@ var SeasonApp = React.createClass({
         if (this.getUserId() == 0) {
             return null;
         }
-        /*
-         <Link to='seasonWeeklyResults' params={this.getParams()}>
-         <Button bsStyle={this.isActive('seasonWeeklyResults') ? 'success' : 'default'} responsize>
-         <i className="fa fa-calendar"></i><span className="main-item">'{ ' Weekly Results'}</span>
-         </Button>
-         </Link>
-         */
         var season = this.getSeason(this.getParams().seasonId);
         var display = season.isChallenge() ? 'none' : 'inline';
         var header = (
-                <div style={{display: 'inline'}}>
+                <div className="btn-group" role="group" aria-label="..." style={{display: 'inline'}}>
                     <div id={display == 'none' ? 'season-standings-link-hidden' : 'season-standings-link'}
                          style={{display:display}}>
                     <Link to='seasonStandings' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonStandings') ? 'success' : 'default'} responsize>
+                        <button type="button" className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'} responsize>
                             <i className="fa fa-trophy"></i><span className="main-item">{ ' Standings'}</span>
-                        </Button>
+                        </button>
                     </Link>
                     </div>
                     <Link to='seasonLeaders' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonLeaders') ? 'success' : 'default'} responsive>
+                        <button type="button" className={this.isActive('seasonLeaders') ? 'btn btn-success' : 'btn btn-default'} responsive>
                             <i className="fa  fa-list-ol"></i><span className="main-item">{ ' Leaders'}</span>
-                        </Button>
+                        </button>
                     </Link>
                     <Link to='seasonResults' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('seasonResults') ? 'success' : 'default'} responsive>
+                        <button type="button" className={this.isActive('seasonResults') ? 'btn btn-success' : 'btn btn-default'} responsive>
                             <i className="fa  fa-history"></i><span className="main-item">{ ' Matches'}</span>
-                        </Button>
+                        </button>
                     </Link>
                 </div>
         );

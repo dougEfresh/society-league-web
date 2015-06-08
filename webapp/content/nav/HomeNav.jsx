@@ -43,17 +43,13 @@ var HomeNav = React.createClass({
                 <ul className="dropdown-menu" role="menu">
                     <li className="teamNavLink" role="presentation">
                         <Link className='navName' to='home'>
-                            <Glyphicon glyph='home' />Home
+                            <Glyphicon glyph='home' /> Home
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
                         <Link className='navName' to='info' params={{userId: this.getUserId()}} >
-                            <Glyphicon glyph='info-sign' /> User
+                            <Glyphicon glyph='info-sign' /> Profile
                         </Link>
-                    </li>
-                    <li className="teamNavLink" role="presentation">
-                        <Link to='reset' query={{changePassword: true}}>
-                            <Glyphicon glyph='copyright-mark' />Change Password</Link>
                     </li>
                 </ul>
             </li>

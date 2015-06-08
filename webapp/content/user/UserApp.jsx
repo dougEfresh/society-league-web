@@ -5,11 +5,6 @@ var Router = require('react-router')
     , Link = Router.Link
     , RouteHandler = Router.RouteHandler;
 
-var Bootstrap = require('react-bootstrap')
-    ,Panel = Bootstrap.Panel
-    ,Badge = Bootstrap.Badge
-    ,Button = Bootstrap.Button;
-
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
@@ -22,14 +17,9 @@ var UserApp = React.createClass({
         var header = (
                 <div style={{display: 'inline'}}>
                     <Link to='info' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('info') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-info"></i>Info
-                        </Button>
-                    </Link>
-                    <Link to='reset' query={{changePassword: true}}>
-                        <Button bsStyle={this.isActive('reset') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-user"></i>Change Password
-                        </Button>
+                        <button className={this.isActive('info') ? 'btn btn-success' : 'btn btn-default'} >
+                            <i className="fa fa-info"></i>Profile
+                        </button>
                     </Link>
                 </div>
         );

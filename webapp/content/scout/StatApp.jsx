@@ -45,14 +45,14 @@ var StatApp = React.createClass({
         var header = (
                 <div style={{display: 'inline'}}>
                     <Link to='stats' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('stats') ? 'success' : 'default'} responsize>
+                        <button className={this.isActive('stats') ? 'btn btn-success' : 'btn btn-default'}>
                             <i className="fa fa-bar-chart"></i><span className="main-item">{ ' Stats'}</span>
-                        </Button>
+                        </button>
                     </Link>
                     <Link to='history' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('history') ? 'success' : 'default'} responsize>
+                        <button className={this.isActive('history') ? 'btn btn-success' : 'btn btn-default'}>
                             <i className="fa fa-history"></i><span className="main-item">{ ' History'}</span>
-                        </Button>
+                        </button>
                     </Link>
                 </div>
         );

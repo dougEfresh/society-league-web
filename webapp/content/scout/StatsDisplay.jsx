@@ -1,30 +1,32 @@
 var React = require('react/addons');
-var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Input = Bootstrap.Input
-    ,Nav = Bootstrap.Nav
-    ,NavItem = Bootstrap.NavItem
-    ,Panel = Bootstrap.Panel;
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
-var Pie = require("react-chartjs").Pie;
 
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var StatsRecord = require('./StatsRecord.jsx');
-var StatsHandicap = require('./StatsHandicap.jsx');
-var StatsChart = require('./StatsPie.jsx');
-var firstBy = require('../../lib/FirstBy.js');
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-var UserStat = require('../../lib/UsersStat');
 
 var StatsDisplay = React.createClass({
     mixins: [UserContextMixin,Router.State],
+    getRows: function(data) {
+        var rows = [];
+        data.forEach(function(d){
+            var type = d.getType();
+            if (d.getType() == 'season') {
+                type = d.season.getDisplayName();
+            }
+            if (d.getType() == 'all') {
+                type = 'overall';
+            }
+            rows.push(<tr key={type}>
+                <td> {type}</td>
+                <td> {d.wins}</td>
+                <td> {d.loses}</td>
+                <td> {d.racksFor}</td>
+                <td> {d.racksAgainst}</td>
+                <td> {d.getWinPct()}</td>
+            </tr>);
+        });
+        return rows;
+    },
     render: function() {
         var user = this.getUser(this.getParams().statsId);
         var stats = user.stats;
@@ -33,12 +35,9 @@ var StatsDisplay = React.createClass({
             if (s.type.indexOf('handicap') >= 0 || s.type.indexOf('division') >=0 ) {
                 return;
             }
-            //if (s.type.indexOf('challenge') >= 0 ) {
-//                return ;
-  //          }
             userStats.push(s);
         });
-        userStats.sort(function(a,b){
+        userStats = userStats.sort(function(a,b){
             if (a.type == 'all') {
                 return -1;
             }
@@ -53,36 +52,25 @@ var StatsDisplay = React.createClass({
 
             return 0;
         });
-        var rowGetter = function(rowIndex) {
-            return userStats[rowIndex];
-        };
-         var width =
-            // ColumnConfig.name.width +
-             ColumnConfig.season.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.wins.width +
-             ColumnConfig.racksFor.width +
-             ColumnConfig.winPct.width +
-            ColumnConfig.racksAgainst.width + 10;
+
          return (
-                <Table
-                    groupHeaderHeight={30}
-                    rowHeight={50}
-                    headerHeight={30}
-                    rowGetter={rowGetter}
-                    rowsCount={userStats.length}
-                    width={width}
-                    maxHeight={500}
-                    headerHeight={30}>
-                    {ColumnHelper.statType()}
-                    {ColumnHelper.wins()}
-                    {ColumnHelper.loses()}
-                    {ColumnHelper.racksForStat()}
-                    {ColumnHelper.racksAgainstStat()}
-                    {ColumnHelper.winPct()}
-                </Table>
-        );
-    }
+             <div className="table-responsive">
+                 <table className="table table-striped table-hover table-condensed">
+                    <tr>
+                        <th>Type</th>
+                        <th>W</th>
+                        <th>L</th>
+                        <th>RW</th>
+                        <th>RL</th>
+                        <th>%</th>
+                    </tr>
+                     <tbody>
+                    {this.getRows(userStats)}
+                     </tbody>
+                </table>
+                </div>
+         );
+     }
 });
 
 module.exports = StatsDisplay;

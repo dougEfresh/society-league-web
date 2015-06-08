@@ -31,10 +31,6 @@ var GroupList = React.createClass({
             );
         }.bind(this));
 
-        var rowGetter = function(index) {
-            return this.props.challengeGroups[index];
-        }.bind(this);
-
         return (
             <div class="table-responsive">
               <Table className="challengeStatusTable striped">

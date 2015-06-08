@@ -27,7 +27,7 @@ var ChallengeRequestOpponent = React.createClass({
                 potentials.push(user);
             }
         }
-        options.push(<option key={0} value={0}>{'------'}</option>);
+        options.push(<option key={0} value={0}>{'Choose Your Enemy'}</option>);
         potentials.forEach(function(p) {
             options.push(<option key={p.userId} value={p.userId}>{p.name}</option>);
         }.bind(this));
@@ -37,7 +37,7 @@ var ChallengeRequestOpponent = React.createClass({
         var q = this.getQuery();
         var opponent = q.opponent != undefined ? q.opponent : 0;
         return (
-            <Input name='challenge-opponent' id='challenge-opponent' type='select' value={opponent} ref='opponents' label={'Choose Your Enemy'} onChange={this.onChange} >{this.getOptions()}</Input>
+            <Input name='challenge-opponent' id='challenge-opponent' type='select' value={opponent} ref='opponents' onChange={this.onChange} >{this.getOptions()}</Input>
         );
     }
 });

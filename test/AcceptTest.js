@@ -9,7 +9,7 @@ var selectedOp = 0;
 var user1;
 var user2;
 
-casper.test.begin('Test RequestApp', function suite(test) {
+casper.test.begin('Test Accept', function suite(test) {
     casper.start();
 
     casper.then(function(){
@@ -109,13 +109,14 @@ casper.test.begin('Test RequestApp', function suite(test) {
         this.waitForSelector('#challenge-confirm',function(){},testlib.notReady('challenge-confirm'),testlib.timeout);
     });
     casper.then(function(){
-        this.clickLabel(' challenge');
+        this.clickLabel('challenge');
     });
     casper.then(function(){
         this.waitForSelector('#sent-app',function(){},testlib.notReady('sent-app'),testlib.timeout);
     });
     casper.thenOpen(testlib.server + '/index.html#/login', function(){
     });
+
     casper.then(function(){
         testlib.init();
     });

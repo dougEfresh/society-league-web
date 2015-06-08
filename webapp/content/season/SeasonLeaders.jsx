@@ -5,35 +5,12 @@ var Router = require('react-router')
     , NotFoundRoute = Router.NotFoundRoute
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Nav = Bootstrap.Nav
-    ,Grid = Bootstrap.Grid
-    ,Row = Bootstrap.Row
-    ,Col = Bootstrap.Col
-    ,MenuItem = Bootstrap.MenuItem
-    ,Accordion = Bootstrap.Accordion
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Panel = Bootstrap.Panel;
 
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
 
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-
-var ReactRouterBootstrap = require('react-router-bootstrap')
-    ,NavItemLink = ReactRouterBootstrap.NavItemLink
-    ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
-
-var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Stat =  require('../../lib/Stat');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
+var UserLink = require('../../../webapp/jsx/components/links/UserLink.jsx');
 
 var SeasonLeaders = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,Router.State,Router.Navigation],
@@ -46,6 +23,23 @@ var SeasonLeaders = React.createClass({
     componentDidMount: function () {
     },
     componentWillReceiveProps: function() {
+    },
+    getRows : function(data) {
+        var rows = [];
+        data.forEach(function(d){
+            rows.push(
+                <tr key={d.user.id}>
+                    <td><UserLink user={d.user}/></td>
+                    <td>{d.getPoints()}</td>
+                    <td>{d.wins}</td>
+                    <td>{d.loses}</td>
+                    <td>{d.racksFor}</td>
+                    <td>{d.racksAgainst}</td>
+                    <td>{d.getWinPct()}</td>
+                </tr>
+            );
+        });
+        return rows;
     },
     render: function() {
         if (this.getUserId() == 0) {
@@ -68,64 +62,26 @@ var SeasonLeaders = React.createClass({
          users.forEach(function(u) {
              rows.push(u.getStatsForSeason(this.getParams().seasonId));
          }.bind(this));
-          var width =
-              ColumnConfig.name.width +
-              ColumnConfig.name.width +
-              ColumnConfig.wins.width +
-              ColumnConfig.wins.width +
-              ColumnConfig.racksFor.width +
-              ColumnConfig.racksAgainst.width +
-              ColumnConfig.winPct.width +
-              1;
-        var rowGetter = function(index) {
-            return rows[index];
-        };
-        var season = this.getSeason(this.getParams().seasonId);
-        if (season.isChallenge()) {
-            width -= ColumnConfig.name.width;
-            width += ColumnConfig.points.width;
             return (
-                <Table
-                    groupHeaderHeight={30}
-                    rowHeight={50}
-                    headerHeight={30}
-                    rowGetter={rowGetter}
-                    rowsCount={rows.length}
-                    width={width}
-                    maxHeight={500}
-                    headerHeight={30}>
-                    {ColumnHelper.user()}
-                    {ColumnHelper.points()}
-                    {ColumnHelper.wins()}
-                    {ColumnHelper.loses()}
-                    {ColumnHelper.racksForStat()}
-                    {ColumnHelper.racksAgainstStat()}
-                    {ColumnHelper.winPct()}
-                </Table>
-            );
-        } else {
-            return (
-                <Table
-                    groupHeaderHeight={30}
-                    rowHeight={50}
-                    headerHeight={30}
-                    rowGetter={rowGetter}
-                    rowsCount={rows.length}
-                    width={width}
-                    maxHeight={500}
-                    headerHeight={30}>
-                    {ColumnHelper.user()}
-                    {ColumnHelper.usersTeam(this.getParams().seasonId)}
-                    {ColumnHelper.wins()}
-                    {ColumnHelper.loses()}
-                    {ColumnHelper.racksForStat()}
-                    {ColumnHelper.racksAgainstStat()}
-                </Table>
-            );
-        }
+                <div className="table-responsive">
+                <table className="table table-hover table-condensed">
+                    <tr>
+                        <th>Player</th>
+                        <th>Points</th>
+                        <th>W</th>
+                        <th>L</th>
+                        <th>RW</th>
+                        <th>RL</th>
+                        <th>%</th>
+                    </tr>
+                     <tbody>
+                     {this.getRows(rows)}
+                     </tbody>
+                </table>
+                </div>
 
+            );
     }
 });
 
 module.exports = SeasonLeaders;
-

@@ -39,7 +39,7 @@ var AdminNav = React.createClass({
                     </li>
                     <li className="teamNavLink" role="presentation">
                         <Link className='navName' to='home'>
-                            <Glyphicon glyph='users' />Teams
+                            <Glyphicon glyph='king' />Teams
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">

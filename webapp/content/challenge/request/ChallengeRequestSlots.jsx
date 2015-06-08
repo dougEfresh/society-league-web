@@ -29,14 +29,14 @@ var ChallengeRequestSlots = React.createClass({
         var q = this.getQuery();
         var anyTime = q.anyTime != undefined && q.anyTime == 'true';
         return (
-            <Button key='any'
-                    bsStyle={anyTime ? 'success' : 'default'}
+            <button key='any'
+                    className={anyTime ? 'btn btn-success' : 'btn btn-default'}
                     onClick={this.onClickAny}
                 >
                 <i className={anyTime ? 'fa fa-check' : 'fa fa-times'}>
-                    {'Any Time'}
+                    {' Any Time'}
                 </i>
-            </Button>
+            </button>
         );
     },
     render: function() {
@@ -53,8 +53,6 @@ var ChallengeRequestSlots = React.createClass({
                 slotsOnDay.push(slots[i]);
             }
         }
-        buttons.push(this.getAnyTime());
-
         slotsOnDay.forEach(function (s) {
             var selected = q.selected != undefined && q.selected[s.id] != undefined && q.selected[s.id] == 'true';
                 buttons.push(
@@ -67,8 +65,9 @@ var ChallengeRequestSlots = React.createClass({
             }.bind(this));
 
         return (
-            <div>
-                {buttons}
+            <div className="btn-toolbar" role="toolbar" aria-label="...">
+                <div class="btn-group" role="group" aria-label="...">{this.getAnyTime()}</div>
+                <div class="btn-group" role="group" aria-label="...">{buttons}</div>
             </div>
         );
     }
@@ -93,19 +92,19 @@ var SlotButton = React.createClass({
     },
     render: function() {
         if (this.props.any) {
-            return (<Button bsStyle='success' disabled onClick={this.onClick}>
+            return (<button className='btn btn-success' onClick={this.onClick}>
                 <i className="fa fa-check">
                     {this.props.slot.getTime()}
                 </i>
-            </Button>);
+            </button>);
         }
         var selected = this.props.selected == undefined ? {} : this.props.selected;
         return (
-                <Button bsStyle={selected ? 'success' : 'default'} onClick={this.onClick}>
+                <button className={selected ? 'btn btn-success' : 'btn btn-default'}  role="group" onClick={this.onClick}>
                     <i className={selected ? "fa fa-check" : 'fa fa-times'}>
                         {this.props.slot.getTime()}
                     </i>
-                </Button>
+                </button>
          );
     }
 });
