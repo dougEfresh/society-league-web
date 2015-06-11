@@ -34,14 +34,14 @@ var HomeApp = React.createClass({
             <span id="welcome-name">{'Welcome ' + this.getUser().fName}</span> </Link>
         var button = null;
         if (this.getUser().isChallenge()) {
-            button = <Link id="request-link" to="request"><Button responsive={true}>
-                <Glyphicon glyph="plus-sign" /> <b>Request</b></Button> </Link>
+            button = <button className="btn btn-default request"><Link id="request-link" to="request">
+                <span className="glyphicon glyphicon-plus-sign"></span><b>Request</b></Link></button>
         }
 
         return (
             <div id="home-app">
                 <h2 className="welcome" >
-                    <Glyphicon glyph="user" />
+                    <span className="glyphicon glyphicon-user"></span>
                     {welcome}
                     {button}
                 </h2>

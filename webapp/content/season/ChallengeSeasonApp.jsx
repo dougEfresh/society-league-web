@@ -63,7 +63,7 @@ var ChallengeSeasonApp = React.createClass({
         }
 
         var header = (
-            <div style={{display: 'inline'}}>
+            <div className="btn-group">
                 <Link to='challengeStandings' params={this.getParams()}>
                     <Button bsStyle={this.isActive('challengeStandings') ? 'success' : 'default'} responsize>
                         <i className="fa fa-trophy"></i><span className="main-item">{ ' Standings'}</span>

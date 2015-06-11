@@ -64,6 +64,21 @@ button.confirm-request {
 	min-width: 180px;
 	width: 100%;
 }
+button a:link, button a:visited {
+	color: #333;
+	text-decoration: none;
+}
+button a:hover, button a:active {
+	color:#333 ;
+	text-decoration: none;
+}
+button a.active {
+	color: #fff;
+	text-decoration: none;
+}
+.bot-margin {
+	margin-bottom: 10px;
+}
 /* Header Image Background - Change the URL below to your image path (example: ../images/background.jpg) */
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
@@ -280,8 +295,9 @@ h2.form-signin-heading {
 }
 
 .request {
-	margin: 0px 0px 30px 0px;
-	}
+	margin: 10px 0px 0px 0px;
+	width: 100%;
+}
 .sb-panel-page{
   margin-left: 10px;
 }
@@ -396,7 +412,7 @@ h2.form-signin-heading {
 	margin-top: 10px;
 }
 .welcome > .btn-default:hover {
-	background-color: #9c302d;
+	/* background-color: #9c302d; */
 	color: #fff;
 	cursor: pointer!important;
 }
@@ -408,7 +424,9 @@ h2.form-signin-heading {
 .main-item {
 	display: inline-block;
 }
-
+.request {
+	margin: 0px 0px 0px 10px;
+	width: auto;
 /* remove container padding using class .outerWrapper for desktop so left and right sides are flush to upper nav */
 .outerWrapper {
 	padding: 0px 0px;

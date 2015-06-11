@@ -20,17 +20,19 @@ var UserApp = React.createClass({
     mixins: [UserContextMixin, State, Navigation],
     render: function() {
         var header = (
-                <div style={{display: 'inline'}}>
-                    <Link to='info' params={this.getParams()}>
-                        <Button bsStyle={this.isActive('info') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-info"></i>Info
-                        </Button>
-                    </Link>
-                    <Link to='reset' query={{changePassword: true}}>
-                        <Button bsStyle={this.isActive('reset') ? 'success' : 'default'} responsize>
-                            <i className="fa fa-user"></i>Change Password
-                        </Button>
-                    </Link>
+                <div className="btn-group">
+                    <Button bsStyle={this.isActive('info') ? 'success' : 'default'} responsize>
+                        <Link to='info' params={this.getParams()}>
+                            <span className="fa fa-info"></span>Info
+                         </Link>
+                    </Button>
+               
+                    <Button bsStyle={this.isActive('reset') ? 'success' : 'default'} responsize>
+                        <Link to='reset' query={{changePassword: true}}>
+                            <span className="fa fa-user"></span>Change Password
+                        </Link>
+                    </Button>
+                 
                 </div>
         );
         return (

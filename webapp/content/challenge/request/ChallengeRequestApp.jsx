@@ -67,12 +67,13 @@ var ChallengeRequestApp = React.createClass({
         }
         var submit = (
             <Link to="challengeConfirm" params={this.getParams()} query={this.getQuery()}>
-                    <button type="button" disabled={!this.isValid()} onClick={this.confirm} className="btn btn-default btn-lg success confirm-request">
+                    <button type="button" disabled={!this.isValid()} onClick={this.confirm} className="btn btn-default btn-lg success">
                     <span className="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Confirm
                     </button>
             </Link>
         );
         return (
+            <div className="page-elements">
             <form id="request-app"  >
                 <ChallengeRequestDate  challengeGroup={c} />
                 <ChallengeRequestOpponent opponent={c.opponent} />
@@ -84,6 +85,7 @@ var ChallengeRequestApp = React.createClass({
                 </p>
                 </div>
             </form>
+            </div>
         )
     }
 });

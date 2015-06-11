@@ -34,7 +34,8 @@ var ChallengeRequestSlots = React.createClass({
                     onClick={this.onClickAny}
                 >
                 <span className={anyTime ? 'fa fa-check' : 'fa fa-times'}></span>
-                {'Any Time'}
+                    {'Any Time'}
+               
             </Button>
         );
     },
