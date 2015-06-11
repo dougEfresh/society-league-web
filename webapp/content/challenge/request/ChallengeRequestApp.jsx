@@ -43,7 +43,7 @@ var ChallengeRequestApp = React.createClass({
         if (c.selectedGames.length == 0)
             errors.push('Please choose game type');
 
-        if (q.anyTime != 'true' && c.selectedSlots.length == 0)
+        if (q.anyTime == 0 && c.selectedSlots.length == 0)
             errors.push('Please choose a slot');
 
         if (!c.date)
@@ -67,8 +67,9 @@ var ChallengeRequestApp = React.createClass({
         }
         var submit = (
             <Link to="challengeConfirm" params={this.getParams()} query={this.getQuery()}>
-                <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.confirm}>
-                    <Glyphicon glyph="flash" /> Confirm</Button>
+                <Button className='btn btn-primary' disabled={!this.isValid()} onClick={this.confirm}>
+                    <Glyphicon glyph="flash" /> Confirm
+                </Button>
             </Link>
         );
         return (

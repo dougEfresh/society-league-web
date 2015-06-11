@@ -11,7 +11,7 @@ var c = function queryToChallengeGroup(q) {
         cg.selectedSlots = [];
         cg.selectedGames = [];
         var slots = DataStore.getSlots();
-        if (q.anyTime == 'true') {
+        if (q.anyTime == 1) {
             slots.forEach(function(s) {
                 if (s.getDate() == q.date) {
                     cg.selectedSlots.push(s);
@@ -20,7 +20,7 @@ var c = function queryToChallengeGroup(q) {
         } else {
             for (var id in q.selected) {
                 if (q.selected.hasOwnProperty(id)) {
-                    if (q.selected[id] == 'true') {
+                    if (q.selected[id] == 1) {
                         for (var i = 0; i < slots.length; i++) {
                             if (slots[i].id == id)
                                 cg.selectedSlots.push(slots[i]);

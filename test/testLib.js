@@ -33,6 +33,7 @@ var login = function (username,password) {
     });
 
 };
+
 var refreshUser = function(user) {
     casper.thenOpen(testlib.server + '/api/user', function () {
         var u  = JSON.parse(this.getPageContent());
@@ -74,7 +75,7 @@ var createChallengeUser = function() {
     var name = 'Test-' + (Math.random() * 1000);
     name = name.substr(0,15);
 
-    var user = new User(0,name,name);
+    var user = new User(0,name,name.substr(0,5));
     user.login = name + '@example.com';
     user.email = name + '@example.com';
     user.password = "password";
@@ -103,32 +104,6 @@ var init = function() {
     casper.then(function(){
         if (!testlib.db.loaded) {
             this.die("No Db",1);
-        }
-    });
-    casper.thenOpen(testlib.server + '/index.html#/login', function(){
-
-
-    });
-    casper.then(function(){
-        console.log('Awaiting login page');
-    });
-
-    casper.then(function() {
-        testlib.login(testlib.user,testlib.pass);
-        console.log('login');
-    });
-    casper.thenOpen(testlib.server + '/api/user', function () {
-        var u  = JSON.parse(this.getPageContent());
-        var users = testlib.db.getUsers();
-        users.forEach(function(user){
-            if (u.userId == user.userId) {
-                testlib.authUser = user;
-            }
-        })
-    });
-    casper.then(function () {
-        if (testlib.authUser == null) {
-            this.die('No User',2);
         }
     });
 };

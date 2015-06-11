@@ -101,23 +101,9 @@ casper.test.begin('Test RequestApp', function suite(test) {
         this.clickLabel(slot.getTime());
     });
     casper.then(function(){
-        this.clickLabel(' Confirm');
+        this.click(' Confirm');
     });
 
-    casper.then(function(){
-        this.waitForSelector('#challenge-confirm',function(){},testlib.notReady('challenge-confirm'),testlib.timeout);
-    });
-
-    casper.then(function(){
-        this.clickLabel('Go Back');
-    });
-
-    casper.then(function(){
-        this.waitForSelector('#request-app',function(){},testlib.notReady('request-app'),testlib.timeout);
-    });
-    casper.then(function(){
-        this.clickLabel(' Confirm');
-    });
     casper.then(function(){
         this.waitForSelector('#challenge-confirm',function(){},testlib.notReady('challenge-confirm'),testlib.timeout);
     });

@@ -32,7 +32,7 @@ var GroupList = React.createClass({
         }.bind(this));
 
         return (
-            <div class="table-responsive">
+            <div className="table-responsive">
               <Table className="challengeStatusTable striped">
                 <thead>
                 <tr>

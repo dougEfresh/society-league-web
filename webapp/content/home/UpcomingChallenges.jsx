@@ -26,11 +26,11 @@ var UpcomingChallenges = React.createClass({
             return null;
         }
         var matchDao = new MatchDao(this.getDb());
-        var upComingMatches = matchDao.getUpcomingChallenges(this.getUser());
+        var upComingChallenges = matchDao.getUpcomingChallenges(this.getUser());
 
         var matches = [];
-        for (var i=0; i<upComingMatches.length && i< 3; i++) {
-            var match = upComingMatches[i];
+        for (var i=0; i<upComingChallenges.length && i< 3; i++) {
+            var match = upComingChallenges[i];
             var m = moment(match.selectedSlot.date);
             matches.push(
                 <div key={match.getId()} >
