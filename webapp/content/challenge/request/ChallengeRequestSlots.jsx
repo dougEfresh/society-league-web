@@ -33,9 +33,8 @@ var ChallengeRequestSlots = React.createClass({
                     bsStyle={anyTime ? 'success' : 'default'}
                     onClick={this.onClickAny}
                 >
-                <i className={anyTime ? 'fa fa-check' : 'fa fa-times'}>
-                    {'Any Time'}
-                </i>
+                <span className={anyTime ? 'fa fa-check' : 'fa fa-times'}></span>
+                {'Any Time'}
             </Button>
         );
     },
@@ -67,7 +66,7 @@ var ChallengeRequestSlots = React.createClass({
             }.bind(this));
 
         return (
-            <div>
+            <div className="btn-group select-time">
                 {buttons}
             </div>
         );
@@ -94,18 +93,19 @@ var SlotButton = React.createClass({
     render: function() {
         if (this.props.any) {
             return (<Button bsStyle='success' disabled onClick={this.onClick}>
-                <i className="fa fa-check">
+                <span className="fa fa-check">
                     {this.props.slot.getTime()}
-                </i>
+                </span>
             </Button>);
         }
         var selected = this.props.selected == undefined ? {} : this.props.selected;
         return (
-                <Button bsStyle={selected ? 'success' : 'default'} onClick={this.onClick}>
-                    <i className={selected ? "fa fa-check" : 'fa fa-times'}>
+              
+                <Button type="button" bsStyle={selected ? 'success' : 'default'} onClick={this.onClick}>
+                    <span className={selected ? "fa fa-check" : 'fa fa-times'}></span>
                         {this.props.slot.getTime()}
-                    </i>
                 </Button>
+              
          );
     }
 });

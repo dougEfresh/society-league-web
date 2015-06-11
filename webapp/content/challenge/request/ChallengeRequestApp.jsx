@@ -67,8 +67,9 @@ var ChallengeRequestApp = React.createClass({
         }
         var submit = (
             <Link to="challengeConfirm" params={this.getParams()} query={this.getQuery()}>
-                <Button bsStyle='primary' disabled={!this.isValid()} onClick={this.confirm}>
-                    <Glyphicon glyph="flash" /> Confirm</Button>
+                    <button type="button" disabled={!this.isValid()} onClick={this.confirm} className="btn btn-default btn-lg success confirm-request">
+                    <span className="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Confirm
+                    </button>
             </Link>
         );
         return (
@@ -78,7 +79,9 @@ var ChallengeRequestApp = React.createClass({
                 <ChallengeRequestSlots  challengeGroup={c} />
                 <ChallengeRequestGame challengeGroup={c} />
                 <div>
+                <p>
                 {submit}
+                </p>
                 </div>
             </form>
         )

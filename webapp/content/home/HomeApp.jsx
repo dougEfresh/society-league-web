@@ -35,7 +35,7 @@ var HomeApp = React.createClass({
         var button = null;
         if (this.getUser().isChallenge()) {
             button = <Link id="request-link" to="request"><Button responsive={true}>
-                <Glyphicon glyph="knight" /> <b>Request</b></Button> </Link>
+                <Glyphicon glyph="plus-sign" /> <b>Request</b></Button> </Link>
         }
 
         return (

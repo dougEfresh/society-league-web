@@ -20,9 +20,6 @@ span.nineBall.badge {
 	color: black; !important;
 }
 
-.badge {
-	background-color: #9c302d;
-}
 .wrap {
 	padding: 0px 0px;
 }
@@ -41,7 +38,32 @@ span.nineBall.badge {
 body {
     margin-top: 0px; /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
+span.glyphicon {
+	margin-right: 5px;	
+}
+span.fa {
+	margin-right: 5px;	
+}
 
+.badge {
+	background-color: #9c302d;
+	margin: 0px 5px;
+}
+.user-content .select-time, 
+.user-content .select-game {
+	width: 100%;
+	margin-bottom: 10px;
+}
+.select-game button, .select-time button {
+	min-width: 90px;
+}
+.select-game button, .select-time button {
+	width: 50%;
+}
+button.confirm-request {
+	min-width: 180px;
+	width: 100%;
+}
 /* Header Image Background - Change the URL below to your image path (example: ../images/background.jpg) */
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
@@ -456,6 +478,13 @@ h2.form-signin-heading {
 
 #content {
 	padding: 0px 0px;
+}
+/* Reset button widths for large screens */
+.select-game button, .select-time button {
+	width: auto;
+}
+button.confirm-request {
+	width: auto;
 }
 .footer .container li {
 	float: left;

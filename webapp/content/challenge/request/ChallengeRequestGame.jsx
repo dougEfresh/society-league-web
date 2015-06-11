@@ -44,11 +44,12 @@ var ChallengeRequestGame = React.createClass({
             }
         }
         return (
-            <div>
-                <Button bsSize='small' bsStyle={eight} onClick={this.onSelect}>
+
+            <div className="select-game btn-group">
+                <Button bsSize='large' type="button" bsStyle={eight} onClick={this.onSelect}>
                     <Badge className="eight-ball">8</Badge>
                 </Button>
-                <Button bsSize='small' bsStyle={nine} onClick={this.onSelect}>
+                <Button bsSize='large' type="button" bsStyle={nine} onClick={this.onSelect}>
                    <Badge className="nine-ball">9</Badge>
                </Button>
             </div>
