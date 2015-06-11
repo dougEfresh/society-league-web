@@ -23,7 +23,9 @@ span.nineBall.badge {
 .badge {
 	background-color: #9c302d;
 }
-
+.wrap {
+	padding: 0px 0px;
+}
 .panel-default>.panel-heading .badge {
   color: #f5f5f5;
   background-color: #9c302d;
@@ -60,12 +62,12 @@ body {
 	background-color: #000;
 }
 .navbar-wrapper > .container {
-		max-width: 100%;
-		padding: 0px 0px;
+
+	padding: 0px 0px;
 }
 .navbar-wrapper .container .navbar-header {
-		max-width: 100%;
-		padding: 0px 15px 0px 0px;
+	
+	padding: 0px 15px 0px 0px;
 }
 
 .logo {
@@ -104,13 +106,13 @@ header a {
  
 .glyphicon-refresh-animate {
 	color: #fff;
-	font-size: 30px;
+	font-size: 96px;
+	margin-top:200px;
     -animation: spin .7s infinite linear;
     -ms-animation: spin .7s infinite linear;
     -webkit-animation: spinw .7s infinite linear;
     -moz-animation: spinm .7s infinite linear;
 }
- 
 @keyframes spin {
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
@@ -376,8 +378,11 @@ h2.form-signin-heading {
 	color: #fff;
 	cursor: pointer!important;
 }
-@media (min-width: 768px)
-{
+@media (min-width: 768px) {
+.wrap {
+	min-width: 940px;
+	max-width: 940px;
+}
 .main-item {
 	display: inline-block;
 }
@@ -391,7 +396,7 @@ h2.form-signin-heading {
 }
 
 .navbar-wrapper .container .navbar-header {
-		padding: 0px 0px;
+	padding: 0px 0px;
 }
 .well {
 	margin: 100px auto 0px auto;
@@ -435,7 +440,7 @@ h2.form-signin-heading {
 #custom-bootstrap-menu.navbar-default .navbar-nav>.active>a:focus {
     color: rgba(255, 255, 255, 1);
     background-color: rgba(138, 30, 27, 1);
-	    background: -webkit-linear-gradient(top, rgba(138, 30, 27, 1) 0%, rgba(66, 4, 5, 1) 100%);
+	background: -webkit-linear-gradient(top, rgba(138, 30, 27, 1) 0%, rgba(66, 4, 5, 1) 100%);
     background: linear-gradient(to bottom, rgba(138, 30, 27, 1) 0%, rgba(66, 4, 5, 1) 100%);
 }	
 .logo {
@@ -448,19 +453,10 @@ h2.form-signin-heading {
 	background-image: url(../img/sbb-logo-2.jpg);
 	background-size:autos;	
 }
-<<<<<<< Updated upstream
-.user-nav > .nav > li > a {
-	padding-left: 15px;
-	padding-right: 15px;
-}
-.btn-responsive {
-	white-space: normal;
-    width: auto;
-	margin-top: 0px;
-}
-=======
 
->>>>>>> Stashed changes
+#content {
+	padding: 0px 0px;
+}
 .footer .container li {
 	float: left;
 	padding: 0px 10px 0px 0px;
@@ -472,10 +468,16 @@ h2.form-signin-heading {
 	width: 22%;
 	clear:none;
 }
-
+}
 @media (min-width: 992px) {
- 
+ .wrap {
+	min-width: 1200;
+	max-width: 1200px;
+}
 }
 @media (min-width: 1200px) {
- 
+ .wrap {
+	min-width: 1300px;
+	max-width: 1300px;
+}
 }
