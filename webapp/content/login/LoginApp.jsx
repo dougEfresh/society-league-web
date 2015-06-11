@@ -58,9 +58,12 @@ var LoginApp = React.createClass({
                             <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
                             <Input id="password" ref='password' type='password' name='password' placeholder='enter password'> </Input>
                         </div>
-                    <Button id='submit' onClick={this.handleSubmit} >Login</Button>
+                
+                        <button id="submit" type="button" onClick={this.handleSubmit} className="btn btn-sm btn-default">
+                            <b>Login</b>
+                        </button>
                     <Link to='reset'>
-                        <button type="button" className="btn btn-sm btn-default pull-right btn-responsive">
+                        <button type="button" className="btn btn-sm btn-default pull-right">
                             <b>Forgot Password?</b>
                         </button>
                     </Link>

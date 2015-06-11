@@ -98,7 +98,33 @@ span.page-title {
 header a {
     text-decoration: none;
 }
-
+/*    
+    This version adds support for IE 10+ and Firefox.
+*/
+ 
+.glyphicon-refresh-animate {
+	color: #fff;
+	font-size: 30px;
+    -animation: spin .7s infinite linear;
+    -ms-animation: spin .7s infinite linear;
+    -webkit-animation: spinw .7s infinite linear;
+    -moz-animation: spinm .7s infinite linear;
+}
+ 
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+  
+@-webkit-keyframes spinw {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+ 
+@-moz-keyframes spinm {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}
 
 a.logout {
     color: #eee;
@@ -222,8 +248,6 @@ h2.form-signin-heading {
 	width: 100%;
 }
 
-.account-wrapper { max-width: 700px;padding: 0px 0px; }
-.account-wrapper .btn-group-vertical { max-width: 700px;padding: 0px 0px; }
 .account-wrapper .btn-group-vertical a { text-align: left;}
 .account-wrapper .btn-group-vertical a:hover, .account-wrapper .btn-group-vertical .active { background-color: #000; color: #fff;}
 
@@ -328,7 +352,6 @@ h2.form-signin-heading {
 	color: #fff;
 }
 .user-content {
-	max-width: 600px;
 	align-content: space-around;
 	background: #EBEBEB;
 	padding-top: 10px;
@@ -425,6 +448,7 @@ h2.form-signin-heading {
 	background-image: url(../img/sbb-logo-2.jpg);
 	background-size:autos;	
 }
+<<<<<<< Updated upstream
 .user-nav > .nav > li > a {
 	padding-left: 15px;
 	padding-right: 15px;
@@ -434,6 +458,9 @@ h2.form-signin-heading {
     width: auto;
 	margin-top: 0px;
 }
+=======
+
+>>>>>>> Stashed changes
 .footer .container li {
 	float: left;
 	padding: 0px 10px 0px 0px;

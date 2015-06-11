@@ -29,8 +29,6 @@
     "vinyl-fs": "1.0.0",
     "chart.js": "1.0.2",
     "react-chartjs": "0.6.0",
-    "node-jsx": "0.13.3",
-    "connect-browserify": "4.0.0",
     "fixed-data-table": "0.2.0"
   },
   "devDependencies": {
