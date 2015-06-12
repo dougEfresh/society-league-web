@@ -28,24 +28,25 @@ var AdminNav = React.createClass({
         return (
             <li id="admin-nav" role="presentation" className={'dropdown ' + active}>
                <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                   <span className="glyphicon glyphicon-cog"></span>
                    <span className="main-item">Admin</span>
                    <span className="caret"></span>
                </a>
                 <ul className="dropdown-menu" role="menu">
                     <li className="teamNavLink" role="presentation">
                         <Link className='navName' to='info' params={{userId: this.getUserId()}} >
-                            <Glyphicon glyph='king' />Challenge
+                            <span className="fa fa-trophy"></span>Challenge
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
                         <Link className='navName' to='home'>
-                            <Glyphicon glyph='king' />Teams
+                            <span className="fa fa-users"></span>Teams
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
                         <Link to='reset' query={{changePassword: true}}>
-                            <i className="fa fa-trophy"></i>&nbsp;
-                            Seasons</Link>
+                            <span className="fa fa-server"></span>Seasons
+                        </Link>
                     </li>
                 </ul>
             </li>

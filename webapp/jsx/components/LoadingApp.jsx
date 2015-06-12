@@ -4,9 +4,11 @@ var Panel = BootStrap.Panel;
 var LoadingApp = React.createClass({
     render: function () {
         return (<div id="loadingApp">
-            <Panel>
-                <h1>Loading....please wait</h1>
-            </Panel>
+             <div class="form-group col-lg-12">
+                        <div class="text-center">
+                            <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                        </div>
+                    </div>
         </div>);
     }
 });

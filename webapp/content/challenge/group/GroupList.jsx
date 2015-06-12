@@ -33,7 +33,7 @@ var GroupList = React.createClass({
 
         return (
             <div className="table-responsive">
-              <table className="table table-hover table-condensed table-striped ">
+              <table className="table table-condensed table-striped">
                 <thead>
                 <tr>
                     <th>Action</th>

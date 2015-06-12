@@ -33,9 +33,8 @@ var ChallengeRequestSlots = React.createClass({
             <button key='any'
                     className={anyTime ? 'btn btn-success' : 'btn btn-default'}
                     onClick={this.onClickAny}>
-                <i className={anyTime ? 'fa fa-check' : 'fa fa-times'}>
-                    {' Any Time'}
-                </i>
+                <span className={anyTime ? 'fa fa-check' : 'fa fa-times'}></span>
+                {'Any Time'}
             </button>
         );
     },
@@ -62,9 +61,14 @@ var ChallengeRequestSlots = React.createClass({
             }.bind(this));
 
         return (
+<<<<<<< HEAD
             <div className="btn-toolbar" role="toolbar" aria-label="...">
                 <div className="btn-group" role="group" aria-label="...">{this.getAnyTime()}</div>
                 <div className="btn-group" role="group" aria-label="...">{buttons}</div>
+=======
+            <div className="btn-group select-time">
+                {buttons}
+>>>>>>> master
             </div>
         );
     }
@@ -89,6 +93,7 @@ var SlotButton = React.createClass({
         this.transitionTo('request',this.getParams(),q);
     },
     render: function() {
+<<<<<<< HEAD
         var q = this.getQuery();
         var selected = (q.selected != undefined && q.selected[this.props.slot.id] != undefined && q.selected[this.props.slot.id])
             || this.props.any;
@@ -98,6 +103,23 @@ var SlotButton = React.createClass({
                         {this.props.slot.getTime()}
                     </i>
                 </button>
+=======
+        if (this.props.any) {
+            return (<Button bsStyle='success' disabled onClick={this.onClick}>
+                <span className="fa fa-check">
+                    {this.props.slot.getTime()}
+                </span>
+            </Button>);
+        }
+        var selected = this.props.selected == undefined ? {} : this.props.selected;
+        return (
+              
+                <Button type="button" bsStyle={selected ? 'success' : 'default'} onClick={this.onClick}>
+                    <span className={selected ? "fa fa-check" : 'fa fa-times'}></span>
+                        {this.props.slot.getTime()}
+                </Button>
+              
+>>>>>>> master
          );
     }
 });

@@ -41,9 +41,9 @@ var SeasonNav = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
     render: function() {
         return (
-            <li id="stat-nav" role="presentation">
+            <li id="stat-nav" className="main-item" role="presentation">
                 <Link className='scoutNav' to='stats' params={{statsId: this.getUserId()}}>
-                    <i className="fa fa-bar-chart"><span className="main-item">{ ' Stats'}</span></i>
+                    <span className="fa fa-bar-chart"><span className="main-item">{ 'Stats'}</span></span>
                 </Link>
             </li>
         );

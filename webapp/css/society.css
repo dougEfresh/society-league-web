@@ -20,10 +20,9 @@ span.nineBall.badge {
 	color: black; !important;
 }
 
-.badge {
-	background-color: #9c302d;
+.wrap {
+	padding: 0px 0px;
 }
-
 .panel-default>.panel-heading .badge {
   color: #f5f5f5;
   background-color: #9c302d;
@@ -39,7 +38,47 @@ span.nineBall.badge {
 body {
     margin-top: 0px; /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
+span.glyphicon {
+	margin-right: 5px;	
+}
+span.fa {
+	margin-right: 5px;	
+}
 
+.badge {
+	background-color: #9c302d;
+	margin: 0px 5px;
+}
+.user-content .select-time, 
+.user-content .select-game {
+	width: 100%;
+	margin-bottom: 10px;
+}
+.select-game button, .select-time button {
+	min-width: 90px;
+}
+.select-game button, .select-time button {
+	width: 50%;
+}
+button.confirm-request {
+	min-width: 180px;
+	width: 100%;
+}
+button a:link, button a:visited {
+	color: #333;
+	text-decoration: none;
+}
+button a:hover, button a:active {
+	color:#333 ;
+	text-decoration: none;
+}
+button a.active {
+	color: #fff;
+	text-decoration: none;
+}
+.bot-margin {
+	margin-bottom: 10px;
+}
 /* Header Image Background - Change the URL below to your image path (example: ../images/background.jpg) */
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
@@ -60,12 +99,12 @@ body {
 	background-color: #000;
 }
 .navbar-wrapper > .container {
-		max-width: 100%;
-		padding: 0px 0px;
+
+	padding: 0px 0px;
 }
 .navbar-wrapper .container .navbar-header {
-		max-width: 100%;
-		padding: 0px 15px 0px 0px;
+	
+	padding: 0px 15px 0px 0px;
 }
 
 .logo {
@@ -98,7 +137,33 @@ span.page-title {
 header a {
     text-decoration: none;
 }
-
+/*    
+    This version adds support for IE 10+ and Firefox.
+*/
+ 
+.glyphicon-refresh-animate {
+	color: #fff;
+	font-size: 96px;
+	margin-top:200px;
+    -animation: spin .7s infinite linear;
+    -ms-animation: spin .7s infinite linear;
+    -webkit-animation: spinw .7s infinite linear;
+    -moz-animation: spinm .7s infinite linear;
+}
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+  
+@-webkit-keyframes spinw {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+ 
+@-moz-keyframes spinm {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}
 
 a.logout {
     color: #eee;
@@ -222,8 +287,6 @@ h2.form-signin-heading {
 	width: 100%;
 }
 
-.account-wrapper { max-width: 700px;padding: 0px 0px; }
-.account-wrapper .btn-group-vertical { max-width: 700px;padding: 0px 0px; }
 .account-wrapper .btn-group-vertical a { text-align: left;}
 .account-wrapper .btn-group-vertical a:hover, .account-wrapper .btn-group-vertical .active { background-color: #000; color: #fff;}
 
@@ -232,8 +295,9 @@ h2.form-signin-heading {
 }
 
 .request {
-	margin: 0px 0px 30px 0px;
-	}
+	margin: 10px 0px 0px 0px;
+	width: 100%;
+}
 .sb-panel-page{
   margin-left: 10px;
 }
@@ -328,7 +392,6 @@ h2.form-signin-heading {
 	color: #fff;
 }
 .user-content {
-	max-width: 600px;
 	align-content: space-around;
 	background: #EBEBEB;
 	padding-top: 10px;
@@ -349,16 +412,21 @@ h2.form-signin-heading {
 	margin-top: 10px;
 }
 .welcome > .btn-default:hover {
-	background-color: #9c302d;
+	/* background-color: #9c302d; */
 	color: #fff;
 	cursor: pointer!important;
 }
-@media (min-width: 768px)
-{
+@media (min-width: 768px) {
+.wrap {
+	min-width: 940px;
+	max-width: 940px;
+}
 .main-item {
 	display: inline-block;
 }
-
+.request {
+	margin: 0px 0px 0px 10px;
+	width: auto;
 /* remove container padding using class .outerWrapper for desktop so left and right sides are flush to upper nav */
 .outerWrapper {
 	padding: 0px 0px;
@@ -368,7 +436,7 @@ h2.form-signin-heading {
 }
 
 .navbar-wrapper .container .navbar-header {
-		padding: 0px 0px;
+	padding: 0px 0px;
 }
 .well {
 	margin: 100px auto 0px auto;
@@ -412,7 +480,7 @@ h2.form-signin-heading {
 #custom-bootstrap-menu.navbar-default .navbar-nav>.active>a:focus {
     color: rgba(255, 255, 255, 1);
     background-color: rgba(138, 30, 27, 1);
-	    background: -webkit-linear-gradient(top, rgba(138, 30, 27, 1) 0%, rgba(66, 4, 5, 1) 100%);
+	background: -webkit-linear-gradient(top, rgba(138, 30, 27, 1) 0%, rgba(66, 4, 5, 1) 100%);
     background: linear-gradient(to bottom, rgba(138, 30, 27, 1) 0%, rgba(66, 4, 5, 1) 100%);
 }	
 .logo {
@@ -425,14 +493,16 @@ h2.form-signin-heading {
 	background-image: url(../img/sbb-logo-2.jpg);
 	background-size:autos;	
 }
-.user-nav > .nav > li > a {
-	padding-left: 15px;
-	padding-right: 15px;
+
+#content {
+	padding: 0px 0px;
 }
-.btn-responsive {
-	white-space: normal;
-    width: auto;
-	margin-top: 0px;
+/* Reset button widths for large screens */
+.select-game button, .select-time button {
+	width: auto;
+}
+button.confirm-request {
+	width: auto;
 }
 .footer .container li {
 	float: left;
@@ -445,10 +515,16 @@ h2.form-signin-heading {
 	width: 22%;
 	clear:none;
 }
-
+}
 @media (min-width: 992px) {
- 
+ .wrap {
+	min-width: 1200;
+	max-width: 1200px;
+}
 }
 @media (min-width: 1200px) {
- 
+ .wrap {
+	min-width: 1300px;
+	max-width: 1300px;
+}
 }

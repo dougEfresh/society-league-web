@@ -15,13 +15,13 @@ var UserApp = React.createClass({
     mixins: [UserContextMixin, State, Navigation],
     render: function() {
         var header = (
-                <div style={{display: 'inline'}}>
-                    <Link to='info' params={this.getParams()}>
-                        <button className={this.isActive('info') ? 'btn btn-success' : 'btn btn-default'} >
-                            <i className="fa fa-info"></i>Profile
-                        </button>
-                    </Link>
-                </div>
+        <div className="btn-group">
+            <Button bsStyle={this.isActive('info') ? 'success' : 'default'} responsize>
+                <Link to='info' params={this.getParams()}>
+                    <span className="fa fa-info"></span>Profile
+                </Link>
+            </Button>
+        </div>
         );
         return (
             <div id="user-app">

@@ -72,9 +72,9 @@ var LeagueNav = React.createClass({
         return (
             <div className="container outerWrapper"  >
                 <div className="account-wrapper">
-                    <Grid className="leagueNavGrid" >
-                        <Row>
-                            <Col xs={12} md={12} className="user-nav">
+                    <div className="leagueNavGrid" >
+                        <div className="row">
+                            <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
                                 <ul className="nav nav-tabs">
                                     <HomeNav />
                                     <TeamNav />
@@ -83,16 +83,16 @@ var LeagueNav = React.createClass({
                                     <ChallengeNav />
                                     <AdminNav />
                                 </ul>
-                            </Col>
+                            </div>
 
-                            <Col xs={12} md={12} className="user-nav">
+                             <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
                                 <div className="container user-content">
                                     {home}
                                     <RouteHandler />
                                 </div>
-                            </Col>
-                        </Row>
-                    </Grid>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div style={{display: 'none'}} >{this.getPath()}</div>
             </div>
