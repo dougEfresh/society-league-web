@@ -33,7 +33,7 @@ var GroupList = React.createClass({
 
         return (
             <div className="table-responsive">
-              <Table className="challengeStatusTable striped">
+              <table className="table table-hover table-condensed table-striped ">
                 <thead>
                 <tr>
                     <th>Action</th>
@@ -46,7 +46,7 @@ var GroupList = React.createClass({
                 <tbody>
                 {rows}
                 </tbody>
-            </Table>
+            </table>
             </div>
 
         );

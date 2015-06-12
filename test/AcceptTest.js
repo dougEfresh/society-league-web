@@ -220,6 +220,17 @@ casper.test.begin('Test RequestApp', function suite(test) {
     casper.then(function(){
         this.waitForSelector('#sent-app',function(){},testlib.notReady('sent-app'),testlib.timeout);
     });
+
+    casper.thenOpen(testlib.server + '/index.html#/login', function(){
+    });
+    casper.then(function(){
+        testlib.login(user3.login,user3.password);
+    });
+    casper.thenOpen(testlib.server + '/index.html#/app/challenge/pending', function(){});
+
+    casper.then(function(){
+        this.waitForSelector('#pending-app',function(){},testlib.notReady('pending-app'),testlib.timeout);
+    });
     
     casper.then(function(){
         testlib.purgeUser(user2);

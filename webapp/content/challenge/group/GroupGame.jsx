@@ -34,11 +34,14 @@ var GroupGame = React.createClass({
         this.props.challengeGroup.games.forEach(function(g) {
             games.push(<option key={g} value={g}><BallIcon type={g}/></option>);
         }.bind(this));
-        return (<Input ref='game'
-                       onChange={this.onSelectGame}
-                       value={this.getQuery().selectedGame}
-                       type='select' >{games}
-        </Input>);
+        return (
+            <form id="request-game">
+            <Input ref='game'
+                   onChange={this.onSelectGame}
+                   value={this.getQuery().selectedGame}
+                   type='select' >{games}
+            </Input>
+        </form>);
     },
     render: function() {
         if (this.props.noSelect)
