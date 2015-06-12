@@ -90,7 +90,7 @@ var SlotButton = React.createClass({
     },
     render: function() {
         var q = this.getQuery();
-        var selected = (q.selected != undefined && q.selected[this.props.slot.id] != undefined && q.selected[this.props.slot.id])
+        var selected = (q.selected != undefined && q.selected[this.props.slot.id] != undefined && q.selected[this.props.slot.id] > 0)
             || this.props.any;
         return (
                 <button className={selected ? 'btn btn-success' : 'btn btn-default'}  onClick={this.onClick}>

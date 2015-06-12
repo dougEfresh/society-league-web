@@ -16,11 +16,11 @@ var UserApp = React.createClass({
     render: function() {
         var header = (
         <div className="btn-group">
-            <Button bsStyle={this.isActive('info') ? 'success' : 'default'} responsize>
+            <button className={this.isActive('info') ? 'btn btn-success' : 'btn btn-default'} responsize>
                 <Link to='info' params={this.getParams()}>
                     <span className="fa fa-info"></span>Profile
                 </Link>
-            </Button>
+            </button>
         </div>
         );
         return (
