@@ -427,6 +427,7 @@ h2.form-signin-heading {
 .request {
 	margin: 0px 0px 0px 10px;
 	width: auto;
+}
 /* remove container padding using class .outerWrapper for desktop so left and right sides are flush to upper nav */
 .outerWrapper {
 	padding: 0px 0px;
