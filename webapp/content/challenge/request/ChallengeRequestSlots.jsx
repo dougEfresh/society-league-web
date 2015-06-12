@@ -94,7 +94,7 @@ var SlotButton = React.createClass({
             || this.props.any;
         return (
                 <button className={selected ? 'btn btn-success' : 'btn btn-default'}  onClick={this.onClick}>
-                    <span className={selected ? "fa fa-check" : 'fa fa-times'}></span>
+                    <span className={selected ? 'fa fa-check' : 'fa fa-times'}></span>
                     {this.props.slot.getTime()}
                 </button>
          );
