@@ -107,28 +107,28 @@ var GroupAction = React.createClass({
     },
     render: function() {
         var buttons = {
-            accept:   <Button bsSize='xsmall'  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'danger' : 'success'} >Accept</Button>,
-            confirm:  <Button bsSize='xsmall'  responsive onClick={this.confirm} key={'challenge'} bsStyle={'primary'} > {'challenge'}</Button>,
-            deny:     <Button bsSize='xsmall'  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} >Deny</Button>,
+            accept:   <Button bsSize='small'  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'primary' : 'success'} ><span className="fa fa-thumbs-up"></span>Accept</Button>,
+            confirm:  <Button bsSize='small'  responsive onClick={this.confirm} key={'challenge'} bsStyle={'success'} ><span className="glyphicon glyphicon-ok"></span>{'challenge'}</Button>,
+            deny:     <Button bsSize='small'  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} ><span className="fa fa-thumbs-down"></span>Decline</Button>,
             //change:   <Button key={'change'}  bsStyle={'primary'} >Change</Button>,
             change:   null,
-            cancel:   <Button bsSize='xsmall'  onClick={this.cancel} key={'cancel'}  bsStyle={'danger'} >Cancel</Button>,
+            cancel:   <Button bsSize='small'  onClick={this.cancel} key={'cancel'}  bsStyle={'danger'} ><span className="glyphicon glyphicon-remove"></span>Cancel</Button>,
             calender: null, //<Button disabled bsSize='xsmall'  key={'calendar'}  bsStyle={'success'} >Calendar</Button>
-            back: <Button bsSize='xsmall'  bsStyle={'danger'} onClick={this.backUp}>Go Back</Button>
+            back: <Button bsSize='small'  bsStyle={'warning'} onClick={this.backUp}><span className="glyphicon glyphicon-chevron-left"></span>Go Back</Button>
         };
 
         var actions = null;
         switch(this.props.type) {
             case ChallengeStatus.PENDING:
                 actions =
-                    (<div>
+                    (<div className="btn-group">
                         {buttons.accept}
                         {buttons.deny}
                     </div>);
                 break;
             case ChallengeStatus.SENT:
                 actions =
-                    (<div >
+                    (<div className="btn-group">
                         {buttons.calender}
                         {buttons.change}
                         {buttons.cancel}
@@ -136,14 +136,14 @@ var GroupAction = React.createClass({
                 break;
             case ChallengeStatus.ACCEPTED:
                 actions =
-                    (<div >
+                    (<div className="btn-group">
                         {buttons.change}
                         {buttons.cancel}
                     </div>);
                 break;
              case 'CONFIRM':
                 actions =
-                    (<div >
+                    (<div className="btn-group">
                         {buttons.confirm}
                         {buttons.back}
                     </div>);

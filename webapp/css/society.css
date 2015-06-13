@@ -65,11 +65,11 @@ button.confirm-request {
 	width: 100%;
 }
 button a:link, button a:visited {
-	color: #333;
+	color: #fff;
 	text-decoration: none;
 }
 button a:hover, button a:active {
-	color:#333 ;
+	color:#fff ;
 	text-decoration: none;
 }
 button a.active {
@@ -395,7 +395,7 @@ h2.form-signin-heading {
 	align-content: space-around;
 	background: #EBEBEB;
 	padding-top: 10px;
-	margin-left: 1px;
+	margin-left: 0px;
 }
 .user-nav > .nav-tabs > li.dropdown.open > a {
     border-color: #fff;
@@ -427,6 +427,10 @@ h2.form-signin-heading {
 .request {
 	margin: 0px 0px 0px 10px;
 	width: auto;
+}
+.btn-responsive {
+    width: auto;
+}
 /* remove container padding using class .outerWrapper for desktop so left and right sides are flush to upper nav */
 .outerWrapper {
 	padding: 0px 0px;
