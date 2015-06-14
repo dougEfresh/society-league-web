@@ -4,8 +4,6 @@ var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var ChallengeStatus  = require('../../../jsx/constants/ChallengeStatus.jsx');
 var DataStore = require('../../../jsx/stores/DataStore.jsx');
 var Router = require('react-router');
-var Bootstrap = require('react-bootstrap')
-    ,Panel = Bootstrap.Panel;
 
 var ChallengeSentApp = React.createClass({
     mixins: [UserContextMixin,Router.Navigation],

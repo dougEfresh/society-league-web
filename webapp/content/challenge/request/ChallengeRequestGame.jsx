@@ -1,13 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Input = Bootstrap.Input
-    ,Badge = Bootstrap.Badge
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,DropdownButton = Bootstrap.DropdownButton
-    ,MenuItem = Bootstrap.MenuItem
-    ,Button = Bootstrap.Button
-    ,SplitButton = Bootstrap.SplitButton;
 var DivisionType = require('../../../lib/DivisionType');
 var UserContextMixin  = require('../../../jsx/mixins/UserContextMixin.jsx');
 var Router = require('react-router');
@@ -18,6 +10,7 @@ var ChallengeRequestGame = React.createClass({
         challengeGroup: ReactPropTypes.object.isRequired
     },
     onSelect: function(e) {
+        e.preventDefault();
         var type = e.target.textContent == '9' ? DivisionType.NINE_BALL_CHALLENGE : DivisionType.EIGHT_BALL_CHALLENGE;
         //RequestActions.setGame(type)
         var q = this.getQuery();
@@ -46,12 +39,12 @@ var ChallengeRequestGame = React.createClass({
         return (
 
             <div className="select-game btn-group">
-                <Button bsSize='large' type="button" bsStyle={eight} onClick={this.onSelect}>
-                    <Badge className="eight-ball">8</Badge>
-                </Button>
-                <Button bsSize='large' type="button" bsStyle={nine} onClick={this.onSelect}>
-                   <Badge className="nine-ball">9</Badge>
-               </Button>
+                <button className={'btn btn-lg btn-' + eight} onClick={this.onSelect}>
+                    <span className="badge eight-ball">8</span>
+                </button>
+                <button className={'btn btn-lg btn-' + nine}  onClick={this.onSelect}>
+                   <span className="badge nine-ball">9</span>
+               </button>
             </div>
         );
     }

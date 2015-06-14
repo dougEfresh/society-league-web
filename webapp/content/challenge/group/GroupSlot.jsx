@@ -1,15 +1,11 @@
 var React = require('react/addons');
 var Router = require('react-router');
-var Bootstrap = require('react-bootstrap')
-    ,Label = Bootstrap.Label
-    ,Input = Bootstrap.Input;
-
 var GroupSlot = React.createClass({
     mixins: [Router.State,Router.Navigation],
     onSelectSlot: function() {
         var q = this.getQuery();
         q.id = this.props.challengeGroup.getId();
-        q.selectedSlot = this.refs.slot.getValue();
+        q.selectedSlot = React.findDOMNode(this.refs.slot).value;
         this.transitionTo(this.getPathname(),this.getParams(),q);
     },
     renderNoSelect: function() {

@@ -1,12 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Input = Bootstrap.Input
-    ,Nav = Bootstrap.Nav
-    ,NavItem = Bootstrap.NavItem
-    ,Panel = Bootstrap.Panel;
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 var Pie = require("react-chartjs").Pie;

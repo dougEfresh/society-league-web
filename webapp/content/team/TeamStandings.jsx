@@ -1,8 +1,5 @@
 var React = require('react/addons');
 var Router = require('react-router');
-var Bootstrap = require('react-bootstrap');
-
-
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');

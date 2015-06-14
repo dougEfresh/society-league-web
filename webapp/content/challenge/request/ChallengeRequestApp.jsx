@@ -1,10 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Panel = Bootstrap.Panel;
-
 var Router = require('react-router')
     ,Link = Router.Link
     ,RouteHandler = Router.RouteHandler;

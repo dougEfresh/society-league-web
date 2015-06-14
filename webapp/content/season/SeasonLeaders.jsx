@@ -1,11 +1,7 @@
 var React = require('react/addons');
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
-    , Route = Router.Route
-    , NotFoundRoute = Router.NotFoundRoute
-    , Link = Router.Link
-    , DefaultRoute = Router.DefaultRoute;
-
+    , Link = Router.Link;
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Stat =  require('../../lib/Stat');

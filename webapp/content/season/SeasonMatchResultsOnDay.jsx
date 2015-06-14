@@ -5,26 +5,6 @@ var Router = require('react-router')
     , NotFoundRoute = Router.NotFoundRoute
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Nav = Bootstrap.Nav
-    ,Grid = Bootstrap.Grid
-    ,Row = Bootstrap.Row
-    ,Col = Bootstrap.Col
-    ,MenuItem = Bootstrap.MenuItem
-    ,Accordion = Bootstrap.Accordion
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Modal = Bootstrap.Modal
-    ,ModalTrigger = Bootstrap.ModalTrigger
-    ,Panel = Bootstrap.Panel;
-
-var ReactRouterBootstrap = require('react-router-bootstrap')
-    ,NavItemLink = ReactRouterBootstrap.NavItemLink
-    ,MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');

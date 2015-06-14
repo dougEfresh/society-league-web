@@ -1,6 +1,4 @@
 var React = require('react/addons');
-var BootStrap = require('react-bootstrap');
-var Panel = BootStrap.Panel;
 var LoadingApp = React.createClass({
     render: function () {
         return (<div id="loadingApp">

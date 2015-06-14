@@ -4,8 +4,6 @@ var GroupList = require('../group/GroupList.jsx');
 var UserContextMixin = require('../../.././jsx/mixins/UserContextMixin.jsx');
 var ChallengeStatus  = require('../../../jsx/constants/ChallengeStatus.jsx');
 var DataStore = require('../../../jsx/stores/DataStore.jsx');
-var Bootstrap = require('react-bootstrap')
-    ,Panel = Bootstrap.Panel;
 var Status = require('../../../lib/Status');
 
 var ChallengePendingApp = React.createClass({

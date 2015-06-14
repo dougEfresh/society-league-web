@@ -2,8 +2,6 @@ var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var UserContextMixin  = require('../../../jsx/mixins/UserContextMixin.jsx');
 var Util  = require('../../../jsx/util.jsx');
-var Bootstrap = require('react-bootstrap')
-    ,Input = Bootstrap.Input;
 var moment = require('moment');
 
 var Router = require('react-router')
@@ -42,7 +40,7 @@ var ChallengeRequestDate = React.createClass({
     },
     onChange: function() {
         var q = this.getQuery();
-        q.date = this.refs.date.getValue();
+        q.date = React.findDOMNode(this.refs.date).value;
         q.selectedSlots = undefined;
         this.transitionTo('request',this.getParams(),q);
         //RequestActions.changeDate(this.refs.date.getValue());
@@ -55,7 +53,7 @@ var ChallengeRequestDate = React.createClass({
         }
         if (this.props.challengeGroup)
             return (
-                <Input name={'challenge-date'} id={'challenge-date'} type='select' ref='date' value={dt}  onChange={this.onChange} >{this.getOptions()}</Input>
+                <input name={'challenge-date'} id={'challenge-date'} type='select' ref='date' value={dt}  onChange={this.onChange} >{this.getOptions()}</input>
             );
         return null;
     }

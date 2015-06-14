@@ -3,8 +3,6 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UserLink= require('../../jsx/components/links/UserLink.jsx');
 var TeamLink= require('../../jsx/components/links/TeamLink.jsx');
 var moment = require('moment');
-var Bootstrap = require('react-bootstrap');
-var Panel = Bootstrap.Panel;
 
 var UpcomingMatches = React.createClass({
     mixins: [UserContextMixin],

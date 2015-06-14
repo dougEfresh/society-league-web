@@ -1,23 +1,8 @@
 var React = require('react/addons');
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
-    , Route = Router.Route
-    , NotFoundRoute = Router.NotFoundRoute
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Nav = Bootstrap.Nav
-    ,Grid = Bootstrap.Grid
-    ,Row = Bootstrap.Row
-    ,Col = Bootstrap.Col
-    ,MenuItem = Bootstrap.MenuItem
-    ,Accordion = Bootstrap.Accordion
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Panel = Bootstrap.Panel;
 
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');

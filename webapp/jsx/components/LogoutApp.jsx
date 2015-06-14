@@ -1,10 +1,4 @@
 var React = require('react/addons');
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,Input = Bootstrap.Input
-    ,Panel = Bootstrap.Panel
-    ,Label = Bootstrap.Label;
-
 var UserContextMixin = require('./../mixins/UserContextMixin.jsx');
 
 var LoginApp = React.createClass({

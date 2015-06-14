@@ -1,20 +1,5 @@
 var React = require('react/addons');
 var Router = require('react-router');
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Nav = Bootstrap.Nav
-    ,Grid = Bootstrap.Grid
-    ,Row = Bootstrap.Row
-    ,Col = Bootstrap.Col
-    ,MenuItem = Bootstrap.MenuItem
-    ,Accordion = Bootstrap.Accordion
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Panel = Bootstrap.Panel;
-
 var MatchResultsOnDay = require('./SeasonMatchResultsOnDay.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 

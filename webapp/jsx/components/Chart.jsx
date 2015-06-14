@@ -1,13 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Label = Bootstrap.Label
-    ,Panel = Bootstrap.Panel;
-
 var Bar = require("react-chartjs").Bar;
 var UserContextMixin = require('./../mixins/UserContextMixin.jsx');
 

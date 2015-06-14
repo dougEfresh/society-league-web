@@ -6,7 +6,6 @@ var Pie = require("react-chartjs").Pie;
 var Bar = require("react-chartjs").Bar;
 
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var BallIcon = require('../../jsx/components/BallMixin.jsx');
 var ChallengeConstants = require('../../jsx/constants/ChallengeConstants.jsx');
 
 var StatsPie = React.createClass({

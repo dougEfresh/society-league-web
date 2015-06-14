@@ -6,7 +6,7 @@ var Pie = require("react-chartjs").Pie;
 var Bar = require("react-chartjs").Bar;
 
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var BallIcon = require('../../jsx/components/BallMixin.jsx');
+
 var ChallengeConstants = require('../../jsx/constants/ChallengeConstants.jsx');
 
 function format(number) {
@@ -15,7 +15,7 @@ function format(number) {
 }
 
 var StatsRecord = React.createClass({
-    mixins: [UserContextMixin,BallIcon],
+    mixins: [UserContextMixin],
     propTypes: {
         stats: ReactPropTypes.object.isRequired
     },

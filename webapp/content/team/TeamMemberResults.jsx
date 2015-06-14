@@ -6,26 +6,6 @@ var Router = require('react-router')
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
 
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Nav = Bootstrap.Nav
-    ,Grid = Bootstrap.Grid
-    ,Row = Bootstrap.Row
-    ,Col = Bootstrap.Col
-    ,MenuItem = Bootstrap.MenuItem
-    ,Accordion = Bootstrap.Accordion
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Input = Bootstrap.Input
-    ,Modal = Bootstrap.Modal
-    ,OverlayMixin = Bootstrap.OverlayMixin
-    ,Pager = Bootstrap.Pager
-    ,PageItem = Bootstrap.PageItem
-    ,ModalTrigger = Bootstrap.ModalTrigger
-    ,Panel = Bootstrap.Panel;
-
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');

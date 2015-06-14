@@ -6,17 +6,8 @@ var Router = require('react-router')
     , NotFoundRoute = Router.NotFoundRoute
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Panel = Bootstrap.Panel;
-
 
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
-
-
 var LeaderBoard = React.createClass({
   mixins: [UserContextMixin],
     propTypes: {

@@ -3,12 +3,7 @@ var Router = require('react-router')
     , State = Router.State
     , Navigation = Router.Navigation
     , Link = Router.Link
-    , RouteHandler = Router.RouteHandler
-
-var Bootstrap = require('react-bootstrap')
-    ,Panel = Bootstrap.Panel
-    ,Badge = Bootstrap.Badge
-    ,Button = Bootstrap.Button;
+    , RouteHandler = Router.RouteHandler;
 
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');

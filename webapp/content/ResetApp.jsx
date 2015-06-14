@@ -1,10 +1,5 @@
 var React = require('react/addons');
 var Router = require('react-router');
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,Input = Bootstrap.Input
-    ,Panel = Bootstrap.Panel;
-
 var UserContextMixin = require('./../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../jsx/stores/DataStore.jsx');
 var User = require('../lib/User');
@@ -21,8 +16,8 @@ var ResetApp = React.createClass({
             processData: false,
               dataType: 'json',
               contentType: 'application/json',
-            url: '/api/reset/request',
-            data: JSON.stringify({id: 0, login: this.refs.username.getValue().toLowerCase()}),
+            url:  window.location.pathname + 'api/reset/request',
+            data: JSON.stringify({id: 0, login:  React.findDOMNode(this.refs.username).value.toLowerCase()}),
             method: 'post',
             success: function (d) {
                 this.transitionTo('reset', null, {passwordReset: 'true'});
@@ -41,12 +36,10 @@ var ResetApp = React.createClass({
             processData: false,
             dataType: 'json',
             contentType: 'application/json',
-            url: '/api/reset/password/' + this.getQuery().token,
+            url: window.location.pathname + 'api/reset/password/' + this.getQuery().token,
             data: JSON.stringify({login: user, password: password}),
             method: 'post',
             success: function (d) {
-                //DataStore.setUser(d);
-                //DataStore.init();
                 this.transitionTo('login', null, null);
             }.bind(this),
             error: function (xhr, status, err) {
@@ -61,9 +54,15 @@ var ResetApp = React.createClass({
                 <form id='login' className="login-form form-signin">
                     <h2 className="form-signin-heading">Reset Password</h2>
                     <div className="form-field form-group">
-                        <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
-                        <Input id="password" ref='password' type='password' name='password' placeholder='enter password'> </Input>
-                        <Input id="confirm-password" ref='confirm-password' type='password' name='confirm-password' placeholder='re-enter password'> </Input>
+                        <div className="form-group">
+                            <input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </input>
+                        </div>
+                        <div className="form-group">
+                            <input className="form-control" id="password" ref='password' type='password' name='password' placeholder='enter password'> </input>
+                        </div>
+                        <div className="form-group">
+                            <input className="form-control" id="confirm-password" ref='confirm-password' type='password' name='confirm-password' placeholder='re-enter password'> </input>
+                        </div>
                     </div>
                     <Button id='submit' onClick={this.handlePasswordReset} >Reset</Button>
                 </form>
@@ -73,7 +72,7 @@ var ResetApp = React.createClass({
     renderSentReset: function() {
         return (
             <div id="reset-sent-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
-                <h4>Check email for password reset link</h4>
+                <h4>See email for a password reset link</h4>
             </div>
         );
     },
@@ -91,9 +90,11 @@ var ResetApp = React.createClass({
                 <form id='reset' className="login-form form-signin">
                     <h2 className="form-signin-heading">{title}</h2>
                     <div className="form-field form-group">
-                        <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
+                        <div className="form-group">
+                             <input id="username" ref='username' type='input' name='username' className="form-control" placeholder='enter user name'> </input>
+                         </div>
                     </div>
-                    <Button id='submit' onClick={this.handleSubmit}>{title}</Button>
+                    <button id='submit' className="btn btn-default" onClick={this.handleSubmit}>{title}</button>
                 </form>
             </div>
         );
