@@ -62,7 +62,7 @@ var LoginApp = React.createClass({
                         </button>
                     <Link to='reset'>
                         <button type="button" className="btn btn-sm btn-default pull-right">
-                            <b>Forgot/Register Password?</b>
+                            <b>Forgot/Register Password</b>
                         </button>
                     </Link>
                 </form>
