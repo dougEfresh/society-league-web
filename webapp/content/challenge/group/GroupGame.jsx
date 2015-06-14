@@ -35,11 +35,16 @@ var GroupGame = React.createClass({
         }.bind(this));
         return (
             <form id="request-game">
-            <input ref='game'
+                  <div className="form-field form-group">
+                            <div className="form-group">
+            <select ref='game'
                    onChange={this.onSelectGame}
                    value={this.getQuery().selectedGame}
+                    className="form-control"
                    type='select' >{games}
-            </input>
+            </select>
+                            </div>
+                  </div>
         </form>);
     },
     render: function() {

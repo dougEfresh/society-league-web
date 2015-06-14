@@ -2,7 +2,8 @@ var React = require('react/addons');
 var Router = require('react-router');
 var GroupSlot = React.createClass({
     mixins: [Router.State,Router.Navigation],
-    onSelectSlot: function() {
+    onSelectSlot: function(e) {
+        e.preventDefault();
         var q = this.getQuery();
         q.id = this.props.challengeGroup.getId();
         q.selectedSlot = React.findDOMNode(this.refs.slot).value;
@@ -36,10 +37,19 @@ var GroupSlot = React.createClass({
         }.bind(this));
         var q = this.getQuery();
         return (
-            <input ref='slot' onChange={this.onSelectSlot}
-                   value={q.selectedSlot}
-                   type={'select'}> {slots}
-            </input>);
+             <form id="request-game">
+                  <div className="form-field form-group">
+                      <div className="form-group">
+                          <select ref='slot' onChange={this.onSelectSlot}
+                                  className="form-control"
+                                  value={q.selectedSlot}
+                                  type={'select'}>
+                              {slots}
+                          </select>
+                      </div>
+                  </div>
+             </form>
+        );
     },
     render: function() {
         if (this.props.noSelect)
