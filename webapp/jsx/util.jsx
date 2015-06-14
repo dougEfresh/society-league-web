@@ -16,7 +16,7 @@ function getNextChallengeDay() {
 function getData(url, callback) {
         console.log("Getting data from " + window.location.origin + '' + url);
         $.ajax({
-            url: url,
+            url: window.location.href + '/' + url,
             dataType: 'json',
             statusCode: {
                 401: function () {
