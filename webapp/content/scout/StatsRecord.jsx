@@ -1,13 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Label = Bootstrap.Label
-    ,Panel = Bootstrap.Panel;
-
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 var Pie = require("react-chartjs").Pie;
@@ -71,22 +63,7 @@ var StatsRecord = React.createClass({
         );
 
         return (
-         <Table className="recordTable" striped >
-                  <thead>
-                  <tr>
-                      <th>Game</th>
-                      <th>Points</th>
-                      <th>Percentage</th>
-                      <th>Wins</th>
-                      <th>Loses</th>
-                      <th>Racks For</th>
-                      <th>Racks Against</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {rows}
-                  </tbody>
-              </Table>
+            null
         );
     }
 });

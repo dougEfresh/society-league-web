@@ -1,17 +1,9 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Input = Bootstrap.Input
-    ,Nav = Bootstrap.Nav
-    ,NavItem = Bootstrap.NavItem
-    ,Panel = Bootstrap.Panel;
 var Router = require('react-router')
     ,State = Router.State
     ,Link = Router.Link
     ,RouteHandler = Router.RouteHandler;
-
 
 var StatsDisplay = require('./StatsDisplay.jsx');
 var DataStore= require('../../jsx/stores/DataStore.jsx');

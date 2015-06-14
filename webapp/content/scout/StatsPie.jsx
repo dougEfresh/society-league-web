@@ -1,13 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Label = Bootstrap.Label
-    ,Panel = Bootstrap.Panel;
-
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 var Pie = require("react-chartjs").Pie;
@@ -73,7 +65,14 @@ var StatsPie = React.createClass({
             return null;
         }
         return (
-            <div>
+            null
+           );
+    }
+});
+
+module.exports = StatsPie;
+
+/* <div>
                 <Label bsStyle={'success'}>Wins:{this.props.stats.all.wins}</Label>
                 <Label bsStyle={'danger'}>Loses:{this.props.stats.all.loses}</Label>
                 <Pie redraw chartOptions={this.getChartOptions()} data={this.getChartData('all',false)} />
@@ -82,8 +81,6 @@ var StatsPie = React.createClass({
                     <Label bsStyle={'danger'}>Racks Lost:{this.props.stats.all.racksAgainst}</Label>
                     <Pie redraw chartOptions={this.getChartOptions()} data={this.getChartData('all',true)} />
                 </div>
-            </div>);
-    }
-});
+            </div>
 
-module.exports = StatsPie;
+ */
