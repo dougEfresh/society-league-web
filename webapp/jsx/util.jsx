@@ -42,7 +42,7 @@ function sendData(data, url, callback) {
         $.ajax({
             async: true,
             processData: false,
-            url: url,
+            url: window.location.pathname + url,
             contentType: 'application/json',
             dataType: 'json',
             data: JSON.stringify(data),

@@ -51,15 +51,15 @@ var NavApp = React.createClass({
         });
     },
     render: function() {
-        if (!this.state.authenticated) {
+        if (!DataStore.isAuthenticated()) {
             console.log("LoginApp");
             return (
                 <LoginApp />
             )
         }
-        if (this.state.loading) {
+        if (DataStore.isLoading()) {
             return (
-                <div id={'loading-' + this.state.loading}>
+                <div id={'loading-' + DataStore.isLoading()}>
                     <LoadingApp />
                 </div>
             );

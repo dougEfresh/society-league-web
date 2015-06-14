@@ -22,8 +22,8 @@ var AdminNav = React.createClass({
                </a>
                 <ul className="dropdown-menu" role="menu">
                     <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='info' params={{userId: this.getUserId()}} >
-                            <span className="fa fa-trophy"></span>Challenge
+                        <Link className='navName' to='createUser' params={{userId: this.getUserId()}} >
+                            <span className="fa fa-users"></span>Create User
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">

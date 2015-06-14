@@ -6,6 +6,7 @@ function UserDao(db,sender,server) {
     this.db = db;
     this.server = server;
 }
+
 UserDao.prototype.sender = function() {return this.sender;};
 UserDao.prototype.host = function() {return this.host;};
 UserDao.prototype.db = function() {return this.db;};

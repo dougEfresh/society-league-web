@@ -28,7 +28,7 @@ var LoginApp = React.createClass({
             async: true,
             processData: true,
             url: window.location.pathname + 'api/authenticate',
-            data: {username: user, password: 'password'},
+            data: {username: user, password: password},
             method: 'post',
             success: function (d) {
                 DataStore.setUser(d);
@@ -62,7 +62,7 @@ var LoginApp = React.createClass({
                         </button>
                     <Link to='reset'>
                         <button type="button" className="btn btn-sm btn-default pull-right">
-                            <b>Forgot Password?</b>
+                            <b>Forgot/Register Password?</b>
                         </button>
                     </Link>
                 </form>

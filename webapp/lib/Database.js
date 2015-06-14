@@ -104,6 +104,7 @@ Database.prototype.processUser = function(user,userData) {
         this.data.users.push(user);
     }
     user.reset();
+    user.role = userData.role;
     var i;
     for (i = 0; i < userData.seasons.length; i++) {
         user.addSeason(this.findSeason(userData.seasons[i]));
@@ -112,10 +113,10 @@ Database.prototype.processUser = function(user,userData) {
         user.addTeam(this.findTeam(userData.teams[i]));
     }
     for(var type in userData.challenges) {
-            if (!userData.challenges.hasOwnProperty(type)) {
-                continue;
-            }
-            var cg = userData.challenges[type];
+        if (!userData.challenges.hasOwnProperty(type)) {
+            continue;
+        }
+        var cg = userData.challenges[type];
             if (cg.length == 0) {
                 continue;
             }

@@ -9,29 +9,6 @@ var ChallengeRequestSlots = React.createClass({
     propTypes: {
         challengeGroup: ReactPropTypes.object.isRequired
     },
-    onClickAny: function(e) {
-        e.preventDefault();
-        var q = this.getQuery();
-        if (q.anyTime == undefined) {
-            q.anyTime = 1;
-            this.transitionTo('request',this.getParams(),q);
-            return;
-        }
-        q.anyTime = q.anyTime == 1 ? 0: 1;
-        this.transitionTo('request',this.getParams(),q);
-    },
-    getAnyTime: function() {
-        var q = this.getQuery();
-        var anyTime = q.anyTime > 0;
-        return (
-            <button key='any'
-                    className={anyTime ? 'btn btn-success' : 'btn btn-default'}
-                    onClick={this.onClickAny}>
-                <span className={anyTime ? 'fa fa-check' : 'fa fa-times'}></span>
-                {'Any Time'}
-            </button>
-        );
-    },
     render: function() {
         var buttons = [];
         var q = this.getQuery();
@@ -53,9 +30,6 @@ var ChallengeRequestSlots = React.createClass({
                                 slot={s} />
                 );
             }.bind(this));
-        //<div className="btn-toolbar" role="toolbar" aria-label="...">
-        // <div className="btn-group" role="group" aria-label="...">{this.getAnyTime()}</div>
-        //<div className="btn-group" role="group" aria-label="...">{buttons}</div>
         return (
             <div className="btn-group select-time">
                 {buttons}
@@ -75,19 +49,23 @@ var SlotButton = React.createClass({
         var q = this.getQuery();
         if (q.selected == undefined) {
             q.selected = {};
-            q.selected[this.props.slot.id] = 1;
+            q.selected['slot'+this.props.slot.id] = 1;
             this.transitionTo('request',this.getParams(),q);
             return;
         }
-        q.selected[this.props.slot.id] =  q.selected[this.props.slot.id] == 1 ? 0: 1;
+        debugger;
+        q.selected['slot'+this.props.slot.id] =  q.selected['slot'+this.props.slot.id] == 1 ? 0: 1;
         this.transitionTo('request',this.getParams(),q);
     },
     render: function() {
         var q = this.getQuery();
-        var selected = (q.selected != undefined && q.selected[this.props.slot.id] != undefined && q.selected[this.props.slot.id] > 0)
-            || this.props.any;
+        var selected = (
+            q.selected != undefined &&
+            q.selected['slot'+this.props.slot.id] > 0
+            ) || this.props.any;
         return (
-                <button className={selected ? 'btn btn-success' : 'btn btn-default'}  onClick={this.onClick}>
+                <button className={selected ? 'btn btn-success' : 'btn btn-default'}
+                        onClick={this.onClick}>
                     <span className={selected ? 'fa fa-check' : 'fa fa-times'}></span>
                     {this.props.slot.getTime()}
                 </button>

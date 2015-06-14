@@ -76,6 +76,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
     replaceUser: function(user) {
         var u = db.findUser(user.userId);
         db.processUser(u,user);
+        db.loading = false;
         DataStore.emitChange();
     },
     checkLogin: function() {
@@ -89,6 +90,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
         }.bind(this));
     },
     challengeSignUp: function(id) {
+        db.loading = true;
         console.log('Signing up ' + id);
          Util.getData('api/challenge/signup/' + id, function(d) {
              DataStore.replaceUser(d);

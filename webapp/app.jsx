@@ -17,7 +17,9 @@ var ResetApp = require('./jsx/../content/ResetApp.jsx');
 var LoginApp = require('./jsx/../content/login/LoginApp.jsx');
 var LogoutApp = require('./jsx/components/LogoutApp.jsx');
 var ErrorApp = require('./jsx/components/ErrorApp.jsx');
-var AdminApp = require('./jsx/components/admin/AdminApp.jsx');
+var AdminApp = require('./content/admin/AdminApp.jsx');
+var CreateUser = require('./content/admin/CreateUser.jsx');
+var CreateUserSuccess = require('./content/admin/CreateUserSuccess.jsx');
 var StatApp = require('./content/scout/StatApp.jsx');
 var StatDisplay = require('./content/scout/StatsDisplay.jsx');
 var StatHistory = require('./content/scout/StatHistory.jsx');
@@ -72,7 +74,10 @@ var routes = (
             <Route name="loading" path="loading" handler={LoadingApp} />
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
-            <Route name="admin" path="admin" handler={AdminApp}/>
+            <Route name="admin" path="admin" handler={AdminApp} >
+                <Route name="createUser" path="create/user" handler={CreateUser} />
+                <Route name="createUserSuccess" path="create/user/status" handler={CreateUserSuccess} />
+            </Route>
             <Route name="user" path="user/:userId"  handler={UserApp}>
                 <Route name="info" path="info" handler={UserInfo} />
                 <Route name="password" path="password" handler={UserPasswordApp} />

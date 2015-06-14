@@ -255,7 +255,7 @@ User.prototype.reset = function(){
 };
 
 User.prototype.isAdmin = function() {
-    return false;
+    return this.role != undefined && this.role == 'ADMIN';
 };
 
 User.DEFAULT_USER = new User(0,'unknown','',{});

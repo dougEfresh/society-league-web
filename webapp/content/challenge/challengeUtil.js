@@ -22,7 +22,7 @@ var c = function queryToChallengeGroup(q) {
                 if (q.selected.hasOwnProperty(id)) {
                     if (q.selected[id] == 1) {
                         for (var i = 0; i < slots.length; i++) {
-                            if (slots[i].id == id)
+                            if (slots[i].id == id.replace('slot',''))
                                 cg.selectedSlots.push(slots[i]);
                         }
                     }
