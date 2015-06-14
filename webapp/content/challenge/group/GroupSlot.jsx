@@ -39,10 +39,11 @@ var GroupSlot = React.createClass({
             slots.push(<option key={s.id} value={s.id}>{s.getTime()}</option>);
         }.bind(this));
         var q = this.getQuery();
-        return (<Input ref='slot' onChange={this.onSelectSlot}
-                       value={q.selectedSlot}
-                       type={'select'}> {slots}
-		</Input>);
+        return (
+            <input ref='slot' onChange={this.onSelectSlot}
+                   value={q.selectedSlot}
+                   type={'select'}> {slots}
+            </input>);
     },
     render: function() {
         if (this.props.noSelect)

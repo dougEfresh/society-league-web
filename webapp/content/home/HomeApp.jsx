@@ -2,11 +2,6 @@ var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var Bootstrap = require('react-bootstrap')
-    ,Panel = Bootstrap.Panel
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Button = Bootstrap.Button;
-
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UpcomingChallenges = require('./UpcomingChallenges.jsx');
 var UpcomingMatches = require('./UpcomingMatches.jsx');

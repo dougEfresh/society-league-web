@@ -1,12 +1,6 @@
 var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,Input = Bootstrap.Input
-    ,Panel = Bootstrap.Panel
-    ,Label = Bootstrap.Label;
-
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var login = require('../../lib/Login');

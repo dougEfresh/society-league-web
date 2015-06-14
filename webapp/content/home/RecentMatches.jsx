@@ -18,18 +18,20 @@ var UpcomingMatches = React.createClass({
         var recent = matchDao.getResults(this.getUser());
         if (recent.length == 0) {
             return (
-                <div id={'no-recent-matches'}>
-                    <Panel header={'Recent Matches'}>
+                <div id={'no-recent-matches'} className="panel panel-default">
+                      <div className="panel-heading" >Recent Matches</div>
+                      <div className="panel-body" >
                         <span>You have not played any matches</span>
-                    </Panel>
-                </div>
+                      </div>
+                  </div>
             )
         }
         return (
-            <div id = {'recent-matches'} >
-            <Panel header={'Recent Matches'}>
-                <UserResults matches={recent} />
-            </Panel>
+            <div id={'no-recent-matches'} className="panel panel-default">
+                <div className="panel-heading" >Recent Matches</div>
+                <div className="panel-body" >
+                    <UserResults matches={recent} />
+                </div>
             </div>
         )
     }

@@ -44,19 +44,21 @@ var UpcomingChallenges = React.createClass({
         }
         if (matches.length == 0) {
             return (
-                <div id="upcoming-challenges">
-                    <Panel header={'Upcoming Challenges'}>
-                        <span id="no-challenges">You have no matches scheduled</span>
-                    </Panel>
+                <div id={'upcoming-challenges'} className="panel panel-default">
+                    <div className="panel-heading" >Upcoming Challenges</div>
+                        <div className="panel-body" >
+                            <span id="no-challenges">You have no matches scheduled</span>
+                        </div>
                 </div>
             )
         }
         return (
-            <div id="upcoming-challenges">
-                <Panel  header={'Upcoming Challenges'}>
-                    {matches}
-                </Panel>
-            </div>
+              <div id={'upcoming-challenges'} className="panel panel-default">
+                    <div className="panel-heading" >Upcoming Challenges</div>
+                        <div className="panel-body" >
+                                {matches}
+                        </div>
+              </div>
         )
     }
 });

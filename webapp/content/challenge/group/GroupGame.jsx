@@ -1,14 +1,13 @@
 var React = require('react/addons');
 var Router = require('react-router');
 var BallIcon = require('../../../jsx/components/BallIcon.jsx');
-var Input = require('react-bootstrap').Input;
 
 var GroupGame = React.createClass({
     mixins: [Router.Navigation,Router.State],
     onSelectGame: function() {
         var q = this.getQuery();
         q.id = this.props.challengeGroup.getId();
-        q.selectedGame = this.refs.game.getValue();
+        q.selectedGame =  React.findDOMNode(this.refs.game).value;
         this.transitionTo(this.getPathname(),this.getParams(),q);
     },
     renderNoSelect: function() {

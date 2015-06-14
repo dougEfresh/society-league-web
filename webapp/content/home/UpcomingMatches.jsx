@@ -44,15 +44,22 @@ var UpcomingMatches = React.createClass({
                 );
         }
         if (matches.length == 0) {
-            return (<Panel header={'Upcoming Matches'}>
-                <span>You have no matches scheduled</span>
-            </Panel>
-            )
+            return (
+                <div id={'upcoming-matches'} className="panel panel-default">
+                    <div className="panel-heading" >Upcoming Matches</div>
+                        <div className="panel-body" >
+                            <span id="no-matches">You have no matches scheduled</span>
+                        </div>
+                </div>
+            );
         }
         return (
-            <Panel header={'Upcoming Matches'}>
-                {matches}
-            </Panel>
+            <div id={'upcoming-matches'} className="panel panel-default">
+                <div className="panel-heading" >Upcoming Matches</div>
+                <div className="panel-body" >
+                    {matches}
+                </div>
+            </div>
         )
     }
 });
