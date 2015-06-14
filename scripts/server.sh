@@ -1,5 +1,5 @@
 #!/bin/bash
-SERVER=demo.dougchimento.com
+SERVER=leaguesdev.societybilliards.com
 npm install
 [ -z "$1" ]  || SERVER=$1
 ./scripts/browserify.sh
