@@ -53,7 +53,16 @@ var ChallengeRequestDate = React.createClass({
         }
         if (this.props.challengeGroup)
             return (
-                <input name={'challenge-date'} id={'challenge-date'} type='select' ref='date' value={dt}  onChange={this.onChange} >{this.getOptions()}</input>
+                <div className="form-field form-group">
+                    <div className="form-group">
+                <select name={'challenge-date'}
+                        id={'challenge-date'}
+                        type='select' ref='date'
+                        className="form-control"
+                        value={dt}  onChange={this.onChange} >
+                    {this.getOptions()}</select>
+                </div>
+                </div>
             );
         return null;
     }

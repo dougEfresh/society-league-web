@@ -36,7 +36,18 @@ var ChallengeRequestOpponent = React.createClass({
         var q = this.getQuery();
         var opponent = q.opponent != undefined ? q.opponent : 0;
         return (
-            <input name='challenge-opponent' id='challenge-opponent' type='select' value={opponent} ref='opponents' onChange={this.onChange} >{this.getOptions()}</input>
+              <div className="form-field form-group">
+                  <div className="form-group">
+                      <select name='challenge-opponent'
+                              id='challenge-opponent'
+                              className="form-control"
+                              type='select'
+                              value={opponent}
+                              ref='opponents'
+                              onChange={this.onChange} >
+                          {this.getOptions()}</select>
+                    </div>
+              </div>
         );
     }
 });
