@@ -77,7 +77,8 @@ var ChallengeNav = React.createClass({
                  return (
                      <li role="presentation" className={'dropdown ' + active}>
                          <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                             <span className="fa fa-trophy"></span> <span className="main-item"> Challenges </span><Badge>{counter}</Badge>
+                             <span className="fa fa-trophy"></span> <span className="main-item"> Challenges </span>
+                             <span className="badge">{counter}</span>
                              <span className="caret"></span>
                          </a>
                          {noChallenge}

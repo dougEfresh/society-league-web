@@ -11,7 +11,7 @@ var Datastore = require('../../../jsx/stores/DataStore.jsx');
 var util = require('../challengeUtil');
 
 var GroupAction = React.createClass({
-    mixins: [Router.Navigation,Router.State],
+    mixins: [UserContextMixin,Router.Navigation,Router.State],
     cancel: function(e) {
         e.preventDefault();
         //ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
@@ -95,13 +95,13 @@ var GroupAction = React.createClass({
     },
     render: function() {
         var buttons = {
-            accept:   <button className="btn btn-small"  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'primary' : 'success'} ><span className="fa fa-thumbs-up"></span>Accept</button>,
-            confirm:  <button className="btn btn-small"  responsive onClick={this.confirm} key={'challenge'} bsStyle={'success'} ><span className="glyphicon glyphicon-ok"></span>{'challenge'}</button>,
-            deny:     <button className="btn btn-small"  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} ><span className="fa fa-thumbs-down"></span>Decline</button>,
+            accept:   <button className="btn btn-sm"  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'primary' : 'success'} ><span className="fa fa-thumbs-up"></span>Accept</button>,
+            confirm:  <button className="btn btn-success btn-sm"  responsive onClick={this.confirm} key={'challenge'} bsStyle={'success'} ><span className="glyphicon glyphicon-ok"></span>{'challenge'}</button>,
+            deny:     <button className="btn btn-sm"  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} ><span className="fa fa-thumbs-down"></span>Decline</button>,
             change:   null,
-            cancel:   <button className="btn btn-small"  onClick={this.cancel} key={'cancel'}  bsStyle={'danger'} ><span className="glyphicon glyphicon-remove"></span>Cancel</button>,
+            cancel:   <button className="btn btn-sm"  onClick={this.cancel} key={'cancel'}  bsStyle={'danger'} ><span className="glyphicon glyphicon-remove"></span>Cancel</button>,
             calender: null,
-            back: <button className="btn btn-small"  bsStyle={'warning'} onClick={this.backUp}><span className="glyphicon glyphicon-chevron-left"></span>Go Back</button>
+            back: <button className="btn btn-warning btn-sm"  onClick={this.backUp}><span className="glyphicon glyphicon-chevron-left"></span>Go Back</button>
         };
 
         var actions = null;

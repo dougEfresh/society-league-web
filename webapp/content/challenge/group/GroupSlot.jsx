@@ -12,11 +12,11 @@ var GroupSlot = React.createClass({
         var slots = [];
         if ( this.props.challengeGroup.selectedSlots != undefined) {
             this.props.challengeGroup.selectedSlots.forEach(function (s) {
-                slots.push(<Label key={s.id}>{s.getTime()}</Label>);
+                slots.push(<span className="label label-default" key={s.id}>{s.getTime()}</span>);
             }.bind(this));
         } else {
             this.props.challengeGroup.slots.forEach(function (s) {
-                slots.push(<Label key={s.id}>{s.getTime()}</Label>);
+                slots.push(<span className="label label-default" key={s.id}>{s.getTime()}</span>);
             }.bind(this));
         }
 
@@ -24,7 +24,7 @@ var GroupSlot = React.createClass({
     },
     renderSelectOptions: function(){
         if (this.props.challengeGroup.slots.length == 1) {
-            return (<Label>{this.props.challengeGroup.slots[0].getTime()}</Label>);
+            return (<span className="label label-default">{this.props.challengeGroup.slots[0].getTime()}</span>);
         }
         var slots = [];
         slots.push(<option key={0} value={0}>{'choose'}</option>);

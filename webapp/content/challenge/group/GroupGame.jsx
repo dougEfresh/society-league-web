@@ -12,13 +12,14 @@ var GroupGame = React.createClass({
     },
     renderNoSelect: function() {
         var games = [];
+
         if (this.props.challengeGroup.selectedGames != undefined) {
             this.props.challengeGroup.selectedGames.forEach(function (g) {
-                games.push(<div key={g}>{this.getBall(g)}</div>);
+                games.push(<div key={g}><BallIcon type={g} /></div>);
             }.bind(this));
         } else {
              this.props.challengeGroup.games.forEach(function (g) {
-                games.push(<div key={g}>{this.getBall(g)}</div>);
+                 games.push(<div key={g}><BallIcon type={g} /></div>);
             }.bind(this));
         }
         return (<div>{games}</div>);
