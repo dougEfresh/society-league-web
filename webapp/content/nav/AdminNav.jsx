@@ -1,21 +1,6 @@
 var React = require('react/addons');
 var Router = require('react-router')
-    , Link = Router.Link
-    , DefaultRoute = Router.DefaultRoute;
-var Bootstrap = require('react-bootstrap')
-    ,Button = Bootstrap.Button
-    ,ButtonGroup = Bootstrap.ButtonGroup
-    ,PanelGroup = Bootstrap.PanelGroup
-    ,Badge = Bootstrap.Badge
-    ,Table = Bootstrap.Table
-    ,Nav = Bootstrap.Nav
-    ,Grid = Bootstrap.Grid
-    ,Row = Bootstrap.Row
-    ,Col = Bootstrap.Col
-    ,MenuItem = Bootstrap.MenuItem
-    ,Accordion = Bootstrap.Accordion
-    ,Glyphicon = Bootstrap.Glyphicon
-    ,Panel = Bootstrap.Panel;
+    , Link = Router.Link;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 
 var AdminNav = React.createClass({
@@ -24,6 +9,9 @@ var AdminNav = React.createClass({
         var active = null;
         if (this.isActive('admin')) {
             active="active";
+        }
+        if (!this.getUser().isAdmin()) {
+            return null;
         }
         return (
             <li id="admin-nav" role="presentation" className={'dropdown ' + active}>
