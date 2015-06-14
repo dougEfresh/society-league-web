@@ -15,7 +15,7 @@ var HomeNav = React.createClass({
         return (
             <li id="home-nav" role="presentation" className={'dropdown ' + active}>
                <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                   <span className="glyphicon glyphicon-home"></span>Home
+                   <span className="glyphicon glyphicon-home"></span>
                    <span className="main-item">{' ' + this.getUser().name} </span>
                    <span className="caret"></span>
                </a>

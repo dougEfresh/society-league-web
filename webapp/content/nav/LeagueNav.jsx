@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var Router = require('react-router')
+    , RouteHandler = Router.RouteHandler
     , Link = Router.Link;
 
 var DataStore= require('../../jsx/stores/DataStore.jsx');
