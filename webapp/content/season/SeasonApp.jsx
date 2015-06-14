@@ -44,23 +44,22 @@ var SeasonApp = React.createClass({
                     <div id={display == 'none' ? 'season-standings-link-hidden' : 'season-standings-link'}
                          style={{display:display}}>
                     
-                    <button bsStyle={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'} responsize>
+                    <button className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'}>
                         <Link to='seasonStandings' params={this.getParams()}>
                             <i className="fa fa-trophy"></i><span className="main-item">{ ' Standings'}</span>
                         </Link>
                     </button>
-                   
                     </div>
-                    <button bsStyle={this.isActive('seasonLeaders') ? 'btn btn-success' : 'btn btn-default'} responsive>
-                        <Link to='seasonLeaders' params={this.getParams()}>
-                            <span className="fa  fa-list-ol"></span><span className="main-item">{ ' Leaders'}</span>
-                        </Link>    
+                    <Link to='seasonLeaders' params={this.getParams()}>
+                    <button className={this.isActive('seasonLeaders') ? 'btn btn-success' : 'btn btn-default'} >
+                            <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
                     </button>
-                    <button bsStyle={this.isActive('seasonResults') ? 'btn btn-success' : 'btn btn-default'} responsive>
-                        <Link to='seasonResults' params={this.getParams()}>
-                            <span className="fa  fa-history"></span><span className="main-item">{ ' Matches'}</span>
-                        </Link>
+                    </Link>
+                    <Link to='seasonResults' params={this.getParams()}>
+                    <button className={this.isActive('seasonResults') ? 'btn btn-success' : 'btn btn-default'} >
+                        <span className="fa  fa-history"></span><span className="main-item">Matches</span>
                     </button>
+                    </Link>
                 </div>
         );
         return (
