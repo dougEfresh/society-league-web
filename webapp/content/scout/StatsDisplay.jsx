@@ -51,7 +51,10 @@ var StatsDisplay = React.createClass({
 
             return 0;
         });
-
+        var rows = this.getRows(userStats);
+        if (rows.length < 1) {
+            return (<h3>No matches have been played</h3>);
+        }
          return (
              <div className="table-responsive">
                  <table className="table table-striped table-hover table-condensed">
@@ -64,7 +67,7 @@ var StatsDisplay = React.createClass({
                         <th>%</th>
                     </tr>
                      <tbody>
-                    {this.getRows(userStats)}
+                     {rows}
                      </tbody>
                 </table>
                 </div>
