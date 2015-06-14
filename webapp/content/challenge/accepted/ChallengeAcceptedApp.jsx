@@ -3,8 +3,6 @@ var GroupList = require('../group/GroupList.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var ChallengeStatus  = require('../../../jsx/constants/ChallengeStatus.jsx');
 var DataStore = require('../../../jsx/stores/DataStore.jsx');
-var Bootstrap = require('react-bootstrap')
-    ,Panel = Bootstrap.Panel;
 var Router = require('react-router');
 
 var ChallengeAcceptedApp = React.createClass({
@@ -36,7 +34,7 @@ var ChallengeAcceptedApp = React.createClass({
             setTimeout(function() {
                 this.transitionTo('request');
                 }.bind(this),250);
-            return (<Panel><div><p>You have no challenges accepted</p></div></Panel>)
+            return (<div><p>You have no challenges accepted</p></div>)
         }
         return (
             <div id="accepted-app">

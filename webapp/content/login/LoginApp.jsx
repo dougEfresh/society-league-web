@@ -27,13 +27,13 @@ var LoginApp = React.createClass({
     },
     handleSubmit: function(e){
         e.preventDefault();
-        var user = this.refs.username.getValue().toLowerCase();
-        var password = this.refs.password.getValue();
+        var user = React.findDOMNode(this.refs.username).value.toLowerCase();
+        var password = React.findDOMNode(this.refs.password).value;
         console.log('Logging in: ' + user);
         $.ajax({
             async: true,
             processData: true,
-            url: window.location.pathname + '/api/authenticate',
+            url: window.location.pathname + 'api/authenticate',
             data: {username: user, password: 'password'},
             method: 'post',
             success: function (d) {
@@ -55,8 +55,12 @@ var LoginApp = React.createClass({
                 <form id='login' className="login-form form-signin">
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="form-field form-group">
-                            <Input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </Input>
-                            <Input id="password" ref='password' type='password' name='password' placeholder='enter password'> </Input>
+                            <div className="form-group">
+                                <input ref='username' id="username" type="input" name="username" placeholder="enter user name" className="form-control"/>
+                            </div>
+                            <div className="form-group">
+                            <input ref='password' id="password" ref='password' type='password' name='password' placeholder='enter password'className="form-control" > </input>
+                            </div>
                         </div>
                 
                         <button id="submit" type="button" onClick={this.handleSubmit} className="btn btn-sm btn-default">

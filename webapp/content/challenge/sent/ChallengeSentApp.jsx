@@ -39,7 +39,7 @@ var ChallengeSentApp = React.createClass({
             setTimeout(function() {
                 this.transitionTo('request');
                 }.bind(this),250);
-            return (<Panel><div><p>You have not sent any challenges</p></div></Panel>)
+            return (<div><p>You have not sent any challenges</p></div>)
         }
         return (
             <div id="sent-app">

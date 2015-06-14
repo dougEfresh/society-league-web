@@ -1,7 +1,5 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
-var Bootstrap = require('react-bootstrap');
-var Table = Bootstrap.Table;
 var GroupRow = require('./GroupRow.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 

@@ -41,7 +41,7 @@ var ChallengePendingApp = React.createClass({
              setTimeout(function() {
                 this.transitionTo('accepted');
                 }.bind(this),250);
-            return (<Panel><div><p>You have no pending challenges</p></div></Panel>)
+            return (<div><p>You have no pending challenges</p></div>)
         }
         return (
             <div id="pending-app">

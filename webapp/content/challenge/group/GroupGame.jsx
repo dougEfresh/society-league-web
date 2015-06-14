@@ -4,7 +4,7 @@ var BallIcon = require('../../../jsx/components/BallIcon.jsx');
 var Input = require('react-bootstrap').Input;
 
 var GroupGame = React.createClass({
-    mixins: [GroupMixin,Router.Navigation,Router.State],
+    mixins: [Router.Navigation,Router.State],
     onSelectGame: function() {
         var q = this.getQuery();
         q.id = this.props.challengeGroup.getId();
@@ -35,11 +35,11 @@ var GroupGame = React.createClass({
         }.bind(this));
         return (
             <form id="request-game">
-            <Input ref='game'
+            <input ref='game'
                    onChange={this.onSelectGame}
                    value={this.getQuery().selectedGame}
                    type='select' >{games}
-            </Input>
+            </input>
         </form>);
     },
     render: function() {
