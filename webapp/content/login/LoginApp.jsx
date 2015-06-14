@@ -33,7 +33,7 @@ var LoginApp = React.createClass({
         $.ajax({
             async: true,
             processData: true,
-            url: '/api/authenticate',
+            url: window.location.pathname + '/api/authenticate',
             data: {username: user, password: 'password'},
             method: 'post',
             success: function (d) {
