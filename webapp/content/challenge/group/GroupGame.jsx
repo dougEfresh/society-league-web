@@ -1,6 +1,5 @@
 var React = require('react/addons');
 var Router = require('react-router');
-var GroupMixin = require('./GroupListMixin.jsx');
 var BallIcon = require('../../../jsx/components/BallIcon.jsx');
 var Input = require('react-bootstrap').Input;
 

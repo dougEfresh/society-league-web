@@ -1,6 +1,5 @@
 var React = require('react/addons');
-var Router = require('react-router')
-    ,RouteHandler = Router.RouteHandler;
+var Router = require('react-router');
 
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 

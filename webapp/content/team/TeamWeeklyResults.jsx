@@ -6,16 +6,10 @@ var Bootstrap = require('react-bootstrap')
     ,OverlayMixin = Bootstrap.OverlayMixin
     ,Panel = Bootstrap.Panel;
 
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
 
 var TeamWeeklyResults = React.createClass({
     mixins: [UserContextMixin,TeamMixin,SeasonMixin,Router.State,Router.Navigation],
@@ -23,6 +17,8 @@ var TeamWeeklyResults = React.createClass({
 
     },
     render: function() {
+        return (<h2>Coming Soon</h2>);
+        /*
         var seasonMatches = this.getSeasonMatches(this.getParams().seasonId);
         var matches = [];
         seasonMatches.forEach(function(m) {
@@ -44,8 +40,7 @@ var TeamWeeklyResults = React.createClass({
             ColumnConfig.racksFor.width +
             ColumnConfig.racksAgainst.width +
             2;
-        return (<h2>Coming Soon</h2>);
-        /*
+
         return (
                 <Table
                     groupHeaderHeight={30}

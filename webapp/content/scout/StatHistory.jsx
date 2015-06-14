@@ -16,11 +16,6 @@ var StatsRecord = require('./StatsRecord.jsx');
 var StatsHandicap = require('./StatsHandicap.jsx');
 var StatsChart = require('./StatsPie.jsx');
 var firstBy = require('../../lib/FirstBy.js');
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
 var UserStat = require('../../lib/UsersStat');
 
 var StatHistory = React.createClass({

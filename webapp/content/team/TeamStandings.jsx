@@ -1,9 +1,7 @@
 var React = require('react/addons');
 var Router = require('react-router');
 var Bootstrap = require('react-bootstrap');
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
+
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
@@ -12,8 +10,6 @@ var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var Stat = require('../../lib/Stat');
 var UsersStat = require('../../lib/UsersStat');
 var TeamStat = require('../../lib/TeamStat');
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
 
 var TeamStandings = React.createClass({
     mixins: [TeamMixin,SeasonMixin,UserContextMixin,Router.State],
@@ -37,6 +33,7 @@ var TeamStandings = React.createClass({
         usersStat.forEach(function(us){
             teamData.push(us);
         }.bind(this));
+        /*
         var width = ColumnConfig.name.width +
             ColumnConfig.handicap.width +
             ColumnConfig.wins.width +
@@ -62,7 +59,8 @@ var TeamStandings = React.createClass({
                     {ColumnHelper.racksAgainstStat()}
                 </Table>
         );
-        //
+        */
+        return null;
 
 
     }

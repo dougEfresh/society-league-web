@@ -1,8 +1,4 @@
 var React = require('react');
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-var ColumnGroup = FixedDataTable.ColumnGroup;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UserLink= require('../../jsx/components/links/UserLink.jsx');
 var TeamLink= require('../../jsx/components/links/TeamLink.jsx');

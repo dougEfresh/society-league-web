@@ -5,7 +5,6 @@ var Router = require('react-router')
     , NotFoundRoute = Router.NotFoundRoute
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
-var FixedDataTable = require('fixed-data-table');
 
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
@@ -28,11 +27,6 @@ var Bootstrap = require('react-bootstrap')
     ,ModalTrigger = Bootstrap.ModalTrigger
     ,Panel = Bootstrap.Panel;
 
-
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-var ColumnGroup = FixedDataTable.ColumnGroup;
-
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
@@ -41,8 +35,6 @@ var ResultMixin = require('../../jsx/mixins/ResultMixin.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var firstBy = require('../../lib/FirstBy.js');
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
 var UserMatch = require('../../lib/UserMatch');
 
 var sortDateFn = function(a,b) {
@@ -199,6 +191,8 @@ var ResultsApp = React.createClass({
         if (pageMatches.length == 0) {
             return <h4>There have been no matches played yet</h4>
         }
+        return null;
+        /*
         var width =
             ColumnConfig.name.width +
             ColumnConfig.handicap.width +
@@ -227,6 +221,7 @@ var ResultsApp = React.createClass({
                 {ColumnHelper.racksAgainstUser()}
                 </Table>
         );
+        */
     }
 });
 

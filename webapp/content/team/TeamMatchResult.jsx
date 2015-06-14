@@ -6,21 +6,17 @@ var Bootstrap = require('react-bootstrap')
     ,OverlayMixin = Bootstrap.OverlayMixin
     ,Panel = Bootstrap.Panel;
 
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
 var ResultMixin = require('../../jsx/mixins/ResultMixin.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
 
 var TeamMatchResult = React.createClass({
     mixins: [UserContextMixin,TeamMixin,ResultMixin,SeasonMixin,Router.State,Router.Navigation],
     render: function() {
+        return null;
+        /*
         if (this.getParams().teamId == undefined || this.getParams().seasonId == undefined ) {
             return null;
         }
@@ -57,6 +53,7 @@ var TeamMatchResult = React.createClass({
                     {ColumnHelper.racksAgainstTeamMember(team)}
                 </Table>
           );
+          */
     }
 });
 

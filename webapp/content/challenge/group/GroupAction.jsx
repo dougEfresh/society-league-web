@@ -18,7 +18,6 @@ var Bootstrap = require('react-bootstrap')
 
 var ChallengeStatus = require('../../../jsx/constants/ChallengeStatus.jsx');
 var ChallengeConstants = require('../../../jsx/constants/ChallengeConstants.jsx');
-var GroupMixin = require('./GroupListMixin.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var DivisionType = require('../../../lib/DivisionType');
 var Status = require('../../../lib/Status');
@@ -27,7 +26,7 @@ var Datastore = require('../../../jsx/stores/DataStore.jsx');
 var util = require('../challengeUtil');
 
 var GroupAction = React.createClass({
-    mixins: [GroupMixin,Router.Navigation,Router.State],
+    mixins: [Router.Navigation,Router.State],
     cancel: function() {
         //ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
         var request = {

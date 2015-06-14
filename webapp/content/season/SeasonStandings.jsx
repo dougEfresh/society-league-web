@@ -19,10 +19,6 @@ var Bootstrap = require('react-bootstrap')
     ,Glyphicon = Bootstrap.Glyphicon
     ,Panel = Bootstrap.Panel;
 
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-
 var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
@@ -31,8 +27,6 @@ var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Stat =  require('../../lib/Stat');
 var TeamStat =  require('../../lib/TeamStat');
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
 
 var SeasonStandings = React.createClass({
     mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin,Router.State],
@@ -57,21 +51,7 @@ var SeasonStandings = React.createClass({
             return rows[index];
         };
         return (
-                <Table
-                    groupHeaderHeight={30}
-                    rowHeight={50}
-                    headerHeight={30}
-                    rowGetter={rowGetter}
-                    rowsCount={rows.length}
-                    width={width}
-                    maxHeight={500}
-                    headerHeight={30}>
-                    {ColumnHelper.team()}
-                    {ColumnHelper.wins()}
-                    {ColumnHelper.loses()}
-                    {ColumnHelper.racksForStat()}
-                    {ColumnHelper.racksAgainstStat()}
-                </Table>
+               null
         );
 
     }

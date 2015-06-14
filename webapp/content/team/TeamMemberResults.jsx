@@ -6,10 +6,6 @@ var Router = require('react-router')
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
 
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-
 var Bootstrap = require('react-bootstrap')
     ,Button = Bootstrap.Button
     ,ButtonGroup = Bootstrap.ButtonGroup
@@ -38,8 +34,7 @@ var ResultMixin = require('../../jsx/mixins/ResultMixin.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var firstBy = require('../../lib/FirstBy.js');
-var ColumnHelper = require('../../jsx/components/columns/ColumnHelper.jsx');
-var ColumnConfig = require('../../jsx/components/columns/ColumnConfig.jsx');
+
 
 var sortDateFn = function(a,b) {
     return b.getMatchDate().localeCompare(a.getMatchDate());
@@ -109,6 +104,8 @@ var TeamResults = React.createClass({
     componentDidMount: function() {
     },
     render: function() {
+        return (<h2>Coming Soon</h2>);
+        /*
         if (this.getParams().teamId == undefined || this.getParams().seasonId == undefined) {
             return null;
         }
@@ -143,6 +140,8 @@ var TeamResults = React.createClass({
         pageMatches.forEach(function (m) {
             rows.push(m);
         }.bind(this));
+        */
+        /*
         var rowGetter = function (index) {
             return rows[index];
         };
@@ -155,8 +154,8 @@ var TeamResults = React.createClass({
             ColumnConfig.racksFor.width +
             ColumnConfig.racksAgainst.width +
             2;
+*/
 
-        return (<h2>Coming Soon</h2>);
 
         /*
         return (

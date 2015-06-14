@@ -1,16 +1,10 @@
 var React = require('react/addons');
-var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-var ColumnHelper = require('../columns/ColumnHelper.jsx');
-var RackColumnHelper = require('../columns/RackColumnHelper.jsx');
 var DataStore= require('../../stores/DataStore.jsx');
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../mixins/SeasonMixin.jsx');
 var TeamMixin = require('../../mixins/TeamMixin.jsx');
 var ResultMixin = require('../../mixins/ResultMixin.jsx');
 var UserLink = require('../links/UserLink.jsx');
-var ColumnConfig = require('../columns/ColumnConfig.jsx');
 
 var UserResults = React.createClass({
     mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin],
@@ -19,9 +13,7 @@ var UserResults = React.createClass({
         this.props.matches.forEach(function(m){
             tableData.push(m);
         });
-        var rowGetter = function(rowIndex) {
-            return tableData[rowIndex];
-        };
+        /*
         var width  = ColumnConfig.date.width +
             ColumnConfig.name.width +
             ColumnConfig.handicap.width +
@@ -49,7 +41,8 @@ var UserResults = React.createClass({
                 </Table>
         );
         //
-
+*/
+        return null;
     }
 });
 

@@ -1,12 +1,11 @@
 var React = require('react/addons');
 var Router = require('react-router');
-var GroupMixin = require('./GroupListMixin.jsx');
 var Bootstrap = require('react-bootstrap')
     ,Label = Bootstrap.Label
     ,Input = Bootstrap.Input;
 
 var GroupSlot = React.createClass({
-    mixins: [GroupMixin,Router.State,Router.Navigation],
+    mixins: [Router.State,Router.Navigation],
     onSelectSlot: function() {
         var q = this.getQuery();
         q.id = this.props.challengeGroup.getId();
