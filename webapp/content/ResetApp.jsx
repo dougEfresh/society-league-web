@@ -78,13 +78,13 @@ var ResetApp = React.createClass({
     },
     render: function () {
         var q = this.getQuery();
-        if (q.token != undefined) {
-            return this.renderReset();
-        }
         if (q.passwordReset != undefined) {
             return this.renderSentReset();
         }
         var title = q.changePassword == undefined ? 'Reset Password' : 'Change Password';
+        if (q.register != undefined) {
+            title = "Register";
+        }
         return (
             <div id="reset-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form id='reset' className="login-form form-signin">

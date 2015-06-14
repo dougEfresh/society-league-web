@@ -51,6 +51,7 @@ var SeasonNav = React.createClass({
         if (!user.isAdmin()) {
             currentSeasons = user.getCurrentSeasons();
         }
+        /*
         currentSeasons.forEach(function(t) {
             var title = "unknown";
             var display = 'none'; //TODO remove to see all seasons
@@ -83,12 +84,12 @@ var SeasonNav = React.createClass({
                 </div>
             );
         }.bind(this));
+        */
         var active = "";
         if (this.isActive('season') || this.isActive('challengeSeason')) {
             active = "active";
         }
         if (this.getUser().isChallenge()) {
-
             var challengeSeason = null;
             this.getUser().getCurrentSeasons().forEach(function(s){
                 if (s.isChallenge()) {
@@ -102,7 +103,9 @@ var SeasonNav = React.createClass({
                     </Link>
                 </li>)
         }
-
+        if (seasons.length == 0){
+            return null;
+        }
         return (
              <li id="season-nav" role="presentation" className={'dropdown ' + active} >
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">

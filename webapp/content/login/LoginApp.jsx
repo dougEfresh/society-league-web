@@ -57,14 +57,21 @@ var LoginApp = React.createClass({
                             </div>
                         </div>
                 
-                        <button id="submit" type="button" onClick={this.handleSubmit} className="btn btn-sm btn-default">
+                        <button id="submit" type="button" onClick={this.handleSubmit} className="btn btn-sm btn-primary">
                             <b>Login</b>
                         </button>
+                    <div className="btn-group select-time pull-right ">
                     <Link to='reset'>
                         <button type="button" className="btn btn-sm btn-default pull-right">
-                            <b>Forgot/Register Password</b>
+                            <b>Forgot Password?</b>
                         </button>
                     </Link>
+                    <Link to='reset' query={{register:'true'}} >
+                        <button type="button" className="btn btn-sm btn-default pull-right">
+                            <b>Register</b>
+                        </button>
+                    </Link>
+                    </div>
                 </form>
             </div>
         );
