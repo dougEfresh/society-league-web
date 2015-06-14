@@ -71,18 +71,10 @@ var GroupAction = React.createClass({
     },
     disable: function() {
         var q = this.getQuery();
-        if (this.props.challengeGroup.selectedSlot != undefined
-            && this.props.challengeGroup.selectedSlot.id > 0 &&
-            this.props.challengeGroup.selectedGame != undefined) {
-            return false;
-        }
-        var disabled = (q.id == undefined
-            || q.selectedGame == undefined
-            || q.selectedSlot == undefined) && q.selectedSlot != 0;
-        if (disabled)
-            return disabled;
-
-        return this.props.challengeGroup.getId() != q.id
+        var cg = this.props.challengeGroup;
+        var game = cg.selectedGame != undefined || q.selectedGame != undefined;
+        var slot = (cg.selectedSlot != undefined && cg.selectedSlot > 0) || (q.selectedSlot != undefined && q.selectedSlot > 0);
+        return !(q.id != undefined && game && slot && cg.getId() == q.id);
     },
     backUp: function(e) {
         e.preventDefault();
@@ -92,10 +84,10 @@ var GroupAction = React.createClass({
         console.log('onAdd');
         Datastore.replaceUser(d);
         this.transitionTo('sent');
-    },
+    }, //
     render: function() {
         var buttons = {
-            accept:   <button className="btn btn-sm"  disabled={this.disable()}  onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'primary' : 'success'} ><span className="fa fa-thumbs-up"></span>Accept</button>,
+            accept:   <button className="btn btn-sm"  disabled={this.disable()} onClick={this.accept} key={'accept'} bsStyle={this.disable() ? 'primary' : 'success'} ><span className="fa fa-thumbs-up"></span>Accept</button>,
             confirm:  <button className="btn btn-success btn-sm"  responsive onClick={this.confirm} key={'challenge'} bsStyle={'success'} ><span className="glyphicon glyphicon-ok"></span>{'challenge'}</button>,
             deny:     <button className="btn btn-sm"  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} ><span className="fa fa-thumbs-down"></span>Decline</button>,
             change:   null,
