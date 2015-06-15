@@ -16,7 +16,7 @@ var util = require('../challengeUtil');
 var ChallengeRequestApp = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
     componentDidMount: function () {
-        this.setState({user: this.getUser()});
+        //this.setState({user: this.getUser()});
     },
     componentWillMount: function() {
         //DataStore.addChangeListener(this._onChange);
@@ -35,10 +35,10 @@ var ChallengeRequestApp = React.createClass({
         if (c.opponent == null || c.opponent == undefined || c.opponent.userId == 0)
             errors.push('Need an opponent');
 
-        if (c.selectedGames.length == 0)
-            errors.push('Please choose game type');
+        //if (c.selectedGames.length == 0)
+          //  errors.push('Please choose game type');
 
-        if (q.anyTime == 0 && c.selectedSlots.length == 0)
+        if (c.selectedSlots.length == 0)
             errors.push('Please choose a slot');
 
         if (!c.date)
@@ -67,13 +67,13 @@ var ChallengeRequestApp = React.createClass({
                 </button>
             </Link>
         );
+        //<ChallengeRequestGame challengeGroup={c} />
         return (
             <div className="page-elements">
             <form id="request-app"  >
                 <ChallengeRequestDate  challengeGroup={c} />
                 <ChallengeRequestOpponent opponent={c.opponent} />
                 <ChallengeRequestSlots  challengeGroup={c} />
-                <ChallengeRequestGame challengeGroup={c} />
                 <div>
                 <p>
                 {submit}

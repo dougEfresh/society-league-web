@@ -30,8 +30,8 @@ var GroupAction = React.createClass({
         var challenge = {id : 0};
         var q = this.getQuery();
         this.props.challengeGroup.challenges.forEach(function(c) {
-            if ((c.slot.id== q.selectedSlot || c.slot.id == this.props.challengeGroup.selectedSlot.id)
-                && (c.game == q.selectedGame || c.game == this.props.challengeGroup.selectedGame)) {
+            if ((c.slot.id== q.selectedSlot || c.slot.id == this.props.challengeGroup.selectedSlot.id)) {
+                //&& (c.game == q.selectedGame || c.game == this.props.challengeGroup.selectedGame)) {
                 challenge = {id: c.id};
             }
         }.bind(this));
@@ -54,12 +54,15 @@ var GroupAction = React.createClass({
         });
         var nine = false;
         var eight = false;
+        /*
         c.selectedGames.forEach(function(g){
             if (g == DivisionType.EIGHT_BALL_CHALLENGE)
                 eight = true;
             if (g == DivisionType.NINE_BALL_CHALLENGE)
                 nine = true;
         });
+        */
+        nine = true;
         var request = {
             challenger: {id : this.getUserId()},
             opponent: opponent,
@@ -72,7 +75,8 @@ var GroupAction = React.createClass({
     disable: function() {
         var q = this.getQuery();
         var cg = this.props.challengeGroup;
-        var game = cg.selectedGame != undefined || q.selectedGame != undefined;
+        //var game = cg.selectedGame != undefined || q.selectedGame != undefined;
+        var game = true;
         var slot = (cg.selectedSlot != undefined && cg.selectedSlot > 0) || (q.selectedSlot != undefined && q.selectedSlot > 0);
         return !(q.id != undefined && game && slot && cg.getId() == q.id);
     },

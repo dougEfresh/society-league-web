@@ -1,6 +1,7 @@
 var React = require('react/addons');
 var Router = require('react-router');
 var BallIcon = require('../../../jsx/components/BallIcon.jsx');
+var DivisionType = require('../../../lib/DivisionType');
 
 var GroupGame = React.createClass({
     mixins: [Router.Navigation,Router.State],
@@ -11,6 +12,7 @@ var GroupGame = React.createClass({
         this.transitionTo(this.getPathname(),this.getParams(),q);
     },
     renderNoSelect: function() {
+        /*
         var games = [];
 
         if (this.props.challengeGroup.selectedGames != undefined) {
@@ -23,6 +25,8 @@ var GroupGame = React.createClass({
             }.bind(this));
         }
         return (<div>{games}</div>);
+        */
+        return <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} />
     },
     renderSelectOptions: function(){
         if (this.props.challengeGroup.games != undefined && this.props.challengeGroup.games.length == 1) {
@@ -48,10 +52,9 @@ var GroupGame = React.createClass({
         </form>);
     },
     render: function() {
-        if (this.props.noSelect)
-            return (<div>{this.renderNoSelect()}</div>);
-
-        return (<div>{this.renderSelectOptions()}</div>);
+        //if (this.props.noSelect)
+        return (<div>{this.renderNoSelect()}</div>);
+        //return (<div>{this.renderSelectOptions()}</div>);
     }
 });
 

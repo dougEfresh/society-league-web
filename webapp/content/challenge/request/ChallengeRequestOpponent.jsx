@@ -2,9 +2,10 @@ var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var Router = require('react-router');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
+var SeasonMixin = require('../../../jsx/mixins/SeasonMixin.jsx');
 
 var ChallengeRequestOpponent = React.createClass({
-    mixins: [UserContextMixin,Router.Navigation,Router.State],
+    mixins: [UserContextMixin,SeasonMixin,Router.Navigation,Router.State],
     contextTypes: {
         router: React.PropTypes.func
     },
