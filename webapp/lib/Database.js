@@ -105,6 +105,7 @@ Database.prototype.processUser = function(user,userData) {
     }
     user.reset();
     user.role = userData.role;
+    user.handicaps = userData.currentHandicap;
     var i;
     for (i = 0; i < userData.seasons.length; i++) {
         user.addSeason(this.findSeason(userData.seasons[i]));

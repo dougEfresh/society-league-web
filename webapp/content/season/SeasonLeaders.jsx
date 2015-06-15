@@ -26,6 +26,7 @@ var SeasonLeaders = React.createClass({
             rows.push(
                 <tr key={d.user.id}>
                     <td><UserLink user={d.user}/></td>
+                    <td>{d.user.getCurrentHandicap(this.getParams().seasonId)}</td>
                     <td>{d.getPoints()}</td>
                     <td>{d.wins}</td>
                     <td>{d.loses}</td>
@@ -34,7 +35,7 @@ var SeasonLeaders = React.createClass({
                     <td>{d.getWinPct()}</td>
                 </tr>
             );
-        });
+        }.bind(this));
         return rows;
     },
     render: function() {
@@ -63,6 +64,7 @@ var SeasonLeaders = React.createClass({
                 <table className="table table-hover table-condensed">
                     <tr>
                         <th>Player</th>
+                        <th>HC</th>
                         <th>Points</th>
                         <th>W</th>
                         <th>L</th>

@@ -29,9 +29,14 @@ Stat.prototype.team = function() {return this.team; };
 Stat.prototype.user = function() {return this.user; };
 Stat.prototype.setTeam = function(t) {return this.team = t; };
 Stat.prototype.setUser = function(u) {return this.user = u; };
-
-
 Stat.prototype.getType = function() {return this.type;};
+
+Stat.prototype.getHandicap = function() {
+    if (this.getType() != 'season') {
+        return 'N/A';
+    }
+    return this.user.getCurrentHandicap(this.season.id);
+};
 
 Stat.prototype.getWinPct = function() {
     if (this.matches == undefined || this.matches == 0) {

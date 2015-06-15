@@ -29,7 +29,7 @@ var ChallengeRequestOpponent = React.createClass({
         }
         options.push(<option key={0} value={0}>{'Choose Your Enemy'}</option>);
         potentials.forEach(function(p) {
-            options.push(<option key={p.userId} value={p.userId}>{p.name}</option>);
+            options.push(<option key={p.userId} value={p.userId}>{p.name + ' (' + p.getChallengeHandicap() + ')'}</option>);
         }.bind(this));
         return options;
     },
