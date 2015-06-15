@@ -77,7 +77,16 @@ var GroupAction = React.createClass({
         var cg = this.props.challengeGroup;
         //var game = cg.selectedGame != undefined || q.selectedGame != undefined;
         var game = true;
-        var slot = (cg.selectedSlot != undefined && cg.selectedSlot > 0) || (q.selectedSlot != undefined && q.selectedSlot > 0);
+        var slot = false;
+        if (cg.selectedSlot != undefined) {
+            slot = cg.selectedSlot.id > 0;
+        } else if (q.selectedSlot != undefined) {
+            slot = q.selectedSlot > 0;
+        }
+        if (game && slot) {
+            return false;
+        }
+        debugger;
         return !(q.id != undefined && game && slot && cg.getId() == q.id);
     },
     backUp: function(e) {

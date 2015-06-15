@@ -1,4 +1,4 @@
-formatHandicap = function(hc) {
+var formatHandicap = function(hc) {
     switch(hc) {
         case 'TWO':
             return '2';
@@ -24,4 +24,8 @@ formatHandicap = function(hc) {
     return hc.replace('PLUS','+');
 };
 
-module.exports = {formatHandicap: formatHandicap};
+var race = function(hc1,hc2) {
+
+};
+
+module.exports = {formatHandicap: formatHandicap, race: race};
