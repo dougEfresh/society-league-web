@@ -293,10 +293,20 @@ h2.form-signin-heading {
 .nav-tabs {
   border-bottom: none;
 }
-
+.challenge-content {
+	font-size: 22px;
+}
 .request {
 	margin: 10px 0px 0px 0px;
 	width: 100%;
+}
+.request-signup {
+	margin: 0px 0px 0px 5px;
+}
+ol.request-directions li {
+	font-size: 22px;
+	margin: 0px 0px 10px 0px;
+
 }
 .sb-panel-page{
   margin-left: 10px;
