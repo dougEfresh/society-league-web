@@ -23,6 +23,7 @@ var formatHandicap = function(hc) {
     }
     return hc.replace('PLUS','+');
 };
+/*
 var raceChart = {
     'D' : {
         'D': {0,7},
@@ -172,5 +173,6 @@ var raceChart = {
 var race = function(hc1,hc2) {
 
 };
+ */
 
-module.exports = {formatHandicap: formatHandicap, race: race};
+module.exports = {formatHandicap: formatHandicap};
