@@ -78,10 +78,10 @@ var GroupAction = React.createClass({
         //var game = cg.selectedGame != undefined || q.selectedGame != undefined;
         var game = true;
         var slot = false;
-        if (cg.selectedSlot != undefined) {
-            slot = cg.selectedSlot.id > 0;
-        } else if (q.selectedSlot != undefined) {
-            slot = q.selectedSlot > 0;
+        if (cg.selectedSlot != undefined && parseInt(cg.selectedSlot.id) > 0) {
+            slot = true;
+        } else if (q.selectedSlot != undefined &&  parseInt(q.selectedSlot) > 0) {
+            slot = true
         }
         if (game && slot) {
             return false;
