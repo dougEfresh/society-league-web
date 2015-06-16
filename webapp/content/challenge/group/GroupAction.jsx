@@ -86,7 +86,6 @@ var GroupAction = React.createClass({
         if (game && slot) {
             return false;
         }
-        debugger;
         return !(q.id != undefined && game && slot && cg.getId() == q.id);
     },
     backUp: function(e) {

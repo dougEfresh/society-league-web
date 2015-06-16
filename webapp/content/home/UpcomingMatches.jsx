@@ -31,7 +31,6 @@ var UpcomingMatches = React.createClass({
         for (var i=0; i < upComingMatches.length && i < 3; i++) {
             var match = upComingMatches[i];
             var m = moment(match.matchDate);
-            debugger;
                 matches.push(
                     <span key={i} className="next-match">
                         {m.format('ddd MMM Do ') }

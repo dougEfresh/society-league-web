@@ -53,7 +53,6 @@ var SlotButton = React.createClass({
             this.transitionTo('request',this.getParams(),q);
             return;
         }
-        debugger;
         q.selected['slot'+this.props.slot.id] =  q.selected['slot'+this.props.slot.id] == 1 ? 0: 1;
         this.transitionTo('request',this.getParams(),q);
     },
