@@ -18,6 +18,7 @@ var Challenge = require('../../lib/Challenge');
 var Database = require('../../lib/Database');
 var db = new Database();
 var _authUserId = 0;
+var _updateTime = Date.now();
 
 var DataStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
@@ -46,13 +47,44 @@ var DataStore = assign({}, EventEmitter.prototype, {
             DataStore.emitChange();
         }.bind(this));
     },
-    getDivisions: function() { return db.getDivisions();},
-    getTeams: function() { return db.getTeams();},
-    getSeasons: function () { return db.getSeasons();},
-    getUsers: function() { return db.getUsers();},
-    getResults: function() {return db.getResults();},
-    getTeamMatches: function() {return db.getTeamMatches();},
-    getSlots: function() {return db.getSlots();},
+    checkAge: function() {
+        if (Date.now() -_updateTime > 1000*60*5) {
+            if (db.loading == true) {
+                return;
+            }
+            db.loading = true;
+            _updateTime = Date.now();
+            DataStore.init();
+        }
+    },
+    getDivisions: function() {
+        DataStore.checkAge();
+        return db.getDivisions();
+    },
+    getTeams: function() {
+        DataStore.checkAge();
+        return db.getTeams();
+    },
+    getSeasons: function () {
+        DataStore.checkAge();
+        return db.getSeasons();
+    },
+    getUsers: function() {
+        DataStore.checkAge();
+        return db.getUsers();
+    },
+    getResults: function() {
+        DataStore.checkAge();
+        return db.getResults();
+    },
+    getTeamMatches: function() {
+        DataStore.checkAge();
+        return db.getTeamMatches();
+    },
+    getSlots: function() {
+        DataStore.checkAge();
+        return db.getSlots();
+    },
     getDb: function() {
         return db;
     },
