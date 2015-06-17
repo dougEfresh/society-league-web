@@ -65,7 +65,7 @@ var ChallengeRequestApp = React.createClass({
         );
         //<ChallengeRequestGame challengeGroup={c} />
         return (
-            <div className="panel panel-default">
+            <div className="panel panel-primary">
                 <div className="panel-heading" >  <span className={"glyphicon glyphicon-plus"}></span>New Request</div>
                 <div className="panel-body" >
                     <div className="page-elements">

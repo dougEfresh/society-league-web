@@ -43,7 +43,7 @@ var ChallengeSentApp = React.createClass({
             */
         }
         return (
-                 <div id='sent-app' className="panel panel-default">
+                 <div id='sent-app' className="panel panel-info">
                     <div className="panel-heading" ><span className={"glyphicon glyphicon-ok"}></span>Sent</div>
                         <div className="panel-body" >
                             <GroupList type={ChallengeStatus.SENT} noSelect={true} challengeGroups={this.state.challengeGroups}/>
