@@ -28,19 +28,30 @@ var SignUp = React.createClass({
         }
         return (
              <div id="challenge-signup" className="panel panel-default">
-                 <div className="panel-heading" >Challenge League </div>
-                 <div className="panel-body" >
+                 <div className="panel-heading" ><h1>Challenge League</h1></div>
+                 <div className="panel-body challenge-content" >
+                    <h2>
+                        The Challenge league is an individual 9 ball league.
+                    </h2>
+                     <h2>Requesting a Challenge</h2>
                      <p>
-                         The Challenge league is an individual 8 or 9 ball league.
-                         You request a challenge through a <strong>challenge portal</strong>
+                        <ol className="request-directions">
+                            <li>Click the 
+                                <button className="btn btn-default btn-success request-signup">
+                                    <span className="glyphicon glyphicon-plus-sign"></span><b>Request</b>
+                                </button> button
+                            </li>
+                            <li>Choose a Date</li>
+                            <li>Choose an Opponent</li>
+                            <li>Choose a time or multiples times</li>
+                            <li>Hit Confirm</li>
+                        </ol>
                      </p>
-                     <p>
-                         You choose a time, opponent and game type. A notification is sent to your opponent and they can accept or decline
-                     </p>
+                      <p>A notification is sent to your opponent which they can accept or decline.</p>
                      <p>Click the sign up button below to begin challenging other users</p>
-                 </div>
-                 <div classnName="panel-footer">
+                     <div classnName="panel-footer">
                      <button onClick={this.onClick} className='btn btn-primary'>Sign up now</button>
+                 </div>
                  </div>
              </div>
 

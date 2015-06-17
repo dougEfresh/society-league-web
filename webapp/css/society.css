@@ -293,10 +293,20 @@ h2.form-signin-heading {
 .nav-tabs {
   border-bottom: none;
 }
-
+.challenge-content {
+	font-size: 22px;
+}
 .request {
 	margin: 10px 0px 0px 0px;
 	width: 100%;
+}
+.request-signup {
+	margin: 0px 0px 0px 5px;
+}
+ol.request-directions li {
+	font-size: 22px;
+	margin: 0px 0px 10px 0px;
+
 }
 .sb-panel-page{
   margin-left: 10px;
@@ -416,6 +426,10 @@ h2.form-signin-heading {
 	color: #fff;
 	cursor: pointer!important;
 }
+.home-upcoming-challenges {
+	font-size: 16px;
+	line-height: normal;
+}
 @media (min-width: 768px) {
 .wrap {
 	min-width: 940px;
@@ -429,6 +443,7 @@ h2.form-signin-heading {
 	width: auto;
 }
 .btn-responsive {
+	margin-top: 0px;
     width: auto;
 }
 /* remove container padding using class .outerWrapper for desktop so left and right sides are flush to upper nav */
@@ -500,6 +515,10 @@ h2.form-signin-heading {
 
 #content {
 	padding: 0px 0px;
+}
+.home-upcoming-challenges {
+	font-size: 16px;
+	line-height: 30px;
 }
 /* Reset button widths for large screens */
 .select-game button, .select-time button {
