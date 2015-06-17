@@ -18,7 +18,7 @@
   "dependencies": {
     "react": "^0.13.3",
     "moment": "^2.10.3",
-    "react-router": "0.13.3",
+    "react-router": "1.0.0-beta2",
     "react-chartjs": "^0.6.0",
     "flux": "2.0.3",
     "keymirror": "~0.1.0",

@@ -1,12 +1,12 @@
 var React = require('react/addons');
 var GroupList = require('../group/GroupList.jsx');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
-var ChallengeStatus  = require('../../../jsx/constants/ChallengeStatus.jsx');
 var DataStore = require('../../../jsx/stores/DataStore.jsx');
 var Router = require('react-router');
+var Status  = require('../../../lib/Status');
 
 var ChallengeSentApp = React.createClass({
-    mixins: [UserContextMixin,Router.Navigation],
+    mixins: [UserContextMixin,Router.Navigation,Router.State],
     getInitialState: function () {
         return  {
             challengeGroups: []
@@ -18,36 +18,23 @@ var ChallengeSentApp = React.createClass({
     componentWillUnmount: function () {
         DataStore.removeChangeListener(this._onChange);
     },
-    componentDidMount: function () {
-        if (this.getUser().userId != 0 && this.getUser().challenges != undefined)
-            this.setState({challengeGroups: this.getUser().challenges[ChallengeStatus.SENT]});
-    },
-    componentWillReceiveProps: function() {
-
-    },
     _onChange: function() {
-        if (this.getUser().userId != 0 && this.getUser().challenges != undefined) {
-            this.setState(
-                {challengeGroups: this.getUser().challenges[ChallengeStatus.SENT]}
-            );
-        }
+        this.forceUpdate();
     },
     render: function(){
-        if (this.getUser().challenges[ChallengeStatus.SENT].length == 0) {
-            return null;
-            /*
+        if (this.getUser().challenges[Status.SENT].length == 0 && this.isActive(Status.SENT.toLowerCase())) {
             setTimeout(function() {
-                this.transitionTo('request');
-                }.bind(this),250);
-            return (<div><p>You have not sent any challenges</p></div>)
-            */
+                this.transitionTo('challengeMain');
+            }.bind(this),350);
+            return (<div><p>You have no challenges accepted</p></div>);
         }
-//        <div className="panel-body" >                 </div>
-
+        if (this.getUser().challenges[Status.SENT].length == 0) {
+            return null;
+        }
                 return (
                  <div id='sent-app' className="panel panel-info">
                     <div className="panel-heading" ><span className={"glyphicon glyphicon-ok"}></span>Sent</div>
-                     <GroupList type={ChallengeStatus.SENT} noSelect={true} challengeGroups={this.state.challengeGroups}/>
+                     <GroupList type={Status.SENT} noSelect={true} challengeGroups={this.getUser().challenges[Status.SENT]}/>
 
                  </div>
 
