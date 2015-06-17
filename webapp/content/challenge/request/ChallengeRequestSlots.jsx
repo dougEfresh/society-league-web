@@ -50,12 +50,11 @@ var SlotButton = React.createClass({
         if (q.selected == undefined) {
             q.selected = {};
             q.selected['slot'+this.props.slot.id] = 1;
-            this.transitionTo('request',this.getParams(),q);
+            this.transitionTo('challengeMain',this.getParams(),q);
             return;
         }
-        debugger;
         q.selected['slot'+this.props.slot.id] =  q.selected['slot'+this.props.slot.id] == 1 ? 0: 1;
-        this.transitionTo('request',this.getParams(),q);
+        this.transitionTo('challengeMain',this.getParams(),q);
     },
     render: function() {
         var q = this.getQuery();

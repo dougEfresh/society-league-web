@@ -33,6 +33,9 @@ MatchDao.prototype.getUpcomingChallenges = function(user) {
     upComingMatches = upComingMatches.sort(function(a,b) {
             var aSlot = slotDao.getSlot(a.selectedSlot);
             var bSlot = slotDao.getSlot(b.selectedSlot);
+        if (aSlot  == undefined|| bSlot == undefined) {
+            return 0;
+        }
             return bSlot.date.localeCompare(aSlot.date);
         });
     return upComingMatches;

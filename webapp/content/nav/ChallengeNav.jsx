@@ -33,7 +33,7 @@ var ChallengeNav = React.createClass({
     genLink: function(c,type,glyph,name) {
         if (type == Status.REQUEST) {
             return (
-                <Link to={type.toLowerCase()} >
+                <Link to={'challengeMain'} >
                     <span className={"glyphicon glyphicon-" + glyph}></span>
                     {'Request'}
                 </Link>
@@ -41,7 +41,7 @@ var ChallengeNav = React.createClass({
         }
         return c[type].length != 0 ? (
 
-                <Link to={type.toLowerCase()} >
+                <Link to={'challengeMain'} >
                     <span id={type.toLowerCase() +'-link'}>
                         <span className={"glyphicon glyphicon-" + glyph}></span>
                     {name}

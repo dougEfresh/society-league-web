@@ -31,15 +31,21 @@ var ChallengeAcceptedApp = React.createClass({
     },
     render: function(){
         if (this.getUser().challenges[ChallengeStatus.ACCEPTED].length == 0) {
+            /*
             setTimeout(function() {
                 this.transitionTo('request');
                 }.bind(this),250);
             return (<div><p>You have no challenges accepted</p></div>)
+            */
+            return null;
         }
         return (
-            <div id="accepted-app">
-                <GroupList type={ChallengeStatus.ACCEPTED} noSelect={false} challengeGroups={this.state.challengeGroups}/>
-            </div>
+              <div id='accepted-app' className="panel panel-success">
+                    <div className="panel-heading" ><span className={"glyphicon glyphicon-calendar"}></span>Accepted</div>
+                        <div className="panel-body" >
+                            <GroupList type={ChallengeStatus.ACCEPTED} noSelect={false} challengeGroups={this.state.challengeGroups}/>
+                        </div>
+              </div>
         )
     }
 });

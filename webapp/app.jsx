@@ -35,6 +35,7 @@ var SeasonStandings = require('./content/season/SeasonStandings.jsx');
 var SeasonResults = require('./content/season/SeasonResults.jsx');
 var ChallengeSignUp = require('./content/challenge/ChallengeSignUp.jsx');
 var ChallengeConfirmApp = require('./content/challenge/ChallengeConfirmApp.jsx');
+var ChallengeMain= require('./content/challenge/Main.jsx');
 var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
@@ -100,6 +101,7 @@ var routes = (
                 <Route name="seasonWeeklyResults" path="matches"  handler={SeasonResults} />
             </Route>
             <Route name="challenge" path="challenge" handler={ChallengeApp} >
+                <Route name="challengeMain" path="main"  handler={ChallengeMain} />
                 <Route name="challengeSignUp" path="signup"  handler={ChallengeSignUp} />
                 <Route name="challengeConfirm" path="confirm"  handler={ChallengeConfirmApp} />
                 <Route name={Status.REQUEST.toLowerCase()} path={Status.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>

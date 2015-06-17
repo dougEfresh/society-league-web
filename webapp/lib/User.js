@@ -1,6 +1,7 @@
 var Status = require('./Status');
 var Stat = require('./Stat');
 var ChallengeGroup = require('./ChallengeGroup');
+var Handicap = require('./Handicap');
 
 function User(id,first_name,last_name) {
     this.id = id;
@@ -31,9 +32,9 @@ User.prototype.lName = function () { return this.lName ; };
 User.prototype.fName = function () { return this.fName ; };
 User.prototype.sName = function () {
  if (this.lName != undefined && this.lName.length > 0) {
-return        this.fName + ' ' + this.lName.substr(0,1) + '.'
-        }
-        return "";
+     return this.fName + ' ' + this.lName.substr(0,1) + '.'
+ }
+    return "";
 };
 User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
@@ -42,23 +43,24 @@ User.prototype.password = function () { return this.password ; };
 
 User.prototype.getCurrentHandicap = function(seasonId) {
     if (this.handicaps[seasonId] != undefined) {
-        return this.handicaps[seasonId];
+        return Handicap.formatHandicap(this.handicaps[seasonId]);
     }
-
-    var results = [];
-    this.results.forEach(function(r){
-        if (r.getSeason().id == seasonId) {
-            results.push(r);
-        }
-    });
-    results = results.sort(function(a,b){
-        return b.getMatchDate().localeCompare(a.getMatchDate());
-    });
-    if (results.length > 0) {
-        return this.handicaps[seasonId] = results[0].getHandicap(this);
-    }
-    return this.handicaps[seasonId] == undefined ? "N/A" :  this.handicaps[seasonId];
+    return 'N/A';
 };
+
+User.prototype.getChallengeHandicap = function() {
+    var seasons  = this.seasons;
+    for (var i=0; i< seasons.length ; i++) {
+        var s = seasons[i];
+        if (s.isActive() && s.isChallenge() && s.isNine()) {
+            if (this.handicaps[s.id] != undefined) {
+                return Handicap.formatHandicap(this.handicaps[s.id]);
+            }
+        }
+    }
+    return 'N/A';
+};
+
 
 User.prototype.isChallenge = function() {
     var challenge = false;

@@ -22,7 +22,7 @@ var ChallengeRequestGame = React.createClass({
         } else {
             q.games[type] = 'true';
         }
-        this.transitionTo('request',this.getParams(),q);
+        this.transitionTo('challengeMain',this.getParams(),q);
     },
     render: function() {
         var q = this.getQuery();

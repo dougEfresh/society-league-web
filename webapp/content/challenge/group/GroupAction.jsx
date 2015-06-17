@@ -30,8 +30,8 @@ var GroupAction = React.createClass({
         var challenge = {id : 0};
         var q = this.getQuery();
         this.props.challengeGroup.challenges.forEach(function(c) {
-            if ((c.slot.id== q.selectedSlot || c.slot.id == this.props.challengeGroup.selectedSlot.id)
-                && (c.game == q.selectedGame || c.game == this.props.challengeGroup.selectedGame)) {
+            if ((c.slot.id== q.selectedSlot || c.slot.id == this.props.challengeGroup.selectedSlot.id)) {
+                //&& (c.game == q.selectedGame || c.game == this.props.challengeGroup.selectedGame)) {
                 challenge = {id: c.id};
             }
         }.bind(this));
@@ -54,12 +54,15 @@ var GroupAction = React.createClass({
         });
         var nine = false;
         var eight = false;
+        /*
         c.selectedGames.forEach(function(g){
             if (g == DivisionType.EIGHT_BALL_CHALLENGE)
                 eight = true;
             if (g == DivisionType.NINE_BALL_CHALLENGE)
                 nine = true;
         });
+        */
+        nine = true;
         var request = {
             challenger: {id : this.getUserId()},
             opponent: opponent,
@@ -72,18 +75,27 @@ var GroupAction = React.createClass({
     disable: function() {
         var q = this.getQuery();
         var cg = this.props.challengeGroup;
-        var game = cg.selectedGame != undefined || q.selectedGame != undefined;
-        var slot = (cg.selectedSlot != undefined && cg.selectedSlot > 0) || (q.selectedSlot != undefined && q.selectedSlot > 0);
+        //var game = cg.selectedGame != undefined || q.selectedGame != undefined;
+        var game = true;
+        var slot = false;
+        if (cg.selectedSlot != undefined && parseInt(cg.selectedSlot.id) > 0) {
+            slot = true;
+        } else if (q.selectedSlot != undefined &&  parseInt(q.selectedSlot) > 0) {
+            slot = true
+        }
+        if (game && slot) {
+            return false;
+        }
         return !(q.id != undefined && game && slot && cg.getId() == q.id);
     },
     backUp: function(e) {
         e.preventDefault();
-        this.transitionTo('request',this.getParams(),this.getQuery());
+        this.transitionTo('challengeMain',this.getParams(),this.getQuery());
     },
     _onAdd: function(d) {
         console.log('onAdd');
         Datastore.replaceUser(d);
-        this.transitionTo('sent');
+        this.transitionTo('challengeMain');
     }, //
     render: function() {
         var buttons = {

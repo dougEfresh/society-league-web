@@ -7,16 +7,22 @@ var StatsDisplay = React.createClass({
     mixins: [UserContextMixin,Router.State],
     getRows: function(data) {
         var rows = [];
+        var user = this.getUser(this.getParams().statsId);
         data.forEach(function(d){
             var type = d.getType();
+            var hc = '';
+
             if (d.getType() == 'season') {
                 type = d.season.getDisplayName();
+                hc = user.getCurrentHandicap(d.season.id);
             }
             if (d.getType() == 'all') {
                 type = 'overall';
             }
+
             rows.push(<tr key={type}>
                 <td> {type}</td>
+                <td> {hc} </td>
                 <td> {d.wins}</td>
                 <td> {d.loses}</td>
                 <td> {d.racksFor}</td>
@@ -60,6 +66,7 @@ var StatsDisplay = React.createClass({
                  <table className="table table-striped table-hover table-condensed">
                     <tr>
                         <th>Type</th>
+                        <th>HC</th>
                         <th>W</th>
                         <th>L</th>
                         <th>RW</th>
