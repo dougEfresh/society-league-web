@@ -42,7 +42,7 @@ var ChallengeRequestDate = React.createClass({
         var q = this.getQuery();
         q.date = React.findDOMNode(this.refs.date).value;
         q.selectedSlots = undefined;
-        this.transitionTo('request',this.getParams(),q);
+        this.transitionTo('challengeMain',this.getParams(),q);
         //RequestActions.changeDate(this.refs.date.getValue());
     },
     render: function() {

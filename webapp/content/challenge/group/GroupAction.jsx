@@ -90,12 +90,12 @@ var GroupAction = React.createClass({
     },
     backUp: function(e) {
         e.preventDefault();
-        this.transitionTo('request',this.getParams(),this.getQuery());
+        this.transitionTo('challengeMain',this.getParams(),this.getQuery());
     },
     _onAdd: function(d) {
         console.log('onAdd');
         Datastore.replaceUser(d);
-        this.transitionTo('sent');
+        this.transitionTo('challengeMain');
     }, //
     render: function() {
         var buttons = {

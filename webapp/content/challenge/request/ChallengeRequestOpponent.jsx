@@ -15,7 +15,7 @@ var ChallengeRequestOpponent = React.createClass({
         e.preventDefault();
         var q = this.getQuery();
         q.opponent = e.target.value;
-        this.transitionTo('request',this.getParams(),q);
+        this.transitionTo('challengeMain',this.getParams(),q);
     },
     getOptions: function() {
         var options = [];
