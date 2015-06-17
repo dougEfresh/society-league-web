@@ -426,6 +426,10 @@ ol.request-directions li {
 	color: #fff;
 	cursor: pointer!important;
 }
+.home-upcoming-challenges {
+	font-size: 16px;
+	line-height: normal;
+}
 @media (min-width: 768px) {
 .wrap {
 	min-width: 940px;
@@ -439,6 +443,7 @@ ol.request-directions li {
 	width: auto;
 }
 .btn-responsive {
+	margin-top: 0px;
     width: auto;
 }
 /* remove container padding using class .outerWrapper for desktop so left and right sides are flush to upper nav */
@@ -510,6 +515,10 @@ ol.request-directions li {
 
 #content {
 	padding: 0px 0px;
+}
+.home-upcoming-challenges {
+	font-size: 16px;
+	line-height: 30px;
 }
 /* Reset button widths for large screens */
 .select-game button, .select-time button {

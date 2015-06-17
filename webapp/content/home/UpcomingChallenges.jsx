@@ -26,17 +26,21 @@ var UpcomingChallenges = React.createClass({
             var match = upComingChallenges[i];
             var m = moment(match.selectedSlot.date);
             matches.push(
-                <div key={match.getId()} >
-                <span id={'challenge-'+ match.getId()} className="next-match">
-                    {m.format('ddd MMM Do ') + ' at '  + m.format('HH:mm a') + ' vs. '}
-                    <UserLink user={match.getUserOpponent(this.getUser())}/>
-                </span>
-                    <Link to={Status.ACCEPTED.toLowerCase()}>
-                        <button type="button" className="btn btn-sm btn-danger pull-right btn-responsive">
-                            <span className="glyphicon glyphicon-remove"></span> <b>Cancel</b>
+                <li className="list-group-item col-lg-12 col-xs-12">
+                    <div key={match.getId()} className="col-lg-10 col-md-10 col-xs-12">
+                    <span id={'challenge-'+ match.getId()} className="next-match pull-left">
+                        {m.format('ddd MMM Do ') + ' at '  + m.format('HH:mm a') + ' vs. '}
+                        <UserLink user={match.getUserOpponent(this.getUser())}/>
+                    </span>
+                    </div>
+                    <div className="col-lg-2 col-md-2 col-xs-12">    
+                        <button type="button" className="btn btn-sm btn-danger btn-responsive">
+                            <Link to={Status.ACCEPTED.toLowerCase()}>
+                                <span className="glyphicon glyphicon-remove"></span> <b>Cancel</b>
+                            </Link>
                         </button>
-                    </Link>
-                </div>
+                    </div>     
+                </li>
             );
         }
         if (matches.length == 0) {
@@ -53,7 +57,9 @@ var UpcomingChallenges = React.createClass({
               <div id={'upcoming-challenges'} className="panel panel-default">
                     <div className="panel-heading" >Upcoming Challenges</div>
                         <div className="panel-body" >
-                                {matches}
+                        <ul className="list-group home-upcoming-challenges">
+                            {matches}
+                        </ul>
                         </div>
               </div>
         )
