@@ -46,13 +46,13 @@ var ChallengePendingApp = React.createClass({
             return (<div><p>You have no pending challenges</p></div>)
         }
         */
+        //<div className="panel-body" >
 
         return (
             <div id='pending-app' className="panel panel-danger">
                 <div className="panel-heading" >  <span className={"glyphicon glyphicon-alert"}></span>Pending</div>
-                <div className="panel-body" >
-                    <GroupList type={ChallengeStatus.PENDING} noSelect={false} challengeGroups={challenges}/>
-                </div>
+                <GroupList type={ChallengeStatus.PENDING} noSelect={false} challengeGroups={challenges}/>
+
             </div>
         )
     }

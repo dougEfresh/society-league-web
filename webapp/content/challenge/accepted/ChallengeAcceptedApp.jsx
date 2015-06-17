@@ -39,13 +39,18 @@ var ChallengeAcceptedApp = React.createClass({
             */
             return null;
         }
+        //                        <div className="panel-body" >
         return (
-              <div id='accepted-app' className="panel panel-success">
-                    <div className="panel-heading" ><span className={"glyphicon glyphicon-calendar"}></span>Accepted</div>
-                        <div className="panel-body" >
-                            <GroupList type={ChallengeStatus.ACCEPTED} noSelect={false} challengeGroups={this.state.challengeGroups}/>
-                        </div>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div id='accepted-app' className="panel panel-success">
+                  <div className="panel-heading" ><span className={"glyphicon glyphicon-calendar"}></span>Accepted</div>
+                     <div id="accepted-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                          <div class="panel-body">
+                              <GroupList type={ChallengeStatus.ACCEPTED} noSelect={false} challengeGroups={this.state.challengeGroups}/>
+                          </div>
+                     </div>
               </div>
+            </div>
         )
     }
 });

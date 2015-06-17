@@ -85,20 +85,9 @@ var ChallengeNav = React.createClass({
                      </li>
                  )
         }
-
-        return (
-             <li id="challenge-nav" role="presentation" className={'dropdown ' + active}>
+/*
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                     <span className='fa fa-trophy'></span>
-                     <span className="main-item">
-                         Challenges
-                     </span>
-                     <span className="badge" id={'challenge-counter'}>
-                         {counter}
-                     </span>
-                     <span className="caret"></span>
-                 </a>
-                 <ul className="dropdown-menu" role="menu">
+                   <ul className="dropdown-menu" role="menu">
                      <li className="teamNavLink" role="presentation">
                          {this.genLink(c,Status.PENDING,'alert','Pending')}
                      </li>
@@ -112,6 +101,18 @@ var ChallengeNav = React.createClass({
                          {this.genLink(c,Status.REQUEST,'plus-sign','Request')}
                      </li>
                  </ul>
+                  */
+        return (
+             <li id="challenge-nav" role="presentation" className={'dropdown ' + active}>
+                 <Link to="challengeMain" >
+                     <span className='fa fa-trophy'></span>
+                     <span className="main-item">
+                         Challenges
+                     </span>
+                     <span className="badge" id={'challenge-counter'}>
+                         {counter}
+                     </span>
+                 </Link>
              </li>
         );
     }

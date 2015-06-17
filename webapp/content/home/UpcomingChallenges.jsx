@@ -25,11 +25,13 @@ var UpcomingChallenges = React.createClass({
         for (var i=0; i<upComingChallenges.length && i< 3; i++) {
             var match = upComingChallenges[i];
             var m = moment(match.selectedSlot.date);
+            var opponent = match.getUserOpponent(this.getUser());
             matches.push(
                 <div key={match.getId()} >
                 <span id={'challenge-'+ match.getId()} className="next-match">
                     {m.format('ddd MMM Do ') + ' at '  + m.format('HH:mm a') + ' vs. '}
-                    <UserLink user={match.getUserOpponent(this.getUser())}/>
+                    <UserLink user={opponent}/>
+                    <span>{' (' + opponent.getChallengeHandicap() + ')'}</span>
                 </span>
                     <Link to={Status.ACCEPTED.toLowerCase()}>
                         <button type="button" className="btn btn-sm btn-danger pull-right btn-responsive">

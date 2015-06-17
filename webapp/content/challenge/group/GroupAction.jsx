@@ -103,7 +103,7 @@ var GroupAction = React.createClass({
             confirm:  <button className="btn btn-success btn-sm"  responsive onClick={this.confirm} key={'challenge'} bsStyle={'success'} ><span className="glyphicon glyphicon-ok"></span>{'challenge'}</button>,
             deny:     <button className="btn btn-sm"  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} ><span className="fa fa-thumbs-down"></span>Decline</button>,
             change:   null,
-            cancel:   <button className="btn btn-sm"  onClick={this.cancel} key={'cancel'}  bsStyle={'danger'} ><span className="glyphicon glyphicon-remove"></span>Cancel</button>,
+            cancel:   <button className="btn btn-sm btn-danger"  onClick={this.cancel} key={'cancel'}  bsStyle={'danger'} ><span className="glyphicon glyphicon-remove"></span>Cancel</button>,
             calender: null,
             back: <button className="btn btn-warning btn-sm"  onClick={this.backUp}><span className="glyphicon glyphicon-chevron-left"></span>Go Back</button>
         };
