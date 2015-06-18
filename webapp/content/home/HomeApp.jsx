@@ -29,7 +29,7 @@ var HomeApp = React.createClass({
             <span id="welcome-name">{'Welcome ' + this.getUser().fName}</span> </Link>
         var button = null;
         if (this.getUser().isChallenge()) {
-            button = <button className="btn btn-default btn-success request">
+            button = <button className="btn btn-default btn-primary request">
                 <Link id="request-link" to="challengeMain">
                 <span className="glyphicon glyphicon-plus-sign"></span><b>Request</b></Link></button>
         }
