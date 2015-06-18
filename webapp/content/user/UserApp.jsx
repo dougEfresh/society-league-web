@@ -24,9 +24,13 @@ var UserApp = React.createClass({
         </div>
         );
         return (
-            <div id="user-app">
-                {header}
+            <div id="user-app" className="panel panel-default">
+                <div className="panel-heading">
+                    {header}
+                </div>
+                <div className="panel-body">
                 <RouteHandler />
+                </div>
             </div>
         );
     }

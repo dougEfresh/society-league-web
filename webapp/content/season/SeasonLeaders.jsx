@@ -61,7 +61,7 @@ var SeasonLeaders = React.createClass({
          }.bind(this));
             return (
                 <div className="table-responsive">
-                <table className="table table-hover table-condensed">
+                <table className="table table-hover table-condensed table-striped">
                     <tr>
                         <th>Player</th>
                         <th>HC</th>

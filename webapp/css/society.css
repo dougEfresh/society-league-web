@@ -76,6 +76,9 @@ button a.active {
 	color: #fff;
 	text-decoration: none;
 }
+.btn-default a:link,.btn-default a:visited {
+	color: #333;
+}
 .bot-margin {
 	margin-bottom: 10px;
 }
@@ -296,6 +299,9 @@ h2.form-signin-heading {
 .challenge-content {
 	font-size: 22px;
 }
+button.request a:link ,button.request a:visited {
+	color: #fff;
+}
 .request {
 	margin: 10px 0px 0px 0px;
 	width: 100%;
@@ -429,6 +435,10 @@ ol.request-directions li {
 .home-upcoming-challenges {
 	font-size: 16px;
 	line-height: normal;
+}
+.login-op {
+	text-align:right;
+
 }
 @media (min-width: 768px) {
 .wrap {
