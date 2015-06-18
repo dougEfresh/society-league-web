@@ -27,7 +27,7 @@ var ChallengePendingApp = React.createClass({
             if (this.getUser().challenges[Status.PENDING].length == 0 && this.isActive(Status.PENDING.toLowerCase())) {
             setTimeout(function() {
                 this.transitionTo('challengeMain');
-            }.bind(this),350);
+            }.bind(this),250);
             return (<div><p>You have no challenges accepted</p></div>);
         }
         if (this.getUser().challenges[Status.PENDING].length == 0) {

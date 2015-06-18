@@ -4,7 +4,7 @@ var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var GroupAction = require('./GroupAction.jsx');
 var GroupGame = require('./GroupGame.jsx');
 var GroupSlot = require('./GroupSlot.jsx');
-
+var UserLink = require('../../../jsx/components/links/UserLink.jsx');
 
 function dateFormat(date) {
     return date.substr(5,10).replace('-','/');
@@ -19,9 +19,9 @@ var GroupRow = React.createClass({
     },
     getOpponent: function() {
         if (this.getUser().id == this.props.challengeGroup.opponent.id) {
-            return this.props.challengeGroup.challenger.name
+            return this.props.challengeGroup.challenger
         }
-        return this.props.challengeGroup.opponent.name;
+        return this.props.challengeGroup.opponent;
     },
     render: function() {
         return (
@@ -33,7 +33,7 @@ var GroupRow = React.createClass({
                     {dateFormat(this.props.challengeGroup.date)}
                 </td>
                 <td>
-                    {this.getOpponent()}
+                    <div><UserLink user={this.getOpponent()} /><span> {' (' + this.getOpponent().getChallengeHandicap() + ')'}</span></div>
                 </td>
                 <td>
                     <GroupGame type={this.props.type} challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
