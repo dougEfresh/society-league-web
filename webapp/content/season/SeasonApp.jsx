@@ -46,28 +46,32 @@ var SeasonApp = React.createClass({
                     
                     <button className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'}>
                         <Link to='seasonStandings' params={this.getParams()}>
-                            <i className="fa fa-trophy"></i><span className="main-item">{ ' Standings'}</span>
+                            <span className="fa fa-trophy"></span><span className="main-item">{ ' Standings'}</span>
                         </Link>
                     </button>
                     </div>
-                    <Link to='seasonLeaders' params={this.getParams()}>
                     <button className={this.isActive('seasonLeaders') ? 'btn btn-success' : 'btn btn-default'} >
+                        <Link to='seasonLeaders' params={this.getParams()}>
                             <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
+                        </Link>
                     </button>
-                    </Link>
-                    <Link to='seasonResults' params={this.getParams()}>
                     <button className={this.isActive('seasonResults') ? 'btn btn-success' : 'btn btn-default'} >
-                        <span className="fa  fa-history"></span><span className="main-item">Matches</span>
+                        <Link to='seasonResults' params={this.getParams()}>
+                            <span className="fa  fa-history"></span><span className="main-item">Matches</span>
+                        </Link>
                     </button>
-                    </Link>
                 </div>
         );
         return (
-              <div id="season-app">
-                  <h3>{season.getDisplayName()}</h3>
-                  {header}
-                  <RouteHandler />
-            </div>
+                <div id="season-app" className="panel panel-default">
+                    <div className="panel-heading">
+                        <h3>{season.getDisplayName()}</h3>
+                        {header}
+                    </div>
+                    <div className="panel-body">
+                        <RouteHandler />
+                    </div>
+                </div>
         );
     }
 });

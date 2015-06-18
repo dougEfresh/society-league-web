@@ -28,7 +28,7 @@ var UpcomingChallenges = React.createClass({
             var opponent = match.getUserOpponent(this.getUser());
             matches.push(
                 <li key={match.getId()} className="list-group-item col-lg-12 col-xs-12">
-                    <div kclassName="col-lg-10 col-md-10 col-xs-12">
+                    <div className="col-lg-10 col-md-10 col-xs-12">
                     <span id={'challenge-'+ match.getId()} className="next-match pull-left">
                         {m.format('ddd MMM Do ') + ' at '  + m.format('HH:mm a') + ' vs. '}
                         <UserLink user={opponent}/>

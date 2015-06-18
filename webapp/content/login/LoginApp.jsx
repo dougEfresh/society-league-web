@@ -56,22 +56,26 @@ var LoginApp = React.createClass({
                             <input ref='password' id="password" ref='password' type='password' name='password' placeholder='enter password'className="form-control" > </input>
                             </div>
                         </div>
-                
-                        <button id="submit" type="button" onClick={this.handleSubmit} className="btn btn-sm btn-primary">
-                            <b>Login</b>
-                        </button>
-                    <div className="btn-group select-time pull-right ">
-                    <Link to='reset'>
-                        <button type="button" className="btn btn-sm btn-default pull-right">
-                            <b>Forgot Password?</b>
-                        </button>
-                    </Link>
-                    <Link to='reset' query={{register:'true'}} >
-                        <button type="button" className="btn btn-sm btn-default pull-right">
-                            <b>Register</b>
-                        </button>
-                    </Link>
-                    </div>
+                        <div className="row">
+                            <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
+                                <button id="submit" type="button" onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive">
+                                    <b>Login</b>
+                                </button>
+                                <button type="button" className="btn btn-sm btn-default btn-responsive">
+                                    <Link to='reset' query={{register:'true'}} >
+                                        <b>Register</b>
+                                    </Link>
+                                </button>
+                            </div>
+                            
+                            <div className="col-lg-6 col-md-5 col-sm-12 col-xs-12">
+                                <button type="button" className="btn btn-sm btn-default btn-responsive pull-right">
+                                    <Link to='reset'>
+                                    <b>Forgot Password?</b>
+                                    </Link>
+                                </button>
+                            </div>
+                        </div>
                 </form>
             </div>
         );
