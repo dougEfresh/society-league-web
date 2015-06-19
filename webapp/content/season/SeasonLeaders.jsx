@@ -26,9 +26,14 @@ var SeasonLeaders = React.createClass({
             rows.push(
                 <tr key={d.user.id}>
                     <td><UserLink user={d.user}/>
-                        <Link id="request-link" to="challengeMain" query={{opponent: d.user.id}}>
-                            <button className="btn btn-xs btn-default btn-primary request">
+                        <Link id={"request-link-"+ d.user.id } to="challengeMain" query={{opponent: d.user.id}}>
+                            <button className="btn btn-xs btn-primary request ">
                                 <span className="glyphicon glyphicon-plus-sign"></span>
+                            </button>
+                        </Link>
+                        <Link id={"stats-link-" + d.user.id} to="stats" params={{statsId: d.user.id}}>
+                            <button className="btn btn-xs btn-info ">
+                                <span className="fa fa-bar-chart"/>
                             </button>
                         </Link>
                     </td>
