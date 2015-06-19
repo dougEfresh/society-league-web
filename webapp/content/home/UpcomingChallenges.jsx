@@ -8,9 +8,19 @@ var moment = require('moment');
 var Status = require('../../lib/Status');
 var slotDao = require('../../lib/SlotDao');
 var MatchDao = require('../../lib/dao/MatchDao');
+var util = require('../challenge/challengeUtil');
 
 var UpcomingChallenges = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
+    cancel: function(e) {
+        e.preventDefault();
+        var request = {
+            challenger: null,
+            opponent: null,
+            challenges: [{id: e.target.id}]
+        };
+        util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
+    },
     render: function() {
         if (this.getUser().id == 0) {
             return null;
@@ -36,10 +46,11 @@ var UpcomingChallenges = React.createClass({
                     </span>
                     </div>
                     <div className="col-lg-2 col-md-2 col-xs-12">
-                        <button type="button" className="btn btn-sm btn-danger btn-responsive">
-                            <Link to={Status.ACCEPTED.toLowerCase()}>
-                                <span className="glyphicon glyphicon-remove"></span> <b>Cancel</b>
-                            </Link>
+                        <button onClick={this.cancel}
+                                type="button"
+                                className="btn btn-sm btn-danger btn-responsive">
+                            <span  className="glyphicon glyphicon-remove"></span>
+                            <b id={match.getId()}>Cancel</b>
                         </button>
                     </div>
                 </li>

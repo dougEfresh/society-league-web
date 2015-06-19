@@ -16,17 +16,18 @@ var Status = require('../../lib/Status');
 var TeamMatch = require('../../lib/TeamMatch');
 var Result = require('../../lib/Result');
 
-var SeasonNav = React.createClass({
+var StatNav = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
     render: function() {
         return (
             <li id="stat-nav" className="main-item" role="presentation">
                 <Link className='scoutNav' to='stats' params={{statsId: this.getUserId()}}>
-                    <span className="fa fa-bar-chart"><span className="main-item">{ 'Stats'}</span></span>
+                    <span className="fa fa-bar-chart"/>
+                    <span className="main-item">Stats</span>&nbsp;
                 </Link>
             </li>
         );
     }
 });
 
-module.exports = SeasonNav;
+module.exports = StatNav;
