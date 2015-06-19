@@ -19,8 +19,12 @@ var Result = require('../../lib/Result');
 var StatNav = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
     render: function() {
+        var active = "";
+        if (this.isActive('scout') || this.isActive('stats')) {
+            active = "active";
+        }
         return (
-            <li id="stat-nav" className="main-item" role="presentation">
+            <li id="stat-nav" className={"main-item dropdown " + active} >
                 <Link className='scoutNav' to='stats' params={{statsId: this.getUserId()}}>
                     <span className="fa fa-bar-chart"/>
                     <span className="main-item">Stats</span>&nbsp;

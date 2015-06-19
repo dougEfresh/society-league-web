@@ -48,15 +48,13 @@ var StatApp = React.createClass({
                         </button>
                 </div>
         );
+        //<h3><span className="fa fa-bar-chart"></span>Stats</h3>
         return (
             <div id="scout-app" className="panel panel-default">
                 <div className="panel-heading">
-                     <h3><span className="fa fa-bar-chart"></span>Stats</h3>
                      {header}
                 </div>
-                <div className="panel-body">
-                    <RouteHandler />
-                </div>
+                <RouteHandler />
             </div>
         );
     }
