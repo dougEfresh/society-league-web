@@ -62,6 +62,21 @@ User.prototype.getChallengeHandicap = function() {
 };
 
 
+User.prototype.getRawChallengeHandicap = function() {
+    var seasons  = this.seasons;
+    for (var i=0; i< seasons.length ; i++) {
+        var s = seasons[i];
+        if (s.isActive() && s.isChallenge() && s.isNine()) {
+            if (this.handicaps[s.id] != undefined) {
+                return this.handicaps[s.id];
+            }
+        }
+    }
+    debugger;
+    return 'N/A';
+};
+
+
 User.prototype.isChallenge = function() {
     var challenge = false;
     this.seasons.forEach(function(s){

@@ -3,6 +3,7 @@ var ReactPropTypes = React.PropTypes;
 var Router = require('react-router');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../../jsx/mixins/SeasonMixin.jsx');
+var Handicap = require('../../../lib/Handicap');
 
 var ChallengeRequestOpponent = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,Router.Navigation,Router.State],
@@ -47,16 +48,24 @@ var ChallengeRequestOpponent = React.createClass({
                               value={opponent}
                               ref='opponents'
                               onChange={this.onChange} >
-                          {this.getOptions()}</select>
+                          {this.getOptions()}
+                      </select>
                     </div>
+                  <ChallengeRequestRace />
               </div>
         );
     }
 });
 
 var ChallengeRequestRace = React.createClass({
+    mixins: [UserContextMixin,SeasonMixin,Router.Navigation,Router.State],
     render: function() {
-
+        var q = this.getQuery();
+        if (q.opponent == undefined || q.opponent == 0)  {
+            return null;
+        }
+        var opponent = this.getUser(q.opponent);
+        return <span>Race: {Handicap.race(this.getUser().getRawChallengeHandicap(),opponent.getRawChallengeHandicap())}</span>
     }
 });
 
