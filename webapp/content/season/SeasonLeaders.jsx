@@ -25,7 +25,13 @@ var SeasonLeaders = React.createClass({
         data.forEach(function(d){
             rows.push(
                 <tr key={d.user.id}>
-                    <td><UserLink user={d.user}/></td>
+                    <td><UserLink user={d.user}/>
+                        <Link id="request-link" to="challengeMain" query={{opponent: d.user.id}}>
+                            <button className="btn btn-xs btn-default btn-primary request">
+                                <span className="glyphicon glyphicon-plus-sign"></span>
+                            </button>
+                        </Link>
+                    </td>
                     <td>{d.user.getCurrentHandicap(this.getParams().seasonId)}</td>
                     <td>{d.getPoints()}</td>
                     <td>{d.wins}</td>
