@@ -36,6 +36,7 @@ var ChallengeRequestOpponent = React.createClass({
     render: function() {
         var q = this.getQuery();
         var opponent = q.opponent != undefined ? q.opponent : 0;
+
         return (
               <div className="form-field form-group">
                   <div className="form-group">
@@ -50,6 +51,12 @@ var ChallengeRequestOpponent = React.createClass({
                     </div>
               </div>
         );
+    }
+});
+
+var ChallengeRequestRace = React.createClass({
+    render: function() {
+
     }
 });
 

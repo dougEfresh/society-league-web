@@ -169,14 +169,10 @@ var raceChart = {
 }
 };
 
-/*
 
-};
-*/
-/*
 var race = function(hc1,hc2) {
-
+    return raceChart[hc1][hc2][0] + '/' + raceChart[hc1][hc2][0];
 };
- */
+
 
 module.exports = {formatHandicap: formatHandicap};

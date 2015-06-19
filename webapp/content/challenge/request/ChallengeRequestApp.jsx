@@ -13,6 +13,7 @@ var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var ChallengeGroup = require('../../../lib/ChallengeGroup');
 var util = require('../challengeUtil');
 
+
 var ChallengeRequestApp = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
     componentDidMount: function () {
@@ -42,9 +43,45 @@ var ChallengeRequestApp = React.createClass({
 
         return errors;
     },
-    confirm: function() {
-        this.transitionTo('challengeMain',this.getParams(),this.getQuery());
+    challenge: function(e) {
+        e.preventDefault();
+        var opponent = { id: 0};
+        var c = util.convertToChallenge(this.getQuery());
+        opponent.id = c.opponent.userId;
+        var slots = [];
+        c.selectedSlots.forEach(function(s) {
+            var slot = { id: 0 };
+            slot.id = s.id;
+            slots.push(slot);
+        });
+        var nine = false;
+        var eight = false;
+        /*
+        c.selectedGames.forEach(function(g){
+            if (g == DivisionType.EIGHT_BALL_CHALLENGE)
+                eight = true;
+            if (g == DivisionType.NINE_BALL_CHALLENGE)
+                nine = true;
+        });
+        */
+        nine = true;
+        var request = {
+            challenger: {id : this.getUserId()},
+            opponent: opponent,
+            nine: nine,
+            eight: eight,
+            slots: slots
+        };
+        util.create(request,this._onAdd);
     },
+    _onAdd: function(d) {
+        console.log('onAdd');
+        DataStore.replaceUser(d);
+        this.transitionTo('challengeMain');
+    },
+   // confirm: function() {
+     //   this.transitionTo('challengeMain',this.getParams(),this.getQuery());
+    //},
     isValid: function() {
         return this.getErrors().length == 0;
     },
@@ -58,8 +95,8 @@ var ChallengeRequestApp = React.createClass({
         }
         var submit = (
             <Link to="challengeConfirm" params={this.getParams()} query={this.getQuery()}>
-                <button type="button" disabled={!this.isValid()} onClick={this.confirm} className="btn btn-default btn-lg success">
-                    <span className="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Confirm
+                <button type="button" disabled={!this.isValid()} onClick={this.challenge} className="btn btn-default btn-lg success">
+                    <span className="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Challenge!
                 </button>
             </Link>
         );
