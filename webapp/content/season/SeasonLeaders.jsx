@@ -31,13 +31,10 @@ var SeasonLeaders = React.createClass({
                         <Link id={"request-link-"+ d.user.id } to="challengeMain" query={{opponent: d.user.id}}>
                             <button className="btn btn-xs btn-primary">
                                 <span className="glyphicon glyphicon-plus-sign"></span>
+                                <span className="main-item">Challenge</span>
                             </button>
                         </Link>
-                        <Link id={"stats-link-" + d.user.id} to="stats" params={{statsId: d.user.id}}>
-                            <button className="btn btn-xs btn-info ">
-                                <span className="fa fa-bar-chart"/>
-                            </button>
-                        </Link></div>
+                    </div>
                     </td>
                     <td>{d.user.getCurrentHandicap(this.getParams().seasonId)}</td>
                     <td>{d.getPoints()}</td>

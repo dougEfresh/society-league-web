@@ -46,7 +46,7 @@ var SeasonApp = React.createClass({
                     
                     <button className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'}>
                         <Link to='seasonStandings' params={this.getParams()}>
-                            <span className="fa fa-trophy"></span><span className="main-item">{ ' Standings'}</span>
+                            <span className="fa fa-trophy"></span><span className="main-item">Standings</span>
                         </Link>
                     </button>
                     </div>
@@ -68,9 +68,7 @@ var SeasonApp = React.createClass({
                         <h3>{season.getDisplayName()}</h3>
                         {header}
                     </div>
-                    <div className="panel-body">
                         <RouteHandler />
-                    </div>
                 </div>
         );
     }
