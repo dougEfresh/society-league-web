@@ -30,9 +30,9 @@ var GroupList = React.createClass({
                 <tr>
                     <th>Action</th>
                     <th>Date</th>
-                    <th>Name</th>
-                    <th>Game</th>
                     <th>Times</th>
+                    <th>Name</th>
+                    <th>Race</th>
                 </tr>
                 </thead>
                 <tbody>

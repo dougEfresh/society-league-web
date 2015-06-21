@@ -33,13 +33,14 @@ var GroupRow = React.createClass({
                     {dateFormat(this.props.challengeGroup.date)}
                 </td>
                 <td>
+                    <GroupSlot type={this.props.type} challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
+
+                </td>
+                <td>
                     <div><UserLink user={this.getOpponent()} /><span> {' (' + this.getOpponent().getChallengeHandicap() + ')'}</span></div>
                 </td>
                 <td>
                     <GroupGame type={this.props.type} challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
-                </td>
-                <td>
-                    <GroupSlot type={this.props.type} challengeGroup={this.props.challengeGroup} noSelect={this.props.noSelect} />
                 </td>
             </tr>
         )

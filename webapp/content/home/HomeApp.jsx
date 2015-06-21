@@ -6,6 +6,7 @@ var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UpcomingChallenges = require('./UpcomingChallenges.jsx');
 var UpcomingMatches = require('./UpcomingMatches.jsx');
 var RecentMatches = require('./RecentMatches.jsx');
+var ChallengePendingApp = require('../challenge/pending/ChallengePendingApp.jsx');
 
 var HomeApp = React.createClass({
     mixins: [UserContextMixin],
@@ -43,6 +44,7 @@ var HomeApp = React.createClass({
                     {welcome}
                     {button}
                 </h2>
+                <ChallengePendingApp />
                 <UpcomingChallenges />
                 <RecentMatches />
             </div>

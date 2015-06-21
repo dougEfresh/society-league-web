@@ -2,9 +2,11 @@ var React = require('react/addons');
 var Router = require('react-router');
 var BallIcon = require('../../../jsx/components/BallIcon.jsx');
 var DivisionType = require('../../../lib/DivisionType');
+var Handicap = require('../../../lib/Handicap');
+var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 
 var GroupGame = React.createClass({
-    mixins: [Router.Navigation,Router.State],
+    mixins: [UserContextMixin,Router.Navigation,Router.State],
     onSelectGame: function() {
         var q = this.getQuery();
         q.id = this.props.challengeGroup.getId();
@@ -27,6 +29,12 @@ var GroupGame = React.createClass({
         return (<div>{games}</div>);
         */
         return <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} />
+    },
+    getOpponent: function() {
+        if (this.getUser().id == this.props.challengeGroup.opponent.id) {
+            return this.props.challengeGroup.challenger
+        }
+        return this.props.challengeGroup.opponent;
     },
     renderSelectOptions: function(){
         if (this.props.challengeGroup.games != undefined && this.props.challengeGroup.games.length == 1) {
@@ -53,7 +61,10 @@ var GroupGame = React.createClass({
     },
     render: function() {
         //if (this.props.noSelect)
-        return (<div>{this.renderNoSelect()}</div>);
+        var u = this.getUser();
+        var opponent = this.getUser(this.props.challengeGroup.opponent);
+        //return (<div>{this.renderNoSelect()}</div>);
+        return <span>{Handicap.race(u.getRawChallengeHandicap(),this.getOpponent().getRawChallengeHandicap())}</span>
         //return (<div>{this.renderSelectOptions()}</div>);
     }
 });
