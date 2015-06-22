@@ -9,6 +9,7 @@ var Status = require('../../lib/Status');
 var slotDao = require('../../lib/SlotDao');
 var MatchDao = require('../../lib/dao/MatchDao');
 var util = require('../challenge/challengeUtil');
+var Handicap = require('../../lib/Handicap');
 
 var UpcomingChallenges = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
@@ -36,13 +37,14 @@ var UpcomingChallenges = React.createClass({
             var match = upComingChallenges[i];
             var m = moment(match.selectedSlot.date);
             var opponent = match.getUserOpponent(this.getUser());
+            var hc = Handicap.race(this.getUser().getRawChallengeHandicap(), opponent.getRawChallengeHandicap());
             matches.push(
                 <li key={match.getId()} className="list-group-item col-lg-12 col-xs-12">
                     <div className="col-lg-10 col-md-10 col-xs-12">
                     <span id={'challenge-'+ match.getId()} className="next-match pull-left">
                         {m.format('ddd MMM Do ') + ' at '  + m.format('HH:mm a') + ' vs. '}
                         <UserLink user={opponent}/>
-                        <span>{' (' + opponent.getChallengeHandicap() + ')'}</span>
+                        <span>{' (' + opponent.getChallengeHandicap() + ' ' + hc + ') '}</span>
                     </span>
                     </div>
                     <div className="col-lg-2 col-md-2 col-xs-12">
