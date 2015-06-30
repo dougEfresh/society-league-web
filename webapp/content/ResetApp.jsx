@@ -16,7 +16,7 @@ var ResetApp = React.createClass({
             processData: false,
               dataType: 'json',
               contentType: 'application/json',
-            url:  window.location.pathname + 'api/reset/request',
+            url: '/api/reset/request',
             data: JSON.stringify({id: 0, login:  React.findDOMNode(this.refs.username).value.toLowerCase()}),
             method: 'post',
             success: function (d) {
@@ -29,22 +29,21 @@ var ResetApp = React.createClass({
     },
     handlePasswordReset: function(e){
         e.preventDefault();
-        var user = this.refs.username.getValue().toLowerCase();
-        var password = this.refs.password.getValue();
+        var user = React.findDOMNode(this.refs.username).value.toLowerCase();
+        var password = React.findDOMNode(this.refs.password).value;
         $.ajax({
             async: true,
             processData: false,
             dataType: 'json',
             contentType: 'application/json',
-            url: window.location.pathname + 'api/reset/password/' + this.getQuery().token,
+            url: '/api/reset/password/' + this.getQuery().token,
             data: JSON.stringify({login: user, password: password}),
             method: 'post',
             success: function (d) {
                 this.transitionTo('login', null, null);
             }.bind(this),
             error: function (xhr, status, err) {
-                this.setState({error: true});
-                console.error('authenticate', status, err.toString());
+                console.error('reset', status, err.toString());
             }.bind(this)
         });
     },
