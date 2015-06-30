@@ -41,7 +41,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
         console.log('Init DB');
         db.loaded = false;
         db.loading = true;
-        Util.getData('api/data', function(d) {
+        Util.getData('/api/data', function(d) {
             console.log('Got me some data');
             db.init(d);
             DataStore.emitChange();
@@ -113,7 +113,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
     },
     checkLogin: function() {
         console.log('Checking login stats');
-        Util.getData('api/user', function(d) {
+        Util.getData('/api/user', function(d) {
             if (d.userId != 0) {
                 console.log('User is logged');
                 _authUserId = d.userId;
@@ -124,7 +124,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
     challengeSignUp: function(id) {
         db.loading = true;
         console.log('Signing up ' + id);
-         Util.getData('api/challenge/signup/' + id, function(d) {
+         Util.getData('/api/challenge/signup/' + id, function(d) {
              DataStore.replaceUser(d);
         }.bind(this));
     }

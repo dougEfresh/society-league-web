@@ -31,7 +31,7 @@ var UserApp = React.createClass({
                 //$form.append($('<input type="hidden" name="stripeToken" />').val(token));
                 // and submit
                 //$form.get(0).submit();
-                Util.getData("api/billing/challenge/" + token + "/" + this.getUser().id, function(d) {
+                Util.getData("/api/billing/challenge/" + token + "/" + this.getUser().id, function(d) {
                     console.log(JSON.stringify(d));
                 });
             }
