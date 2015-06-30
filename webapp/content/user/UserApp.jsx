@@ -29,7 +29,7 @@ var UserApp = React.createClass({
                     {header}
                 </div>
                 <div className="panel-body">
-                <RouteHandler />
+                    <RouteHandler />
                 </div>
             </div>
         );

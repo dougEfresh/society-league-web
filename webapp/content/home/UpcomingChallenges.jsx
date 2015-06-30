@@ -59,6 +59,8 @@ var UpcomingChallenges = React.createClass({
             );
         }
         if (matches.length == 0) {
+            return null;
+            /*
             return (
                 <div id={'upcoming-challenges'} className="panel panel-default">
                     <div className="panel-heading" >Upcoming Challenges</div>
@@ -67,6 +69,7 @@ var UpcomingChallenges = React.createClass({
                         </div>
                 </div>
             )
+            */
         }
         return (
               <div id={'upcoming-challenges'} className="panel panel-default">

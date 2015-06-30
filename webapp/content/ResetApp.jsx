@@ -55,7 +55,7 @@ var ResetApp = React.createClass({
                     <h2 className="form-signin-heading">Reset Password</h2>
                     <div className="form-field form-group">
                         <div className="form-group">
-                            <input id="username" ref='username' type='input' name='username' placeholder='enter user name'> </input>
+                            <input id="username" ref='username' type='input' name='username' className="form-control" placeholder='enter user name'> </input>
                         </div>
                         <div className="form-group">
                             <input className="form-control" id="password" ref='password' type='password' name='password' placeholder='enter password'> </input>
@@ -64,7 +64,7 @@ var ResetApp = React.createClass({
                             <input className="form-control" id="confirm-password" ref='confirm-password' type='password' name='confirm-password' placeholder='re-enter password'> </input>
                         </div>
                     </div>
-                    <Button id='submit' onClick={this.handlePasswordReset} >Reset</Button>
+                    <button id='submit' className="btn btn-default" onClick={this.handlePasswordReset}>Reset</button>
                 </form>
             </div>
         );
@@ -81,6 +81,9 @@ var ResetApp = React.createClass({
         if (q.passwordReset != undefined) {
             return this.renderSentReset();
         }
+        if (q.token != undefined) {
+            return this.renderReset();
+        }
         var title = q.changePassword == undefined ? 'Reset Password' : 'Change Password';
         if (q.register != undefined) {
             title = "Register";
@@ -91,7 +94,7 @@ var ResetApp = React.createClass({
                     <h2 className="form-signin-heading">{title}</h2>
                     <div className="form-field form-group">
                         <div className="form-group">
-                             <input id="username" ref='username' type='input' name='username' className="form-control" placeholder='enter user name'> </input>
+                            <input id="username" ref='username' type='input' name='username' className="form-control" placeholder='enter user name'> </input>
                          </div>
                     </div>
                     <button id='submit' className="btn btn-default" onClick={this.handleSubmit}>{title}</button>

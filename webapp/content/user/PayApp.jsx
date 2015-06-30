@@ -9,7 +9,7 @@ var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
-
+var Util = require('../../jsx/util.jsx');
 
 var UserApp = React.createClass({
     mixins: [UserContextMixin, State, Navigation],
@@ -31,9 +31,11 @@ var UserApp = React.createClass({
                 //$form.append($('<input type="hidden" name="stripeToken" />').val(token));
                 // and submit
                 //$form.get(0).submit();
-                console.log(JSON.stringify(response));
+                Util.getData("api/billing/challenge/" + token + "/" + this.getUser().id, function(d) {
+                    console.log(JSON.stringify(d));
+                });
             }
-        });
+        }.bind(this));
     },
     render: function () {
         return (
@@ -76,3 +78,4 @@ var UserApp = React.createClass({
 });
 
 module.exports = UserApp;
+

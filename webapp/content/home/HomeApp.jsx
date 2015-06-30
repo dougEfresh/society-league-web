@@ -7,6 +7,7 @@ var UpcomingChallenges = require('./UpcomingChallenges.jsx');
 var UpcomingMatches = require('./UpcomingMatches.jsx');
 var RecentMatches = require('./RecentMatches.jsx');
 var ChallengePendingApp = require('../challenge/pending/ChallengePendingApp.jsx');
+var ChallengeSignUp = require('../challenge/ChallengeSignUp.jsx');
 
 var HomeApp = React.createClass({
     mixins: [UserContextMixin],
@@ -36,7 +37,10 @@ var HomeApp = React.createClass({
                     <b>Request</b></button>
                 </Link>
         }
-
+        var signUp = null;
+        if (!this.getUser().isChallenge()) {
+            signUp = <ChallengeSignUp />;
+        }
         return (
             <div id="home-app">
                 <h2 className="welcome" >
@@ -45,6 +49,7 @@ var HomeApp = React.createClass({
                     {button}
                 </h2>
                 <ChallengePendingApp />
+                {signUp}
                 <UpcomingChallenges />
                 <RecentMatches />
             </div>

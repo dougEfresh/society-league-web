@@ -13,7 +13,8 @@ var PayApp = require('./PayApp.jsx');
 
 var UserInfo = React.createClass({
     render: function() {
-        return (<div id="user-info-app"><PayApp /></div>);
+        return (<div id="user-info-app"><h3>Coming Soon</h3></div>);
+        //return (<div id="user-info-app"><PayApp /></div>);
     }
 });
 
