@@ -11,12 +11,16 @@ var ResetApp = React.createClass({
     },
     handleSubmit: function(e){
         e.preventDefault();
+        var url = '/api/reset/request';
+        if (this.getQuery().register != undefined) {
+            url =  '/api/reset/register';
+        }
         $.ajax({
             async: true,
             processData: false,
               dataType: 'json',
               contentType: 'application/json',
-            url: '/api/reset/request',
+            url: url,
             data: JSON.stringify({id: 0, login:  React.findDOMNode(this.refs.username).value.toLowerCase()}),
             method: 'post',
             success: function (d) {
