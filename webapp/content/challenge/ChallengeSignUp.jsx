@@ -31,7 +31,7 @@ var SignUp = React.createClass({
                  <div className="panel-heading" ><h1>Challenge League</h1></div>
                  <div className="panel-body challenge-content" >
                     <h2>
-                        The Challenge league is an individual 9 ball league.
+                        The Top Gun league is an individual 9 ball league.
                     </h2>
                      <h2>Requesting a Challenge</h2>
                      <p>
