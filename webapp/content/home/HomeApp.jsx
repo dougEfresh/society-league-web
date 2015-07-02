@@ -28,7 +28,7 @@ var HomeApp = React.createClass({
             return null;
         }
         var welcome = <Link to='info' params={{userId: this.getUser().userId}}>
-            <span id="welcome-name">{'Welcome ' + this.getUser().fName}</span> </Link>
+            <span id="welcome-name">{'Welcome ' + this.getUser().fName + ' (' + this.getUser().getChallengeHandicap() + ')'}</span> </Link>
         var button = null;
         if (this.getUser().isChallenge()) {
             button =  <Link id="request-link" to="challengeMain">

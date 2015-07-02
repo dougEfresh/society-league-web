@@ -152,6 +152,7 @@ Database.prototype.processUser = function(user,userData) {
 Database.prototype.processData = function (d) {
     var id;
     var start = moment();
+    this.data.slots = [];
     for (id in d.divisions) {
         this.data.divisions.push(new Division(id, d.divisions[id].type));
     }
