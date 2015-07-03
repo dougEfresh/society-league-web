@@ -49,7 +49,6 @@ var HomeApp = React.createClass({
                     {button}
                 </h2>
                 <ChallengePendingApp />
-                {signUp}
                 <UpcomingChallenges />
                 <RecentMatches />
             </div>

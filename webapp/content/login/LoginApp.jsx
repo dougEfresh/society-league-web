@@ -51,7 +51,7 @@ var LoginApp = React.createClass({
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="form-field form-group">
                             <div  className="form-group">
-                                <input ref='username' id="username" type="input" name="username" placeholder="enter user name" className="form-control"/>
+                                <input ref='username' id="username" type="input" name="username" placeholder="enter email" className="form-control"/>
                             </div>
                             <div className="form-group">
                             <input ref='password' id="password" ref='password' type='password' name='password' placeholder='enter password'className="form-control" > </input>
@@ -62,19 +62,19 @@ var LoginApp = React.createClass({
                                 <button onKeyDown={this.handleSubmit} id="submit" type="button"   onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive">
                                     <b>Login</b>
                                 </button>
+                                <Link to='register'  >
                                 <button type="button" className="btn btn-sm btn-default btn-responsive">
-                                    <Link to='reset' query={{register:'true'}} >
                                         <b>Register</b>
-                                    </Link>
                                 </button>
+                                </Link>
                             </div>
                             
                             <div className="col-lg-6 col-md-5 col-sm-12 col-xs-12">
+                                <Link to='reset'>
                                 <button type="button" className="btn btn-sm btn-default btn-responsive pull-right">
-                                    <Link to='reset'>
                                     <b>Forgot Password?</b>
-                                    </Link>
                                 </button>
+                                </Link>
                             </div>
                         </div>
                 </form>
