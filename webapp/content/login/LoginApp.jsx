@@ -56,6 +56,7 @@ var LoginApp = React.createClass({
                             <div className="form-group">
                             <input ref='password' id="password" ref='password' type='password' name='password' placeholder='enter password'className="form-control" > </input>
                             </div>
+                            <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>
                         </div>
                         <div className="row">
                             <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
