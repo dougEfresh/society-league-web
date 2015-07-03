@@ -37,8 +37,8 @@ var SignUp = React.createClass({
                      <p>
                         <ol className="request-directions">
                             <li>Click the 
-                                <button className="btn btn-default btn-success request-signup">
-                                    <span className="glyphicon glyphicon-plus-sign"></span><b>Request</b>
+                                <button className="btn btn-default btn-primary request-signup">
+                                    <span className="glyphicon glyphicon-plus-sign"></span><b>Challenge</b>
                                 </button> button
                             </li>
                             <li>Choose a Date</li>
@@ -48,9 +48,9 @@ var SignUp = React.createClass({
                         </ol>
                      </p>
                       <p>A notification is sent to your opponent which they can accept or decline.</p>
-                     <p>Click the sign up button below to begin challenging other users</p>
+                     <p>Click the Register button below to begin challenging other users</p>
                      <div classnName="panel-footer">
-                     <button onClick={this.onClick} className='btn btn-primary'>Sign up now</button>
+                     <button onClick={this.onClick} className='btn btn-success btn-lg'>Register Today!</button>
                  </div>
                  </div>
              </div>

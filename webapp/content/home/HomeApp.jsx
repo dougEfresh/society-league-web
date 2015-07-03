@@ -34,7 +34,7 @@ var HomeApp = React.createClass({
             button =  <Link id="request-link" to="challengeMain">
                 <button className="btn btn-default btn-primary request">
                     <span className="glyphicon glyphicon-plus-sign"></span>
-                    <b>Request</b></button>
+                    <b>Challenge</b></button>
                 </Link>
         }
         var signUp = null;

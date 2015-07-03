@@ -46,30 +46,36 @@ var StatApp = React.createClass({
         });
 
         var header = (
-            <div className="btn-group bot-margin">
-                <Link to='stats' params={this.getParams()}>
-                    <button className={this.isActive('stats') ? 'btn btn-success' : 'btn btn-default'}>
-                        <span className="fa fa-bar-chart"></span>
-                        <span className="main-item">Stats</span>&nbsp;
+            <div className="row">
+            <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                <div className="col-lg-6 col-md-6 col-xs-12 no-pad">
+                    <select ref='user' onChange={this.changeUser}
+                           className="form-control"
+                           value={this.getParams().statsId}
+                           type={'select'}>
+                       {challengeUsers}
+                    </select>
+                </div>
+                <div className="btn-group col-lg-6 col-md-6 col-xs-12 stats-btn">
+                    <button className={this.isActive('stats') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
+                        <Link to='stats' params={this.getParams()}>
+                            <span className="fa fa-bar-chart"></span>Stats
+                        </Link>
                     </button>
-                </Link>
-                <Link to='history' params={this.getParams()}>
-                    <button className={this.isActive('history') ? 'btn btn-success' : 'btn btn-default'}>
-                        <span className="fa fa-history"></span><span className="main-item"> History</span>&nbsp;
+                    <button className={this.isActive('history') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
+                        <Link to='history' params={this.getParams()}>
+                            <span className="fa fa-history"></span>History
+                        </Link>
                     </button>
-                </Link>
-               <select ref='user' onChange={this.changeUser}
-                       className="form-control"
-                       value={this.getParams().statsId}
-                       type={'select'}>
-                   {challengeUsers}
-               </select>
-                <Link id={"request-link-"+ this.getParams().statsId } to="challengeMain" query={{opponent:this.getParams().statsId}}>
-                    <button className="btn btn-xs btn-primary">
-                        <span className="glyphicon glyphicon-plus-sign"></span>
-                        <span className="main-item">Challenge</span>
-                    </button>
-                </Link>
+                </div>
+            </div>
+            <div className="bot-margin col-lg-2 col-md-2 col-sm-12 col-xs-12">
+               <button className="btn btn-primary btn-responsive">
+                        <Link id={"request-link-"+ this.getParams().statsId } to="challengeMain" query={{opponent:this.getParams().statsId}}>
+                            <span className="glyphicon glyphicon-plus-sign"></span>Challenge
+                        </Link>
+                </button>
+            </div>
             </div>
         );
         //<h3><span className="fa fa-bar-chart"></span>Stats</h3>
@@ -78,7 +84,9 @@ var StatApp = React.createClass({
                 <div className="panel-heading">
                      {header}
                 </div>
-                <RouteHandler />
+                <div className="panel-body">
+                    <RouteHandler />
+                </div>
             </div>
         );
     }
