@@ -45,6 +45,10 @@ var LoginApp = React.createClass({
     },
     render: function () {
         var error = this.getQuery().error == 'true';
+        var errorMsg = null;
+        if (error) {
+            errorMsg = <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>;
+        }
         return (
             <div onKeyDown={this.handleSubmit} id="login-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form id='login' className="login-form form-signin">
@@ -56,7 +60,7 @@ var LoginApp = React.createClass({
                             <div className="form-group">
                             <input ref='password' id="password" ref='password' type='password' name='password' placeholder='enter password'className="form-control" > </input>
                             </div>
-                            <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>
+                            {errorMsg}
                         </div>
                         <div className="row">
                             <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
