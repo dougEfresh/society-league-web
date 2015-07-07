@@ -315,13 +315,14 @@ Database.prototype.processData = function (d) {
         }.bind(this));
     }.bind(this));
     console.log('UseResults '  + start.diff(moment()));
-
+    if (d.slots != undefined) {
     d.slots.forEach(function (s) {
         var slot = this.findSlot(s.id);
         if (slot == undefined) {
             this.data.slots.push(new Slot(s.id, s.localDateTime, s.allocated));
         }
     }.bind(this));
+    }
 
     this.data.users.push(User.DEFAULT_USER);
 
