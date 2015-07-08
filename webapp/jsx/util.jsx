@@ -22,7 +22,7 @@ function getData(url, callback) {
                 401: function () {
                     console.log('I Need to Authenticate');
                     if (this.context.router.getCurrentPathname().indexOf('login') == -1) {
-                        //this.redirect('login');
+                        this.redirect('login');
                     }
                 }.bind(this)
             },

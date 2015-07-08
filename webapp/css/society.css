@@ -20,6 +20,10 @@ span.nineBall.badge {
 	color: black; !important;
 }
 
+.slot-time {
+	min-width: 20px;
+}
+
 .wrap {
 	padding: 0px 0px;
 }

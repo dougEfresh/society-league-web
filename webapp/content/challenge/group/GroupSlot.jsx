@@ -39,7 +39,7 @@ var GroupSlot = React.createClass({
         return (
              <form id="request-game">
                   <div className="form-field form-group">
-                      <div className="form-group">
+                      <div className="form-group slot-time">
                           <select ref='slot' onChange={this.onSelectSlot}
                                   className="form-control"
                                   value={q.selectedSlot}
