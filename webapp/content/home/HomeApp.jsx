@@ -28,13 +28,13 @@ var HomeApp = React.createClass({
             return null;
         }
         var welcome = <Link to='info' params={{userId: this.getUser().userId}}>
-            <span id="welcome-name">{'Welcome ' + this.getUser().fName}</span> </Link>
+            <span id="welcome-name">{'Welcome ' + this.getUser().fName + ' (' + this.getUser().getChallengeHandicap() + ')'}</span> </Link>
         var button = null;
         if (this.getUser().isChallenge()) {
             button =  <Link id="request-link" to="challengeMain">
                 <button className="btn btn-default btn-primary request">
                     <span className="glyphicon glyphicon-plus-sign"></span>
-                    <b>Request</b></button>
+                    <b>Challenge</b></button>
                 </Link>
         }
         var signUp = null;
@@ -49,7 +49,6 @@ var HomeApp = React.createClass({
                     {button}
                 </h2>
                 <ChallengePendingApp />
-                {signUp}
                 <UpcomingChallenges />
                 <RecentMatches />
             </div>

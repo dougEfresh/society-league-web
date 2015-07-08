@@ -23,6 +23,9 @@ var ChallengeRequestSlots = React.createClass({
                 slotsOnDay.push(slots[i]);
             }
         }
+        slotsOnDay = slotsOnDay.sort(function(a,b){
+           return a.getTime().localeCompare(b.getTime());
+        });
         slotsOnDay.forEach(function (s) {
                 buttons.push(
                     <SlotButton any={q.anyTime == 1}
@@ -30,11 +33,18 @@ var ChallengeRequestSlots = React.createClass({
                                 slot={s} />
                 );
             }.bind(this));
-        return (
-            <div className="btn-group select-time">
-                {buttons}
-            </div>
-        );
+        if (buttons.length == 0) {
+            return (
+                <div className="btn-group select-time">
+                    <span>No available times for this date. Please select another date</span>
+                </div>
+            );
+        }
+          return (
+                <div className="btn-group select-time">
+                    {buttons}
+                </div>
+            );
     }
 });
 

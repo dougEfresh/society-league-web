@@ -152,6 +152,7 @@ Database.prototype.processUser = function(user,userData) {
 Database.prototype.processData = function (d) {
     var id;
     var start = moment();
+    this.data.slots = [];
     for (id in d.divisions) {
         this.data.divisions.push(new Division(id, d.divisions[id].type));
     }
@@ -314,13 +315,14 @@ Database.prototype.processData = function (d) {
         }.bind(this));
     }.bind(this));
     console.log('UseResults '  + start.diff(moment()));
-
+    if (d.slots != undefined) {
     d.slots.forEach(function (s) {
         var slot = this.findSlot(s.id);
         if (slot == undefined) {
             this.data.slots.push(new Slot(s.id, s.localDateTime, s.allocated));
         }
     }.bind(this));
+    }
 
     this.data.users.push(User.DEFAULT_USER);
 

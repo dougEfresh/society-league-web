@@ -3,6 +3,7 @@ var ReactPropTypes = React.PropTypes;
 var UserContextMixin  = require('../../../jsx/mixins/UserContextMixin.jsx');
 var Util  = require('../../../jsx/util.jsx');
 var moment = require('moment');
+var Datastore = require('../../../jsx/stores/DataStore.jsx');
 
 var Router = require('react-router')
     ,Link = Router.Link
@@ -11,6 +12,7 @@ var Router = require('react-router')
 var ChallengeRequestDate = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
     getOptions: function(){
+        var slots = Datastore.getSlots();
         var nextChallengeDate = Util.nextChallengeDate();
         var dates = [];
         var q = this.getQuery();

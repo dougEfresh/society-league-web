@@ -10,7 +10,9 @@ a:hover, a:active {
 #leagueApp > .eightBall {
 	background-color: black; !important;
 }
-
+.no-pad {
+	padding: 0px 0px;
+}
 span.eightBall.badge {
 	background-color: black; !important;
 }
@@ -444,6 +446,9 @@ ol.request-directions li {
 	text-align:right;
 
 }
+.stats-btn {
+	padding: 0px 0px;
+}
 @media (min-width: 768px) {
 .wrap {
 	min-width: 940px;
@@ -540,6 +545,9 @@ ol.request-directions li {
 }
 button.confirm-request {
 	width: auto;
+}
+.stats-btn {
+	padding: 0px 0px 0px 10px;
 }
 .footer .container li {
 	float: left;

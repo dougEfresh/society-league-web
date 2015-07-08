@@ -4,17 +4,14 @@ var UserContextMixin = require('./../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../jsx/stores/DataStore.jsx');
 var User = require('../lib/User');
 
-var ResetApp = React.createClass({
+var RegisterApp = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
     contextTypes: {
         router: React.PropTypes.func
     },
     handleSubmit: function(e){
         e.preventDefault();
-        var url = '/api/reset/request';
-        if (this.getQuery().register != undefined) {
-            url =  '/api/reset/register';
-        }
+        var url = '/api/reset/register';
         $.ajax({
             async: true,
             processData: false,
@@ -40,7 +37,7 @@ var ResetApp = React.createClass({
             processData: false,
             dataType: 'json',
             contentType: 'application/json',
-            url: '/api/reset/password/' + this.getQuery().token,
+            url: '/api/reset/register/challenge/' + this.getQuery().token,
             data: JSON.stringify({login: user, password: password}),
             method: 'post',
             success: function (d) {
@@ -72,25 +69,12 @@ var ResetApp = React.createClass({
             </div>
         );
     },
-    renderSentReset: function() {
-        return (
-            <div id="reset-sent-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
-                <h4>See email for a password reset link</h4>
-            </div>
-        );
-    },
-    render: function () {
+      render: function () {
         var q = this.getQuery();
-        if (q.passwordReset != undefined) {
-            return this.renderSentReset();
-        }
-        if (q.token != undefined) {
+          if (q.token != undefined) {
             return this.renderReset();
         }
-        var title = q.changePassword == undefined ? 'Reset Password' : 'Change Password';
-        if (q.register != undefined) {
-            title = "Register";
-        }
+        var title = "Register";
         return (
             <div id="reset-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
                 <form id='reset' className="login-form form-signin">
@@ -108,4 +92,4 @@ var ResetApp = React.createClass({
 });
 
 
-module.exports = ResetApp;
+module.exports = RegisterApp;
