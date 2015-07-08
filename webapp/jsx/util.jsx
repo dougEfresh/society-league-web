@@ -21,7 +21,7 @@ function getData(url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    window.location = '/#/login'
+                    window.location = '/#/login?expired=true'
                 }
             },
             success: function (d) {
@@ -48,7 +48,7 @@ function sendData(data, url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    window.location = '/#/login'
+                    window.location = '/#/login?expired=true'
                 }
             },
             success: function (d) {
