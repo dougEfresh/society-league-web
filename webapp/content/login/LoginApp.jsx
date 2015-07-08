@@ -44,10 +44,13 @@ var LoginApp = React.createClass({
         });
     },
     render: function () {
-        var error = this.getQuery().error == 'true';
         var errorMsg = null;
-        if (error) {
+        if (this.getQuery().error == 'true') {
             errorMsg = <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>;
+        }
+
+        if (this.getQuery().expired == 'true') {
+            errorMsg = <div className="form-group alert alert-danger" role="alert">Session Expired. Please login again.</div>;
         }
         return (
             <div onKeyDown={this.handleSubmit} id="login-app" className="login-container well col-lg-5 col-md-5 col-sm-6">

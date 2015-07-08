@@ -25,7 +25,7 @@ function getData(url, callback) {
                     DataStore.setLoading(false);
                     DataStore.resetAuth();
                     window.location = '/#/login?expired=true'
-                }
+                }.bind(this)
             },
             success: function (d) {
                 callback(d);
@@ -55,7 +55,7 @@ function sendData(data, url, callback) {
                     DataStore.setLoading(false);
                     DataStore.resetAuth();
                     window.location = '/#/login?expired=true'
-                }
+                }.bind(this)
             },
             success: function (d) {
                 console.log("Got " + JSON.stringify(d) + " back from server");

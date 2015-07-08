@@ -68,7 +68,7 @@ var c = function queryToChallengeGroup(q) {
                     DataStore.setLoading(false);
                     DataStore.resetAuth();
                     window.location = '/#/login?expired=true';
-                }
+                }.bind(this)
             },
             success: function (d) {
                 return cb(d);
@@ -100,7 +100,7 @@ var sendStatus = function (url,data) {
                     DataStore.resetAuth();
                     window.location = '/#/login?expired=true';
                     //this.redirect('login');
-                }
+                }.bind(this)
             },
             success: function (d) {
                 DataStore.replaceUser(d);
