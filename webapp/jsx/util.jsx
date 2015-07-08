@@ -1,5 +1,5 @@
 var moment = require('moment');
-
+var DataStore = require('./stores/DataStore.jsx');
 /**
  * Figure out the next challenge day (which is Sunday)
  */
@@ -21,6 +21,9 @@ function getData(url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
+                    DataStore.setLoaded(false);
+                    DataStore.setLoading(false);
+                    DataStore.resetAuth();
                     window.location = '/#/login?expired=true'
                 }
             },
@@ -48,6 +51,9 @@ function sendData(data, url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
+                    DataStore.setLoaded(false);
+                    DataStore.setLoading(false);
+                    DataStore.resetAuth();
                     window.location = '/#/login?expired=true'
                 }
             },

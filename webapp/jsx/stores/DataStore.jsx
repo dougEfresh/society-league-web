@@ -94,6 +94,15 @@ var DataStore = assign({}, EventEmitter.prototype, {
     isLoaded: function() {
         return db.loaded;
     },
+    setLoading: function(loading) {
+        db.loading = loading;
+    },
+    setLoaded: function(loaded) {
+        db.loaded = loaded;
+    },
+    resetAuth: function() {
+        _authUserId = 0;
+    },
     isAuthenticated: function() {
         return _authUserId > 0;
     },
