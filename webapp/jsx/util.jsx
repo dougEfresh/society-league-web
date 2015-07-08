@@ -21,10 +21,8 @@ function getData(url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    if (this.context.router.getCurrentPathname().indexOf('login') == -1) {
-                        this.redirect('login');
-                    }
-                }.bind(this)
+                    window.location = '/#/login'
+                }
             },
             success: function (d) {
                 callback(d);
@@ -50,7 +48,7 @@ function sendData(data, url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    //this.redirect('login');
+                    window.location = '/#/login'
                 }
             },
             success: function (d) {
