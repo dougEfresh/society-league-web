@@ -64,9 +64,6 @@ var c = function queryToChallengeGroup(q) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    DataStore.setLoaded(false);
-                    DataStore.setLoading(false);
-                    DataStore.resetAuth();
                     window.location = '/#/login?expired=true';
                 }.bind(this)
             },
@@ -95,9 +92,6 @@ var sendStatus = function (url,data) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    DataStore.setLoaded(false);
-                    DataStore.setLoading(false);
-                    DataStore.resetAuth();
                     window.location = '/#/login?expired=true';
                     //this.redirect('login');
                 }.bind(this)

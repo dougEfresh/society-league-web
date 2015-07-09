@@ -52,6 +52,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
             if (db.loading == true) {
                 return;
             }
+            console.log('Reloading data');
             db.loading = true;
             _updateTime = Date.now();
             DataStore.init();

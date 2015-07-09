@@ -44,6 +44,9 @@ var LoginApp = React.createClass({
         });
     },
     render: function () {
+        DataStore.setLoaded(false);
+        DataStore.setLoading(false);
+        DataStore.resetAuth();
         var errorMsg = null;
         if (this.getQuery().error == 'true') {
             errorMsg = <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>;

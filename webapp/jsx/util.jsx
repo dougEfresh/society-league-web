@@ -21,9 +21,6 @@ function getData(url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    DataStore.setLoaded(false);
-                    DataStore.setLoading(false);
-                    DataStore.resetAuth();
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
@@ -51,9 +48,6 @@ function sendData(data, url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    DataStore.setLoaded(false);
-                    DataStore.setLoading(false);
-                    DataStore.resetAuth();
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
