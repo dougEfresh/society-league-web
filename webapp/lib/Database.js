@@ -18,7 +18,8 @@ function resetData() {
         users: [],
         teamMatches: [],
         results: [],
-        slots: []
+        slots: [],
+        challenges: []
     }
 }
 
@@ -324,6 +325,14 @@ Database.prototype.processData = function (d) {
     }.bind(this));
     }
 
+    if (d.challenges != undefined) {
+        this.data.challenges = [];
+        d.challenges.forEach(function(c) {
+            var ch = this.findUser(c.challenger);
+            var op = this.findUser(c.opponent);
+            this.data.challenges.push(new Challenge(c.id,ch,op,this.findSlot(c.slot.id),c.game,c.status));
+        }.bind(this))
+    }
     this.data.users.push(User.DEFAULT_USER);
 
     console.log('Created ' + this.data.divisions.length + ' divisions');
@@ -376,6 +385,11 @@ Database.prototype.getTeamMatches= function () {
 };
 Database.prototype.getSlots= function () {
     return this.data.slots;
+};
+
+
+Database.prototype.getChallenges = function () {
+    return this.data.challenges;
 };
 
 Database.prototype.replaceUser= function (user) {

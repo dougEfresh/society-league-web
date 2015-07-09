@@ -88,6 +88,9 @@ var DataStore = assign({}, EventEmitter.prototype, {
     getDb: function() {
         return db;
     },
+    getChallenges: function() {
+        return db.getChallenges();
+    },
     isLoading: function() {
         return db.loading;
     },

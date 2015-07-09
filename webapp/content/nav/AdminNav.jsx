@@ -27,10 +27,16 @@ var AdminNav = React.createClass({
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
+                    <Link className='navName' to='challenges'>
+                        <span className="fa fa-trophy"></span>Challenges
+                    </Link>
+                    </li>
+                    <li className="teamNavLink" role="presentation">
                         <Link className='navName' to='home'>
                             <span className="fa fa-users"></span>Teams
                         </Link>
                     </li>
+
                     <li className="teamNavLink" role="presentation">
                         <Link to='reset' query={{changePassword: true}}>
                             <span className="fa fa-server"></span>Seasons

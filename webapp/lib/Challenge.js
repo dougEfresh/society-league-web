@@ -1,6 +1,7 @@
 function Challenge(id,challenge,opponent,slot,game,status) {
     this.id = id;
     this.challenge = challenge;
+    this.challenger = challenge;
     this.opponent = opponent;
     this.slot = slot;
     this.game = game;
@@ -9,6 +10,7 @@ function Challenge(id,challenge,opponent,slot,game,status) {
 
 Challenge.prototype.id = function()  { return this.id; };
 Challenge.prototype.challenge = function()  { return this.challenge; };
+Challenge.prototype.challenger = function()  { return this.challenger; };
 Challenge.prototype.opponent = function()  { return this.opponent; };
 Challenge.prototype.slot = function()  { return this.slot; };
 Challenge.prototype.game = function()  { return this.game; };

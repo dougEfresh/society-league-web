@@ -44,6 +44,7 @@ var UserApp  = require('./content/user/UserApp.jsx');
 var UserPasswordApp = require('./content/user/UserPasswordApp.jsx');
 var PayApp = require('./content/user/PayApp.jsx');
 var UserInfo= require('./content/user/UserInfo.jsx');
+var ChallengesApp = require('./content/admin/Challenges.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -81,6 +82,7 @@ var routes = (
             <Route name="admin" path="admin" handler={AdminApp} >
                 <Route name="createUser" path="create/user" handler={CreateUser} />
                 <Route name="createUserSuccess" path="create/user/status" handler={CreateUserSuccess} />
+                <Route name="challenges" path="challenges" handler={ChallengesApp} />
             </Route>
             <Route name="user" path="user/:userId"  handler={UserApp}>
                 <Route name="info" path="info" handler={UserInfo} />
