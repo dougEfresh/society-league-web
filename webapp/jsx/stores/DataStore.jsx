@@ -132,7 +132,9 @@ var DataStore = assign({}, EventEmitter.prototype, {
                 _authUserId = d.userId;
                 DataStore.emitChange();
             }
-        }.bind(this));
+        }.bind(this), function(d) {
+
+        });
     },
     challengeSignUp: function(id) {
         db.loading = true;

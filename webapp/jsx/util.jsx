@@ -13,7 +13,7 @@ function getNextChallengeDay() {
     console.error('Could not find next challenge date');
 }
 
-function getData(url, callback) {
+function getData(url, callback, unauthCallback) {
         console.log("Getting data from " + url);
         $.ajax({
             url: url,
@@ -21,6 +21,10 @@ function getData(url, callback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
+                    if (unauthCallback) {
+                        unauthCallback();
+                        return;
+                    }
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
