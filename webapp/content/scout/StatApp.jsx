@@ -57,16 +57,16 @@ var StatApp = React.createClass({
                     </select>
                 </div>
                 <div className="btn-group col-lg-6 col-md-6 col-xs-12 stats-btn">
-                    <button className={this.isActive('stats') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
-                        <Link to='stats' params={this.getParams()}>
+                    <Link to='stats' params={this.getParams()}>
+                        <button className={this.isActive('stats') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
                             <span className="fa fa-bar-chart"></span>Stats
-                        </Link>
-                    </button>
+                        </button>
+                    </Link>
+                    <Link to='history' params={this.getParams()}>
                     <button className={this.isActive('history') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
-                        <Link to='history' params={this.getParams()}>
                             <span className="fa fa-history"></span>History
-                        </Link>
                     </button>
+                    </Link>
                 </div>
             </div>
             <div className="bot-margin col-lg-2 col-md-2 col-sm-12 col-xs-12">
