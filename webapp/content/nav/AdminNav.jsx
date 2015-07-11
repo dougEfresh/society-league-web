@@ -23,23 +23,17 @@ var AdminNav = React.createClass({
                 <ul className="dropdown-menu" role="menu">
                     <li className="teamNavLink" role="presentation">
                         <Link className='navName' to='createUser' params={{userId: this.getUserId()}} >
-                            <span className="fa fa-users"></span>Create User
+                            <span className="fa fa-user"></span>Create User
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
-                    <Link className='navName' to='challenges'>
-                        <span className="fa fa-trophy"></span>Challenges
-                    </Link>
-                    </li>
-                    <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='home'>
-                            <span className="fa fa-users"></span>Teams
+                        <Link className='navName' to='challenges'>
+                            <span className="fa fa-trophy"></span>Challenges
                         </Link>
                     </li>
-
                     <li className="teamNavLink" role="presentation">
-                        <Link to='reset' query={{changePassword: true}}>
-                            <span className="fa fa-server"></span>Seasons
+                        <Link className='navName' to='challengeUsers' >
+                            <span className="fa fa-users"></span>Challenge Users
                         </Link>
                     </li>
                 </ul>
