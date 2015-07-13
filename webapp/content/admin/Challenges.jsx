@@ -4,6 +4,7 @@ var Router = require('react-router')
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
+var Handicap = require('../../lib/Handicap');
 
 var Challenges = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
@@ -34,6 +35,7 @@ var Challenges = React.createClass({
                 <td>{c.status}</td>
                 <td><UserLink user={c.challenger} /></td>
                 <td><UserLink user={c.opponent} /></td>
+                <td>{Handicap.race(c.challenger.getRawChallengeHandicap(),c.opponent.getRawChallengeHandicap())}</td>
                 <td>{c.slot.getFullDate()} </td>
             </tr>)
         });
@@ -42,6 +44,7 @@ var Challenges = React.createClass({
                 <td>{c.status}</td>
                 <td><UserLink user={c.challenger} /></td>
                 <td><UserLink user={c.opponent} /></td>
+                <td>{Handicap.race(c.challenger.getRawChallengeHandicap(),c.opponent.getRawChallengeHandicap())}</td>
                 <td>{c.slot.getFullDate()} </td>
             </tr>)
         });
@@ -54,6 +57,7 @@ var Challenges = React.createClass({
                         <th>Status</th>
                         <th>Challenger</th>
                         <th>Opponent</th>
+                        <th>Race</th>
                         <th>Time</th>
                     </tr>
                      <tbody>
@@ -68,6 +72,7 @@ var Challenges = React.createClass({
                         <th>Status</th>
                         <th>Challenger</th>
                         <th>Opponent</th>
+                        <th>Race</th>
                         <th>Time</th>
                     </tr>
                      <tbody>

@@ -46,6 +46,7 @@ var PayApp = require('./content/user/PayApp.jsx');
 var UserInfo= require('./content/user/UserInfo.jsx');
 var ChallengesApp = require('./content/admin/Challenges.jsx');
 var ChallengesUsers= require('./content/admin/ChallengeUsers.jsx');
+var ChallengeAdminResults= require('./content/admin/ChallengeAdminResults.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -84,7 +85,8 @@ var routes = (
                 <Route name="createUser" path="create/user" handler={CreateUser} />
                 <Route name="createUserSuccess" path="create/user/status" handler={CreateUserSuccess} />
                 <Route name="challenges" path="challenges" handler={ChallengesApp} />
-                <Route name="challengeUsers" path="challengeUsers" handler={ChallengesUsers} />
+                <Route name="challengeUsers" path="challenge/user" handler={ChallengesUsers} />
+                <Route name="challengeAdminResults" path="challenge/admin/results" handler={ChallengeAdminResults} />
             </Route>
             <Route name="user" path="user/:userId"  handler={UserApp}>
                 <Route name="info" path="info" handler={UserInfo} />
