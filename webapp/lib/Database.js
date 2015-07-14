@@ -240,8 +240,8 @@ Database.prototype.processData = function (d) {
                 }.bind(this));
             } else if (type == 'challenge') {
                 stats[type].forEach(function (s) {
-                    var stat = new Stat(type, s);
-                    stat.setUser(stat);
+                      var stat = new Stat(type, s);
+                    stat.setUser(user);
                     user.addStats(stat);
                 }.bind(this));
             } else if (type == 'handicapAll') {
@@ -344,6 +344,28 @@ Database.prototype.processData = function (d) {
         }.bind(this))
     }
     this.data.users.push(User.DEFAULT_USER);
+    this.data.users.forEach(function(u){
+        if (!u.isChallenge()) {
+            return;
+        }
+        var stat = u.getChallengeStats();
+        var results = u.getResults();
+        var points = 0;
+        results.forEach(function(r) {
+            if (!r.teamMatch.season.isChallenge())
+                return;
+            if (r.isWinner(u)) {
+                if (r.isSweep(u)) {
+                    points += 4;
+                } else {
+                    points += 3;
+                }
+            } else {
+                points +=1;
+            }
+        });
+        stat.setPoints(points);
+    });
 
     console.log('Created ' + this.data.divisions.length + ' divisions');
     console.log('Created ' + this.data.seasons.length + ' seasons');
@@ -396,8 +418,6 @@ Database.prototype.getTeamMatches= function () {
 Database.prototype.getSlots= function () {
     return this.data.slots;
 };
-
-
 Database.prototype.getChallenges = function () {
     return this.data.challenges;
 };

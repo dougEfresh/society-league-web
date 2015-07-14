@@ -1,3 +1,5 @@
+var Handicap = require('./Handicap');
+
 function Result (resultId,teamMatch,winner,loser) {
     this.resultId = resultId;
     this.teamMatch = teamMatch;
@@ -71,6 +73,20 @@ Result.prototype.isWinner = function(user) {
         return undefined;
     }
     return this.winner.id == user.id;
+};
+
+Result.prototype.isSweep = function(user) {
+    if (!this.isWinner(user)) {
+        return false;
+    }
+    var race =  Handicap.race(this.winnerHandicap,this.loserHandicap);
+    var givenRacks = 0;
+    if (race) {
+        givenRacks = race.split('/')[0];
+        var lRacks = this.loserRacks - parseInt(givenRacks);
+        return lRacks == 0;
+    }
+        return false;
 };
 
 Result.prototype.getHandicap = function(user) {

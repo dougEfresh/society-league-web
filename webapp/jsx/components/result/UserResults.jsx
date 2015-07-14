@@ -9,10 +9,7 @@ var UserLink = require('../links/UserLink.jsx');
 var UserResults = React.createClass({
     mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin],
     render: function() {
-       var tableData = [];
-        this.props.matches.forEach(function(m){
-            tableData.push(m);
-        });
+
         /*
         var width  = ColumnConfig.date.width +
             ColumnConfig.name.width +

@@ -23,6 +23,8 @@ var SeasonLeaders = React.createClass({
     getRows : function(data) {
         var rows = [];
         data.forEach(function(d){
+            if (d.user == undefined || d.user.id == undefined)
+                return;
             rows.push(
                 <tr key={d.user.id}>
                     <td><UserLink user={d.user}/>
@@ -62,7 +64,7 @@ var SeasonLeaders = React.createClass({
         users = users.sort(function(a,b) {
             aStat = a.getStatsForSeason(this.getParams().seasonId);
             bStat = b.getStatsForSeason(this.getParams().seasonId);
-            return Stat.sort.byWinPct(aStat,bStat);
+            return Stat.sort.byPoints(aStat,bStat);
         }.bind(this));
 
         var rows = [];

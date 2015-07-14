@@ -61,7 +61,18 @@ var ChallengeResults = React.createClass({
             if (c.id != this.getQuery().id) {
                 chRacks = 0;
                 opRacks = 0;
+                if (c.teamMatch) {
+                    var cResult = c.challenger.getResult(c.teamMatch.id);
+                    if (cResult) {
+                        chRacks = cResult.getRacks(c.challenger);
+                    }
+                    var oResult = c.opponent.getResult(c.teamMatch.id);
+                    if (oResult) {
+                        opRacks = oResult.getRacks(c.opponent);
+                    }
+                }
             }
+
             acceptedRows.push(
                 <tr key={c.id}>
                 <td><button className="btn btn-sm"

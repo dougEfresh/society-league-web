@@ -9,6 +9,9 @@ var StatsDisplay = React.createClass({
         var rows = [];
         var user = this.getUser(this.getParams().statsId);
         data.forEach(function(d){
+            if (d.type == 'challenge') {
+                return;
+            }
             var type = d.getType();
             var hc = '';
 
@@ -23,6 +26,7 @@ var StatsDisplay = React.createClass({
             rows.push(<tr key={type}>
                 <td> {type}</td>
                 <td> {hc} </td>
+                <td> {d.getPoints()} </td>
                 <td> {d.wins}</td>
                 <td> {d.loses}</td>
                 <td> {d.racksFor}</td>
@@ -34,9 +38,13 @@ var StatsDisplay = React.createClass({
     },
     render: function() {
         var user = this.getUser(this.getParams().statsId);
-        var stats = user.stats;
+        var stats = user.getChallengeStats();
         var userStats = [];
+        userStats.push(stats);
+        /*
+
         stats.forEach(function(s){
+
             if (s.type.indexOf('handicap') >= 0 || s.type.indexOf('division') >=0 ) {
                 return;
             }
@@ -57,6 +65,8 @@ var StatsDisplay = React.createClass({
 
             return 0;
         });
+        */
+
         var rows = this.getRows(userStats);
         if (rows.length < 1) {
             return (<h3>No matches have been played</h3>);
@@ -67,6 +77,7 @@ var StatsDisplay = React.createClass({
                     <tr>
                         <th>Type</th>
                         <th>HC</th>
+                        <th>Points</th>
                         <th>W</th>
                         <th>L</th>
                         <th>RW</th>

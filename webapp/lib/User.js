@@ -150,6 +150,19 @@ User.prototype.addResult= function(r) {
 User.prototype.getResults = function() {
     return this.results;
 };
+
+User.prototype.getResult = function(teamMatchId) {
+    var result = undefined;
+    if (teamMatchId == undefined) {
+        return undefined;
+    }
+    this.results.forEach(function(r) {
+        if (r.teamMatch.id == teamMatchId)
+            result = r;
+    });
+    return result;
+};
+
 User.prototype.addStats = function(stats) {
     if (stats == undefined)
         return;
@@ -179,8 +192,21 @@ User.prototype.getSeasonStats = function(seasonId) {
     return stats;
 };
 
+User.prototype.getChallengeStats = function() {
+     for(var i =0 ; i < this.stats.length; i++) {
+        if (this.stats[i].season != null && this.stats[i].season != undefined) {
+            if (this.stats[i].season.isChallenge()) {
+                return this.stats[i];
+            }
+        }
+    }
+    return Stat.getDefault();
+};
+
 User.prototype.getStatsForSeason = function(seasonId) {
+   /*
     var isChallenge = false;
+
     this.seasons.forEach(function(s){
         if (s.isChallenge())
             isChallenge = true;
@@ -198,14 +224,15 @@ User.prototype.getStatsForSeason = function(seasonId) {
         }
         return stat;
     }
+    */
     for(var i =0 ; i < this.stats.length; i++) {
         if (this.stats[i].season != null && this.stats[i].season != undefined) {
-            if (seasonId != undefined && seasonId != null && this.stats[i].season.id == seasonId) {
+            if (this.stats[i].season.id == seasonId) {
                 return this.stats[i];
             }
         }
     }
-    console.warn('No season stats for ' +seasonId + ' user:' + this.id);
+    //console.warn('No season stats for ' +seasonId + ' user:' + this.id);
     return Stat.getDefault();
 };
 
