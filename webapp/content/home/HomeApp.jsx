@@ -41,6 +41,7 @@ var HomeApp = React.createClass({
         if (!this.getUser().isChallenge()) {
             signUp = <ChallengeSignUp />;
         }
+        //<RecentMatches />
         return (
             <div id="home-app">
                 <h2 className="welcome" >
@@ -50,7 +51,7 @@ var HomeApp = React.createClass({
                 </h2>
                 <ChallengePendingApp />
                 <UpcomingChallenges />
-                <RecentMatches />
+
             </div>
         );
     }
