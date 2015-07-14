@@ -94,6 +94,14 @@ Database.prototype.findTeam = function (id) {
     return undefined;
 };
 
+Database.prototype.findTeamMatch = function (id) {
+    for (var i = 0; i < this.data.teamMatches.length; i++) {
+        if (this.data.teamMatches[i].id == id) {
+            return this.data.teamMatches[i];
+        }
+    }
+    return undefined;
+};
 Database.prototype.addUser = function(u) {
     this.data.users.push(u);
     this.userMap[u.id] = u;
@@ -330,7 +338,9 @@ Database.prototype.processData = function (d) {
         d.challenges.forEach(function(c) {
             var ch = this.findUser(c.challenger);
             var op = this.findUser(c.opponent);
-            this.data.challenges.push(new Challenge(c.id,ch,op,this.findSlot(c.slot.id),c.game,c.status));
+            var challenge = new Challenge(c.id,ch,op,this.findSlot(c.slot.id),c.game,c.status);
+            challenge.setTeamMatch(this.findTeamMatch(c.teamMatchId));
+            this.data.challenges.push(challenge);
         }.bind(this))
     }
     this.data.users.push(User.DEFAULT_USER);
