@@ -32,7 +32,7 @@ var ChallengeResults = React.createClass({
     },
     disable: function(id) {
         if (parseInt(this.getQuery().id) == id) {
-            return !(this.getQuery().chracks != undefined && this.getQuery().opracks != undefined);
+            return !(this.getQuery().chracks != undefined || this.getQuery().opracks != undefined);
         }
         return true;
     },

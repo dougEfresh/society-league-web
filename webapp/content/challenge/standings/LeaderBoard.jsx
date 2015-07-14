@@ -1,91 +1,102 @@
 var React = require('react/addons');
-var ReactPropTypes = React.PropTypes;
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
-    , Route = Router.Route
-    , NotFoundRoute = Router.NotFoundRoute
-    , Link = Router.Link
-    , DefaultRoute = Router.DefaultRoute;
+    , Link = Router.Link;
 
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
+var Stat =  require('../../../lib/Stat');
+var SeasonMixin = require('../../../jsx/mixins/SeasonMixin.jsx');
+var UserLink = require('../../../../webapp/jsx/components/links/UserLink.jsx');
+var DataStore = require('../../../jsx/stores/DataStore.jsx');
+
 var LeaderBoard = React.createClass({
-  mixins: [UserContextMixin],
-    propTypes: {
-        stats: ReactPropTypes.object.isRequired
-    },
-    challenge: function(e) {
-        /*
-        ChallengeActions.setOpponent({
-            user: {
-                id: e.target.textContent
-            }
-        });
-        this.context.router.transitionTo('request',{userId: this.getUserId()},null);
-        */
-    },
-    stats: function(e) {
-        this.context.router.transitionTo('stats',{userId: this.getUserId()},null);
+    mixins: [UserContextMixin,SeasonMixin,Router.State,Router.Navigation],
+    getRows : function(data,topgun) {
+        var rows = [];
+        data.forEach(function(d){
+            if (d.user == undefined || d.user.id == undefined)
+                return;
+            rows.push(
+                <tr key={d.user.id}>
+                    <td><UserLink user={d.user}/>
+                    </td>
+                    <td> <div className="btn-group bot-margin">
+                        <Link id={"request-link-"+ d.user.id } to="challengeMain" query={{opponent: d.user.id}}>
+                            <button className="btn btn-xs btn-primary">
+                                <span className="glyphicon glyphicon-plus-sign"></span>
+                                <span className="main-item">Challenge</span>
+                            </button>
+                        </Link>
+                    </div>
+                    </td>
+                    <td>{d.user.getCurrentHandicap(topgun.id)}</td>
+                    <td>{d.getPoints()}</td>
+                    <td>{d.wins}</td>
+                    <td>{d.loses}</td>
+                    <td>{d.racksFor}</td>
+                    <td>{d.racksAgainst}</td>
+                    <td>{d.getWinPct()}</td>
+                </tr>
+            );
+        }.bind(this));
+        return rows;
     },
     render: function() {
-        return null;
-    }
-        /*
-        if ( this.props.stats == undefined || this.props.stats == null){
+        var seasons = DataStore.getSeasons();
+        var topgun = undefined;
+        seasons.forEach(function(s){
+            if (s.isChallenge()) {
+                topgun = s;
+            }
+        });
+
+        if (this.getUserId() == 0) {
             return null;
         }
+        var users = [];
+        this.getUsers().forEach(function(u) {
+            if (u.hasSeason(topgun.id)) {
+                users.push(u);
+            }
+        }.bind(this));
+
+        users = users.sort(function(a,b) {
+            aStat = a.getStatsForSeason(topgun.id);
+            bStat = b.getStatsForSeason(topgun.id);
+            return Stat.sort.byPoints(aStat,bStat);
+        }.bind(this));
+
         var rows = [];
-        var sorted = [];
-        for(var id in this.props.stats) {
-            var data = {
-                id: id,
-                actions: (<div>
-                    <Button onClick={this.challenge}>
-                        <i className='fa fa-fighter-jet'>
-                            <div style={{display: 'none'}}>{id}</div></i>
-                    </Button>
-                    <Button onClick={this.stats}>
-                            <i className='fa fa-bar-chart'>
-                                <div style={{display: 'none'}}>{id}</div>
-                            </i>
-                    </Button>
-                    </div>),
-                points: this.props.stats[id].all.points
-            };
-            sorted.push(data);
-        }
-        sorted.sort(function(a,b) {
-            return b.points-a.points;
-        });
-        var counter=1;
-        sorted.forEach(function(d){
-            rows.push(
-                <tr key={d.id}>
-                    <td>{d.actions}</td>
-                    <td>{counter}</td>
-                    <td>{d.name}</td>
-                    <td>{d.points}</td>
-                </tr>);
-            counter++
-        });
+         users.forEach(function(u) {
+             rows.push(u.getStatsForSeason(topgun.id));
+         }.bind(this));
+            return (
+                 <div id={'leaders'} className="panel panel-default">
+                     <div className="panel-heading" >Leaders</div>
+                     <div className="panel-body" >
+                <div className="table-responsive">
+                <table className="table table-hover table-condensed table-striped">
+                    <tr>
+                        <th>Player</th>
+                        <th></th>
+                        <th>HC</th>
+                        <th>Points</th>
+                        <th>W</th>
+                        <th>L</th>
+                        <th>RW</th>
+                        <th>RL</th>
+                        <th>%</th>
+                    </tr>
+                     <tbody>
+                     {this.getRows(rows,topgun)}
+                     </tbody>
+                </table>
+                </div>
+            </div>
+                 </div>
 
-        return (
-         <Table striped bordered condensed hover>
-                  <thead>
-                  <tr>
-                      <th>Action</th>
-                      <th>Rank</th>
-                      <th>Name</th>
-                      <th>Points</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {rows}
-                  </tbody>
-              </Table>
-        );
+            );
     }
-    */
 });
-
 
 module.exports = LeaderBoard;

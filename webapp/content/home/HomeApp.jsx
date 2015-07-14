@@ -8,6 +8,7 @@ var UpcomingMatches = require('./UpcomingMatches.jsx');
 var RecentMatches = require('./RecentMatches.jsx');
 var ChallengePendingApp = require('../challenge/pending/ChallengePendingApp.jsx');
 var ChallengeSignUp = require('../challenge/ChallengeSignUp.jsx');
+var LeaderBoard = require('../challenge/standings/LeaderBoard.jsx');
 
 var HomeApp = React.createClass({
     mixins: [UserContextMixin],
@@ -51,7 +52,7 @@ var HomeApp = React.createClass({
                 </h2>
                 <ChallengePendingApp />
                 <UpcomingChallenges />
-
+                <LeaderBoard />
             </div>
         );
     }
