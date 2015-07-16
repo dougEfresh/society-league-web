@@ -361,6 +361,10 @@ Database.prototype.processData = function (d) {
                     points += 3;
                 }
             } else {
+		var hill = (r.winnerRacks - r.loserRacks == 1)
+		if (hill)
+		    points +=1;
+
                 points +=1;
             }
         });
