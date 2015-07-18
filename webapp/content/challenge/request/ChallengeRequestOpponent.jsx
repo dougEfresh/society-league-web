@@ -4,6 +4,7 @@ var Router = require('react-router');
 var UserContextMixin = require('../../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../../jsx/mixins/SeasonMixin.jsx');
 var Handicap = require('../../../lib/Handicap');
+var Status = require('../../../lib/Status');
 
 var ChallengeRequestOpponent = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,Router.Navigation,Router.State],
@@ -22,6 +23,8 @@ var ChallengeRequestOpponent = React.createClass({
         var options = [];
         var potentials  = [];
         var users = this.getUsers();
+        var chosenDate = this.getQuery().date;
+
         for(var i = 0; i < users.length ; i++) {
             var user = users[i];
             if (user.isChallenge() && user.userId != this.getUserId() ) {
@@ -29,7 +32,19 @@ var ChallengeRequestOpponent = React.createClass({
             }
         }
         options.push(<option key={0} value={0}>{'Choose Your Enemy'}</option>);
+
         potentials.forEach(function(p) {
+            if (chosenDate) {
+                var taken = false;
+                p.challenges[Status.ACCEPTED].forEach(function (c) {
+                    if (c.date == chosenDate) {
+                        taken = true;
+                    }
+                }.bind(this));
+
+                if (taken)
+                    return;
+            }
             options.push(<option key={p.userId} value={p.userId}>{p.name + ' (' + p.getChallengeHandicap() + ')'}</option>);
         }.bind(this));
         return options;

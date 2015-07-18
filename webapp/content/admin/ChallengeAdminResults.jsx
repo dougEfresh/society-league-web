@@ -23,7 +23,22 @@ var ChallengeResults = React.createClass({
     onClick: function() {
         var id = this.getQuery().id;
         var chRacks = this.getQuery().chracks;
+        var challenges = DataStore.getChallenges();
+        if (chRacks == undefined) {
+            chRacks = 0;
+            challenges.forEach(function(c){
+                if (c.id == id)
+                    chRacks = c.challenger.getResult(c.teamMatch.id).getRacks(c.challenger);
+            })
+        }
         var opRacks = this.getQuery().opracks;
+        if (opRacks == undefined) {
+            opRacks = 0;
+            challenges.forEach(function(c){
+                if (c.id == id)
+                    opRacks = c.opponent.getResult(c.teamMatch.id).getRacks(c.opponent);
+            })
+        }
         Util.getData('/api/admin/challenge/result/' + id +'/' + chRacks + '/' + opRacks,
             function() {
                 DataStore.init();

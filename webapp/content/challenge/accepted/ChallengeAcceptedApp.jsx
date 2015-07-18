@@ -33,7 +33,8 @@ var ChallengeAcceptedApp = React.createClass({
         }
         return (
                 <div id='accepted-app' className="panel panel-success">
-                  <div className="panel-heading" ><span className={"glyphicon glyphicon-calendar"}></span>Accepted</div>
+                  <div className="panel-heading" >
+                      <span className={"glyphicon glyphicon-calendar"}></span>Accepted</div>
                         <GroupList type={Status.ACCEPTED} noSelect={false} challengeGroups={this.getUser().challenges[Status.ACCEPTED]}/>
                 </div>
         )

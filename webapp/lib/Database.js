@@ -231,8 +231,9 @@ Database.prototype.processData = function (d) {
                     stat.setUser(user);
                     user.addStats(stat);
                 }.bind(this));
+            } /*
+            else if (type == 'division') {
 
-            } else if (type == 'division') {
                 stats[type].forEach(function (s) {
                     var stat = new Stat(type, s);
                     stat.setUser(stat);
@@ -250,7 +251,9 @@ Database.prototype.processData = function (d) {
                         user.addStats(new Stat(type, s, null));
                     });
                 }
-            } else {
+            }
+             */
+            else {
                 if (stats[type] == undefined || stats[type] == null) {
                     //console.warn('Could not find stats for '+ id);
                     continue;
@@ -344,7 +347,10 @@ Database.prototype.processData = function (d) {
         }.bind(this))
     }
     this.data.users.push(User.DEFAULT_USER);
+
     this.data.users.forEach(function(u){
+        if (u == undefined)
+            return;
         if (!u.isChallenge()) {
             return;
         }
@@ -361,9 +367,9 @@ Database.prototype.processData = function (d) {
                     points += 3;
                 }
             } else {
-		var hill = (r.winnerRacks - r.loserRacks == 1)
-		if (hill)
-		    points +=1;
+                var hill = (r.winnerRacks - r.loserRacks == 1);
+                if (hill)
+                    points +=1;
 
                 points +=1;
             }

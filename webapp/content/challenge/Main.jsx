@@ -7,6 +7,7 @@ var ChallengeRequestApp = require('./request/ChallengeRequestApp.jsx');
 var ChallengePendingApp = require('./pending/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp= require('./accepted/ChallengeAcceptedApp.jsx');
 var ChallengeSentApp = require('./sent/ChallengeSentApp.jsx');
+var Challenges = require('./Challenges.jsx');
 
 var ChallengeApp = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
@@ -17,6 +18,7 @@ var ChallengeApp = React.createClass({
                 <ChallengePendingApp />
                 <ChallengeSentApp />
                 <ChallengeAcceptedApp />
+                <Challenges />
             </div>
         );
     }

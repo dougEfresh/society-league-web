@@ -13,6 +13,7 @@ var util = require('../challengeUtil');
 var GroupAction = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
     cancel: function(e) {
+
         e.preventDefault();
         //ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
         var request = {

@@ -50,9 +50,6 @@ var LeaderBoard = React.createClass({
             }
         });
 
-        if (this.getUserId() == 0) {
-            return null;
-        }
         var users = [];
         this.getUsers().forEach(function(u) {
             if (u.hasSeason(topgun.id)) {
@@ -70,6 +67,7 @@ var LeaderBoard = React.createClass({
          users.forEach(function(u) {
              rows.push(u.getStatsForSeason(topgun.id));
          }.bind(this));
+
             return (
                  <div id={'leaders'} className="panel panel-default">
                      <div className="panel-heading" >Leaders</div>

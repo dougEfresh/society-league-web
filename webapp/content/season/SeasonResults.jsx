@@ -15,6 +15,7 @@ var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var firstBy = require('../../lib/FirstBy.js');
 var UserMatch = require('../../lib/UserMatch');
+var Handicap = require('../../lib/Handicap');
 
 var sortDateFn = function(a,b) {
     return this.state.sort.sortDate.asc == 'true' ?
@@ -142,7 +143,50 @@ var ResultsApp = React.createClass({
         var pageMatches = [];
         var start = this.state.page.num*this.state.page.size;
         var end = start + this.state.page.size;
+        var rows = [];
+        results = results.sort(function(a,b) {
+            return a.getMatchDate().localeCompare(b.getMatchDate());
+        }.bind(this));
+        results.forEach(function(r){
+            var race = Handicap.race(r.winnerHandicap,r.loserHandicap);
+           rows.push(
+               <tr key={r.teamMatch.id} >
+                   <td>{r.getMatchDate()}</td>
+                   <td>
+                       <UserLink user={r.winner} />
+                       <span> {'(' +r.getWinnerHandicap() +')'}</span>
+                   </td>
+                   <td> <UserLink user={r.loser} />
+                       <span> {'(' +r.getLoserHandicap() +')'}</span>
+                   </td>
+                   <td>{race}</td>
+                   <td>{r.winnerRacks}</td>
+                   <td>{r.loserRacks}</td>
+               </tr>
+           )
+        });
+        return (
+           <div id='challenges-app' className="panel panel-default">
+                <div className="panel-heading" >Matches</div>
+                <div className="table-responsive">
+                    <table className="table table-hover table-condensed">
+                        <tr>
+                            <th>Date</th>
+                            <th>Winner</th>
+                            <th>Opponent</th>
+                            <th>Race</th>
+                            <th>RW</th>
+                            <th>RL</th>
+                        </tr>
+                        <tbody>
+                        {rows}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
 
+        /*
         for (var i = start; i < results.length && i < end ; i++) {
             var r = results[i];
             pageMatches.push(new UserMatch(r.winner,r));
@@ -151,6 +195,7 @@ var ResultsApp = React.createClass({
         for(var key in userMatches) {
             pageMatches.push(userMatches[key]);
         }
+
         var order = firstBy(function(a,b){
             return a.user.name.localeCompare(b.user.name);
         });
@@ -170,7 +215,7 @@ var ResultsApp = React.createClass({
         if (pageMatches.length == 0) {
             return <h4>There have been no matches played yet</h4>
         }
-        return null;
+         */
         /*
         var width =
             ColumnConfig.name.width +
