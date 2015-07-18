@@ -22,9 +22,9 @@ Challenge.prototype.setTeamMatch = function(tm)  { this.teamMatch = tm; };
 
 Challenge.prototype.getOpponent = function(user)  {
     if (this.challenge.id == user.id) {
-        return this.challenge;
+        return this.opponent;
     }
-    return this.opponent;
+    return this.challenge;
 };
 
 module.exports = Challenge;

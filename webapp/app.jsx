@@ -47,6 +47,7 @@ var UserInfo= require('./content/user/UserInfo.jsx');
 var ChallengesApp = require('./content/admin/Challenges.jsx');
 var ChallengesUsers= require('./content/admin/ChallengeUsers.jsx');
 var ChallengeAdminResults= require('./content/admin/ChallengeAdminResults.jsx');
+var ChallengeCancelApp= require('./content/challenge/cancel/CancelApp.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -114,6 +115,7 @@ var routes = (
                 <Route name="challengeMain" path="main"  handler={ChallengeMain} />
                 <Route name="challengeSignUp" path="signup"  handler={ChallengeSignUp} />
                 <Route name="challengeConfirm" path="confirm"  handler={ChallengeConfirmApp} />
+                <Route name='challengeCancel' path="cancel"  handler={ChallengeCancelApp} />
                 <Route name={Status.REQUEST.toLowerCase()} path={Status.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
                 <Route name={Status.PENDING.toLowerCase()} path={Status.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
                 <Route name={Status.ACCEPTED.toLowerCase()} path={Status.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>

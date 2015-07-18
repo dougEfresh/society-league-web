@@ -7,6 +7,7 @@ var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var Handicap = require('../../lib/Handicap');
 var moment = require('moment');
 var Challenges = React.createClass({
+
     mixins: [UserContextMixin,Router.Navigation,Router.State],
 
     render: function() {

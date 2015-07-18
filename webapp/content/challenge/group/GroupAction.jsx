@@ -13,7 +13,6 @@ var util = require('../challengeUtil');
 var GroupAction = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
     cancel: function(e) {
-
         e.preventDefault();
         //ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
         var request = {
@@ -22,9 +21,10 @@ var GroupAction = React.createClass({
             challenges: []
         };
         this.props.challengeGroup.challenges.forEach(function(c) {
-            request.challenges.push({id: c.id});
+            request.challenges.push(c.id);
         });
-        util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
+        this.transitionTo('challengeCancel',{},request);
+        //util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
     },
     accept: function(e) {
         e.preventDefault();
