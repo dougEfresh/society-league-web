@@ -31,8 +31,8 @@ var Challenges = React.createClass({
         accepted.forEach(function(c) {
             acceptedRows.push(<tr key={c.id}>
                 <td>{c.status}</td>
-                <td><UserLink user={c.challenger} /></td>
-                <td><UserLink user={c.opponent} /></td>
+                <td><UserLink user={c.challenger} /><span>{' (' + c.challenger.getChallengeHandicap() +')'}</span></td>
+                <td><UserLink user={c.opponent} /><span>{' (' + c.opponent.getChallengeHandicap() + ')'}</span></td>
                 <td>{Handicap.race(c.challenger.getRawChallengeHandicap(),c.opponent.getRawChallengeHandicap())}</td>
                 <td>{c.slot.getFullDate()} </td>
             </tr>)
