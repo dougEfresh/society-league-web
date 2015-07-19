@@ -25,7 +25,9 @@ var CancelApp = React.createClass({
         query.challenges.forEach(function(id){
            request.challenges.push({id: id});
         });
-        util.sendStatus('/api/challenge/cancel/' + this.getUser().id,request);
+        util.sendStatus('/api/challenge/cancel/' + this.getUser().id,request, function(d) {
+            this.transitionTo('challengeMain');
+        }.bind(this));
     },
     render: function() {
         var query = this.getQuery();

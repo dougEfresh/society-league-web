@@ -78,7 +78,7 @@ var c = function queryToChallengeGroup(q) {
     };
 
 
-var sendStatus = function (url,data) {
+var sendStatus = function (url,data,cb) {
         console.log('Sending to ' + url);
         console.log('Sending data: ' + JSON.stringify(data));
          $.ajax({
@@ -98,6 +98,8 @@ var sendStatus = function (url,data) {
             },
             success: function (d) {
                 DataStore.replaceUser(d);
+                if (cb)
+                    cb(d);
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
