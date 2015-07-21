@@ -25,6 +25,7 @@ var SeasonLeaders = React.createClass({
         data.forEach(function(d){
             if (d.user == undefined || d.user.id == undefined)
                 return;
+            //<td>{d.getPoints()}</td>
             rows.push(
                 <tr key={d.user.id}>
                     <td><UserLink user={d.user}/>
@@ -39,7 +40,6 @@ var SeasonLeaders = React.createClass({
                     </div>
                     </td>
                     <td>{d.user.getCurrentHandicap(this.getParams().seasonId)}</td>
-                    <td>{d.getPoints()}</td>
                     <td>{d.wins}</td>
                     <td>{d.loses}</td>
                     <td>{d.racksFor}</td>
@@ -68,6 +68,7 @@ var SeasonLeaders = React.createClass({
         }.bind(this));
 
         var rows = [];
+        //<th>Points</th>
          users.forEach(function(u) {
              rows.push(u.getStatsForSeason(this.getParams().seasonId));
          }.bind(this));
@@ -78,7 +79,6 @@ var SeasonLeaders = React.createClass({
                         <th>Player</th>
                         <th></th>
                         <th>HC</th>
-                        <th>Points</th>
                         <th>W</th>
                         <th>L</th>
                         <th>RW</th>

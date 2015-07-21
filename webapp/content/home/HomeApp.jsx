@@ -52,9 +52,10 @@ var HomeApp = React.createClass({
                 </h2>
                 <ChallengePendingApp />
                 <UpcomingChallenges />
-                <LeaderBoard />
+
             </div>
         );
+        //<LeaderBoard />
     }
 });
 

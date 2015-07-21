@@ -22,11 +22,11 @@ var StatsDisplay = React.createClass({
             if (d.getType() == 'all') {
                 type = 'overall';
             }
-
+//<td> {d.getPoints()} </td>
             rows.push(<tr key={type}>
                 <td> {type}</td>
                 <td> {hc} </td>
-                <td> {d.getPoints()} </td>
+
                 <td> {d.wins}</td>
                 <td> {d.loses}</td>
                 <td> {d.racksFor}</td>
@@ -71,13 +71,14 @@ var StatsDisplay = React.createClass({
         if (rows.length < 1) {
             return (<h3>No matches have been played</h3>);
         }
+        //<th>Points</th>
          return (
              <div className="table-responsive">
                  <table className="table table-striped table-hover table-condensed">
                     <tr>
                         <th>Type</th>
                         <th>HC</th>
-                        <th>Points</th>
+
                         <th>W</th>
                         <th>L</th>
                         <th>RW</th>
