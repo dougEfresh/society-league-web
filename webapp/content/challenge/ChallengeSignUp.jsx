@@ -28,7 +28,7 @@ var SignUp = React.createClass({
         }
         return (
              <div id="challenge-signup" className="panel panel-default">
-                 <div className="panel-heading" ><h1>Challenge League</h1></div>
+                 <div className="panel-heading" ><h1>Top Gun</h1></div>
                  <div className="panel-body challenge-content" >
                     <h2>
                         The Top Gun league is an individual 9 ball league.
