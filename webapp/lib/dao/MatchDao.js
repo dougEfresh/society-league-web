@@ -36,7 +36,7 @@ MatchDao.prototype.getUpcomingChallenges = function(user) {
         if (aSlot  == undefined|| bSlot == undefined) {
             return 0;
         }
-            return bSlot.date.localeCompare(aSlot.date);
+            return aSlot.date.localeCompare(bSlot.date);
         });
     return upComingMatches;
 };

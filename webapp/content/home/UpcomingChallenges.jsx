@@ -33,7 +33,7 @@ var UpcomingChallenges = React.createClass({
         var upComingChallenges = matchDao.getUpcomingChallenges(this.getUser());
 
         var matches = [];
-        for (var i=0; i<upComingChallenges.length && i< 3; i++) {
+        for (var i=0; i<upComingChallenges.length ; i++) {
             var match = upComingChallenges[i];
             var m = moment(match.selectedSlot.date);
             var opponent = match.getUserOpponent(this.getUser());
