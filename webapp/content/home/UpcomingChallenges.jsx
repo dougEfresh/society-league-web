@@ -13,14 +13,16 @@ var Handicap = require('../../lib/Handicap');
 
 var UpcomingChallenges = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
-    cancel: function(e) {
+      cancel: function(e) {
         e.preventDefault();
+        //ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
         var request = {
             challenger: null,
             opponent: null,
-            challenges: [{id: e.target.id}]
+             challenges: [{id: e.target.id}]
         };
-        util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
+        this.transitionTo('challengeCancel',{},request);
+        //util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
     },
     render: function() {
         if (this.getUser().id == 0) {
