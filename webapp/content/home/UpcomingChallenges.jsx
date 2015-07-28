@@ -19,7 +19,7 @@ var UpcomingChallenges = React.createClass({
         var request = {
             challenger: null,
             opponent: null,
-             challenges: [{id: e.target.id}]
+             challenges: [e.target.id]
         };
         this.transitionTo('challengeCancel',{},request);
         //util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
