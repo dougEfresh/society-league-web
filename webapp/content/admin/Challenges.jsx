@@ -1,6 +1,5 @@
 var React = require('react/addons');
-var Router = require('react-router')
-    ,RouteHandler = Router.RouteHandler;
+var Router = require('react-router'),RouteHandler = Router.RouteHandler;
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
