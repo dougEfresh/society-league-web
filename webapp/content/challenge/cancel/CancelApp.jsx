@@ -53,7 +53,7 @@ var CancelApp = React.createClass({
                     <h2 className="form-signin-heading">{'Decline Challenge against  ' + op.sName() + '?'}</h2>
                     <div className="form-field form-group">
                         <div  className="form-group">
-                            <h4>{'Message to ' + op.sName().replace('.',':')} </h4>
+                            <h4>{'(Optional) Message to ' + op.sName().replace('.',':')} </h4>
                             <textarea ref='message' id="message" type="textarea" name="message" className="form-control">
 
                             </textarea>
