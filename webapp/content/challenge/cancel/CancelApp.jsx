@@ -60,7 +60,7 @@ var CancelApp = React.createClass({
                         </div>
                         <div className="form-group">
                             <button onClick={this.backup} type="button" className="btn btn-sm btn-primary btn-responsive ">
-                                <b>Cancel</b>
+                                <b>Go Back</b>
                             </button>
                             <button onClick={this.cancel} type="button" className="btn btn-sm btn-warning btn-responsive ">
                                 <b>Decline Challenge</b>
