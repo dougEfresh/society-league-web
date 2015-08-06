@@ -50,7 +50,7 @@ var CancelApp = React.createClass({
         var op = challenge.getOpponent(this.getUser());
         return (
                 <div onKeyDown={this.handleSubmit} id="cancel-app" >
-                    <h2 className="form-signin-heading">{'Cancel Challenge against  ' + op.sName() + '?'}</h2>
+                    <h2 className="form-signin-heading">{'Decline Challenge against  ' + op.sName() + '?'}</h2>
                     <div className="form-field form-group">
                         <div  className="form-group">
                             <h4>{'Message to ' + op.sName().replace('.',':')} </h4>
@@ -60,10 +60,10 @@ var CancelApp = React.createClass({
                         </div>
                         <div className="form-group">
                             <button onClick={this.backup} type="button" className="btn btn-sm btn-primary btn-responsive ">
-                                <b>Go Back</b>
+                                <b>Cancel</b>
                             </button>
                             <button onClick={this.cancel} type="button" className="btn btn-sm btn-warning btn-responsive ">
-                                <b>Cancel</b>
+                                <b>Decline Challenge</b>
                             </button>
                         </div>
                     </div>
