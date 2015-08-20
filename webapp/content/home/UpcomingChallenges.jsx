@@ -54,7 +54,7 @@ var UpcomingChallenges = React.createClass({
                                 type="button"
                                 className="btn btn-sm btn-danger btn-responsive">
                             <span  className="glyphicon glyphicon-remove"></span>
-                            <b id={match.getId()}>Cancel</b>
+                            <b id={match.getId()}>Decline Challenge</b>
                         </button>
                     </div>
                 </li>

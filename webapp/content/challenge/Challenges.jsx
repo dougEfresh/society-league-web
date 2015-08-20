@@ -17,7 +17,10 @@ var Challenges = React.createClass({
         challenges.forEach(function(c){
             if(c.status == 'ACCEPTED') {
                 var s = c.slot;
-                if (moment(s.getDate()).isAfter(now) || moment(s.getDate()).isSame(now)) {
+                if (s.getDate() == now.format('YYYY-MM-DD')) {
+                    accepted.push(c);
+                }
+                if (moment(s.getDate()).isAfter(now)) {
                     accepted.push(c);
                 }
             }
