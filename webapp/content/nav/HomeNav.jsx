@@ -27,7 +27,7 @@ var HomeNav = React.createClass({
                     </li>
                     <li className="teamNavLink" role="presentation">
                         <Link className='navName' to='info' params={{userId: this.getUserId()}} >
-                             <span className="glyphicon glyphicon-info-sign"></span>User
+                             <span className="glyphicon glyphicon-info-sign"></span>Profile
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">

@@ -16,7 +16,7 @@ var UserApp = React.createClass({
     render: function() {
         var header = (
         <div className="btn-group">
-            <button className={this.isActive('info') ? 'btn btn-success' : 'btn btn-default'} responsize>
+            <button className={this.isActive('info') ? 'btn btn-default' : 'btn btn-default'} responsize>
                 <Link to='info' params={this.getParams()}>
                     <span className="fa fa-info"></span>Profile
                 </Link>

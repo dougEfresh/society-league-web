@@ -12,27 +12,12 @@ var Router = require('react-router')
 var ChallengeRequestDate = React.createClass({
     mixins: [UserContextMixin,Router.Navigation,Router.State],
     getOptions: function(){
-        var slots = Datastore.getSlots();
-        var nextChallengeDate = Util.nextChallengeDate();
-        var dates = [];
-        var q = this.getQuery();
-        // Add the next 4 weeks as options
-        [0,1,2,3,4].forEach(function(i) {
-            dates.push(moment(nextChallengeDate).add(i,'weeks').format('YYYY-MM-DD'));
-        });
-        var found = false;
-        dates.forEach(function (d) {
-                if (d == this.props.date) {
-                    found = true;
-                }
-            }.bind(this)
-        );
+        var dates =  Util.getChallengeDates();
         var dateOptions = [];
         dateOptions.push(<option key={-1} value={-1}>{'Select date'}</option>);
         dates.forEach(function(d) {
             dateOptions.push(<option id={'date-' + d } key={d} value={d}>{d}</option>);
         });
-
         return dateOptions;
     },
 

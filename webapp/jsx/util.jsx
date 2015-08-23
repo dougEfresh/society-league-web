@@ -13,6 +13,16 @@ function getNextChallengeDay() {
     console.error('Could not find next challenge date');
 }
 
+function getChallengeDates() {
+    var start = getNextChallengeDay();
+    var dates  = [];
+      // Add the next 4 weeks as options
+        [0,1,2,3,4].forEach(function(i) {
+            dates.push(moment(start).add(i,'weeks').format('YYYY-MM-DD'));
+        });
+    return dates;
+}
+
 function getData(url, callback, unauthCallback) {
         console.log("Getting data from " + url);
         $.ajax({
@@ -68,4 +78,4 @@ function sendData(data, url, callback) {
 
 
 
-module.exports = {nextChallengeDate: getNextChallengeDay, getData: getData, sendData: sendData};
+module.exports = {nextChallengeDate: getNextChallengeDay, getData: getData, sendData: sendData, getChallengeDates: getChallengeDates};

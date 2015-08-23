@@ -15,6 +15,7 @@ function User(id,first_name,last_name) {
     this.teamMatches = [];
     this.results = [];
     this.stats = [];
+    this.profile = [];
     this.teams = [];
     this.role = 'PLAYER';
     this.password = null;
@@ -25,6 +26,7 @@ function User(id,first_name,last_name) {
     this.handicaps = {};
 }
 
+User.prototype.profile = function () { return this.profile ; };
 User.prototype.getUserId = function () { return this.id ; };
 User.prototype.userId = function () { return this.userId ; };
 User.prototype.id = function () { return this.id ; };
@@ -40,6 +42,14 @@ User.prototype.name = function () { return this.name ; };
 User.prototype.challenges = function () { return this.challenges ; };
 User.prototype.role = function () { return this.role ; };
 User.prototype.password = function () { return this.password ; };
+
+User.prototype.setProfile = function (profile) {
+    if (profile == null || profile == undefined)
+        return ;
+
+    this.profile = profile;
+};
+
 
 User.prototype.getCurrentHandicap = function(seasonId) {
     if (this.handicaps[seasonId] != undefined) {
