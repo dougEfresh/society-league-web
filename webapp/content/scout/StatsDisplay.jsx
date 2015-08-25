@@ -26,7 +26,6 @@ var StatsDisplay = React.createClass({
             rows.push(<tr key={type}>
                 <td> {type}</td>
                 <td> {hc} </td>
-
                 <td> {d.wins}</td>
                 <td> {d.loses}</td>
                 <td> {d.racksFor}</td>

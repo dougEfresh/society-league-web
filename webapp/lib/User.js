@@ -16,6 +16,7 @@ function User(id,first_name,last_name) {
     this.results = [];
     this.stats = [];
     this.teams = [];
+    this.points = 0;
     this.role = 'PLAYER';
     this.password = null;
     this.challenges = {};
@@ -28,6 +29,7 @@ function User(id,first_name,last_name) {
 User.prototype.getUserId = function () { return this.id ; };
 User.prototype.userId = function () { return this.userId ; };
 User.prototype.id = function () { return this.id ; };
+User.prototype.points = function () { return this.points ; };
 User.prototype.lName = function () { return this.lName ; };
 User.prototype.fName = function () { return this.fName ; };
 User.prototype.sName = function () {
@@ -300,6 +302,10 @@ User.prototype.reset = function(){
 
 User.prototype.isAdmin = function() {
     return this.role != undefined && this.role == 'ADMIN';
+};
+
+User.prototype.setPoints = function(points) {
+    this.points = points;
 };
 
 User.DEFAULT_USER = new User(0,'unknown','',{});

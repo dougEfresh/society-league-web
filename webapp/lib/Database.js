@@ -155,6 +155,12 @@ Database.prototype.processUser = function(user,userData) {
                 user.addChallenge(type,challengeGroup);
             }.bind(this));
     }
+
+    var points = 0;
+    userData.points.forEach(function(p) {
+       points += p.weightedAvg;
+    });
+    user.setPoints(points);
     return user;
 };
 
