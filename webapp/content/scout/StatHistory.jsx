@@ -2,60 +2,65 @@ var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
-var Pie = require("react-chartjs").Pie;
-
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var StatsRecord = require('./StatsRecord.jsx');
-var StatsHandicap = require('./StatsHandicap.jsx');
-var StatsChart = require('./StatsPie.jsx');
-var firstBy = require('../../lib/FirstBy.js');
-var UserStat = require('../../lib/UsersStat');
+var DataStore= require('../../jsx/stores/DataStore.jsx');
+var Handicap = require('../../lib/Handicap');
 
 var StatHistory = React.createClass({
     mixins: [UserContextMixin,Router.State],
-    render: function() {
-        var user = this.getUser(this.getParams().statsId);
-        var stats = user.stats;
-        var userStats = [];
-        stats.forEach(function(s){
-            if (s.type.indexOf('handicap') >= 0 || s.type.indexOf('division') >=0 ) {
-                return;
-            }
-            if (s.type.indexOf('challenge') >= 0 ) {
-                return ;
-            }
-            userStats.push(new UserStat(user,s));
-        });
-        userStats.sort(function(a,b){
-            if (a.stat.type == 'all') {
-                return -1;
-            }
+    getRows: function(results) {
+        var rows = [];
+          results.forEach(function(r){
+            var race = Handicap.race(r.winnerHandicap,r.loserHandicap);
+           rows.push(
+               <tr key={r.teamMatch.id} >
+                   <td>Blah</td>
+                   <td>{r.getMatchDate()}</td>
+                   <td>{r.isWinner(this.getUser())} </td>
+                   <td>
+                       <UserLink user={r.winner} />
+                       <span> {'(' +r.getWinnerHandicap() +')'}</span>
+                   </td>
+                   <td> <UserLink user={r.loser} />
+                       <span> {'(' +r.getLoserHandicap() +')'}</span>
+                   </td>
+                   <td>{race}</td>
+                   <td>{r.winnerRacks}</td>
+                   <td>{r.loserRacks}</td>
+               </tr>
+           )
+        }.bind(this));
 
-            if (b.stat.type == 'all') {
-                return 0;
-            }
+    },
+      render: function() {
+        if (this.getUserId() == 0) {
+            return null;
+        }
+          var user = this.getUser();
+          var results = user.getResults();
+          var rows = [];
+          results.forEach(function(r) {
+             rows.push(u.getStatsForSeason(this.getParams().seasonId));
+         }.bind(this));
+            return (
+                <div className="table-responsive">
+                <table className="table table-hover table-condensed table-striped">
+                    <tr>
+                        <th>Player</th>
+                        <th>Date</th>
+                        <th>W/L</th>
+                        <th>Points</th>
+                        <th>Calculation</th>
+                        <th>RW</th>
+                        <th>RL</th>
+                    </tr>
+                     <tbody>
+                     {this.getRows(results)}
+                     </tbody>
+                </table>
+                </div>
 
-            if (b.stat.type == 'season') {
-                return  b.stat.season.startDate.localeCompare(a.stat.season.startDate);
-            }
-
-            return 0;
-        });
-        /*
-        var rowGetter = function(rowIndex) {
-            return userStats[rowIndex];
-        };
-         var width =
-            // ColumnConfig.name.width +
-             ColumnConfig.season.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.racksFor.width +
-            ColumnConfig.racksAgainst.width + 10;
-            */
-         return (
-               <h2>Coming Soon</h2>
-        );
+            );
     }
 });
 
