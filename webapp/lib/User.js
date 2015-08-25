@@ -20,6 +20,7 @@ function User(id,first_name,last_name) {
     this.role = 'PLAYER';
     this.password = null;
     this.challenges = {};
+    this.matchPoints = [];
     for(var st in Status) {
         this.challenges[st] = [];
     }
@@ -307,6 +308,44 @@ User.prototype.isAdmin = function() {
 User.prototype.setPoints = function(points) {
     this.points = points;
 };
+
+
+User.prototype.addMatchPoints = function(mp) {
+    if (mp) {
+        this.matchPoints.push(mp);
+    }
+};
+
+User.prototype.getMatchPoint = function(resultId) {
+    var p  = 0;
+    this.matchPoints.forEach(function(m) {
+        if (m.resultId == resultId) {
+            p = m.points;
+        }
+    }.bind(this));
+    return p;
+};
+
+User.prototype.getCalculation = function(resultId) {
+    var p  = "";
+    this.matchPoints.forEach(function(m) {
+        if (m.resultId == resultId) {
+            p = m.calculation;
+        }
+    }.bind(this));
+    return p;
+};
+
+User.prototype.getWeightedAvg = function(resultId) {
+    var p  = 0;
+    this.matchPoints.forEach(function(m) {
+        if (m.resultId == resultId) {
+            p = m.weightedAvg.toFixed(2);
+        }
+    }.bind(this));
+    return p;
+};
+
 
 User.DEFAULT_USER = new User(0,'unknown','',{});
 User.create = function(userData,db)  {

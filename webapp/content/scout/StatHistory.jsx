@@ -3,34 +3,37 @@ var ReactPropTypes = React.PropTypes;
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var DataStore= require('../../jsx/stores/DataStore.jsx');
+var DataStore = require('../../jsx/stores/DataStore.jsx');
 var Handicap = require('../../lib/Handicap');
+var UserLink = require('../../../webapp/jsx/components/links/UserLink.jsx');
 
 var StatHistory = React.createClass({
     mixins: [UserContextMixin,Router.State],
     getRows: function(results) {
         var rows = [];
+        var user = this.getUser();
           results.forEach(function(r){
-            var race = Handicap.race(r.winnerHandicap,r.loserHandicap);
+              var race = Handicap.race(r.winnerHandicap,r.loserHandicap);
+              var op = r.getOpponent(user);
+              //<td>{user.getCalculation(r.resultId)}</td>
            rows.push(
                <tr key={r.teamMatch.id} >
-                   <td>Blah</td>
-                   <td>{r.getMatchDate()}</td>
-                   <td>{r.isWinner(this.getUser())} </td>
                    <td>
-                       <UserLink user={r.winner} />
-                       <span> {'(' +r.getWinnerHandicap() +')'}</span>
+                       <UserLink user={op} />
+                       <span> {'(' +r.getHandicap(op) +')'}</span>
                    </td>
-                   <td> <UserLink user={r.loser} />
-                       <span> {'(' +r.getLoserHandicap() +')'}</span>
-                   </td>
+                   <td>{r.getMatchDate()}</td>
+                   <td>{r.isWinner(user) ? 'W' : 'L'} </td>
                    <td>{race}</td>
-                   <td>{r.winnerRacks}</td>
-                   <td>{r.loserRacks}</td>
+                   <td>{user.getMatchPoint(r.resultId)}</td>
+                   <td>{user.getWeightedAvg(r.resultId)}</td>
+
+                   <td>{r.getRacks(user)}</td>
+                   <td>{r.getRacks(op)}</td>
                </tr>
            )
         }.bind(this));
-
+        return rows;
     },
       render: function() {
         if (this.getUserId() == 0) {
@@ -38,10 +41,9 @@ var StatHistory = React.createClass({
         }
           var user = this.getUser();
           var results = user.getResults();
-          var rows = [];
-          results.forEach(function(r) {
-             rows.push(u.getStatsForSeason(this.getParams().seasonId));
-         }.bind(this));
+          results = results.sort(function(a,b){
+            return a.getMatchDate().localeCompare(b.getMatchDate());
+          });
             return (
                 <div className="table-responsive">
                 <table className="table table-hover table-condensed table-striped">
@@ -49,8 +51,9 @@ var StatHistory = React.createClass({
                         <th>Player</th>
                         <th>Date</th>
                         <th>W/L</th>
+                        <th>Race</th>
                         <th>Points</th>
-                        <th>Calculation</th>
+                        <th>Weighted Avg</th>
                         <th>RW</th>
                         <th>RL</th>
                     </tr>

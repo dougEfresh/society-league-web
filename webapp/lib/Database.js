@@ -9,7 +9,9 @@ var TeamMatch = require('./TeamMatch');
 var Result = require('./Result');
 var ChallengeGroup = require('./ChallengeGroup');
 var Challenge = require('./Challenge');
+var MatchPoints = require('./MatchPoints');
 var moment = require('moment');
+
 function resetData() {
     return  {
         divisions: [],
@@ -158,6 +160,8 @@ Database.prototype.processUser = function(user,userData) {
 
     var points = 0;
     userData.points.forEach(function(p) {
+        var mp = new MatchPoints(p.resultId,p.points,p.weightedAvg,p.matchNum,p.calculation);
+        user.addMatchPoints(mp);
        points += p.weightedAvg;
     });
     user.setPoints(points);
@@ -386,7 +390,8 @@ Database.prototype.processData = function (d) {
     /*
     console.log('Created ' + this.data.divisions.length + ' divisions');
     console.log('Created ' + this.data.seasons.length + ' seasons');
-    console.log('Created ' + this.data.teams.length + ' teams');
+    console.log('Created ' + this.data.teams.length + ' teams')
+    ;
     console.log('Created ' + this.data.users.length + ' users');
     console.log('Created ' + this.data.teamMatches.length + ' teamMatches');
     console.log('Created ' + this.data.results.length + ' userResults');
