@@ -40,6 +40,7 @@ var SeasonLeaders = React.createClass({
                     </div>
                     </td>
                     <td>{d.user.getCurrentHandicap(this.getParams().seasonId)}</td>
+                    <td>{d.user.points.toFixed(2)}</td>
                     <td>{d.wins}</td>
                     <td>{d.loses}</td>
                     <td>{d.racksFor}</td>
@@ -62,13 +63,15 @@ var SeasonLeaders = React.createClass({
         }.bind(this));
 
         users = users.sort(function(a,b) {
-            aStat = a.getStatsForSeason(this.getParams().seasonId);
-            bStat = b.getStatsForSeason(this.getParams().seasonId);
-            return Stat.sort.byPoints(aStat,bStat);
+            if (a.points > b.points)
+                return -1;
+            if (b.points > a.points)
+                return 1;
+            return 0;
         }.bind(this));
 
         var rows = [];
-        //<th>Points</th>
+
          users.forEach(function(u) {
              rows.push(u.getStatsForSeason(this.getParams().seasonId));
          }.bind(this));
@@ -79,6 +82,7 @@ var SeasonLeaders = React.createClass({
                         <th>Player</th>
                         <th></th>
                         <th>HC</th>
+                        <th>Points</th>
                         <th>W</th>
                         <th>L</th>
                         <th>RW</th>

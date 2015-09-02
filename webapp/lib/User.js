@@ -17,9 +17,11 @@ function User(id,first_name,last_name) {
     this.stats = [];
     this.profile = [];
     this.teams = [];
+    this.points = 0;
     this.role = 'PLAYER';
     this.password = null;
     this.challenges = {};
+    this.matchPoints = [];
     for(var st in Status) {
         this.challenges[st] = [];
     }
@@ -30,6 +32,7 @@ User.prototype.profile = function () { return this.profile ; };
 User.prototype.getUserId = function () { return this.id ; };
 User.prototype.userId = function () { return this.userId ; };
 User.prototype.id = function () { return this.id ; };
+User.prototype.points = function () { return this.points ; };
 User.prototype.lName = function () { return this.lName ; };
 User.prototype.fName = function () { return this.fName ; };
 User.prototype.sName = function () {
@@ -311,6 +314,48 @@ User.prototype.reset = function(){
 User.prototype.isAdmin = function() {
     return this.role != undefined && this.role == 'ADMIN';
 };
+
+User.prototype.setPoints = function(points) {
+    this.points = points;
+};
+
+
+User.prototype.addMatchPoints = function(mp) {
+    if (mp) {
+        this.matchPoints.push(mp);
+    }
+};
+
+User.prototype.getMatchPoint = function(resultId) {
+    var p  = 0;
+    this.matchPoints.forEach(function(m) {
+        if (m.resultId == resultId) {
+            p = m.points;
+        }
+    }.bind(this));
+    return p;
+};
+
+User.prototype.getCalculation = function(resultId) {
+    var p  = "";
+    this.matchPoints.forEach(function(m) {
+        if (m.resultId == resultId) {
+            p = m.calculation;
+        }
+    }.bind(this));
+    return p;
+};
+
+User.prototype.getWeightedAvg = function(resultId) {
+    var p  = 0;
+    this.matchPoints.forEach(function(m) {
+        if (m.resultId == resultId) {
+            p = m.weightedAvg.toFixed(2);
+        }
+    }.bind(this));
+    return p;
+};
+
 
 User.DEFAULT_USER = new User(0,'unknown','',{});
 User.create = function(userData,db)  {

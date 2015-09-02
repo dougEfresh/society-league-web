@@ -9,7 +9,9 @@ var TeamMatch = require('./TeamMatch');
 var Result = require('./Result');
 var ChallengeGroup = require('./ChallengeGroup');
 var Challenge = require('./Challenge');
+var MatchPoints = require('./MatchPoints');
 var moment = require('moment');
+
 function resetData() {
     return  {
         divisions: [],
@@ -157,6 +159,14 @@ Database.prototype.processUser = function(user,userData) {
                 user.addChallenge(type,challengeGroup);
             }.bind(this));
     }
+
+    var points = 0;
+    userData.points.forEach(function(p) {
+        var mp = new MatchPoints(p.resultId,p.points,p.weightedAvg,p.matchNum,p.calculation);
+        user.addMatchPoints(mp);
+       points += p.weightedAvg;
+    });
+    user.setPoints(points);
     return user;
 };
 
@@ -167,14 +177,14 @@ Database.prototype.processData = function (d) {
     for (id in d.divisions) {
         this.data.divisions.push(new Division(id, d.divisions[id].type));
     }
-    console.log('Division: ' + start.diff(moment()));
+    //console.log('Division: ' + start.diff(moment()));
     start = moment();
     for (id in d.seasons) {
         var division = this.findDivision(d.seasons[id].division);
         var season = d.seasons[id];
         this.data.seasons.push(new Season(season.id, season.name, season.startDate, season.endDate, season.status, division));
     }
-    console.log('Season: ' + start.diff(moment()));
+    //console.log('Season: ' + start.diff(moment()));
 
     start = moment();
     d.teams.forEach(function (t) {
@@ -185,7 +195,7 @@ Database.prototype.processData = function (d) {
         }
         this.data.teams.push(team);
     }.bind(this));
-    console.log('Team: '  + start.diff(moment()));
+    //console.log('Team: '  + start.diff(moment()));
 
     start = moment();
     d.users.forEach(function (u) {
@@ -196,7 +206,7 @@ Database.prototype.processData = function (d) {
         this.processUser(this.findUser(u.userId), u);
     }.bind(this));
 
-    console.log('Users: '  + start.diff(moment()));
+    //console.log('Users: '  + start.diff(moment()));
 
     start = moment();
     d.teams.forEach(function (t) {
@@ -208,7 +218,7 @@ Database.prototype.processData = function (d) {
             }
         }
     }.bind(this));
-    console.log('TeamMembers '  + start.diff(moment()));
+//    console.log('TeamMembers '  + start.diff(moment()));
 
     start = moment();
     for (id in d.userStats) {
@@ -264,7 +274,7 @@ Database.prototype.processData = function (d) {
             }
         }
     }
-    console.log('UserStats '  + start.diff(moment())*-1);
+  //  console.log('UserStats '  + start.diff(moment())*-1);
     for (id in d.teamStats) {
         var season = this.findSeason(id);
         d.teamStats[id].forEach(function (s) {
@@ -303,7 +313,7 @@ Database.prototype.processData = function (d) {
 
         this.data.teamMatches.push(tm);
     }.bind(this));
-    console.log('TeamResults '  + start.diff(moment()));
+    //console.log('TeamResults '  + start.diff(moment()));
     start  = moment();
 
     d.userResults.forEach(function (r) {
@@ -328,7 +338,7 @@ Database.prototype.processData = function (d) {
             }
         }.bind(this));
     }.bind(this));
-    console.log('UseResults '  + start.diff(moment()));
+    //console.log('UseResults '  + start.diff(moment()));
     if (d.slots != undefined) {
     d.slots.forEach(function (s) {
         var slot = this.findSlot(s.id);
@@ -379,14 +389,16 @@ Database.prototype.processData = function (d) {
         stat.setPoints(points);
     });
 
+    /*
     console.log('Created ' + this.data.divisions.length + ' divisions');
     console.log('Created ' + this.data.seasons.length + ' seasons');
-    console.log('Created ' + this.data.teams.length + ' teams');
+    console.log('Created ' + this.data.teams.length + ' teams')
+    ;
     console.log('Created ' + this.data.users.length + ' users');
     console.log('Created ' + this.data.teamMatches.length + ' teamMatches');
     console.log('Created ' + this.data.results.length + ' userResults');
     console.log('Created ' + this.data.slots.length + ' slots');
-
+*/
     this.loading  = false;
     this.loaded = true;
 };

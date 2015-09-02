@@ -2,60 +2,68 @@ var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;
-var Pie = require("react-chartjs").Pie;
-
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var StatsRecord = require('./StatsRecord.jsx');
-var StatsHandicap = require('./StatsHandicap.jsx');
-var StatsChart = require('./StatsPie.jsx');
-var firstBy = require('../../lib/FirstBy.js');
-var UserStat = require('../../lib/UsersStat');
+var DataStore = require('../../jsx/stores/DataStore.jsx');
+var Handicap = require('../../lib/Handicap');
+var UserLink = require('../../../webapp/jsx/components/links/UserLink.jsx');
 
 var StatHistory = React.createClass({
     mixins: [UserContextMixin,Router.State],
-    render: function() {
-        var user = this.getUser(this.getParams().statsId);
-        var stats = user.stats;
-        var userStats = [];
-        stats.forEach(function(s){
-            if (s.type.indexOf('handicap') >= 0 || s.type.indexOf('division') >=0 ) {
-                return;
-            }
-            if (s.type.indexOf('challenge') >= 0 ) {
-                return ;
-            }
-            userStats.push(new UserStat(user,s));
-        });
-        userStats.sort(function(a,b){
-            if (a.stat.type == 'all') {
-                return -1;
-            }
+    getRows: function(results) {
+        var rows = [];
+        var user = this.getUser();
+          results.forEach(function(r){
+              var race = Handicap.race(r.winnerHandicap,r.loserHandicap);
+              var op = r.getOpponent(user);
+              //<td>{user.getCalculation(r.resultId)}</td>
+           rows.push(
+               <tr key={r.teamMatch.id} >
+                   <td>
+                       <UserLink user={op} />
+                       <span> {'(' +r.getHandicap(op) +')'}</span>
+                   </td>
+                   <td>{r.getMatchDate()}</td>
+                   <td>{r.isWinner(user) ? 'W' : 'L'} </td>
+                   <td>{race}</td>
+                   <td>{user.getMatchPoint(r.resultId)}</td>
+                   <td>{user.getWeightedAvg(r.resultId)}</td>
 
-            if (b.stat.type == 'all') {
-                return 0;
-            }
+                   <td>{r.getRacks(user)}</td>
+                   <td>{r.getRacks(op)}</td>
+               </tr>
+           )
+        }.bind(this));
+        return rows;
+    },
+      render: function() {
+        if (this.getUserId() == 0) {
+            return null;
+        }
+          var user = this.getUser();
+          var results = user.getResults();
+          results = results.sort(function(a,b){
+            return a.getMatchDate().localeCompare(b.getMatchDate());
+          });
+            return (
+                <div className="table-responsive">
+                <table className="table table-hover table-condensed table-striped">
+                    <tr>
+                        <th>Player</th>
+                        <th>Date</th>
+                        <th>W/L</th>
+                        <th>Race</th>
+                        <th>Points</th>
+                        <th>Weighted Avg</th>
+                        <th>RW</th>
+                        <th>RL</th>
+                    </tr>
+                     <tbody>
+                     {this.getRows(results)}
+                     </tbody>
+                </table>
+                </div>
 
-            if (b.stat.type == 'season') {
-                return  b.stat.season.startDate.localeCompare(a.stat.season.startDate);
-            }
-
-            return 0;
-        });
-        /*
-        var rowGetter = function(rowIndex) {
-            return userStats[rowIndex];
-        };
-         var width =
-            // ColumnConfig.name.width +
-             ColumnConfig.season.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.racksFor.width +
-            ColumnConfig.racksAgainst.width + 10;
-            */
-         return (
-               <h2>Coming Soon</h2>
-        );
+            );
     }
 });
 

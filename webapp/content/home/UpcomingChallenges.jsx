@@ -44,7 +44,7 @@ var UpcomingChallenges = React.createClass({
                 <li key={match.getId()} className="list-group-item col-lg-12 col-xs-12">
                     <div className="col-lg-10 col-md-10 col-xs-12">
                     <span id={'challenge-'+ match.getId()} className="next-match pull-left">
-                        {m.format('ddd MMM Do ') + ' at '  + m.format('HH:mm a') + ' vs. '}
+                        {m.format('ddd MMM Do ') + ' at '  + m.format('h:mm a') + ' vs. '}
                         <UserLink user={opponent}/>
                         <span>{' (' + opponent.getChallengeHandicap() + ' ' + hc + ') '}</span>
                     </span>

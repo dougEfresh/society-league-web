@@ -18,6 +18,7 @@ Result.prototype.winnerHandicap = function () { return this.winnerHandicap; };
 Result.prototype.loserHandicap = function () { return this.loserHandicap ; };
 Result.prototype.winnersTeam = function(){return this.winnersTeam;};
 Result.prototype.losersTeam= function(){return this.losersTeam;};
+Result.prototype.resultId = function(){return this.resultId;};
 
 Result.formatHandicap = function(hc) {
     switch(hc) {

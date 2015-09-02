@@ -43,23 +43,25 @@ var SeasonApp = React.createClass({
                 <div className="btn-group bot-margin">
                     <div id={display == 'none' ? 'season-standings-link-hidden' : 'season-standings-link'}
                          style={{display:display}}>
-                    
-                    <button className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'}>
                         <Link to='seasonStandings' params={this.getParams()}>
+                    <button className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'}>
                             <span className="fa fa-trophy"></span><span className="main-item">Standings</span>
-                        </Link>
+
                     </button>
+                        </Link>
                     </div>
+                    <Link to='seasonLeaders' params={this.getParams()}>
                     <button className={this.isActive('seasonLeaders') ? 'btn btn-success' : 'btn btn-default'} >
-                        <Link to='seasonLeaders' params={this.getParams()}>
+
                             <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
-                        </Link>
+
                     </button>
+                    </Link>
+                    <Link to='seasonResults' params={this.getParams()}>
                     <button className={this.isActive('seasonResults') ? 'btn btn-success' : 'btn btn-default'} >
-                        <Link to='seasonResults' params={this.getParams()}>
                             <span className="fa  fa-history"></span><span className="main-item">Matches</span>
-                        </Link>
                     </button>
+                    </Link>
                 </div>
         );
         return (

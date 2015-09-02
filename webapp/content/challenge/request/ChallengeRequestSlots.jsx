@@ -24,7 +24,7 @@ var ChallengeRequestSlots = React.createClass({
             }
         }
         slotsOnDay = slotsOnDay.sort(function(a,b){
-           return a.getTime().localeCompare(b.getTime());
+           return a.getRawDate().localeCompare(b.getRawDate());
         });
         slotsOnDay.forEach(function (s) {
                 buttons.push(
