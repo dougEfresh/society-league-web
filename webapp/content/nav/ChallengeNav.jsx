@@ -54,9 +54,11 @@ var ChallengeNav = React.createClass({
     },
     render: function() {
         var u = this.getUser();
-        if (u.userId == 0) {
+        if (u.id == "0") {
             return null;
         }
+        return null;
+        /*
         var c = u.challenges;
         var counter = c[Status.SENT].length
             + c[Status.PENDING].length
@@ -102,6 +104,8 @@ var ChallengeNav = React.createClass({
                      </li>
                  </ul>
                   */
+
+        /*
         return (
              <li id="challenge-nav" role="presentation" className={'dropdown ' + active}>
                  <Link to="challengeMain" >
@@ -115,6 +119,7 @@ var ChallengeNav = React.createClass({
                  </Link>
              </li>
         );
+        */
     }
 });
 

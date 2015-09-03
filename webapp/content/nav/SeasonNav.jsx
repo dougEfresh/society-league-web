@@ -39,6 +39,8 @@ var SeasonNav = React.createClass({
         });
     },
     render: function() {
+        return null;
+        /*
         if (this.getUser().id == 0) {
             return null;
         }
@@ -51,6 +53,7 @@ var SeasonNav = React.createClass({
         if (!user.isAdmin()) {
             currentSeasons = user.getCurrentSeasons();
         }
+        */
         /*
         currentSeasons.forEach(function(t) {
             var title = "unknown";

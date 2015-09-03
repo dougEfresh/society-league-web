@@ -174,9 +174,9 @@ Database.prototype.processData = function (d) {
     var id;
     var start = moment();
     this.data.slots = [];
-    for (id in d.divisions) {
-        this.data.divisions.push(new Division(id, d.divisions[id].type));
-    }
+    //for (id in d.divisions) {
+//        this.data.divisions.push(new Division(id, d.divisions[id].type));
+//    }
     //console.log('Division: ' + start.diff(moment()));
     start = moment();
     for (id in d.seasons) {
@@ -407,9 +407,13 @@ Database.prototype.init = function(data) {
     this.loading = true;
     this.loaded = false;
     this.data = resetData();
-    this.processData(data);
-    //Database.loaded = true;
+    this.user = data;
+    //this.processData(data);
+//    Database.loaded = true;
 };
+
+
+Database.prototype.user = function() {return this.user;};
 
 Database.prototype.getDivisions =  function () {
         return this.data.divisions;

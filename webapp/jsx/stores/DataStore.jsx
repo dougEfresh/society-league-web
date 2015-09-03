@@ -18,7 +18,10 @@ var Challenge = require('../../lib/Challenge');
 var Database = require('../../lib/Database');
 var db = new Database();
 var _authUserId = 0;
+var user = {id: "0"};
 var _updateTime = Date.now();
+var loaded = false;
+var loading = false;
 
 var DataStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
@@ -39,21 +42,22 @@ var DataStore = assign({}, EventEmitter.prototype, {
     },
     init: function() {
         console.log('Init DB');
-        db.loaded = false;
-        db.loading = true;
-        Util.getData('/api/data', function(d) {
-            console.log('Got me some data');
-            db.init(d);
+        loaded = false;
+        loading = true;
+        Util.getData('/api/user', function(d) {
+            console.log('Got me some data', JSON.stringify(d));
+            user = d;
+            //db.init(d);
             DataStore.emitChange();
         }.bind(this));
     },
     checkAge: function() {
         if (Date.now() -_updateTime > 1000*60*5) {
-            if (db.loading == true) {
+            if (loading == true) {
                 return;
             }
             console.log('Reloading data');
-            db.loading = true;
+            loading = true;
             _updateTime = Date.now();
             DataStore.init();
         }
@@ -72,7 +76,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
     },
     getUsers: function() {
         DataStore.checkAge();
-        return db.getUsers();
+        return [user];
     },
     getResults: function() {
         DataStore.checkAge();
@@ -96,40 +100,40 @@ var DataStore = assign({}, EventEmitter.prototype, {
         return db.loading;
     },
     isLoaded: function() {
-        return db.loaded;
+        return user != undefined && user.id != undefined && user.id != "0";
     },
     setLoading: function(loading) {
-        db.loading = loading;
+        loading = loading;
     },
     setLoaded: function(loaded) {
-        db.loaded = loaded;
+        loaded = loaded;
     },
     resetAuth: function() {
-        _authUserId = 0;
+        _authUserId = "0";
     },
     isAuthenticated: function() {
-        return _authUserId > 0;
+        return _authUserId != "0";
     },
     setUser: function(u) {
-        console.log('Setting user: '+ u.userId);
-        _authUserId = u.userId;
+        console.log('Setting user: '+ u.id);
+        _authUserId = u.id;
         DataStore.emitChange();
     },
     getAuthUserId: function() {
         return _authUserId;
     },
     replaceUser: function(user) {
-        var u = db.findUser(user.userId);
+        var u = db.findUser(user.id);
         db.processUser(u,user);
-        db.loading = false;
+        loading = false;
         DataStore.emitChange();
     },
     checkLogin: function() {
         console.log('Checking login stats');
         Util.getData('/api/user', function(d) {
-            if (d.userId != 0) {
+            if (d.id != undefined) {
                 console.log('User is logged');
-                _authUserId = d.userId;
+                _authUserId = d.id;
                 DataStore.emitChange();
             }
         }.bind(this), function(d) {
@@ -137,7 +141,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
         });
     },
     challengeSignUp: function(id) {
-        db.loading = true;
+        loading = true;
         console.log('Signing up ' + id);
          Util.getData('/api/challenge/signup/' + id, function(d) {
              DataStore.replaceUser(d);

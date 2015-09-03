@@ -11,10 +11,7 @@ var UserContextMixin = {
         return DataStore.getDb();
     },
     getUserId: function() {
-        var id = DataStore.getAuthUserId();
-        if (id == undefined || isNaN(id))
-            return 0;
-        return id;
+        return  DataStore.getAuthUserId();
     },
     getUsers: function() {
         return DataStore.getUsers();

@@ -41,6 +41,9 @@ var TeamNav = React.createClass({
         if (this.getUser().id == 0) {
             return null;
         }
+        return null;
+        /*
+
         var teams = [];
         this.getUser().getCurrentTeams().forEach(function(t) {
             teams.push(
@@ -67,6 +70,7 @@ var TeamNav = React.createClass({
               </li>
             </div>
         );
+        */
     }
 });
 
