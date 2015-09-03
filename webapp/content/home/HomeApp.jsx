@@ -25,13 +25,15 @@ var HomeApp = React.createClass({
         this.setState({user: this.getUser()});
     },
     render: function () {
-        if (this.getUser().id == 0) {
+        var user = this.getUser();
+        if (user.id == "0") {
             return null;
         }
-        var welcome = <Link to='info' params={{userId: this.getUser().userId}}>
-            <span id="welcome-name">{'Welcome ' + this.getUser().fName + ' (' + this.getUser().getChallengeHandicap() + ')'}</span> </Link>
+
+        var welcome = <Link to='info' params={{userId: this.getUser().id}}>
+            <span id="welcome-name">{'Welcome ' + user.firstName }</span> </Link>
         var button = null;
-        if (this.getUser().isChallenge()) {
+        if (user.challenge) {
             button =  <Link id="request-link" to="challengeMain">
                 <button className="btn btn-default btn-primary request">
                     <span className="glyphicon glyphicon-plus-sign"></span>
@@ -39,7 +41,7 @@ var HomeApp = React.createClass({
                 </Link>
         }
         var signUp = null;
-        if (!this.getUser().isChallenge()) {
+        if (!user.challenge) {
             signUp = <ChallengeSignUp />;
         }
         //<RecentMatches />

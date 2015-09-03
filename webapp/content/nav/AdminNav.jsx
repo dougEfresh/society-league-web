@@ -7,10 +7,11 @@ var AdminNav = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
     render: function() {
         var active = null;
+        var user = this.getUser();
         if (this.isActive('admin')) {
             active="active";
         }
-        if (!this.getUser().isAdmin()) {
+        if (!user.admin) {
             return null;
         }
         return (

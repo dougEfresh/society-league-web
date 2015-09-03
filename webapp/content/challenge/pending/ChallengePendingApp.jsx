@@ -23,6 +23,9 @@ var ChallengePendingApp = React.createClass({
     },
     render: function() {
         var user = this.getUser();
+        if (!user.challenge) {
+            return null;
+        }
         var challenges = user.getChallenges(Status.PENDING);
             if (this.getUser().challenges[Status.PENDING].length == 0 && this.isActive(Status.PENDING.toLowerCase())) {
             setTimeout(function() {

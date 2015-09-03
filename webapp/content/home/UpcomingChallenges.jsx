@@ -19,16 +19,14 @@ var UpcomingChallenges = React.createClass({
         var request = {
             challenger: null,
             opponent: null,
-             challenges: [e.target.id]
+            challenges: [e.target.id]
         };
         this.transitionTo('challengeCancel',{},request);
         //util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
     },
     render: function() {
-        if (this.getUser().id == 0) {
-            return null;
-        }
-        if (!this.getUser().isChallenge()) {
+        var user = this.getUser();
+        if (user.id == "0" || !user.challenge) {
             return null;
         }
         var matchDao = new MatchDao(this.getDb());
