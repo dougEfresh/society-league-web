@@ -115,7 +115,7 @@ var ChallengeRequestApp = React.createClass({
                 {submit}
                 </p>
                 </div>
-            </form>
+                        </form>
                     </div>
                 </div>
             </div>

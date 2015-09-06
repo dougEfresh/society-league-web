@@ -14,7 +14,7 @@ var ResultMixin = require('../../jsx/mixins/ResultMixin.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var firstBy = require('../../lib/FirstBy.js');
-
+var Util = require('../../jsx/util.jsx');
 
 var sortDateFn = function(a,b) {
     return b.getMatchDate().localeCompare(a.getMatchDate());
@@ -60,7 +60,7 @@ var sortWinFn = function(a,b) {
 };
 
 var TeamResults = React.createClass({
-    mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
     getInitialState: function() {
         return {filter: "",
             showMatches: false,
@@ -76,15 +76,71 @@ var TeamResults = React.createClass({
             page: {
                 size: 30,
                 num: 0
-            }
+            },
+            results: []
         }
     },
+    getData: function() {
+        Util.getData('/api/playerresult/get/team/' + this.getParams().teamId, function(d){
+            this.setState({results: d});
+        }.bind(this));
+
+    },
     componentWillReceiveProps: function(n,o) {
+        this.getData();
     },
     componentDidMount: function() {
+        this.getData();
     },
     render: function() {
-        return (<h2>Coming Soon</h2>);
+        var user = this.getUser();
+        var rows = [];
+        var teamId = this.getParams().teamId;
+        this.state.results.forEach(function(result) {
+            var home = result.teamMatch.home.id == teamId;
+            var winLost = "";
+            var teamMember ;
+            var opponent;
+            var opponentTeam;
+
+            if (home) {
+                winLost = result.homeRacks > result.awayRacks ? 'W' : 'L';
+                opponent = result.playerAway;
+                opponentTeam = result.teamMatch.away;
+                teamMember = result.playerHome;
+            } else {
+                winLost = result.awayRacks > result.homeRacks ? 'W' : 'L';
+                opponent = result.playerHome;
+                teamMember = result.playerAway;
+                opponentTeam = result.teamMatch.home;
+            }
+
+            rows.push(<tr key={result.id} >
+                <td>{teamMember.name}</td>
+                <td>{winLost}</td>
+                <td>{opponent.name}</td>
+                <td>{opponentTeam.name}</td>
+                <td>{result.teamMatch.matchDate}</td>
+            </tr>);
+
+        }.bind(this));
+           return (
+            <table className="table table-condensed table-striped table-responsive" >
+                <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>W/L</th>
+                    <th>Opponent</th>
+                    <th>Opponent Team</th>
+                    <th>Date</th>
+                </tr>
+                <tbody>
+                {rows}
+                </tbody>
+                </thead>
+            </table>
+        );
+
         /*
         if (this.getParams().teamId == undefined || this.getParams().seasonId == undefined) {
             return null;

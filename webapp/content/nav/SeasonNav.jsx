@@ -19,11 +19,6 @@ var Result = require('../../lib/Result');
 
 var SeasonNav = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,Router.State,Router.Navigation],
-    getInitialState: function () {
-        return {
-            user: this.getUser()
-        }
-    },
     componentWillMount: function () {
         DataStore.addChangeListener(this._onChange);
     },
@@ -34,39 +29,26 @@ var SeasonNav = React.createClass({
         this.setState({user: this.getUser()});
     },
     _onChange: function () {
-        this.setState({
-            user: this.state.user
-        });
+        this.setState({user: {}});
     },
     render: function() {
-        return null;
-        /*
-        if (this.getUser().id == 0) {
-            return null;
-        }
         var user = this.getUser();
-        var seasons = [];
-        var currentSeasons = this.getCurrentSeasons();
-        if (currentSeasons.length == 0) {
+        if (user.id == "0") {
             return null;
         }
-        if (!user.isAdmin()) {
-            currentSeasons = user.getCurrentSeasons();
-        }
-        */
-        /*
-        currentSeasons.forEach(function(t) {
+        var seasons = [];
+        user.handicapSeasons.forEach(function(hs) {
             var title = "unknown";
-            var display = 'none'; //TODO remove to see all seasons
-            switch (t.division.type) {
+
+            switch (hs.season.division) {
                 case DivisionConstants.NINE_BALL_TUESDAYS:
-                    title = (<div><BallIcon type={t.division.type}/> Tuesdays </div>);
+                    title = (<div><BallIcon type={hs.division}/> Tuesdays </div>);
                     break;
                 case DivisionConstants.EIGHT_BALL_WEDNESDAYS:
-                    title = (<div><BallIcon type={t.division.type} /> Wednesdays</div>);
+                    title = (<div><BallIcon type={hs.division} /> Wednesdays</div>);
                     break;
                 case DivisionConstants.EIGHT_BALL_THURSDAYS:
-                    title = (<div><BallIcon type={t.division.type} /> Thursdays </div>);
+                    title = (<div><BallIcon type={hs.division} /> Thursdays </div>);
                     break;
                 case DivisionConstants.EIGHT_BALL_MIXED_MONDAYS:
                     title = (<div>
@@ -78,39 +60,25 @@ var SeasonNav = React.createClass({
                     return;
             }
             seasons.push(
-                <div key={t.id} style={{display: display}}>
-                <li id={'season-link-'+ t.id} key={t.id} role="presentation">
-                    <Link  to="seasonStandings" params={{seasonId: t.id}} >
+                <div key={hs.season.id}>
+                <li id={'season-link-'+ hs.season.id} key={hs.season.id} role="presentation">
+                    <Link  to="seasonStandings" params={{seasonId: hs.season.id}} >
                         {title}
                     </Link>
                 </li>
                 </div>
             );
         }.bind(this));
-        */
-        var active = "";
-        if (this.isActive('season') || this.isActive('challengeSeason')) {
-            active = "active";
-        }
-        if (this.getUser().isChallenge()) {
-            var challengeSeason = null;
-            this.getUser().getCurrentSeasons().forEach(function(s){
-                if (s.isChallenge()) {
-                    challengeSeason = s;
-                }
-            });
-            seasons.push(
-                <li key={'challenge-season-link'} id={'challenge-season-link'} key={'challenge'} role="presentation">
-                    <Link to="seasonLeaders" params={{seasonId: challengeSeason.id}} >
-                        {'Top Gun'}
-                    </Link>
-                </li>)
-        }
+
         if (seasons.length == 0){
             return null;
         }
+        var clName = "dropdown";
+        if (this.isActive('season')) {
+            clName = clName + " active";
+        }
         return (
-             <li id="season-nav" role="presentation" className={'dropdown ' + active} >
+             <li id="season-nav" role="presentation" className={clName} >
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                      <span className="fa fa-server"></span>
                      <span className="main-item">Seasons</span>&nbsp;

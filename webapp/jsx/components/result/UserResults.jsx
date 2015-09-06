@@ -7,40 +7,59 @@ var ResultMixin = require('../../mixins/ResultMixin.jsx');
 var UserLink = require('../links/UserLink.jsx');
 
 var UserResults = React.createClass({
-    mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin],
+    mixins: [UserContextMixin],
+    getDefaultProps: function() {
+        return {results: []};
+    },
     render: function() {
-
-        /*
-        var width  = ColumnConfig.date.width +
-            ColumnConfig.name.width +
-            ColumnConfig.handicap.width +
-            ColumnConfig.winLost.width +
-            ColumnConfig.racksFor.width +
-            ColumnConfig.racksAgainst.width +
-                1;
+        var rows = [];
+        var user = this.getUser();
+        this.props.results.forEach(function(r) {
+            var op;
+            var winner = false;
+            if (r.winner.id == user.id) {
+                op = r.loser;
+                winner = true;
+            } else {
+                op = r.winner;
+            }
+            rows.push(<tr key={r.id}>
+                <td>{r.teamMatch.matchDate}</td>
+                <td>{op.name}</td>
+                <td>{winner ? 'W' : 'L'}</td>
+                </tr>);
+        });
         return (
-                <Table
-                    groupHeaderHeight={30}
-                    rowHeight={50}
-                    headerHeight={30}
-                    rowGetter={rowGetter}
-                    rowsCount={tableData.length}
-                    width={width}
-                    maxHeight={500}
-                    headerHeight={30}>
-                    {ColumnHelper.date()}
-                    {ColumnHelper.opponent(this.getUser())}
-                    {ColumnHelper.opponentHandicap(this.getUser())}
-                    {ColumnHelper.winLostUser(this.getUser())}
-                    {ColumnHelper.racksForUser(this.getUser())}
-                    {ColumnHelper.racksAgainstUser(this.getUser())}
-
-                </Table>
+            <table>
+                <thead>
+                <tr>
+                <th>Date</th>
+                <th>Opponent</th>
+                <th>W/L</th>
+                </tr>
+                </thead>
+                <tbody>
+                {rows}
+                </tbody>
+            </table>
         );
-        //
-*/
+
+    }
+});
+
+
+var ResultEight = React.createClass({
+    render: function() {
         return null;
     }
 });
+
+
+var ResultNine = React.createClass({
+    render: function() {
+        return null;
+    }
+});
+
 
 module.exports = UserResults;

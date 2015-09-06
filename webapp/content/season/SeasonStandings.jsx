@@ -12,31 +12,58 @@ var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Stat =  require('../../lib/Stat');
 var TeamStat =  require('../../lib/TeamStat');
+var Util = require('../../jsx/util.jsx');
 
 var SeasonStandings = React.createClass({
-    mixins: [SeasonMixin,StatsMixin,TeamMixin,UserContextMixin,Router.State],
-    getDefaultProps: function() {
-        return {
-            seasonId: 0
-        }
+    mixins: [UserContextMixin,Router.State],
+    getInitialState: function() {
+         return {
+             seasonStats: []
+         }
+    },
+    getData: function() {
+        Util.getData('/api/stat/season/' + this.getParams().seasonId, function(d){
+            this.setState({seasonStats: d});
+        }.bind(this));
+
+    },
+    componentDidMount: function () {
+        this.getData();
+    },
+    componentWillReceiveProps: function (o, n) {
+       this.getData();
     },
     render: function() {
-        var season = this.getSeason(this.getParams().seasonId);
+        if (this.state.seasonStats.length == 0)
+            return null;
         var rows = [];
-        this.getSeasonStandings(this.getParams().seasonId).forEach(function (t) {
-            rows.push(t.getStats(this.getParams().seasonId));
+        this.state.seasonStats.forEach(function(s){
+            rows.push(
+                <tr key={s.team.id}>
+                    <td>{s.team.name}</td>
+                    <td>{s.wins}</td>
+                    <td>{s.loses}</td>
+                    <td>{s.racksWon}</td>
+                    <td>{s.racksLost}</td>
+                    <td>{s.rackPct.toFixed(2)}</td>
+            </tr>)
         }.bind(this));
-        var width = ColumnConfig.name.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.racksFor.width +
-            ColumnConfig.racksAgainst.width +
-            1;
-        var rowGetter = function(index) {
-            return rows[index];
-        };
         return (
-               null
+            <table className="table table-condensed table-striped table-responsive" >
+                <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>Racks Won</th>
+                    <th>Racks Lost</th>
+                    <th>Pct</th>
+                </tr>
+                <tbody>
+                {rows}
+                </tbody>
+                </thead>
+            </table>
         );
 
     }

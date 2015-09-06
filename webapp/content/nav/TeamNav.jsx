@@ -15,50 +15,46 @@ var Result = require('../../lib/Result');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
+var Util = require('../../jsx/util.jsx');
 
 var TeamNav = React.createClass({
     mixins: [UserContextMixin,TeamMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
-            user: this.getUser()
+            data: []
         }
     },
     componentWillMount: function () {
-        DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
-        DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
-        this.setState({user: this.getUser()});
+        Util.getData('/api/team/get/' + this.getUser().id + '/current', function(d){
+            this.setState({data: d});
+        }.bind(this));
     },
-    _onChange: function () {
-        this.setState({
-            user: this.getUser()
-        });
+    componentWillReceiveProps: function(nextProps) {
+        Util.getData('/api/team/get/' + this.getUser().id + '/current', function(d){
+            this.setState({data: d});
+        }.bind(this));
+
     },
     render: function() {
-        if (this.getUser().id == 0) {
-            return null;
-        }
-        return null;
-        /*
-
         var teams = [];
-        this.getUser().getCurrentTeams().forEach(function(t) {
+        var user = this.getUser();
+        this.state.data.forEach(function(t) {
             teams.push(
                 <li key={t.name} className="teamNavLink" role="presentation">
-                    <Link  to={'teamStandings'}  params={{userId: this.getUserId(),teamId: t.id, seasonId: t.getSeason().id}} >{t.name}</Link>
+                    <Link  to={'teamStandings'}  params={{userId: user.id ,teamId: t.id, seasonId: t.season.id}} >{t.name}</Link>
                 </li>
             );
         }.bind(this));
-        var active = "";
+        var clName = "dropdown";
         if (this.getPath().indexOf('team') >= 0) {
-            active = "active";
+            clName =  clName + " active";
         }
         return (
-            <div style={{display: 'none'}}>
-              <li id="team-nav" role="presentation" className={'dropdown ' + active} >
+              <li id="team-nav" role="presentation" className={clName} >
                   <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                       <i className="fa fa-users"></i>&nbsp;
                       <span className="main-item">Teams</span>&nbsp;
@@ -68,9 +64,8 @@ var TeamNav = React.createClass({
                       {teams}
                   </ul>
               </li>
-            </div>
         );
-        */
+
     }
 });
 

@@ -40,7 +40,7 @@ var LeagueNav = React.createClass({
         })
     },
     render: function () {
-        if (this.getUserId() == 0) {
+        if (this.getUser().id == "0") {
             return null
         }
         var home = null;

@@ -7,57 +7,85 @@ var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var Stat = require('../../lib/Stat');
 var UsersStat = require('../../lib/UsersStat');
 var TeamStat = require('../../lib/TeamStat');
+var Util = require('../../jsx/util.jsx');
 
 var TeamStandings = React.createClass({
     mixins: [TeamMixin,SeasonMixin,UserContextMixin,Router.State],
-    render: function() {
-        var team = this.getTeam(this.getParams().teamId);
-        var stats = team.getStats(this.getParams().seasonId);
-        var users = team.getMembers(this.getParams().seasonId);
-        var rowGetter = function(rowIndex) {
-            return teamData[rowIndex];
-        };
-        var teamData = [];
-        //Create a fake user with a name of 'team'
-        teamData.push(stats);
-        var usersStat = [];
-        users.forEach(function(u) {
-            usersStat.push(u.getSeasonStats(this.getParams().seasonId));
+    getInitialState: function() {
+         return {
+             statTeam: {},
+             statTeamMembers: []
+        }
+    },
+    getData: function() {
+        Util.getData('/api/stat/team/' + this.getParams().teamId, function(d){
+            this.setState({statTeam: d});
         }.bind(this));
-        usersStat = usersStat.sort(function(a,b) {
-            return Stat.sortAsc(a,b);
-        });
-        usersStat.forEach(function(us){
-            teamData.push(us);
+
+        Util.getData('/api/stat/team/' + this.getParams().teamId + '/members', function(d){
+            this.setState({statTeamMembers: d});
         }.bind(this));
-        /*
-        var width = ColumnConfig.name.width +
-            ColumnConfig.handicap.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.wins.width +
-            ColumnConfig.racksFor.width +
-            ColumnConfig.racksAgainst.width +
-            1;
+    },
+    componentDidMount: function () {
+        this.getData();
+    },
+    componentWillReceiveProps: function (o, n) {
+       this.getData();
+    },
+    getHeader: function() {
+        if (this.state.statTeam.team  && this.state.statTeam.team.nine) {
+            return ( <tr>
+                    <th>Name</th>
+                <th>Wins</th>
+                <th>Loses</th>
+                <th>Racks Won</th>
+                <th>Racks Lost</th>
+                </tr>);
+        }
         return (
-                <Table
-                    groupHeaderHeight={30}
-                    rowHeight={50}
-                    headerHeight={30}
-                    rowGetter={rowGetter}
-                    rowsCount={teamData.length}
-                    width={width}
-                    maxHeight={500}
-                    headerHeight={30}>
-                    {ColumnHelper.user()}
-                    {ColumnHelper.hc(this.getParams().seasonId)}
-                    {ColumnHelper.wins()}
-                    {ColumnHelper.loses()}
-                    {ColumnHelper.racksForStat()}
-                    {ColumnHelper.racksAgainstStat()}
-                </Table>
+            <tr>
+                <th>Name</th>
+                <th>Wins</th>
+                <th>Loses</th>
+            </tr>);
+    },
+    getRows: function() {
+
+    },
+    render: function() {
+        var stat = this.state.statTeam;
+        if (stat.team == undefined)
+            return null;
+        var rows = [];
+        var i = 0;
+        rows.push(
+            <tr key={i}>
+            <td>{stat.team.name}</td>
+                <td>{stat.wins}</td>
+                <td>{stat.loses}</td>
+                <td>{stat.racksWon}</td>
+                <td>{stat.racksLost}</td>
+        </tr>);
+        this.state.statTeamMembers.forEach(function(u){
+            i++;
+            rows.push(<tr key={i} >
+                <td>{u.user.name}</td>
+                <td>{u.wins}</td>
+                <td>{u.loses}</td>
+                <td>{u.racksWon}</td>
+                <td>{u.racksLost}</td>
+            </tr>);
+        }.bind(this));
+        return (
+            <table className="table table-condensed table-striped table-responsive" >
+                <thead>
+                {this.getHeader()}
+                <tbody>
+                {rows}
+                </tbody>
+                </thead>
+            </table>
         );
-        */
-        return null;
 
 
     }

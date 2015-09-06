@@ -8,43 +8,43 @@ var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var StatsMixin = require('../../jsx/mixins/StatsMixin.jsx');
+var Util = require('../../jsx/util.jsx');
 
 var SeasonApp = React.createClass({
-    mixins: [SeasonMixin,UserContextMixin,StatsMixin,Router.State,Router.Navigation],
+    mixins: [SeasonMixin,UserContextMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
-            user: this.getUser(),
-            seasonId: this.getParams().seasonId
+            season: {}
         }
     },
     componentWillMount: function () {
-        DataStore.addChangeListener(this._onChange);
+        //DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
-        DataStore.removeChangeListener(this._onChange);
+        //DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
-        this.setState({user: this.getUser()});
+        Util.getData('/api/season/' + this.getParams().seasonId, function(d){
+            this.setState({season: d});
+        }.bind(this));
     },
     componentWillReceiveProps: function() {
-        this.setState({seasonId: this.getParams().seasonId});
-    },
-    _onChange: function() {
-        console.log('onchange');
-        this.setState({user: this.getUser()});
+        Util.getData('/api/season/' + this.getParams().seasonId, function(d){
+            this.setState({season: d});
+        }.bind(this));
     },
     render: function() {
-        if (this.getUserId() == 0) {
+        var user = this.getUser();
+        if (!this.state.season.name) {
             return null;
         }
-        var season = this.getSeason(this.getParams().seasonId);
-        var display = season.isChallenge() ? 'none' : 'inline';
+        var display = 'inline';
         var header = (
                 <div className="btn-group bot-margin">
                     <div id={display == 'none' ? 'season-standings-link-hidden' : 'season-standings-link'}
                          style={{display:display}}>
                         <Link to='seasonStandings' params={this.getParams()}>
-                    <button className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'}>
+                            <button className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'}>
                             <span className="fa fa-trophy"></span><span className="main-item">Standings</span>
 
                     </button>
@@ -67,7 +67,7 @@ var SeasonApp = React.createClass({
         return (
                 <div id="season-app" className="panel panel-default">
                     <div className="panel-heading">
-                        <h3>{season.getDisplayName()}</h3>
+                        <h3>{this.state.season.name}</h3>
                         {header}
                     </div>
                         <RouteHandler />

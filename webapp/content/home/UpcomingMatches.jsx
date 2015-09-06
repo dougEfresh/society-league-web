@@ -3,13 +3,55 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UserLink= require('../../jsx/components/links/UserLink.jsx');
 var TeamLink= require('../../jsx/components/links/TeamLink.jsx');
 var moment = require('moment');
+var Util = require('../../jsx/util.jsx');
 
 var UpcomingMatches = React.createClass({
     mixins: [UserContextMixin],
-    render: function() {
-        if (this.getUser().id == 0) {
-            return null;
+    getInitialState: function() {
+         return {
+             data: []
         }
+    },
+    componentWillMount: function() {
+    },
+    componentWillUnmount: function() {
+    },
+    componentDidMount: function() {
+        Util.getData('/api/teammatch/get/user/' + this.getUser().id + '/current', function(d){
+            this.setState({data: d});
+        }.bind(this));
+    },
+    render: function() {
+        var user  = this.getUser();
+        var rows = [];
+        this.state.data.forEach(function(m){
+            //moment(m.matchDate);
+            rows.push (
+                <tr key={m.id}>
+                    <td>
+                        {m.matchDate}
+                    </td>
+                    <td>
+                        {m.home.name}
+                    </td>
+                </tr>
+            );
+        });
+        return (
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Opponent</th>
+                </tr>
+                </thead>
+                <tbody>
+                {rows}
+                </tbody>
+            </table>
+
+        );
+        /*
         var teams = this.getUser().getCurrentTeams();
         var yesterday = moment().subtract(1,'day');
         var upComingMatches = [];
@@ -58,6 +100,7 @@ var UpcomingMatches = React.createClass({
                 </div>
             </div>
         )
+        */
     }
 });
 
