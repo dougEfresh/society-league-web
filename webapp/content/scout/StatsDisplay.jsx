@@ -1,15 +1,39 @@
 var React = require('react/addons');
 var Router = require('react-router');
-
+var Util = require('../../jsx/util.jsx');
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
+var Handicap = require('../../lib/Handicap');
 
 var StatsDisplay = React.createClass({
     mixins: [UserContextMixin,Router.State],
+     getInitialState: function() {
+         return {
+             update: Date.now(),
+             stats: []
+         }
+    },
+    getData: function() {
+        Util.getData('/api/stat/user/' + this.getParams().statsId , function(d){
+            this.setState({stats: d});
+        }.bind(this));
+    },
+    componentDidMount: function () {
+        this.getData();
+    },
+    componentWillReceiveProps: function (o, n) {
+        var now = Date.now();
+        if ( now - this.state.update > 1000*60)
+            this.getData();
+       this.getData();
+    },
     getRows: function(data) {
         var rows = [];
-        var user = this.getUser(this.getParams().statsId);
+        var userId = this.getParams().statsId;
+        var cnt = 0;
         data.forEach(function(d){
+            /*
             if (d.type == 'challenge') {
+
                 return;
             }
             var type = d.getType();
@@ -23,61 +47,48 @@ var StatsDisplay = React.createClass({
                 type = 'overall';
             }
 //<td> {d.getPoints()} </td>
-            rows.push(<tr key={type}>
-                <td> {type}</td>
-                <td> {hc} </td>
-                <td> {d.wins}</td>
-                <td> {d.loses}</td>
-                <td> {d.racksFor}</td>
-                <td> {d.racksAgainst}</td>
-                <td> {d.getWinPct()}</td>
-            </tr>);
+             */
+            var hc = "";
+            if (d.team && d.user) {
+                d.user.handicapSeasons.forEach(function(hs){
+                    if (hs.season.id == d.team.season.id) {
+                        hc = Handicap.formatHandicap(hs.handicap);
+                    }
+                });
+            }
+            cnt += 1;
+            var type = d.type;
+            if (d.type == 'season') {
+                type = d.team.season.name;
+            }
+            rows.push(
+                <tr key={cnt}>
+                    <td>{type}</td>
+                    <td>{hc}</td>
+                    <td>{d.wins}</td>
+                    <td>{d.loses}</td>
+                    <td>{d.racksWon}</td>
+                    <td>{d.racksLost}</td>
+                    <td>{d.winPct.toFixed(3)}</td>
+                </tr>);
         });
         return rows;
     },
     render: function() {
-        var user = this.getUser(this.getParams().statsId);
-        var stats = user.getChallengeStats();
-        var userStats = [];
-        userStats.push(stats);
-        /*
-
-        stats.forEach(function(s){
-
-            if (s.type.indexOf('handicap') >= 0 || s.type.indexOf('division') >=0 ) {
-                return;
-            }
-            userStats.push(s);
-        });
-        userStats = userStats.sort(function(a,b){
-            if (a.type == 'all') {
-                return -1;
-            }
-
-            if (b.type == 'all') {
-                return 0;
-            }
-
-            if (b.type == 'season') {
-                return  b.season.startDate.localeCompare(a.season.startDate);
-            }
-
-            return 0;
-        });
-        */
-
-        var rows = this.getRows(userStats);
+        var stats = this.state.stats;
+        if (stats.length == 0) {
+            return null;
+        }
+        var rows = this.getRows(stats);
         if (rows.length < 1) {
             return (<h3>No matches have been played</h3>);
         }
-        //<th>Points</th>
          return (
              <div className="table-responsive">
                  <table className="table table-striped table-hover table-condensed">
                     <tr>
                         <th>Type</th>
                         <th>HC</th>
-
                         <th>W</th>
                         <th>L</th>
                         <th>RW</th>

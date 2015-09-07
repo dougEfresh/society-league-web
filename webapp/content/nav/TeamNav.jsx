@@ -21,6 +21,7 @@ var TeamNav = React.createClass({
     mixins: [UserContextMixin,TeamMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
+            update: Date.now(),
             data: []
         }
     },
@@ -29,15 +30,17 @@ var TeamNav = React.createClass({
     componentWillUnmount: function () {
     },
     componentDidMount: function () {
+        this.getData();
+    },
+    getData: function() {
         Util.getData('/api/team/get/' + this.getUser().id + '/current', function(d){
             this.setState({data: d});
         }.bind(this));
     },
     componentWillReceiveProps: function(nextProps) {
-        Util.getData('/api/team/get/' + this.getUser().id + '/current', function(d){
-            this.setState({data: d});
-        }.bind(this));
-
+        var now = Date.now();
+        if (now - this.state.update > 1000*60)
+            this.getData();
     },
     render: function() {
         var teams = [];
