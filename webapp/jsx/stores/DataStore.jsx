@@ -141,7 +141,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
         });
     },
     challengeSignUp: function(id) {
-        loading = true;
+        loadingch = true;
         console.log('Signing up ' + id);
          Util.getData('/api/challenge/signup/' + id, function(d) {
              DataStore.replaceUser(d);

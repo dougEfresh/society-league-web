@@ -2,36 +2,58 @@ var React = require('react/addons');
 var Router = require('react-router');
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var Chart = require('../../jsx/components/Chart.jsx');
-var Stat = require('../../lib/Stat');
+var Util = require('../../jsx/util.jsx');
 
 var TeamChart = React.createClass({
-    mixins: [TeamMixin,SeasonMixin,UserContextMixin,Router.State],
+    mixins: [UserContextMixin,Router.State],
+
+    getInitialState: function() {
+        return {
+            update: Date.now(),
+            statTeam: {},
+            statTeamMembers: []
+        }
+    },
+    getData: function() {
+        Util.getData('/api/stat/team/' + this.getParams().teamId, function(d){
+            this.setState({statTeam: d});
+        }.bind(this));
+
+        Util.getData('/api/stat/team/' + this.getParams().teamId + '/members', function(d){
+            this.setState({statTeamMembers: d});
+        }.bind(this));
+    },
+    componentDidMount: function () {
+        this.getData();
+    },
+    componentWillReceiveProps: function (o, n) {
+        var now = Date.now();
+        if ( now - this.state.update > 1000*60)
+            this.getData();
+    },
     render: function() {
         var label = [];
-        var team = this.getTeam(this.getParams().teamId);
-        var stats = team.getStats(this.getParams().seasonId);
-        var users = team.getMembers(this.getParams().seasonId);
+        var team = this.state.statTeam;
+        if (team == undefined) {
+            return null;
+        }
+        var stats = this.state.statTeamMembers;
+        if (stats.length == 0) {
+            return null;
+        }
+
         var wins = [];
         var lost = [];
 
         label.push('team');
-        wins.push(stats.wins);
-        lost.push(stats.loses);
-        var userStats = [];
-        users.forEach(function(u) {
-            userStats.push({user: u, stat : u.getSeasonStats(this.getParams().seasonId)});
-        }.bind(this));
-        userStats = userStats.sort(function(a,b) {
-            return Stat.sortAsc(a.stat,b.stat);
-        });
-
-        userStats.forEach(function(u) {
-            label.push(u.user.fName + ' ' + u.user.lName.substr(0,1) + '.');
-            wins.push(u.stat.wins);
-            lost.push(u.stat.loses );
+        wins.push(team.wins);
+        lost.push(team.loses);
+        stats.forEach(function(u) {
+            //label.push(u.user.fName + ' ' + u.user.lName.substr(0,1) + '.');
+            label.push(u.user.name);
+            wins.push(u.wins);
+            lost.push(u.loses);
         });
          var data = {
              labels: label,

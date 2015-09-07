@@ -49,6 +49,19 @@ function getData(url, callback, unauthCallback) {
         });
     }
 
+function getHandicap(user,seasonId) {
+    var hc = "N/A";
+    if (user == undefined || user.handicapSeasons == undefined) {
+        return hc;
+    }
+    user.handicapSeasons.forEach(function(hs){
+        if (hs.season.id == seasonId) {
+            hc =  hs.handicap;
+        }
+    });
+    return hc;
+}
+
 function sendData(data, url, callback) {
         console.log("Sending data: " + JSON.stringify(data));
         $.ajax({
@@ -78,4 +91,4 @@ function sendData(data, url, callback) {
 
 
 
-module.exports = {nextChallengeDate: getNextChallengeDay, getData: getData, sendData: sendData, getChallengeDates: getChallengeDates};
+module.exports = {nextChallengeDate: getNextChallengeDay, getData: getData, sendData: sendData, getChallengeDates: getChallengeDates, getHandicap: getHandicap};

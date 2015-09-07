@@ -5,84 +5,61 @@ var Router = require('react-router')
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Stat =  require('../../lib/Stat');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var UserLink = require('../../../webapp/jsx/components/links/UserLink.jsx');
+var Util = require('../../jsx/util.jsx');
 
 var SeasonLeaders = React.createClass({
-    mixins: [UserContextMixin,SeasonMixin,Router.State,Router.Navigation],
-    getInitialState: function () {
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    getInitialState: function() {
         return {
-            user: this.getUser(),
-            seasonId: this.getParams().seasonId
+            update: Date.now(),
+            stats: []
         }
+
+    },
+    getData: function() {
+        Util.getData('/api/stat/season/players/' + this.getParams().seasonId, function(d){
+            this.setState({stats: d});
+        }.bind(this));
     },
     componentDidMount: function () {
+        this.getData();
     },
-    componentWillReceiveProps: function() {
+    componentWillReceiveProps: function (o, n) {
+        var now = Date.now();
+        if ( now - this.state.update > 1000*60)
+            this.getData();
     },
     getRows : function(data) {
-        var rows = [];
+        var rows = []  ;
         data.forEach(function(d){
-            if (d.user == undefined || d.user.id == undefined)
-                return;
-            //<td>{d.getPoints()}</td>
+            var hc = Util.getHandicap(d.user,this.getParams().seasonId);
             rows.push(
                 <tr key={d.user.id}>
-                    <td><UserLink user={d.user}/>
-                    </td>
-                    <td> <div className="btn-group bot-margin">
-                        <Link id={"request-link-"+ d.user.id } to="challengeMain" query={{opponent: d.user.id}}>
-                            <button className="btn btn-xs btn-primary">
-                                <span className="glyphicon glyphicon-plus-sign"></span>
-                                <span className="main-item">Challenge</span>
-                            </button>
-                        </Link>
-                    </div>
-                    </td>
-                    <td>{d.user.getCurrentHandicap(this.getParams().seasonId)}</td>
-                    <td>{d.user.points.toFixed(2)}</td>
+                    <td>{d.user.name}</td>
+                    <td>{hc}</td>
                     <td>{d.wins}</td>
                     <td>{d.loses}</td>
-                    <td>{d.racksFor}</td>
-                    <td>{d.racksAgainst}</td>
-                    <td>{d.getWinPct()}</td>
+                    <td>{d.racksWon}</td>
+                    <td>{d.racksLost}</td>
+                    <td>{d.winPct.toFixed(3)}</td>
                 </tr>
             );
         }.bind(this));
         return rows;
     },
     render: function() {
-        if (this.getUserId() == 0) {
-            return null;
+        var stats = this.state.stats;
+        if (stats.length == 0){
+//            return null;
         }
-        var users = [];
-        this.getUsers().forEach(function(u) {
-            if (u.hasSeason(this.getParams().seasonId)) {
-                users.push(u);
-            }
-        }.bind(this));
 
-        users = users.sort(function(a,b) {
-            if (a.points > b.points)
-                return -1;
-            if (b.points > a.points)
-                return 1;
-            return 0;
-        }.bind(this));
-
-        var rows = [];
-
-         users.forEach(function(u) {
-             rows.push(u.getStatsForSeason(this.getParams().seasonId));
-         }.bind(this));
-            return (
+        return (
                 <div className="table-responsive">
-                <table className="table table-hover table-condensed table-striped">
+                <table className="table table-hover table-condensed table-striped table-responsive">
                     <tr>
                         <th>Player</th>
-                        <th></th>
                         <th>HC</th>
-                        <th>Points</th>
                         <th>W</th>
                         <th>L</th>
                         <th>RW</th>
@@ -90,11 +67,10 @@ var SeasonLeaders = React.createClass({
                         <th>%</th>
                     </tr>
                      <tbody>
-                     {this.getRows(rows)}
+                     {this.getRows(stats)}
                      </tbody>
                 </table>
                 </div>
-
             );
     }
 });
