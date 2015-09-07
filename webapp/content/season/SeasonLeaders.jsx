@@ -51,7 +51,7 @@ var SeasonLeaders = React.createClass({
     render: function() {
         var stats = this.state.stats;
         if (stats.length == 0){
-//            return null;
+            return null;
         }
 
         return (

@@ -1,5 +1,7 @@
 var moment = require('moment');
 var DataStore = require('./stores/DataStore.jsx');
+var Handicap = require('../lib/Handicap');
+
 /**
  * Figure out the next challenge day (which is Sunday)
  */
@@ -59,7 +61,7 @@ function getHandicap(user,seasonId) {
             hc =  hs.handicap;
         }
     });
-    return hc;
+    return Handicap.formatHandicap(hc);
 }
 
 function sendData(data, url, callback) {

@@ -30,12 +30,12 @@ var UserResults = React.createClass({
                 </tr>);
         });
         return (
-            <table>
+            <table className="table table-condensed table-striped table-responsive" >
                 <thead>
                 <tr>
-                <th>Date</th>
-                <th>Opponent</th>
-                <th>W/L</th>
+                    <th>Date</th>
+                    <th>Opponent</th>
+                    <th>W/L</th>
                 </tr>
                 </thead>
                 <tbody>

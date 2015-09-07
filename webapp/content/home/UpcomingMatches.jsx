@@ -38,7 +38,7 @@ var UpcomingMatches = React.createClass({
             );
         });
         return (
-            <table>
+            <table className="table table-condensed table-striped table-responsive" >
                 <thead>
                 <tr>
                     <th>Date</th>
