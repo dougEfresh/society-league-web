@@ -38,7 +38,7 @@ var HomeApp = React.createClass({
         if (this.state.stats.length > 0) {
             this.state.stats.forEach(function(s){
                 if (s.type == 'all') {
-                    record = (<div style={{display: 'inline'}}><span>{'  W:' + s.wins}</span><span>{' L:hyay! ' +
+                    record = (<div style={{display: 'inline'}}><span>{'  W:' + s.wins}</span><span>{' L:' +
                     '' + s.loses}</span></div>)
                 }
 
