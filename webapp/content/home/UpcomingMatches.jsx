@@ -22,10 +22,17 @@ var UpcomingMatches = React.createClass({
         }.bind(this));
     },
     render: function() {
-        var user  = this.getUser();
         var rows = [];
+        var now = moment().subtract(1,'days');
+        this.state.data = this.state.data.sort(function(a,b){
+            return a.matchDate.localeCompare(b.matchDate);
+        });
+
         this.state.data.forEach(function(m){
-            //moment(m.matchDate);
+            var md = moment(m.matchDate);
+            if (md.isBefore(now)) {
+                return;
+            }
             rows.push (
                 <tr key={m.id}>
                     <td>
@@ -38,17 +45,23 @@ var UpcomingMatches = React.createClass({
             );
         });
         return (
-            <table className="table table-condensed table-striped table-responsive" >
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Opponent</th>
-                </tr>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </table>
+
+            <div id={'no-recent-matches'} className="panel panel-default">
+                <div className="panel-heading" >Upcoming Matches</div>
+                <div className="panel-body" >
+                    <table className="table table-condensed table-responsive" >
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Opponent</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {rows}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         );
         /*

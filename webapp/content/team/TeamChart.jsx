@@ -49,6 +49,17 @@ var TeamChart = React.createClass({
         label.push('team');
         wins.push(team.wins);
         lost.push(team.loses);
+
+        stats = stats.sort(function(a,b) {
+            if (a.winPct>b.winPct) {
+                return -1;
+            }
+            if (a.winPct<b.winPct) {
+                return 1;
+            }
+            return 0;
+        });
+
         stats.forEach(function(u) {
             //label.push(u.user.fName + ' ' + u.user.lName.substr(0,1) + '.');
             label.push(u.user.name);

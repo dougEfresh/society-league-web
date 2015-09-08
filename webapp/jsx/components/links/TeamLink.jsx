@@ -12,7 +12,6 @@ var TeamLink = React.createClass({
     getDefaultProps: function(){
         return {
             team: null,
-            seasonId: null
         }
     },
     toString: function() {
@@ -23,7 +22,7 @@ var TeamLink = React.createClass({
             return null;
         }
         return (
-            <Link className="teamLink" to="teamStandings" params={{teamId: this.props.team.teamId, seasonId: this.props.seasonId}}>
+            <Link className="teamLink" to="teamStandings" params={{teamId: this.props.team.id, seasonId: this.props.team.season.id}}>
                 {this.props.team.name}
             </Link>
         );

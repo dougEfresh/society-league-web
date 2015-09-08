@@ -2,7 +2,6 @@ var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UpcomingChallenges = require('./UpcomingChallenges.jsx');
 var UpcomingMatches = require('./UpcomingMatches.jsx');
 var RecentMatches = require('./RecentMatches.jsx');
@@ -19,16 +18,14 @@ var HomeApp = React.createClass({
         }
     },
     componentWillMount: function () {
-        //DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
-        //DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
 
     },
     _onChange: function () {
-        //this.setState({user: this.getUser()});
+
     },
     render: function () {
         var user = this.getUser();
@@ -57,8 +54,8 @@ var HomeApp = React.createClass({
                 </h2>
                 <ChallengePendingApp />
                 <UpcomingChallenges />
-                <RecentMatches />
                 <UpcomingMatches />
+                <RecentMatches />
             </div>
         );
         //<LeaderBoard />

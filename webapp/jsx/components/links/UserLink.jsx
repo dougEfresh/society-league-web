@@ -16,7 +16,7 @@ var UserLink = React.createClass({
         }
     },
     toString: function() {
-        return this.props.user.sName();
+        return this.props.user.name;
     },
     render: function() {
         if (this.props.user == null || !(this.props.user instanceof Object)) {
@@ -24,7 +24,7 @@ var UserLink = React.createClass({
         }
         return (
                 <Link to='stats' params={{statsId: this.props.user.userId}}>
-                    {this.props.user.sName()}
+                    {this.props.user.name}
                 </Link>
         );
     }

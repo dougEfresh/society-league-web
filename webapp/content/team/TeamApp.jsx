@@ -69,17 +69,17 @@ var TeamApp = React.createClass({
         var header = (
                 <div style={{display: 'inline'}}>
                     <Link to='teamStandings' params={this.getParams()}>
-                        <button className='btn btn-default'>
+                        <button className={this.isActive('teamStandings') ? 'btn btn-success' : 'btn btn-default'}>
                             <i className="fa fa-users"></i><span className="main-item">{ ' Standings'}</span>
                         </button>
                     </Link>
                     <Link to='teamMemberResults' params={this.getParams()}>
-                        <button className='btn btn-default'>
+                        <button  className={this.isActive('teamMemberResults') ? 'btn btn-success' : 'btn btn-default'}>
                             <i className="fa  fa-list-ol"></i><span className="main-item">{ ' Results'}</span>
                         </button>
                     </Link>
                     <Link to='teamChart' params={this.getParams()}>
-                        <button className='btn btn-default'>
+                        <button   className={this.isActive('teamChart') ? 'btn btn-success' : 'btn btn-default'}>
                             <i className="fa fa-bar-chart"></i><span className="main-item">{ ' Chart'}</span>
                         </button>
                     </Link>

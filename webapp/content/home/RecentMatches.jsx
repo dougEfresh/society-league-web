@@ -23,10 +23,6 @@ var RecentMatches = React.createClass({
         }.bind(this));
     },
     render: function() {
-        var user = this.getUser();
-        if (user.id == "0") {
-            return null;
-        }
         if (this.state.data.length == 0) {
             return (
                 <div id={'no-recent-matches'} className="panel panel-default">
@@ -37,12 +33,21 @@ var RecentMatches = React.createClass({
                   </div>
             )
         }
+        var results = this.state.data;
+        results = results.sort(function(a,b){
+            return b.teamMatch.matchDate.localeCompare(a.teamMatch.matchDate);
+        });
+
+        var last5 = [];
+        for(var i =0; i < results.length && i < 5 ; i++) {
+            last5.push(results[i]);
+        }
 
         return (
             <div id={'no-recent-matches'} className="panel panel-default">
                 <div className="panel-heading" >Recent Matches</div>
                 <div className="panel-body" >
-                    <UserResults results={this.state.data} />
+                    <UserResults results={last5} />
                 </div>
             </div>
         )

@@ -40,6 +40,7 @@ var TeamStandings = React.createClass({
                 <th>Loses</th>
                 <th>Racks Won</th>
                 <th>Racks Lost</th>
+                <th>Pct</th>
                 </tr>);
         }
         return (
@@ -65,7 +66,18 @@ var TeamStandings = React.createClass({
                 <td>{stat.loses}</td>
                 <td>{stat.racksWon}</td>
                 <td>{stat.racksLost}</td>
+                <td>{stat.winPct.toFixed(3)}</td>
         </tr>);
+        this.state.statTeamMember = this.state.statTeamMembers.sort(function(a,b) {
+            if (a.winPct>b.winPct) {
+                return -1;
+            }
+            if (a.winPct<b.winPct) {
+                return 1;
+            }
+            return 0;
+        });
+
         this.state.statTeamMembers.forEach(function(u){
             i++;
             rows.push(<tr key={i} >
@@ -74,6 +86,7 @@ var TeamStandings = React.createClass({
                 <td>{u.loses}</td>
                 <td>{u.racksWon}</td>
                 <td>{u.racksLost}</td>
+                <td>{u.winPct.toFixed(3)}</td>
             </tr>);
         }.bind(this));
         return (
