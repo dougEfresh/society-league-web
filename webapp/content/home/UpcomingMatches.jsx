@@ -22,8 +22,12 @@ var UpcomingMatches = React.createClass({
         }.bind(this));
     },
     render: function() {
+        var user = this.getUser();
         var rows = [];
         var now = moment().subtract(1,'days');
+        if (this.state.data.length == 0) {
+            return null;
+        }
         this.state.data = this.state.data.sort(function(a,b){
             return a.matchDate.localeCompare(b.matchDate);
         });
@@ -33,13 +37,25 @@ var UpcomingMatches = React.createClass({
             if (md.isBefore(now)) {
                 return;
             }
+            var opTeam = m.home;
+            var away = false;
+            m.away.members.forEach(function(u){
+                if (u.id == user.id) {
+                    away = true;
+                }
+            }.bind(this));
+
+            if (!away) {
+                opTeam = m.away;
+            }
+
             rows.push (
                 <tr key={m.id}>
                     <td>
-                        {m.matchDate}
+                        {Util.formatDateTime(m.matchDate)}
                     </td>
                     <td>
-                        {m.home.name}
+                        <TeamLink team={opTeam} />
                     </td>
                 </tr>
             );

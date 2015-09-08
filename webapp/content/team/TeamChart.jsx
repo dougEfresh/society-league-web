@@ -28,9 +28,9 @@ var TeamChart = React.createClass({
         this.getData();
     },
     componentWillReceiveProps: function (o, n) {
-        var now = Date.now();
-        if ( now - this.state.update > 1000*60)
+        if (this.state.statTeam.id !=  this.getParams().teamId) {
             this.getData();
+        }
     },
     render: function() {
         var label = [];

@@ -1,6 +1,7 @@
 var React = require('react/addons');
 var Router = require('react-router');
 var Util = require('../../jsx/util.jsx');
+var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 
 var SeasonWeeklyResults = React.createClass({
     mixins: [Router.State],
@@ -42,9 +43,9 @@ var SeasonWeeklyResults = React.createClass({
 
             rows.push(
                 <tr key={r.id} >
-                    <td>{r.matchDate}</td>
-                    <td>{winner.name}<span></span></td>
-                    <td>{loser.name}<span></span></td>
+                    <td>{Util.formatDateTime(r.matchDate)}</td>
+                    <td><TeamLink team={winner} /> <span></span></td>
+                    <td><TeamLink team={loser} /> <span></span></td>
                     <td>{r.homeRacks < 0 ? '' : r.homeRacks}</td>
                     <td>{r.awayRacks < 0 ? '' : r.awayRacks}</td>
                 </tr>

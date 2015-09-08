@@ -30,31 +30,7 @@ var StatHistory = React.createClass({
             this.getData();
        this.getData();
     },
-   getRows: function(results) {
-        var rows = [];
-        var user = this.getUser();
-          results.forEach(function(r){
-              var race = Handicap.race(r.winnerHandicap,r.loserHandicap);
-              var op = r.getOpponent(user);
-           rows.push(
-               <tr key={r.teamMatch.id} >
-                   <td>
-                       <UserLink user={op} />
-                       <span> {'(' +r.getHandicap(op) +')'}</span>
-                   </td>
-                   <td>{r.getMatchDate()}</td>
-                   <td>{r.isWinner(user) ? 'W' : 'L'} </td>
-                   <td>{race}</td>
-                   <td>{user.getMatchPoint(r.resultId)}</td>
-                   <td>{user.getWeightedAvg(r.resultId)}</td>
 
-                   <td>{r.getRacks(user)}</td>
-                   <td>{r.getRacks(op)}</td>
-               </tr>
-           )
-        }.bind(this));
-        return rows;
-    },
     render: function() {
        if (this.state.results.length == 0) {
            return null;
@@ -66,10 +42,12 @@ var StatHistory = React.createClass({
          </div>
          </div>
          */
+        var user = this.getUser();
+        if (user.id != this.getParams().statsId) {
+            user = this.state.results[0].playerHome.id == this.getParams().statsId ?  this.state.results[0].playerHome :  this.state.results[0].playerAway;
+        }
         return (
-
-                <UserResults results={this.state.results} />
-
+                <UserResults user={user} results={this.state.results} />
         );
     }
 });

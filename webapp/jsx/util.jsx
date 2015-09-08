@@ -64,6 +64,11 @@ function getHandicap(user,seasonId) {
     return Handicap.formatHandicap(hc);
 }
 
+function formatDateTime(dt) {
+    var m = moment(dt);
+    return m.format('ddd MMM Do');
+}
+
 function sendData(data, url, callback) {
         console.log("Sending data: " + JSON.stringify(data));
         $.ajax({
@@ -93,4 +98,7 @@ function sendData(data, url, callback) {
 
 
 
-module.exports = {nextChallengeDate: getNextChallengeDay, getData: getData, sendData: sendData, getChallengeDates: getChallengeDates, getHandicap: getHandicap};
+module.exports = {nextChallengeDate: getNextChallengeDay,
+    getData: getData,
+    sendData: sendData,
+    getChallengeDates: getChallengeDates, getHandicap: getHandicap, formatDateTime: formatDateTime};

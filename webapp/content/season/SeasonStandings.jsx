@@ -18,6 +18,7 @@ var SeasonStandings = React.createClass({
     mixins: [UserContextMixin,Router.State],
     getInitialState: function() {
          return {
+             update: Date.now(),
              seasonStats: []
          }
     },
@@ -40,7 +41,7 @@ var SeasonStandings = React.createClass({
         this.state.seasonStats.forEach(function(s){
             rows.push(
                 <tr key={s.team.id}>
-                    <td>{s.team.name}</td>
+                    <td><TeamLink team={s.team} season={s.team.season} /></td>
                     <td>{s.wins}</td>
                     <td>{s.loses}</td>
                     <td>{s.racksWon}</td>

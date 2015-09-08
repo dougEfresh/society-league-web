@@ -6,14 +6,9 @@ var Router = require('react-router')
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
 
-var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
-var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
-var ResultMixin = require('../../jsx/mixins/ResultMixin.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
-var firstBy = require('../../lib/FirstBy.js');
 var Util = require('../../jsx/util.jsx');
 
 var sortDateFn = function(a,b) {
@@ -77,7 +72,9 @@ var TeamResults = React.createClass({
                 size: 30,
                 num: 0
             },
-            results: []
+            results: [],
+            teamId : this.getParams().teamId,
+            update: Date.now()
         }
     },
     getData: function() {
@@ -87,7 +84,12 @@ var TeamResults = React.createClass({
 
     },
     componentWillReceiveProps: function(n,o) {
-        this.getData();
+        if (this.state.results.length == 0) {
+            return;
+        }
+        if (this.state.teamId != this.getParams().teamId) {
+            this.getData();
+        }
     },
     componentDidMount: function() {
         this.getData();
@@ -96,10 +98,32 @@ var TeamResults = React.createClass({
         var user = this.getUser();
         var rows = [];
         var teamId = this.getParams().teamId;
-        this.state.results.forEach(function(result) {
+        var results = this.state.results.sort(function(a,b) {
+            var aHome = a.teamMatch.home.id == teamId;
+            var bHome = b.teamMatch.home.id == teamId;
+            var atm = null;
+            var btm = null;
+            if (aHome) {
+                atm = a.playerHome;
+            }  else {
+                atm = a.playerAway;
+            }
+            if (bHome){
+                btm = b.playerHome;
+            }  else {
+                btm = b.playerAway;
+            }
+            if (atm.name == btm.name) {
+                return b.teamMatch.matchDate.localeCompare(a.teamMatch.matchDate);
+            }
+
+            return atm.name.localeCompare(btm.name);
+        });
+
+        results.forEach(function (result) {
             var home = result.teamMatch.home.id == teamId;
             var winLost = "";
-            var teamMember ;
+            var teamMember;
             var opponent;
             var opponentTeam;
 
@@ -111,21 +135,21 @@ var TeamResults = React.createClass({
             } else {
                 winLost = result.awayRacks > result.homeRacks ? 'W' : 'L';
                 opponent = result.playerHome;
-                teamMember = result.playerAway;
                 opponentTeam = result.teamMatch.home;
+                teamMember = result.playerAway;
             }
 
-            rows.push(<tr key={result.id} >
-                <td>{teamMember.name}</td>
+            rows.push(<tr key={result.id}>
+                <td><UserLink user={teamMember} season={this.getParams().seasonId} /></td>
                 <td>{winLost}</td>
-                <td>{opponent.name}</td>
-                <td>{opponentTeam.name}</td>
-                <td>{result.teamMatch.matchDate}</td>
+                <td><UserLink user={opponent}  season={this.getParams().seasonId} /></td>
+                <td><TeamLink team={opponentTeam} /></td>
+                <td>{Util.formatDateTime(result.teamMatch.matchDate)}</td>
             </tr>);
 
         }.bind(this));
-           return (
-            <table className="table table-condensed table-striped table-responsive" >
+        return (
+            <table className="table table-condensed table-striped table-responsive">
                 <thead>
                 <tr>
                     <th>Player</th>
@@ -140,120 +164,7 @@ var TeamResults = React.createClass({
                 </thead>
             </table>
         );
-
-        /*
-        if (this.getParams().teamId == undefined || this.getParams().seasonId == undefined) {
-            return null;
-        }
-        var results = [];
-        this.getSeasonResults(this.getParams().seasonId).forEach(function (r) {
-            if (r.teamMatch.getWinner().id == this.getParams().teamId || r.teamMatch.getLoser().id == this.getParams().teamId) {
-                results.push(r);
-            }
-        }.bind(this));
-
-        var season = this.getSeason(this.getParams().seasonId);
-        var nine = season.isNine();
-        var rows = [];
-        var order = firstBy(this.state.sort[this.state.firstBy].fx.bind(this));
-        for (var i = 0; i < this.state.sortOrder.length; i++) {
-            var type = this.state.sortOrder[i];
-            order = order.thenBy(this.state.sort[type].fx.bind(this));
-        }
-
-        results = results.sort(order);
-        var pageMatches = [];
-        var start = this.state.page.num * this.state.page.size;
-        var end = start + this.state.page.size;
-        if (this.state.page.size >= results.length) {
-            pageMatches = results;
-        } else {
-            for (var i = start; i < results.length; i++) {
-                pageMatches.push(results[i]);
-            }
-        }
-
-        pageMatches.forEach(function (m) {
-            rows.push(m);
-        }.bind(this));
-        */
-        /*
-        var rowGetter = function (index) {
-            return rows[index];
-        };
-        var team = this.getTeam(this.getParams().teamId);
-        var width =
-            ColumnConfig.name.width +
-            ColumnConfig.name.width +
-            ColumnConfig.handicap.width +
-            ColumnConfig.winLost.width +
-            ColumnConfig.racksFor.width +
-            ColumnConfig.racksAgainst.width +
-            2;
-*/
-
-
-        /*
-        return (
-         <Table
-             groupHeaderHeight={30}
-             rowHeight={50}
-             headerHeight={30}
-             rowGetter={rowGetter}
-             rowsCount={rows.length}
-             width={width}
-             maxHeight={500}
-             headerHeight={30}>
-             {ColumnHelper.user(team)}
-             {ColumnHelper.opponent(team)}
-             {ColumnHelper.opponentHandicap(team)}
-             {ColumnHelper.winLostTeam(team)}
-             {ColumnHelper.racksForTeamMember(team)}
-             {ColumnHelper.racksAgainstTeamMember(team)}
-         </Table>
-        );
-        */
     }
 });
-
-/*
-var Footer = React.createClass({
-    mixins: [Router.State,Router.Navigation],
-   getDefaultProps: function() {
-        return {
-            page: 0,
-            last: false
-        }
-    },
-    prev: function(e) {
-        e.preventDefault();
-        var q = this.getQuery();
-        var page = this.props.page;
-        if (page.num <= 0) {win
-            return;
-        }
-        page.num = page.num-1;
-        q.num = page.num;
-
-        this.transitionTo('teamResults',this.getParams(),q);
-    },
-    next: function(e) {
-        e.preventDefault();
-        var q = this.getQuery();
-        var page = this.props.page;
-        page.num = page.num+1;
-        q.num = page.num;
-        this.transitionTo('teamResults',this.getParams(),q);
-    },
-    render: function() {
-        return (
-                <Pager>x
-                    <PageItem disabled={this.props.page.num == 0} pwinrevious onClick={this.prev} href='#'>&larr; Previous</PageItem>
-                    <PageItem disabled={this.props.last} next onClick={this.next} href='#'>Next &rarr; </PageItem>
-                </Pager>
-        )
-    }
-});
-*/
 
 module.exports = TeamResults;

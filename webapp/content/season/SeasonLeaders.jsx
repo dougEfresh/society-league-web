@@ -6,6 +6,7 @@ var Router = require('react-router')
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Stat =  require('../../lib/Stat');
 var UserLink = require('../../../webapp/jsx/components/links/UserLink.jsx');
+var TeamLink = require('../../../webapp/jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var SeasonLeaders = React.createClass({
@@ -33,11 +34,10 @@ var SeasonLeaders = React.createClass({
     getRows : function(data) {
         var rows = []  ;
         data.forEach(function(d){
-            var hc = Util.getHandicap(d.user,this.getParams().seasonId);
             rows.push(
                 <tr key={d.user.id}>
-                    <td>{d.user.name}</td>
-                    <td>{hc}</td>
+                    <td><UserLink user={d.user} season={this.getParams().seasonId} /> </td>
+                    <td><TeamLink team={d.team} /></td>
                     <td>{d.wins}</td>
                     <td>{d.loses}</td>
                     <td>{d.racksWon}</td>
@@ -59,7 +59,7 @@ var SeasonLeaders = React.createClass({
                 <table className="table table-hover table-condensed table-striped table-responsive">
                     <tr>
                         <th>Player</th>
-                        <th>HC</th>
+                        <th>Team</th>
                         <th>W</th>
                         <th>L</th>
                         <th>RW</th>

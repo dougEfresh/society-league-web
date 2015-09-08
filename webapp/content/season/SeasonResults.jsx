@@ -153,18 +153,16 @@ var ResultsApp = React.createClass({
                <tr key={r.teamMatch.id} >
                    <td>{r.getMatchDate()}</td>
                    <td>
-                       <UserLink user={r.winner} />
-                       <span> {'(' +r.getWinnerHandicap() +')'}</span>
+                       <UserLink user={r.winner} season={this.getParams().seasonId} />
                    </td>
-                   <td> <UserLink user={r.loser} />
-                       <span> {'(' +r.getLoserHandicap() +')'}</span>
+                   <td> <UserLink user={r.loser} season={this.getParams().seasonId}/>
                    </td>
                    <td>{race}</td>
                    <td>{r.winnerRacks}</td>
                    <td>{r.loserRacks}</td>
                </tr>
            )
-        });
+        }.bind(this));
         return (
            <div id='challenges-app' className="panel panel-default">
                 <div className="panel-heading" >Matches</div>

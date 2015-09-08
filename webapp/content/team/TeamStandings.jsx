@@ -1,20 +1,16 @@
 var React = require('react/addons');
 var Router = require('react-router');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
-var Stat = require('../../lib/Stat');
-var UsersStat = require('../../lib/UsersStat');
-var TeamStat = require('../../lib/TeamStat');
 var Util = require('../../jsx/util.jsx');
 
 var TeamStandings = React.createClass({
-    mixins: [TeamMixin,SeasonMixin,UserContextMixin,Router.State],
+    mixins: [UserContextMixin,Router.State],
     getInitialState: function() {
          return {
              statTeam: {},
-             statTeamMembers: []
+             statTeamMembers: [],
+             update : Date.now()
         }
     },
     getData: function() {
@@ -30,7 +26,9 @@ var TeamStandings = React.createClass({
         this.getData();
     },
     componentWillReceiveProps: function (o, n) {
-       this.getData();
+        if (this.state.statTeam.id !=  this.getParams().teamId) {
+            this.getData();
+        }
     },
     getHeader: function() {
         if (this.state.statTeam.team  && this.state.statTeam.team.nine) {
@@ -61,7 +59,7 @@ var TeamStandings = React.createClass({
         var i = 0;
         rows.push(
             <tr key={i}>
-            <td>{stat.team.name}</td>
+            <td> {stat.team.name} </td>
                 <td>{stat.wins}</td>
                 <td>{stat.loses}</td>
                 <td>{stat.racksWon}</td>
@@ -81,7 +79,7 @@ var TeamStandings = React.createClass({
         this.state.statTeamMembers.forEach(function(u){
             i++;
             rows.push(<tr key={i} >
-                <td>{u.user.name}</td>
+                <td><UserLink user={u.user}  season={this.getParams().seasonId}/> </td>
                 <td>{u.wins}</td>
                 <td>{u.loses}</td>
                 <td>{u.racksWon}</td>

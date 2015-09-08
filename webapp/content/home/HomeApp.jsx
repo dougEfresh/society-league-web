@@ -11,27 +11,41 @@ var LeaderBoard = require('../challenge/standings/LeaderBoard.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var HomeApp = React.createClass({
-    mixins: [UserContextMixin],
-    getInitialState: function() {
+    mixins: [UserContextMixin,Router.State],
+     getInitialState: function() {
          return {
-             data: []
-        }
+             update: Date.now(),
+             stats: []
+         }
     },
-    componentWillMount: function () {
-    },
-    componentWillUnmount: function () {
+    getData: function() {
+        Util.getData('/api/stat/user/' + this.getUser().id , function(d){
+            this.setState({stats: d});
+        }.bind(this));
     },
     componentDidMount: function () {
-
+        this.getData();
     },
-    _onChange: function () {
-
+    componentWillReceiveProps: function (o, n) {
+        var now = Date.now();
+        if ( now - this.state.update > 1000*60)
+            this.getData();
+       this.getData();
     },
     render: function () {
         var user = this.getUser();
+        var record = null;
+        if (this.state.stats.length > 0) {
+            this.state.stats.forEach(function(s){
+                if (s.type == 'all') {
+                    record = (<div style={{display: 'inline'}}><span>{'  W:' + s.wins}</span><span>{' L:hyay! ' +
+                    '' + s.loses}</span></div>)
+                }
 
+            });
+        }
         var welcome = <Link to='info' params={{userId: this.getUser().id}}>
-            <span id="welcome-name">{'Welcome ' + user.firstName }</span> </Link>
+            <span id="welcome-name">{'Welcome ' + user.firstName }</span>{record}</Link>
         var button = null;
         if (user.challenge) {
             button =  <Link id="request-link" to="challengeMain">
