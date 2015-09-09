@@ -3,6 +3,7 @@ var Router = require('react-router');
 var Util = require('../../jsx/util.jsx');
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var Handicap = require('../../lib/Handicap');
+var SeasonLink = require('../../jsx/components/links/SeasonLink.jsx');
 
 var StatsDisplay = React.createClass({
     mixins: [UserContextMixin,Router.State],
@@ -59,7 +60,7 @@ var StatsDisplay = React.createClass({
             cnt += 1;
             var type = d.type;
             if (d.type == 'season') {
-                type = d.team.season.name;
+                type = <SeasonLink season={d.team.season} />;
             }
             rows.push(
                 <tr key={cnt}>

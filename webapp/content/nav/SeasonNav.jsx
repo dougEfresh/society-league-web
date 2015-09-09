@@ -50,7 +50,7 @@ var SeasonNav = React.createClass({
                 case DivisionConstants.EIGHT_BALL_THURSDAYS:
                     title = (<div><BallIcon type={hs.division} /> Thursdays </div>);
                     break;
-                case DivisionConstants.EIGHT_BALL_MIXED_MONDAYS:
+                case DivisionConstants.MIXED_MONDAYS:
                     title = (<div>
                         <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
                         <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays

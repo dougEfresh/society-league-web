@@ -11,7 +11,7 @@ var UserLink = React.createClass({
     },
     getDefaultProps: function(){
         return {
-            user: null,
+            user: null
         }
     },
     toString: function() {
@@ -23,18 +23,19 @@ var UserLink = React.createClass({
         }
         var hc = "";
         var name = this.props.user.name;
-        if (this.props.season != undefined) {
+        if (this.props.handicap != undefined) {
+            hc = this.props.handicap;
+        } else  if (this.props.season != undefined) {
             this.props.user.handicapSeasons.forEach(function(hs){
                 if (hs.season.id == this.props.season) {
                     hc = hs.handicapDisplay;
                 }
             }.bind(this));
-            if (hc.length > 0) {
-                name += ' (' + hc + ')';
-            }
+
         }
-
-
+        if (hc.length > 0) {
+            name += ' (' + hc + ')';
+        }
         return (
                 <Link to='stats' params={{statsId: this.props.user.id}}>
                     {name}

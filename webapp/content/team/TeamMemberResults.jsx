@@ -121,29 +121,11 @@ var TeamResults = React.createClass({
         });
 
         results.forEach(function (result) {
-            var home = result.teamMatch.home.id == teamId;
-            var winLost = "";
-            var teamMember;
-            var opponent;
-            var opponentTeam;
-
-            if (home) {
-                winLost = result.homeRacks > result.awayRacks ? 'W' : 'L';
-                opponent = result.playerAway;
-                opponentTeam = result.teamMatch.away;
-                teamMember = result.playerHome;
-            } else {
-                winLost = result.awayRacks > result.homeRacks ? 'W' : 'L';
-                opponent = result.playerHome;
-                opponentTeam = result.teamMatch.home;
-                teamMember = result.playerAway;
-            }
-
             rows.push(<tr key={result.id}>
-                <td><UserLink user={teamMember} season={this.getParams().seasonId} /></td>
-                <td>{winLost}</td>
-                <td><UserLink user={opponent}  season={this.getParams().seasonId} /></td>
-                <td><TeamLink team={opponentTeam} /></td>
+                <td><UserLink user={result.teamMember} handicap={result.teamMemberHandicap} season={this.getParams().seasonId} /></td>
+                <td>{result.winner ? 'W' : 'L'}</td>
+                <td><UserLink user={result.opponent}  handicap={result.opponentHandicap} season={this.getParams().seasonId} /></td>
+                <td><TeamLink team={result.opponentTeam} /></td>
                 <td>{Util.formatDateTime(result.teamMatch.matchDate)}</td>
             </tr>);
 

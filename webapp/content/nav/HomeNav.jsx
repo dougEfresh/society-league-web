@@ -25,11 +25,7 @@ var HomeNav = React.createClass({
                             <span className="glyphicon glyphicon-home"></span>Home
                         </Link>
                     </li>
-                    <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='info' params={{userId: this.getUserId()}} >
-                             <span className="glyphicon glyphicon-info-sign"></span>Profile
-                        </Link>
-                    </li>
+
                     <li className="teamNavLink" role="presentation">
                         <Link to='reset' query={{changePassword: true}}>
                             <span className="glyphicon glyphicon-copyright-mark"></span>Change Password</Link>
@@ -41,3 +37,10 @@ var HomeNav = React.createClass({
 });
 
 module.exports = HomeNav;
+/*
+<li className="teamNavLink" role="presentation">
+    <Link className='navName' to='info' params={{userId: this.getUserId()}} >
+        <span className="glyphicon glyphicon-info-sign"></span>Profile
+    </Link>
+</li>
+    */

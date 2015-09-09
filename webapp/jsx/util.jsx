@@ -63,9 +63,10 @@ function getHandicap(user,seasonId) {
     });
     return Handicap.formatHandicap(hc);
 }
-
+var now = moment();
 function formatDateTime(dt) {
     var m = moment(dt);
+
     return m.format('ddd MMM Do');
 }
 
