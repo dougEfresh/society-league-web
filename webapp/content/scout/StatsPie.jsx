@@ -5,8 +5,6 @@ var Router = require('react-router')
 var Pie = require("react-chartjs").Pie;
 var Bar = require("react-chartjs").Bar;
 
-var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var ChallengeConstants = require('../../jsx/constants/ChallengeConstants.jsx');
 
 var StatsPie = React.createClass({
      propTypes: {

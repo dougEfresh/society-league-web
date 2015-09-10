@@ -30,6 +30,35 @@ var SeasonWeeklyResults = React.createClass({
             return null;
         }
         var rows = [];
+        var previousMd = results[0].matchDate;
+        var displayResults = [];
+        results.forEach(function(r) {
+            var md = r.matchDate;
+            if (previousMd != md) {
+                  rows.push(<Results key={r.id} results={displayResults} />);
+                displayResults = [];
+                displayResults.push(r);
+            } else {
+                displayResults.push(r);
+            }
+            previousMd = md;
+        });
+
+        return (
+            <div id="season-team-results">
+                {rows}
+            </div>
+        );
+    }
+});
+
+var Results = React.createClass({
+     render: function() {
+        var results = this.props.results;
+        if (results.length == 0) {
+            return null;
+        }
+        var rows = [];
         results.forEach(function(r) {
             var winner = r.home;
             var loser = r.away;
@@ -37,36 +66,29 @@ var SeasonWeeklyResults = React.createClass({
                 winner = r.away;
                 loser = r.home;
             }
-
-            if (r.homeRacks == -1)
-                return;
-
             rows.push(
-                <tr key={r.id} >
-                    <td>{Util.formatDateTime(r.matchDate)}</td>
-                    <td><TeamLink team={winner} /> <span></span></td>
-                    <td><TeamLink team={loser} /> <span></span></td>
-                    <td>{r.homeRacks < 0 ? '' : r.homeRacks}</td>
-                    <td>{r.awayRacks < 0 ? '' : r.awayRacks}</td>
-                </tr>
-            );
+                    <tr key={r.id}>
+                        <td><TeamLink team={winner}/> <span></span></td>
+                        <td><TeamLink team={loser}/> <span></span></td>
+                        <td>{r.homeRacks < 0 ? '0' : r.homeRacks}</td>
+                        <td>{r.awayRacks < 0 ? '0' : r.awayRacks}</td>
+                    </tr>
+                );
         });
 
         return (
-          <table className="table table-condensed table-striped table-responsive" >
+          <table className="table table-condensed table-stripped table-responsive" >
               <thead>
-              <th>Date</th>
-              <th>W</th>
-              <th>L</th>
-              <th>racks</th>
-              <th>racks</th>
+              <th colSpan="4">{Util.formatDateTime(this.props.results[0].matchDate)}</th>
               </thead>
               <tbody>
+              <tr><td>Winner</td><td>Loser</td><td colSpan="2">Racks</td></tr>
               {rows}
               </tbody>
           </table>
         );
     }
 });
+
 
 module.exports = SeasonWeeklyResults;

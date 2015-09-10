@@ -59,9 +59,13 @@ var StatsDisplay = React.createClass({
             }
             cnt += 1;
             var type = d.type;
-            if (d.type == 'season') {
+            if (d.type == 'USER_SEASON') {
                 type = <SeasonLink season={d.team.season} />;
             }
+            if (d.type == 'ALL') {
+                type = 'Lifetime';
+            }
+
             rows.push(
                 <tr key={cnt}>
                     <td>{type}</td>
