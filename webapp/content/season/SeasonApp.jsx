@@ -65,12 +65,15 @@ var SeasonApp = React.createClass({
                 </div>
         );
         return (
-                <div id="season-app" >
+            <div id={'season-app'} className="panel panel-default">
+                    <div className="panel-heading">
                         <h3>{this.state.season.displayName}</h3>
                         {header}
-                    <RouteHandler />
-                </div>
-
+                    </div>
+                    <div className="panel-body">
+                        <RouteHandler />
+                    </div>
+            </div>
         );
     }
 });

@@ -4,6 +4,7 @@ var Util = require('../../jsx/util.jsx');
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var Handicap = require('../../lib/Handicap');
 var SeasonLink = require('../../jsx/components/links/SeasonLink.jsx');
+var StatsPie = require('./StatsPie.jsx');
 
 var StatsDisplay = React.createClass({
     mixins: [UserContextMixin,Router.State],
@@ -88,6 +89,12 @@ var StatsDisplay = React.createClass({
         if (rows.length < 1) {
             return (<h3>No matches have been played</h3>);
         }
+        var statCharts = [];
+        var cnt = 0;
+        this.state.stats.forEach(function(s){
+            statCharts.push(<StatsPie key={cnt++} stats={s} />);
+        });
+
          return (
              <div className="table-responsive">
                  <table className="table table-striped table-hover table-condensed">
@@ -104,7 +111,11 @@ var StatsDisplay = React.createClass({
                      {rows}
                      </tbody>
                 </table>
-                </div>
+                 <div className="panel-heading" >Charts </div>
+                 <div className="panel-body" >
+                     {statCharts}
+                 </div>
+             </div>
          );
      }
 });

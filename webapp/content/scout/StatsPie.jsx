@@ -10,19 +10,19 @@ var StatsPie = React.createClass({
      propTypes: {
         stats: ReactPropTypes.object.isRequired
     },
-    getChartData: function(type,racks) {
+    getChartData: function() {
         return  [
             {
-                value: (racks ? this.props.stats[type].racksFor : this.props.stats[type].wins),
+                value: this.props.stats.wins,
                 color: "green",
                 highlight: "#5AD3D1",
-                label: racks ? "Racks Won " : "Wins "
+                label:  "Wins "
             },
             {
-                value: (racks ? this.props.stats[type].racksAgainst : this.props.stats[type].loses),
+                value: this.props.stats.loses,
                 color: "red",
                 highlight: "#FFC870",
-                label: racks ? "Racks Lost " : "Loses "
+                label: "Loses "
             }
         ];
     },
@@ -58,11 +58,22 @@ var StatsPie = React.createClass({
         }
     },
     render: function() {
-        if (this.props.stats == undefined || this.props.stats == null) {
-            return null;
+//        if (this.props.stats == undefined || this.props.stats == null) {
+  //          return null;
+    //    }
+        var title = 'Lifetime';
+        if (this.props.stats.season != undefined) {
+            title = this.props.stats.season.displayName;
         }
         return (
-            null
+            <div id={'chart-app'} className="panel panel-default">
+             <div className="panel-heading">
+                 <h3><span className="label label-primary">{title}</span></h3>
+             </div>
+                <div className="panel-body">
+                    <Pie redraw chartOptions={this.getChartOptions()} data={this.getChartData()} />
+                </div>
+            </div>
            );
     }
 });
@@ -72,7 +83,7 @@ module.exports = StatsPie;
 /* <div>
                 <Label bsStyle={'success'}>Wins:{this.props.stats.all.wins}</Label>
                 <Label bsStyle={'danger'}>Loses:{this.props.stats.all.loses}</Label>
-                <Pie redraw chartOptions={this.getChartOptions()} data={this.getChartData('all',false)} />
+
                 <div>
                     <Label bsStyle={'success'}>Racks Won:{this.props.stats.all.racksFor}</Label>
                     <Label bsStyle={'danger'}>Racks Lost:{this.props.stats.all.racksAgainst}</Label>
