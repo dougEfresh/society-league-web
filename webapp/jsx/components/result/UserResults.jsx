@@ -16,8 +16,8 @@ var UserResults = React.createClass({
             rows.push(<tr key={r.id}>
                 <td>{Util.formatDateTime(r.teamMatch.matchDate)}</td>
                 <td>{r.teamMemberHandicap}</td>
-                <td><SeasonLink season={r.teamMatch.season}/></td>
-                <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.teamMatch.home.season.id} /></td>
+                <td><SeasonLink season={r.season}/></td>
+                <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                 <td>{r.win ? 'W' : 'L'}</td>
                 </tr>);
         });

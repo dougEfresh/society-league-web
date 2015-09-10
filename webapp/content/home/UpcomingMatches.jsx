@@ -37,25 +37,13 @@ var UpcomingMatches = React.createClass({
             if (md.isBefore(now)) {
                 return;
             }
-            var opTeam = m.home;
-            var away = false;
-            m.away.members.forEach(function(u){
-                if (u.id == user.id) {
-                    away = true;
-                }
-            }.bind(this));
-
-            if (!away) {
-                opTeam = m.away;
-            }
-
             rows.push (
                 <tr key={m.id}>
                     <td>
                         {Util.formatDateTime(m.matchDate)}
                     </td>
                     <td>
-                        <TeamLink team={opTeam} />
+                        <TeamLink team={m.opponentTeam} />
                     </td>
                 </tr>
             );
