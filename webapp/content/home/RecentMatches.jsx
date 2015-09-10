@@ -8,7 +8,8 @@ var RecentMatches = React.createClass({
     mixins: [UserContextMixin],
      getInitialState: function() {
          return {
-             data: []
+             data: [],
+             stats: []
         }
     },
     componentWillMount: function() {
@@ -18,6 +19,9 @@ var RecentMatches = React.createClass({
     componentDidMount: function() {
         Util.getData('/api/playerresult/get/user/' + this.getUser().id + '/current', function(d){
             this.setState({data: d});
+        }.bind(this));
+         Util.getData('/api/stat/user/' + this.getUser().id , function(d){
+            this.setState({stats: d});
         }.bind(this));
     },
     render: function() {
@@ -56,7 +60,7 @@ var RecentMatches = React.createClass({
             <div id={'no-recent-matches'} className="panel panel-default">
                 <div className="panel-heading" >Recent Matches</div>
                 <div className="panel-body" >
-                    <UserResults results={recentMatches} />
+                    <UserResults stats={this.state.stats} results={recentMatches} />
                 </div>
             </div>
         )

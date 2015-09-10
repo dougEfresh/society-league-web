@@ -37,14 +37,16 @@ var HomeApp = React.createClass({
         var record = null;
         if (this.state.stats.length > 0) {
             this.state.stats.forEach(function(s){
-                if (s.type == 'all') {
+                if (s.type == 'ALL') {
                     record = (<span>{' - Lifetime Record -  W:' + s.wins + ' L:' + s.loses}</span>)
                 }
 
             });
         }
-        var welcome = <Link to='info' params={{userId: this.getUser().id}}>
-            <span id="welcome-name">{'Welcome ' + user.firstName }</span>{record}</Link>;
+        //<Link to='info' params={{userId: this.getUser().id}}>
+        debugger;
+        var welcome =  <span id="welcome-name">{'Welcome ' + user.firstName }
+            {record}</span>;
         var button = null;
         if (user.challenge) {
             button =  <Link id="request-link" to="challengeMain">
