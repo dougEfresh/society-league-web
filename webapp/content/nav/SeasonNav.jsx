@@ -42,7 +42,7 @@ var SeasonNav = React.createClass({
 
             switch (hs.season.division) {
                 case DivisionConstants.NINE_BALL_TUESDAYS:
-                    title = (<div><BallIcon type={hs.division}/> Tuesdays </div>);
+                    title = (<div><BallIcon type={"nine"}/> Tuesdays </div>);
                     break;
                 case DivisionConstants.EIGHT_BALL_WEDNESDAYS:
                     title = (<div><BallIcon type={hs.division} /> Wednesdays</div>);

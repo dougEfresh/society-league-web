@@ -31,7 +31,8 @@ var TeamMemberResultsApp = require('./content/team/TeamMemberResults.jsx');
 var SeasonApp = require('./content/season/SeasonApp.jsx');
 var SeasonLeaders = require('./content/season/SeasonLeaders.jsx');
 var SeasonStandings = require('./content/season/SeasonStandings.jsx');
-var SeasonResults = require('./content/season/SeasonWeeklyResults.jsx');
+var SeasonWeeklyResults = require('./content/season/SeasonWeeklyResults.jsx');
+var SeasonMatchResultsOnDay = require('./content/season/SeasonMatchResultsOnDay.jsx');
 var ChallengeSignUp = require('./content/challenge/ChallengeSignUp.jsx');
 var ChallengeConfirmApp = require('./content/challenge/ChallengeConfirmApp.jsx');
 var ChallengeMain= require('./content/challenge/Main.jsx');
@@ -104,8 +105,8 @@ var routes = (
             <Route name="season" path="season/:seasonId"  handler={SeasonApp} >
                 <Route name="seasonLeaders" path="leaders"  handler={SeasonLeaders} />
                 <Route name="seasonStandings" path="standings"  handler={SeasonStandings} />
-                <Route name="seasonResults" path="results"  handler={SeasonResults} />
-                <Route name="seasonWeeklyResults" path="matches"  handler={SeasonResults} />
+                <Route name="seasonResults" path="results"  handler={SeasonWeeklyResults} />
+                <Route name="seasonMatchResultsOnDay" path="teamresults/:matchId" handler={SeasonMatchResultsOnDay} />
             </Route>
             <Route name="challenge" path="challenge" handler={ChallengeApp} >
                 <Route name="challengeMain" path="main"  handler={ChallengeMain} />

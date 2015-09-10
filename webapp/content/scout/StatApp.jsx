@@ -31,8 +31,10 @@ var StatApp = React.createClass({
     },
     changeUser: function(e) {
         e.preventDefault();
-        if (this.isActive('stats'))
-            this.transitionTo('stats',{statsId: e.target.value});
+        if (this.isActive('stats')) {
+            this.transitionTo('stats', {statsId: e.target.value});
+            return;
+        }
 
         this.transitionTo('history',{statsId: e.target.value})
 

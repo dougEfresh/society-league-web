@@ -1,9 +1,7 @@
 var React = require('react');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UserLink= require('../../jsx/components/links/UserLink.jsx');
-var TeamLink= require('../../jsx/components/links/TeamLink.jsx');
 var UserResults = require('../../jsx/components/result/UserResults.jsx');
-var MatchDao = require('../../lib/dao/MatchDao');
 var Util = require('../../jsx/util.jsx');
 
 var RecentMatches = React.createClass({
@@ -38,16 +36,27 @@ var RecentMatches = React.createClass({
             return b.teamMatch.matchDate.localeCompare(a.teamMatch.matchDate);
         });
 
-        var last5 = [];
-        for(var i =0; i < results.length && i < 5 ; i++) {
-            last5.push(results[i]);
+        var lastXSeasonMatches = {};
+        for(var i =0; i < results.length ; i++) {
+            var id = results[i].season.id;
+            if (!lastXSeasonMatches.hasOwnProperty(id)) {
+                lastXSeasonMatches[id] = [];
+            }
+            if (lastXSeasonMatches[id].length > 6) {
+                continue;
+            }
+            lastXSeasonMatches[id].push(results[i]);
         }
 
+        var recentMatches = [];
+        for(var seasonId in lastXSeasonMatches) {
+            recentMatches  = recentMatches.concat(lastXSeasonMatches[seasonId]);
+        }
         return (
             <div id={'no-recent-matches'} className="panel panel-default">
                 <div className="panel-heading" >Recent Matches</div>
                 <div className="panel-body" >
-                    <UserResults results={last5} />
+                    <UserResults results={recentMatches} />
                 </div>
             </div>
         )

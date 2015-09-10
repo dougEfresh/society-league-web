@@ -16,20 +16,6 @@ var TeamResults = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
     getInitialState: function() {
         return {filter: "",
-            showMatches: false,
-            firstBy: 'sortPlayer',
-            sortOrder: ['sortDate','sortPlayer','sortOpponent','sortWin'],
-            sort: {
-                sortDate: {asc: 'true', fx : sortDateFn},
-                sortTeam: {asc: 'true', fx : sortOpponentTeamFn},
-                sortPlayer: {asc: 'true', fx : sortPlayerFn},
-                sortOpponent: {asc: 'true', fx : sortOpponentFn},
-                sortWin: {asc: 'true', fx : sortWinFn}
-            },
-            page: {
-                size: 30,
-                num: 0
-            },
             results: [],
             teamId : this.getParams().teamId,
             update: Date.now()

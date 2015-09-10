@@ -6,105 +6,116 @@ var Router = require('react-router')
     , Link = Router.Link
     , DefaultRoute = Router.DefaultRoute;
 
-var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
-var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
-var ResultMixin = require('../../jsx/mixins/ResultMixin.jsx');
+var Util = require('../../jsx/util.jsx');
+var UserLink = require('../../jsx/components/links/UserLink.jsx');
+var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 
 var MatchResultsOnDay = React.createClass({
-    mixins: [ResultMixin,SeasonMixin,TeamMixin,UserContextMixin,Router.State,Router.Navigation,Bootstrap.OverlayMixin],
-    getInitialState: function() {
+    mixins: [UserContextMixin, Router.State, Router.Navigation],
+    getInitialState: function () {
         return {
-            isModalOpen: false,
-            teamMatchId: 0,
-            teamId:0
+            results: []
         };
     },
-     getDefaultProps: function() {
-        return {
-            matches: null,
-            day: null
-        }
+    getData: function () {
+        Util.getData('/api/playerresult/get/teamMatch/' + this.getParams().matchId, function (d) {
+            this.setState({results: d});
+        }.bind(this));
     },
-    handleToggle: function(e,id) {
-        if (e == undefined || e == null) {
-            this.setState({
-                isModalOpen: !this.state.isModalOpen,
-                teamMatchId: 0,
-                teamId: 0
-            });
-            return;
-        }
-        e.preventDefault();
-        //Ids is teamMatchId,teamId (csv string)
-        var ids = e.target.id;
-        if (ids == undefined || ids == "")  {
-            this.setState({
-                isModalOpen: !this.state.isModalOpen,
-                teamMatchId: 0,
-                teamId: 0
-            });
-        } else {
-             this.setState({
-                isModalOpen: !this.state.isModalOpen,
-                teamMatchId: ids.split(",")[0],
-                teamId: ids.split(",")[1]
-            });
-        }
+    componentDidMount: function () {
+        this.getData();
     },
-    renderOverlay: function () {
-        if (!this.state.isModalOpen) {
-            return <span/>;
-        }
-        var teamMatch = this.getTeamMatch(this.state.teamMatchId);
-        return (
-             <Modal className="resultsModal" bsStyle={'success'} title={'Results'} onRequestHide={this.handleToggle}>
-                 <div className='modal-body'>
-                     <TeamResult teamId={this.state.teamId} seasonId={teamMatch.season.id} teamMatchId={this.state.teamMatchId} />
-                 </div>
-                 <div className='modal-footer'>
-                     <Button bsStyle={'success'} onClick={this.handleToggle}>Close</Button>
-                 </div>
-            </Modal>
-        );
+    componentWillReceiveProps: function (o, n) {
+        var now = Date.now();
+        if (now - this.state.update > 1000 * 60)
+            this.getData();
     },
-    render: function() {
-        if (this.props.matches == null) {
+    render: function () {
+        if (this.state.results.length == 0) {
             return null;
         }
-        var rows = [];
+        if (this.state.results[0].season.nine) {
+            return <NineBallMatchResultsOnDay results={this.state.results}/>
+        }
+        return <EightBallMatchResultsOnDay results={this.state.results}/>;
+    }
+});
 
-        this.props.matches.forEach(function(m){
-            var teamWinnerLink = (<a id={m.teamMatchId + ',' + m.winner.id} href="#" onClick={this.handleToggle}>{m.winner.name}</a>);
-            var teamLoserLink = (<a id={m.teamMatchId + ',' + m.loser.id} href="#" onClick={this.handleToggle}>{m.loser.name}</a>);
+var EightBallMatchResultsOnDay = React.createClass({
+    render: function() {
+        var rows = [];
+        this.props.results.forEach(function(r){
             rows.push(
-                <tr className="teamMatchResultRow" key={m.teamMatchId}>
-                    <td>{teamWinnerLink}</td>
-                    <td>{m.winnerRacks}</td>
-                    <td>{teamLoserLink}</td>
-                    <td>{m.loserRacks}</td>
-                </tr>
-            )
+                <tr key={r.id}>
+                    <td>
+                        <UserLink user={r.teamMember} handicap={r.teamMemberHandicap} />
+                    </td>
+                    <td>{r.win ? 'W' : 'L'}</td>
+                    <td>
+                        <UserLink user={r.opponent} handicap={r.opponentHandicap}/>
+                    </td>
+            </tr>);
         }.bind(this));
         return (
-            <div className="teamMatchResult" >
-                <Panel header={this.props.day.substr(0,10)}>
-                <Table striped >
-                    <thead>
-                    <th>W</th>
-                    <th>racks</th>
-                    <th>L</th>
-                    <th>racks</th>
-                    </thead>
-                    <tbody>
-                    {rows}
-                    </tbody>
-                </Table>
-                </Panel>
-            </div>
+        <div className="table-responsive">
+            <h2>{'Match Results - ' + Util.formatDateTime(this.props.results[0].teamMatch.matchDate)}</h2>
+          <table className="table table-condensed table-stripped table-responsive" >
+              <thead>
+              <tr>
+                  <th><TeamLink team={this.props.results[0].team} /></th>
+                  <th>W/L</th>
+                  <th><TeamLink team={this.props.results[0].opponentTeam} /></th>
+              </tr>
+              </thead>
+              <tbody>
+              {rows}
+              </tbody>
+              </table>
+          </div>
         )
     }
 });
+
+var NineBallMatchResultsOnDay = React.createClass({
+    render: function() {
+        var rows = [];
+        this.props.results.forEach(function(r){
+            rows.push(
+                <tr key={r.id}>
+                    <td>
+                        <UserLink user={r.teamMember} handicap={r.teamMemberHandicap} />
+                    </td>
+                    <td>{r.win ? 'W' : 'L'}</td>
+                    <td>{r.teamMemberRacks}</td>
+                    <td>
+                        <UserLink user={r.opponent} handicap={r.opponentHandicap}/>
+                    </td>
+                    <td>{r.opponentRacks}</td>
+            </tr>);
+        }.bind(this));
+        return (
+        <div className="table-responsive">
+            <h2>{'Match Results - ' + Util.formatDateTime(this.props.results[0].teamMatch.matchDate)}</h2>
+          <table className="table table-condensed table-stripped table-responsive" >
+              <thead>
+              <tr>
+                  <th><TeamLink team={this.props.results[0].team} /></th>
+                  <th>W/L</th>
+                  <th>Racks</th>
+                  <th><TeamLink team={this.props.results[0].opponentTeam} /></th>
+                  <th>Racks</th>
+              </tr>
+              </thead>
+              <tbody>
+              {rows}
+              </tbody>
+              </table>
+          </div>
+        )
+    }
+});
+
+
 
 module.exports = MatchResultsOnDay;

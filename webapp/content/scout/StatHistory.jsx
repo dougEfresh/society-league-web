@@ -13,12 +13,16 @@ var StatHistory = React.createClass({
        getInitialState: function() {
          return {
              update: Date.now(),
-             results: []
+             results: [],
+             stats: []
          }
     },
     getData: function() {
         Util.getData('/api/playerresult/get/user/' + this.getParams().statsId  + '/current', function(d) {
             this.setState({results: d});
+        }.bind(this));
+        Util.getData('/api/stat/user/' + this.getParams().statsId , function(d){
+            this.setState({stats: d});
         }.bind(this));
     },
     componentDidMount: function () {
@@ -32,7 +36,7 @@ var StatHistory = React.createClass({
     },
 
     render: function() {
-       if (this.state.results.length == 0) {
+       if (this.state.results.length == 0 || this.state.stats.length == 0) {
            return null;
        }
         /*
@@ -47,7 +51,7 @@ var StatHistory = React.createClass({
             user = this.state.results[0].playerHome.id == this.getParams().statsId ?  this.state.results[0].playerHome :  this.state.results[0].playerAway;
         }
         return (
-                <UserResults user={user} results={this.state.results} />
+                <UserResults stats={this.state.stats} user={user} results={this.state.results} />
         );
     }
 });

@@ -1,7 +1,10 @@
 var React = require('react/addons');
-var Router = require('react-router');
 var Util = require('../../jsx/util.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
+var Router = require('react-router')
+    , RouteHandler = Router.RouteHandler
+    , Route = Router.Route
+    , Link = Router.Link;
 
 var SeasonWeeklyResults = React.createClass({
     mixins: [Router.State],
@@ -66,17 +69,28 @@ var Results = React.createClass({
                 winner = r.away;
                 loser = r.home;
             }
+            var button = (
+                <Link to='seasonMatchResultsOnDay' params={{matchId: r.id, seasonId: r.season.id}}>
+                    <button className='btn btn-success'>
+                        <span className="main-item">Results</span>
+                    </button>
+                </Link>);
+
+            if (r.homeRacks + r.awayRacks <= 0) {
+                button = null;
+            }
             rows.push(
                     <tr key={r.id}>
-                        <td><TeamLink team={winner}/> <span></span></td>
+                        <td><TeamLink team={winner}/> <span>{button}</span></td>
                         <td><TeamLink team={loser}/> <span></span></td>
                         <td>{r.homeRacks < 0 ? '0' : r.homeRacks}</td>
                         <td>{r.awayRacks < 0 ? '0' : r.awayRacks}</td>
                     </tr>
                 );
-        });
+        }.bind(this));
 
         return (
+            <div className="table-responsive">
           <table className="table table-condensed table-stripped table-responsive" >
               <thead>
               <th colSpan="4">{Util.formatDateTime(this.props.results[0].matchDate)}</th>
@@ -86,6 +100,7 @@ var Results = React.createClass({
               {rows}
               </tbody>
           </table>
+            </div>
         );
     }
 });

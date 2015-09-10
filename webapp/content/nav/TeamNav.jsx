@@ -3,22 +3,11 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Link = Router.Link;
 
-var Season = require('../../lib/Season.js');
-var Division = require('../../lib/Division.js');
-var Team = require('../../lib/Team.js');
-var User = require('../../lib/User.js');
-var DivisionType = require('../../lib/DivisionType');
-var Status = require('../../lib/Status');
-var TeamMatch = require('../../lib/TeamMatch');
-var Result = require('../../lib/Result');
-
-var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var TeamNav = React.createClass({
-    mixins: [UserContextMixin,TeamMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
             update: Date.now(),
@@ -53,7 +42,7 @@ var TeamNav = React.createClass({
             );
         }.bind(this));
         var clName = "dropdown";
-        if (this.getPath().indexOf('team') >= 0) {
+        if (this.getPath().indexOf('/team/') >= 0) {
             clName =  clName + " active";
         }
         return (

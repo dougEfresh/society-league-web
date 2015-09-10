@@ -57,6 +57,7 @@ var TeamStandings = React.createClass({
             return null;
         var rows = [];
         var i = 0;
+
         rows.push(
             <tr key={i}>
             <td> {stat.team.name} </td>
@@ -89,7 +90,7 @@ var TeamStandings = React.createClass({
         }.bind(this));
         return (
              <div className="table-responsive">
-            <table className="table table-condensed table-striped table-responsive" >
+                 <table className="table table-condensed table-striped table-responsive" >
                 <thead>
                 {this.getHeader()}
                 <tbody>
@@ -103,5 +104,6 @@ var TeamStandings = React.createClass({
 
     }
 });
+
 
 module.exports = TeamStandings;

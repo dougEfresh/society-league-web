@@ -1,12 +1,45 @@
 var React = require('react/addons');
-var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var UserLink = require('../links/UserLink.jsx');
 var Util = require('../../util.jsx');
 var Handicap = require('../../../lib/Handicap');
 var SeasonLink = require('../links/SeasonLink.jsx');
 
 var UserResults = React.createClass({
-    mixins: [UserContextMixin],
+    getDefaultProps: function() {
+        return {results: [], stats:[]};
+    },
+    render: function() {
+        var rows = [];
+        var seasonResults = {};
+        this.props.results.forEach(function(r) {
+            if (seasonResults[r.season.id] == undefined) {
+                seasonResults[r.season.id] = [];
+            }
+            seasonResults[r.season.id].push(r);
+        });
+
+        for (var seasonId in seasonResults) {
+            if (seasonResults.hasOwnProperty(seasonId)) {
+                var seasonStat={};
+                var season = seasonResults[seasonId][0].season;
+                this.props.stats.forEach(function(s){
+                    if ( s.season && s.season.id == season.id ) {
+                        seasonStat = s;
+                    }
+                });
+                rows.push(<SeasonResults stats={seasonStat} key={seasonId} season={season} results={seasonResults[seasonId]} />);
+            }
+        }
+        return (
+            <div id="user-results">
+                {rows}
+            </div>
+        );
+
+    }
+});
+
+var SeasonResults =  React.createClass({
     getDefaultProps: function() {
         return {season : null, results: []};
     },
@@ -18,20 +51,29 @@ var UserResults = React.createClass({
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                 <td>{r.teamMemberHandicap}</td>
-                <td><SeasonLink season={r.season}/></td>
+
                 </tr>);
         });
+        var statDisplay = <span>{' - Record W:' + this.props.stats.wins + ' L:' + this.props.stats.loses }</span>;
+        if (this.props.stats.wins == undefined || this.props.stats.wins+this.props.stats.loses <= 0){
+            statDisplay = null;
+        }
         return (
              <div className="table-responsive">
-            <table className="table table-condensed table-responsive" >
-                <thead>
-                <tr>
+                 <table className="table table-condensed table-responsive" >
+                     <thead>
+                     <tr>
+                         <th colSpan="4">
+                         <SeasonLink season={this.props.season}/>
+                             {statDisplay}
+                     </th>
+                     </tr>
+                     <tr>
                     <th>Date</th>
                     <th>W/L</th>
                     <th>Opponent</th>
                     <th>HC</th>
-                    <th>Season</th>
-                </tr>
+                     </tr>
                 </thead>
                 <tbody>
                 {rows}

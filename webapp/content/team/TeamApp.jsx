@@ -9,6 +9,7 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamStandings = require('./TeamStandings.jsx');
 var TeamChart = require('./TeamChart.jsx');
 var Util = require('../../jsx/util.jsx');
+var firstBy = require('../../lib/FirstBy.js');
 
 var TeamApp = React.createClass({
     mixins: [UserContextMixin, State, Navigation],
@@ -82,8 +83,22 @@ var TeamApp = React.createClass({
             return null;
         }
         var options = [];
-        teams.forEach(function(t){
-            options.push(<option key={t.id} value={t.id}>{t.name + ' --- ' + t.season.displayName }</option>);
+        var order = firstBy(function(a,b) {
+            return a.season.name.localeCompare(b.season.name);
+        });
+        order = order.thenBy(function(a,b){
+            return a.name.localeCompare(b.name);
+        });
+        teams = teams.sort(order);
+
+        var prevSeason = teams[0].season;
+        options.push(<option key={prevSeason.id} value={prevSeason.id}>{'------- ' + prevSeason.displayName +' -------'}</option>);
+        teams.forEach(function(t) {
+            if (prevSeason.id != t.season.id) {
+                prevSeason = t.season;
+                options.push(<option key={prevSeason.id} value={prevSeason.id}>{'-------  ' + prevSeason.displayName +' -------'}</option>);
+            }
+            options.push(<option key={t.id} value={t.id}>{t.name}</option>);
         });
         var select = ( <select ref='user' onChange={this.onChange}
                                 className="form-control"
