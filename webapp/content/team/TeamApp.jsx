@@ -49,7 +49,7 @@ var TeamApp = React.createClass({
 
     },
     getData: function() {
-        Util.getData('/api/team/get/season/' + this.getParams().seasonId, function(d){
+        Util.getData('/api/team/get/user/' + this.getUser().id, function(d){
             this.setState({teams: d});
         }.bind(this));
     },
@@ -83,7 +83,7 @@ var TeamApp = React.createClass({
         }
         var options = [];
         teams.forEach(function(t){
-            options.push(<option key={t.id} value={t.id}>{t.name}</option>);
+            options.push(<option key={t.id} value={t.id}>{t.name + ' --- ' + t.season.displayName }</option>);
         });
         var select = ( <select ref='user' onChange={this.onChange}
                                 className="form-control"

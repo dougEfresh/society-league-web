@@ -11,48 +11,6 @@ var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
 
-var sortDateFn = function(a,b) {
-    return b.getMatchDate().localeCompare(a.getMatchDate());
-};
-
-var sortPlayerFn = function(a,b) {
-    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
-    if (this.state.sort.sortPlayer.asc == 'true') {
-        return ateamMember.name.localeCompare(bteamMember.name);
-    }
-    return bteamMember.name.localeCompare(ateamMember.name);
-};
-
-var sortOpponentFn  = function(a,b){
-    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
-
-    if (this.state.sort.sortOpponent.asc == 'true')
-        return a.getOpponent(ateamMember).name.localeCompare(b.getOpponent(bteamMember).name);
-    else
-        return b.getOpponent(ateamMember).name.localeCompare(a.getOpponent(bteamMember).name);
-};
-
-var sortOpponentTeamFn = function(a,b){
-    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
-    if (this.state.sort.sortTeam.asc == 'true')
-        return a.getOpponentsTeam(ateamMember).name.localeCompare(b.getOpponentsTeam(bteamMember).name);
-    else
-        return b.getOpponentsTeam(ateamMember).name.localeCompare(a.getOpponentsTeam(bteamMember).name);
-};
-
-var sortWinFn = function(a,b) {
-    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
-    aWin = (a.isWinner(ateamMember) ? 'W' : 'L');
-    bWin = (b.isWinner(bteamMember) ? 'W' : 'L');
-    if (this.state.sort.sortWin.asc == 'true')
-        return aWin.localeCompare(bWin);
-    else
-        return bWin.localeCompare(aWin);
-};
 
 var TeamResults = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
@@ -152,3 +110,48 @@ var TeamResults = React.createClass({
 });
 
 module.exports = TeamResults;
+
+
+var sortDateFn = function(a,b) {
+    return b.getMatchDate().localeCompare(a.getMatchDate());
+};
+
+var sortPlayerFn = function(a,b) {
+    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
+    if (this.state.sort.sortPlayer.asc == 'true') {
+        return ateamMember.name.localeCompare(bteamMember.name);
+    }
+    return bteamMember.name.localeCompare(ateamMember.name);
+};
+
+var sortOpponentFn  = function(a,b){
+    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
+
+    if (this.state.sort.sortOpponent.asc == 'true')
+        return a.getOpponent(ateamMember).name.localeCompare(b.getOpponent(bteamMember).name);
+    else
+        return b.getOpponent(ateamMember).name.localeCompare(a.getOpponent(bteamMember).name);
+};
+
+var sortOpponentTeamFn = function(a,b){
+    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
+    if (this.state.sort.sortTeam.asc == 'true')
+        return a.getOpponentsTeam(ateamMember).name.localeCompare(b.getOpponentsTeam(bteamMember).name);
+    else
+        return b.getOpponentsTeam(ateamMember).name.localeCompare(a.getOpponentsTeam(bteamMember).name);
+};
+
+
+var sortWinFn = function(a,b) {
+    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
+    aWin = (a.isWinner(ateamMember) ? 'W' : 'L');
+    bWin = (b.isWinner(bteamMember) ? 'W' : 'L');
+    if (this.state.sort.sortWin.asc == 'true')
+        return aWin.localeCompare(bWin);
+    else
+        return bWin.localeCompare(aWin);
+};

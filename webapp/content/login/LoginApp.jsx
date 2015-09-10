@@ -28,7 +28,7 @@ var LoginApp = React.createClass({
             async: true,
             processData: true,
             url: '/api/authenticate',
-            data: {username: user, password: password},
+            data: {username: user, password: password, 'springRememberMe': true},
             method: 'post',
             success: function (d) {
                 DataStore.setUser(d);
@@ -64,8 +64,9 @@ var LoginApp = React.createClass({
                                 <input ref='username' id="username" type="input" name="username" placeholder="enter email" className="form-control"/>
                             </div>
                             <div className="form-group">
-                            <input ref='password' id="password" ref='password' type='password' name='password' placeholder='enter password'className="form-control" > </input>
+                                <input ref='password' id="password" ref='password' type='password' name='password' placeholder='enter password'className="form-control" > </input>
                             </div>
+                             <input type="hidden" value="true" name="springRememberMe" />
                             {errorMsg}
                         </div>
                         <div className="row">

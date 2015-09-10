@@ -48,7 +48,7 @@ var TeamNav = React.createClass({
         this.state.data.forEach(function(t) {
             teams.push(
                 <li key={t.name} className="teamNavLink" role="presentation">
-                    <Link  to={'teamStandings'}  params={{userId: user.id ,teamId: t.id, seasonId: t.season.id}} >{t.name}</Link>
+                    <Link  to={'teamStandings'}  params={{userId: user.id ,teamId: t.id}} >{t.name}</Link>
                 </li>
             );
         }.bind(this));

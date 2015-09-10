@@ -96,7 +96,7 @@ var routes = (
                 <Route name="stats" path="stats" handler={StatDisplay} />
                 <Route name="history" path="history" handler={StatHistory} />
             </Route>
-            <Route name="team" path="team/:teamId/:seasonId" handler={TeamApp} >
+            <Route name="team" path="team/:teamId" handler={TeamApp} >
                 <Route name="teamStandings" path="standings"  handler={TeamStandings} />
                 <Route name="teamChart" path="chart"  handler={TeamChart} />
                 <Route name="teamMemberResults" path="members"  handler={TeamMemberResultsApp} />

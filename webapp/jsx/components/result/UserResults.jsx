@@ -15,10 +15,10 @@ var UserResults = React.createClass({
         this.props.results.forEach(function(r) {
             rows.push(<tr key={r.id}>
                 <td>{Util.formatDateTime(r.teamMatch.matchDate)}</td>
+                <td>{r.win ? 'W' : 'L'}</td>
+                <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                 <td>{r.teamMemberHandicap}</td>
                 <td><SeasonLink season={r.season}/></td>
-                <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
-                <td>{r.win ? 'W' : 'L'}</td>
                 </tr>);
         });
         return (
@@ -27,10 +27,10 @@ var UserResults = React.createClass({
                 <thead>
                 <tr>
                     <th>Date</th>
+                    <th>W/L</th>
+                    <th>Opponent</th>
                     <th>HC</th>
                     <th>Season</th>
-                    <th>Opponent</th>
-                    <th>W/L</th>
                 </tr>
                 </thead>
                 <tbody>
