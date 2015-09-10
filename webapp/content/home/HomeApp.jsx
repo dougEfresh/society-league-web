@@ -43,8 +43,7 @@ var HomeApp = React.createClass({
 
             });
         }
-        //<Link to='info' params={{userId: this.getUser().id}}>
-        debugger;
+
         var welcome =  <span id="welcome-name">{'Welcome ' + user.firstName }
             {record}</span>;
         var button = null;

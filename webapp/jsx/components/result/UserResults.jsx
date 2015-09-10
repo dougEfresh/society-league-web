@@ -3,6 +3,10 @@ var UserLink = require('../links/UserLink.jsx');
 var Util = require('../../util.jsx');
 var Handicap = require('../../../lib/Handicap');
 var SeasonLink = require('../links/SeasonLink.jsx');
+var Router = require('react-router')
+    , RouteHandler = Router.RouteHandler
+    , Route = Router.Route
+    , Link = Router.Link;
 
 var UserResults = React.createClass({
     getDefaultProps: function() {
@@ -58,8 +62,9 @@ var ResultEight = React.createClass({
     render: function() {
         var rows = [];
         this.props.results.forEach(function(r) {
-            rows.push(<tr key={r.id}>
-                <td>{Util.formatDateTime(r.teamMatch.matchDate)}</td>
+            rows.push(
+                <tr key={r.id}>
+                    <td><Link to='seasonMatchResultsOnDay' params={{matchId: r.teamMatch.id, seasonId: r.season.id}}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                 <td>{r.teamMemberHandicap}</td>
@@ -106,7 +111,7 @@ var ResultNine = React.createClass({
         var rows = [];
         this.props.results.forEach(function(r) {
             rows.push(<tr key={r.id}>
-                <td>{Util.formatDateTime(r.teamMatch.matchDate)}</td>
+                <td><Link to='seasonMatchResultsOnDay' params={{matchId: r.teamMatch.id, seasonId: r.season.id}}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td>{r.teamMemberRacks + ' - ' + r.opponentRacks}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
