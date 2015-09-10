@@ -123,7 +123,7 @@ var TeamResults = React.createClass({
         results.forEach(function (result) {
             rows.push(<tr key={result.id}>
                 <td><UserLink user={result.teamMember} handicap={result.teamMemberHandicap} season={this.getParams().seasonId} /></td>
-                <td>{result.winner ? 'W' : 'L'}</td>
+                <td>{result.win ? 'W' : 'L'}</td>
                 <td><UserLink user={result.opponent}  handicap={result.opponentHandicap} season={this.getParams().seasonId} /></td>
                 <td><TeamLink team={result.opponentTeam} /></td>
                 <td>{Util.formatDateTime(result.teamMatch.matchDate)}</td>
