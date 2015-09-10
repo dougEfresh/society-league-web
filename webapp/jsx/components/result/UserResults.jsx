@@ -22,6 +22,7 @@ var UserResults = React.createClass({
                 </tr>);
         });
         return (
+             <div className="table-responsive">
             <table className="table table-condensed table-responsive" >
                 <thead>
                 <tr>
@@ -36,6 +37,7 @@ var UserResults = React.createClass({
                 {rows}
                 </tbody>
             </table>
+             </div>
         );
 
     }

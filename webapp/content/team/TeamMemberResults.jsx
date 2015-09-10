@@ -131,6 +131,7 @@ var TeamResults = React.createClass({
 
         }.bind(this));
         return (
+            <div className="table-responsive">
             <table className="table table-condensed table-striped table-responsive">
                 <thead>
                 <tr>
@@ -145,6 +146,7 @@ var TeamResults = React.createClass({
                 </tbody>
                 </thead>
             </table>
+            </div>
         );
     }
 });

@@ -65,6 +65,7 @@ var UpcomingMatches = React.createClass({
             <div id={'no-recent-matches'} className="panel panel-default">
                 <div className="panel-heading" >Upcoming Matches</div>
                 <div className="panel-body" >
+                    <div className="table-responsive">
                     <table className="table table-condensed table-responsive" >
                         <thead>
                         <tr>
@@ -76,6 +77,7 @@ var UpcomingMatches = React.createClass({
                         {rows}
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div>
 

@@ -88,6 +88,7 @@ var TeamStandings = React.createClass({
             </tr>);
         }.bind(this));
         return (
+             <div className="table-responsive">
             <table className="table table-condensed table-striped table-responsive" >
                 <thead>
                 {this.getHeader()}
@@ -96,6 +97,7 @@ var TeamStandings = React.createClass({
                 </tbody>
                 </thead>
             </table>
+             </div>
         );
 
 
