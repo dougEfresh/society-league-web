@@ -26,9 +26,6 @@ var TeamApp = React.createClass({
     componentDidMount: function () {
          this.getData();
     },
-    _onChange: function () {
-        this.setState({user: this.state.user});
-    },
     onSelect: function (e) {
         console.log(e.target.value);
         this.setState({teamId: e.target.value});
@@ -57,7 +54,9 @@ var TeamApp = React.createClass({
         }.bind(this));
     },
     componentWillReceiveProps: function (o, n) {
-        this.getData();
+        var now = Date.now();
+        if (now - this.state.update > 1000*60*2)
+            this.getData();
     },
     handleClick: function() {
         this.transitionTo('teamChart',this.getParams());
