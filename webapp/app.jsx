@@ -7,10 +7,22 @@ var Router = require('react-router')
     , DefaultRoute = Router.DefaultRoute;
 
 var Status = require('./lib/Status');
-var ChallengeRequestApp = require('./content/challenge/request/ChallengeRequestApp.jsx');
-var ChallengePendingApp = require('./content/challenge/pending/ChallengePendingApp.jsx');
-var ChallengeAcceptedApp = require('./content/challenge/accepted/ChallengeAcceptedApp.jsx');
-var ChallengeSentApp = require('./content/challenge/sent/ChallengeSentApp.jsx');
+//var ChallengeRequestApp = require('./content/challenge/request/ChallengeRequestApp.jsx');
+//var ChallengePendingApp = require('./content/challenge/pending/ChallengePendingApp.jsx');
+//var ChallengeAcceptedApp = require('./content/challenge/accepted/ChallengeAcceptedApp.jsx');
+//var ChallengeSentApp = require('./content/challenge/sent/ChallengeSentApp.jsx');
+///var ChallengeSignUp = require('./content/challenge/ChallengeSignUp.jsx');
+//var ChallengeConfirmApp = require('./content/challenge/ChallengeConfirmApp.jsx');
+//var ChallengeMain= require('./content/challenge/Main.jsx');
+//var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
+//var ChallengesApp = require('./content/admin/Challenges.jsx');
+//var ChallengesUsers= require('./content/admin/ChallengeUsers.jsx');
+//var ChallengeAdminResults= require('./content/admin/ChallengeAdminResults.jsx');
+//var ChallengeCancelApp= require('./content/challenge/cancel/CancelApp.jsx');
+
+//var AdminApp = require('./content/admin/AdminApp.jsx');
+//var CreateUser = require('./content/admin/CreateUser.jsx');
+//var CreateUserSuccess = require('./content/admin/CreateUserSuccess.jsx');
 
 var NavApp = require('./content/nav/NavApp.jsx');
 var ResetApp = require('./jsx/../content/ResetApp.jsx');
@@ -18,9 +30,7 @@ var RegisterApp = require('./jsx/../content/RegisterApp.jsx');
 var LoginApp = require('./jsx/../content/login/LoginApp.jsx');
 var LogoutApp = require('./jsx/components/LogoutApp.jsx');
 var ErrorApp = require('./jsx/components/ErrorApp.jsx');
-var AdminApp = require('./content/admin/AdminApp.jsx');
-var CreateUser = require('./content/admin/CreateUser.jsx');
-var CreateUserSuccess = require('./content/admin/CreateUserSuccess.jsx');
+
 var StatApp = require('./content/stat/StatApp.jsx');
 var StatDisplay = require('./content/stat/StatsDisplay.jsx');
 var StatHistory = require('./content/stat/StatHistory.jsx');
@@ -33,20 +43,12 @@ var SeasonLeaders = require('./content/season/SeasonLeaders.jsx');
 var SeasonStandings = require('./content/season/SeasonStandings.jsx');
 var SeasonWeeklyResults = require('./content/season/SeasonWeeklyResults.jsx');
 var SeasonMatchResultsOnDay = require('./content/season/SeasonMatchResultsOnDay.jsx');
-var ChallengeSignUp = require('./content/challenge/ChallengeSignUp.jsx');
-var ChallengeConfirmApp = require('./content/challenge/ChallengeConfirmApp.jsx');
-var ChallengeMain= require('./content/challenge/Main.jsx');
-var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
 var UserApp  = require('./content/user/UserApp.jsx');
 var UserPasswordApp = require('./content/user/UserPasswordApp.jsx');
 var PayApp = require('./content/user/PayApp.jsx');
 var UserInfo= require('./content/user/UserInfo.jsx');
-var ChallengesApp = require('./content/admin/Challenges.jsx');
-var ChallengesUsers= require('./content/admin/ChallengeUsers.jsx');
-var ChallengeAdminResults= require('./content/admin/ChallengeAdminResults.jsx');
-var ChallengeCancelApp= require('./content/challenge/cancel/CancelApp.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -81,13 +83,6 @@ var routes = (
             <Route name="loading" path="loading" handler={LoadingApp} />
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
-            <Route name="admin" path="admin" handler={AdminApp} >
-                <Route name="createUser" path="create/user" handler={CreateUser} />
-                <Route name="createUserSuccess" path="create/user/status" handler={CreateUserSuccess} />
-                <Route name="challenges" path="challenges" handler={ChallengesApp} />
-                <Route name="challengeUsers" path="challenges/user" handler={ChallengesUsers} />
-                <Route name="challengeAdminResults" path="challenges/admin/results" handler={ChallengeAdminResults} />
-            </Route>
             <Route name="user" path="user/:userId"  handler={UserApp}>
                 <Route name="info" path="info" handler={UserInfo} />
                 <Route name="password" path="password" handler={UserPasswordApp} />
@@ -108,16 +103,7 @@ var routes = (
                 <Route name="seasonResults" path="results"  handler={SeasonWeeklyResults} />
                 <Route name="seasonMatchResultsOnDay" path="teamresults/:matchId" handler={SeasonMatchResultsOnDay} />
             </Route>
-            <Route name="challenge" path="challenge" handler={ChallengeApp} >
-                <Route name="challengeMain" path="main"  handler={ChallengeMain} />
-                <Route name="challengeSignUp" path="signup"  handler={ChallengeSignUp} />
-                <Route name="challengeConfirm" path="confirm"  handler={ChallengeConfirmApp} />
-                <Route name='challengeCancel' path="cancel"  handler={ChallengeCancelApp} />
-                <Route name={Status.REQUEST.toLowerCase()} path={Status.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
-                <Route name={Status.PENDING.toLowerCase()} path={Status.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
-                <Route name={Status.ACCEPTED.toLowerCase()} path={Status.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>
-                <Route name={Status.SENT.toLowerCase()} path={Status.SENT.toLowerCase()} handler={ChallengeSentApp}/>
-            </Route>
+
         </Route>
     </Route>
 );
@@ -125,3 +111,25 @@ var routes = (
 Router.run(routes, function (Handler) {
     React.render(<Handler/>, document.getElementById('content'));
 });
+
+/*
+ <Route name="admin" path="admin" handler={AdminApp} >
+ <Route name="createUser" path="create/user" handler={CreateUser} />
+ <Route name="createUserSuccess" path="create/user/status" handler={CreateUserSuccess} />
+ <Route name="challenges" path="challenges" handler={ChallengesApp} />
+ <Route name="challengeUsers" path="challenges/user" handler={ChallengesUsers} />
+ <Route name="challengeAdminResults" path="challenges/admin/results" handler={ChallengeAdminResults} />
+ </Route>
+
+
+ <Route name="challenge" path="challenge" handler={ChallengeApp} >
+ <Route name="challengeMain" path="main"  handler={ChallengeMain} />
+ <Route name="challengeSignUp" path="signup"  handler={ChallengeSignUp} />
+ <Route name="challengeConfirm" path="confirm"  handler={ChallengeConfirmApp} />
+ <Route name='challengeCancel' path="cancel"  handler={ChallengeCancelApp} />
+ <Route name={Status.REQUEST.toLowerCase()} path={Status.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
+ <Route name={Status.PENDING.toLowerCase()} path={Status.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
+ <Route name={Status.ACCEPTED.toLowerCase()} path={Status.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>
+ <Route name={Status.SENT.toLowerCase()} path={Status.SENT.toLowerCase()} handler={ChallengeSentApp}/>
+ </Route>
+ */

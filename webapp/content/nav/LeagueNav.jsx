@@ -9,7 +9,7 @@ var TeamNav = require('./TeamNav.jsx');
 var AdminNav = require('./AdminNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
 var HomeNav = require('./HomeNav.jsx');
-var ScoutNav = require('./ScoutNav.jsx');
+var StatNav = require('./StatNav.jsx');
 var ChallengeNav = require('./ChallengeNav.jsx');
 var HomeApp = require('../home/HomeApp.jsx');
 
@@ -52,7 +52,7 @@ var LeagueNav = React.createClass({
                                     <HomeNav />
                                     <TeamNav />
                                     <SeasonNav />
-                                    <ScoutNav />
+                                    <StatNav />
                                     <ChallengeNav />
                                     <AdminNav />
                                 </ul>

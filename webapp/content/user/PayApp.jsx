@@ -10,8 +10,6 @@ var Router = require('react-router')
 
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var TeamMixin = require('../../jsx/mixins/TeamMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var UserApp = React.createClass({

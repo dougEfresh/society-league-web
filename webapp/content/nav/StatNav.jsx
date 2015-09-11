@@ -3,7 +3,6 @@ var Router = require('react-router')
     , Link = Router.Link;
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 
 var StatNav = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],

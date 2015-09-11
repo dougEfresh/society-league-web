@@ -3,17 +3,13 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Link = Router.Link;
 
-//var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
 
 var SeasonNav = React.createClass({
-    mixins: [UserContextMixin,SeasonMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
     componentWillMount: function () {
-        //DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
-        //DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
         this.setState({user: this.getUser()});
