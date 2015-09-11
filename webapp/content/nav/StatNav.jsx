@@ -13,7 +13,7 @@ var StatNav = React.createClass({
         }
         return (
             <li id="stat-nav" className={"main-item dropdown " + active} >
-                <Link className='scoutNav' to='stats' params={{statsId: this.getUserId()}}>
+                <Link className='scoutNav' to='stats' params={{statsId: this.getUser().id}}>
                     <span className="fa fa-bar-chart"/>
                     <span className="main-item">Stats</span>&nbsp;
                 </Link>

@@ -48,10 +48,10 @@ var DataStore = assign({}, EventEmitter.prototype, {
         }
     },
     isLoading: function() {
-        return db.loading;
+        return _loading;
     },
     isLoaded: function() {
-        return user != undefined && user.id != undefined && user.id != "0";
+        return _user != undefined && _user.id != undefined && _user.id != "0";
     },
     setLoading: function(loading) {
         _loading = loading;

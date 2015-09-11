@@ -8,7 +8,7 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var SeasonApp = React.createClass({
-    mixins: [SeasonMixin,UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
             update: Date.now(),

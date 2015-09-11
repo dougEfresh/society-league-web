@@ -41,7 +41,7 @@ var NavApp = React.createClass({
         //DataActions.init();
     },
     _onChange: function(){
-        console.log('NavApp change: ' + this.getUserId() + ' Loading ' + DataStore.isLoading() + ' Authenticated: ' + DataStore.isAuthenticated());
+        console.log('NavApp change: ' + this.getUser().id + ' Loading ' + DataStore.isLoading() + ' Authenticated: ' + DataStore.isAuthenticated());
         if (DataStore.isAuthenticated() && !DataStore.isLoaded() && !DataStore.isLoading()) {
             DataStore.init();
         }

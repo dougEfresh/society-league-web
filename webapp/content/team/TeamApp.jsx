@@ -115,7 +115,6 @@ var TeamApp = React.createClass({
                     </Link>
                 </div>
         );
-
             return (
                 <div id="team-app">
                     {teamHeader}

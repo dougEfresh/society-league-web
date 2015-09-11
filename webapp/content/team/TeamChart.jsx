@@ -42,13 +42,14 @@ var TeamChart = React.createClass({
         if (stats.length == 0) {
             return null;
         }
-
         var wins = [];
         var lost = [];
 
-        label.push('team');
-        wins.push(team.wins);
-        lost.push(team.loses);
+        if (team.team.season.nine) {
+            label.push('team');
+            wins.push(team.wins);
+            lost.push(team.loses);
+        }
 
         stats = stats.sort(function(a,b) {
             if (a.winPct>b.winPct) {

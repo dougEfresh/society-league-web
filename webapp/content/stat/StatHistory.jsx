@@ -29,8 +29,8 @@ var StatHistory = React.createClass({
         this.getData();
     },
     componentWillReceiveProps: function (o, n) {
-        var now = Date.now();
-        if ( now - this.state.update > 1000*60)
+        //var now = Date.now();
+        //if ( now - this.state.update > 1000*60)
             this.getData();
     },
 

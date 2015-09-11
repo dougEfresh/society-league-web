@@ -4,6 +4,7 @@ var Router = require('react-router')
     , Link = Router.Link;
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
+var BallIcon = require('../../jsx/components/BallIcon.jsx');
 
 var SeasonNav = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
@@ -26,26 +27,27 @@ var SeasonNav = React.createClass({
         user.handicapSeasons.forEach(function(hs) {
             var title = "unknown";
 
-            if (hs.season.name.toLowerCase().indexOf('tues') >=0 ) {
-                title = (<div><BallIcon type={"nine"}/> Tue </div>);
+            if (hs.season.name.toLowerCase().indexOf('9-ball') >=0 ) {
+                //title = (<div><BallIcon type={"nine"}/> Tue </div>);
+                title = (<div>Tue</div>);
             }
             if (hs.season.name.toLowerCase().indexOf('weds') >=0 ) {
-                title = (<div><BallIcon type={hs.division} /> Wed</div>);
+                title = (<div>Wed</div>);
+                //title = (<div><BallIcon type={'eight'} /> Wed</div>);
             }
             if (hs.season.name.toLowerCase().indexOf('thur') >=0 ) {
-                 title = (<div><BallIcon type={hs.division} /> Thur </div>);
+                //<BallIcon type={'eight'} />
+                 title = (<div>Thu </div>);
             }
             if (hs.season.name.toLowerCase().indexOf('mix') >=0 ) {
-                title = (<div>
-                    <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
-                    <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays
-                </div>);
-            }
+//                <BallIcon type={'eight'} />
+///                <BallIcon type={'nine'} />
 
+                title = (<div>Mon</div>);
+            }
             if (hs.season.name.toLowerCase().indexOf('top') >=0 ) {
                 title = (<div>
-                    <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
-                    <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays
+                    <BallIcon type={'nine'} />
                 </div>);
             }
 
