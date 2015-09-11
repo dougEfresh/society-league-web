@@ -46,9 +46,9 @@ var SeasonMatchResultsOnDay = require('./content/season/SeasonMatchResultsOnDay.
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
 var UserApp  = require('./content/user/UserApp.jsx');
-var UserPasswordApp = require('./content/user/UserPasswordApp.jsx');
-var PayApp = require('./content/user/PayApp.jsx');
-var UserInfo= require('./content/user/UserInfo.jsx');
+//var UserPasswordApp = require('./content/user/UserPasswordApp.jsx');
+//var PayApp = require('./content/user/PayApp.jsx');
+//svar UserInfo= require('./content/user/UserInfo.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -84,9 +84,6 @@ var routes = (
             <Route name="home" path="home" handler={HomeApp}/>
             <Route name="account" path="account" handler={HomeApp}/>
             <Route name="user" path="user/:userId"  handler={UserApp}>
-                <Route name="info" path="info" handler={UserInfo} />
-                <Route name="password" path="password" handler={UserPasswordApp} />
-                <Route name="pay" path="pay" handler={PayApp} />
             </Route>
             <Route name="scout" path="scout/:statsId"  handler={StatApp}>
                 <Route name="stats" path="stats" handler={StatDisplay} />

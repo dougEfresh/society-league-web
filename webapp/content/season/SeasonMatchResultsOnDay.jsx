@@ -45,27 +45,36 @@ var MatchResultsOnDay = React.createClass({
 var EightBallMatchResultsOnDay = React.createClass({
     render: function() {
         var rows = [];
+        var homeWins = 0;
+        var awayWins = 0;
         this.props.results.forEach(function(r){
             rows.push(
                 <tr key={r.id}>
-                    <td>
+                    <td >
                         <UserLink user={r.teamMember} handicap={r.teamMemberHandicap} />
                     </td>
+                    <td>{r.win ? ++homeWins : homeWins}</td>
                     <td>{r.win ? 'W' : 'L'}</td>
-                    <td>
+                    <td >
                         <UserLink user={r.opponent} handicap={r.opponentHandicap}/>
                     </td>
+                    <td>{r.win ? awayWins : ++awayWins}</td>
             </tr>);
         }.bind(this));
+        var team = this.props.results[0].team;
+        var opTeam = this.props.results[0].opponentTeam;
+        var teamMatch = this.props.results[0].teamMatch;
         return (
         <div className="table-responsive">
             <h2>{'Match Results - ' + Util.formatDateTime(this.props.results[0].teamMatch.matchDate)}</h2>
-          <table className="table table-condensed table-stripped table-responsive" >
+            <table className="table table-condensed table-stripped table-responsive" >
               <thead>
               <tr>
-                  <th><TeamLink team={this.props.results[0].team} /></th>
+                  <th><TeamLink team={team} /></th>
+                  <th><span className="label label-success">{team.id == teamMatch.home.id ? teamMatch.homeRacks : teamMatch.awayRacks}</span></th>
                   <th>W/L</th>
-                  <th><TeamLink team={this.props.results[0].opponentTeam} /></th>
+                  <th><TeamLink team={opTeam} /></th>
+                  <th><span className="label label-danger">{opTeam.id == teamMatch.home.id ? teamMatch.homeRacks : teamMatch.awayRacks}</span></th>
               </tr>
               </thead>
               <tbody>
@@ -88,10 +97,8 @@ var NineBallMatchResultsOnDay = React.createClass({
                     </td>
                     <td>{r.win ? 'W' : 'L'}</td>
                     <td>{r.teamMemberRacks}</td>
-                    <td>
-                        <UserLink user={r.opponent} handicap={r.opponentHandicap}/>
-                    </td>
-                    <td>{r.opponentRacks}</td>
+                    <td><UserLink user={r.opponent} handicap={r.opponentHandicap}/></td>
+                    <td >{r.opponentRacks}</td>
             </tr>);
         }.bind(this));
         return (

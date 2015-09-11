@@ -26,9 +26,10 @@ var SeasonStandings = React.createClass({
         this.getData();
     },
     componentWillReceiveProps: function (o, n) {
-        var now = Date.now();
-        if (now - this.state.update > 1000 * 60)
-            this.getData();
+        //var now = Date.now();
+        //if (now - this.state.update > 1000 * 60)
+//            this.getData();
+         this.getData();
     },
     render: function() {
         if (this.state.seasonStats.length == 0)
