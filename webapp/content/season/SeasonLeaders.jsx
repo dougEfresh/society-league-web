@@ -4,7 +4,6 @@ var Router = require('react-router')
     , Link = Router.Link;
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var Stat =  require('../../lib/Stat');
 var UserLink = require('../../../webapp/jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../../webapp/jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');

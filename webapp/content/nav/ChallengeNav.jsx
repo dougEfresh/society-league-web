@@ -1,14 +1,10 @@
 var React = require('react/addons');
 var Router = require('react-router')
     , Link = Router.Link;
-
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var Season = require('../../lib/Season.js');
-var Team = require('../../lib/Team.js');
-var User = require('../../lib/User.js');
-var Status = require('../../lib/Status');
 
+/*
 var ChallengeNav = React.createClass({
     mixins: [UserContextMixin,Router.State],
     getInitialState: function () {
@@ -87,6 +83,7 @@ var ChallengeNav = React.createClass({
                      </li>
                  )
         }
+*/
 /*
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                    <ul className="dropdown-menu" role="menu">
@@ -103,9 +100,7 @@ var ChallengeNav = React.createClass({
                          {this.genLink(c,Status.REQUEST,'plus-sign','Request')}
                      </li>
                  </ul>
-                  */
 
-        /*
         return (
              <li id="challenge-nav" role="presentation" className={'dropdown ' + active}>
                  <Link to="challengeMain" >
@@ -119,8 +114,9 @@ var ChallengeNav = React.createClass({
                  </Link>
              </li>
         );
-        */
+
     }
 });
 
 module.exports = ChallengeNav;
+ */

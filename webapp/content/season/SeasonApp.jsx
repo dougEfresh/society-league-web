@@ -4,31 +4,31 @@ var Router = require('react-router')
     , Route = Router.Route
     , Link = Router.Link;
 
-var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
-var StatsMixin = require('../../jsx/mixins/StatsMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var SeasonApp = React.createClass({
     mixins: [SeasonMixin,UserContextMixin,Router.State,Router.Navigation],
     getInitialState: function () {
         return {
+            update: Date.now(),
             season: {}
         }
     },
     componentWillMount: function () {
-        //DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
-        //DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
-        Util.getData('/api/season/' + this.getParams().seasonId, function(d){
-            this.setState({season: d});
-        }.bind(this));
+        this.getData();
     },
     componentWillReceiveProps: function() {
+        var now = Date.now();
+        if (now - this.state.update > 1000*60)
+            this.getData();
+
+    },
+    getData: function() {
         Util.getData('/api/season/' + this.getParams().seasonId, function(d){
             this.setState({season: d});
         }.bind(this));

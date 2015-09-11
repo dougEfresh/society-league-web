@@ -1,3 +1,4 @@
+/*
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
@@ -60,8 +61,7 @@ var UpcomingChallenges = React.createClass({
         }
         if (matches.length == 0) {
             return null;
-            /*
-            return (
+                        return (
                 <div id={'upcoming-challenges'} className="panel panel-default">
                     <div className="panel-heading" >Upcoming Challenges</div>
                         <div className="panel-body" >
@@ -69,7 +69,7 @@ var UpcomingChallenges = React.createClass({
                         </div>
                 </div>
             )
-            */
+
         }
         return (
               <div id={'upcoming-challenges'} className="panel panel-default">
@@ -85,3 +85,4 @@ var UpcomingChallenges = React.createClass({
 });
 
 module.exports = UpcomingChallenges;
+ */

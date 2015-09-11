@@ -3,7 +3,6 @@ var Router = require('react-router');
 var Link = Router.Link;
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
-var login = require('../../lib/Login');
 
 var LoginApp = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],

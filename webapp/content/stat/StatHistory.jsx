@@ -32,7 +32,6 @@ var StatHistory = React.createClass({
         var now = Date.now();
         if ( now - this.state.update > 1000*60)
             this.getData();
-       this.getData();
     },
 
     render: function() {

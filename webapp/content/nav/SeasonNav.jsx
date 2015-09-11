@@ -3,27 +3,17 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Link = Router.Link;
 
-var DataStore = require('../../jsx/stores/DataStore.jsx');
+//var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var SeasonMixin = require('../../jsx/mixins/SeasonMixin.jsx');
-var DivisionConstants = require('../../jsx/constants/DivisionConstants.jsx');
-var BallIcon = require('../../jsx/components/BallIcon.jsx');
-var Season = require('../../lib/Season.js');
-var Division = require('../../lib/Division.js');
-var Team = require('../../lib/Team.js');
-var User = require('../../lib/User.js');
-var DivisionType = require('../../lib/DivisionType');
-var Status = require('../../lib/Status');
-var TeamMatch = require('../../lib/TeamMatch');
-var Result = require('../../lib/Result');
 
 var SeasonNav = React.createClass({
     mixins: [UserContextMixin,SeasonMixin,Router.State,Router.Navigation],
     componentWillMount: function () {
-        DataStore.addChangeListener(this._onChange);
+        //DataStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function () {
-        DataStore.removeChangeListener(this._onChange);
+        //DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function () {
         this.setState({user: this.getUser()});
@@ -40,25 +30,29 @@ var SeasonNav = React.createClass({
         user.handicapSeasons.forEach(function(hs) {
             var title = "unknown";
 
-            switch (hs.season.division) {
-                case DivisionConstants.NINE_BALL_TUESDAYS:
-                    title = (<div><BallIcon type={"nine"}/> Tuesdays </div>);
-                    break;
-                case DivisionConstants.EIGHT_BALL_WEDNESDAYS:
-                    title = (<div><BallIcon type={hs.division} /> Wednesdays</div>);
-                    break;
-                case DivisionConstants.EIGHT_BALL_THURSDAYS:
-                    title = (<div><BallIcon type={hs.division} /> Thursdays </div>);
-                    break;
-                case DivisionConstants.MIXED_MONDAYS:
-                    title = (<div>
-                        <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
-                        <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays
-                    </div>);
-                    break;
-                default:
-                    return;
+            if (hs.season.name.toLowerCase().indexOf('tues') >=0 ) {
+                title = (<div><BallIcon type={"nine"}/> Tue </div>);
             }
+            if (hs.season.name.toLowerCase().indexOf('weds') >=0 ) {
+                title = (<div><BallIcon type={hs.division} /> Wed</div>);
+            }
+            if (hs.season.name.toLowerCase().indexOf('thur') >=0 ) {
+                 title = (<div><BallIcon type={hs.division} /> Thur </div>);
+            }
+            if (hs.season.name.toLowerCase().indexOf('mix') >=0 ) {
+                title = (<div>
+                    <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
+                    <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays
+                </div>);
+            }
+
+            if (hs.season.name.toLowerCase().indexOf('top') >=0 ) {
+                title = (<div>
+                    <BallIcon type={DivisionType.EIGHT_BALL_CHALLENGE} />
+                    <BallIcon type={DivisionType.NINE_BALL_CHALLENGE} /> Mondays
+                </div>);
+            }
+
             seasons.push(
                 <div key={hs.season.id}>
                 <li id={'season-link-'+ hs.season.id} key={hs.season.id} role="presentation">

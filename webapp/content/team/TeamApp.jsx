@@ -27,10 +27,6 @@ var TeamApp = React.createClass({
     componentDidMount: function () {
          this.getData();
     },
-    onSelect: function (e) {
-        console.log(e.target.value);
-        this.setState({teamId: e.target.value});
-    },
     onChange: function (e) {
         e.preventDefault();
         if (this.isActive('teamStandings')) {
@@ -59,13 +55,6 @@ var TeamApp = React.createClass({
         if (now - this.state.update > 1000*60*2)
             this.getData();
     },
-    handleClick: function() {
-        this.transitionTo('teamChart',this.getParams());
-    },
-    showResults: function() {
-        this.transitionTo('teamResults',this.getParams());
-    },
-
     render: function () {
         var user = this.getUser();
         var teams = this.state.teams;

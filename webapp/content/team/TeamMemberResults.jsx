@@ -39,7 +39,6 @@ var TeamResults = React.createClass({
         this.getData();
     },
     render: function() {
-        var user = this.getUser();
         var rows = [];
         var teamId = this.getParams().teamId;
         var results = this.state.results.sort(function(a,b) {

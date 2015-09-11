@@ -4,7 +4,6 @@ var Router = require('react-router')
     , Link = Router.Link;
 
 var DataStore= require('../../jsx/stores/DataStore.jsx');
-var ChallengeStatus = require('../../jsx/constants/ChallengeStatus.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamNav = require('./TeamNav.jsx');
 var AdminNav = require('./AdminNav.jsx');
@@ -12,11 +11,6 @@ var SeasonNav = require('./SeasonNav.jsx');
 var HomeNav = require('./HomeNav.jsx');
 var ScoutNav = require('./ScoutNav.jsx');
 var ChallengeNav = require('./ChallengeNav.jsx');
-var Season = require('../../lib/Season.js');
-var Team = require('../../lib/Team.js');
-var User = require('../../lib/User.js');
-var Status = require('../../lib/Status');
-var Result = require('../../lib/Result');
 var HomeApp = require('../home/HomeApp.jsx');
 
 var LeagueNav = React.createClass({

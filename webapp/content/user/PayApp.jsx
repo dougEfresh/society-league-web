@@ -1,4 +1,7 @@
+
+/*
 var React = require('react/addons');
+
 var Router = require('react-router')
     , State = Router.State
     , Navigation = Router.Navigation
@@ -79,3 +82,4 @@ var UserApp = React.createClass({
 
 module.exports = UserApp;
 
+ */

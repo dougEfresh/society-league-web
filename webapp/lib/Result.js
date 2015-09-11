@@ -40,7 +40,7 @@ Result.formatHandicap = function(hc) {
             return '9';
         case 'OPEN':
             return 'O';
-        case 'PRO':
+        case 'PRO':t
             return 'P';
         default:
             return hc;

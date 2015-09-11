@@ -1,3 +1,4 @@
+/*
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 
@@ -7,7 +8,6 @@ var Pie = require("react-chartjs").Pie;
 var Bar = require("react-chartjs").Bar;
 
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
-var ChallengeConstants = require('../../jsx/constants/ChallengeConstants.jsx');
 
 var StatsBar = React.createClass({
      propTypes: {
@@ -95,6 +95,6 @@ var StatsBar = React.createClass({
     }
 
 });
-
+*/
 
 module.exports = StatsBar;

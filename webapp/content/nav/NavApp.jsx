@@ -5,7 +5,6 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var LeagueNav = require('./LeagueNav.jsx');
 var LoginApp = require('../login/LoginApp.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
-var DataActions= require('../../jsx/actions/DataActions.jsx');
 var LoadingApp  = require('../../jsx/components/LoadingApp.jsx');
 
 var NavApp = React.createClass({
@@ -38,7 +37,8 @@ var NavApp = React.createClass({
             }
             return;
         }
-        DataActions.init();
+        DataStore.init();
+        //DataActions.init();
     },
     _onChange: function(){
         console.log('NavApp change: ' + this.getUserId() + ' Loading ' + DataStore.isLoading() + ' Authenticated: ' + DataStore.isAuthenticated());

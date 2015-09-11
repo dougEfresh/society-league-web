@@ -2,7 +2,6 @@ var React = require('react/addons');
 var Router = require('react-router');
 var UserContextMixin = require('./../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../jsx/stores/DataStore.jsx');
-var User = require('../lib/User');
 
 var RegisterApp = React.createClass({
     mixins: [UserContextMixin,Router.State,Router.Navigation],
