@@ -1,4 +1,4 @@
-var React = require('react/addons');
+ var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var Router = require('react-router')
     ,RouteHandler = Router.RouteHandler;

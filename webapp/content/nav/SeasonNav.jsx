@@ -66,9 +66,9 @@ var SeasonNav = React.createClass({
             return null;
         }
         var clName = "dropdown";
-        if (this.isActive('season')) {
-            clName = clName + " active";
-        }
+        //if (this.isActive('season')) {
+//            clName = clName + " active";
+  //      }
         return (
              <li id="season-nav" role="presentation" className={clName} >
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">

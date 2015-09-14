@@ -1,10 +1,9 @@
 var React = require('react/addons');
-var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler
-    , Route = Router.Route
-    , NotFoundRoute = Router.NotFoundRoute
-    , Link = Router.Link
-    , DefaultRoute = Router.DefaultRoute;
+var ReactRouter = require('react-router')
+    , Router = ReactRouter.Router
+    , Route = ReactRouter.Route
+    , Link = ReactRouter.Link
+    , IndexRoute = ReactRouter.IndexRoute;
 
 var Status = require('./lib/Status');
 //var ChallengeRequestApp = require('./content/challenge/request/ChallengeRequestApp.jsx');
@@ -20,7 +19,7 @@ var Status = require('./lib/Status');
 //var ChallengeAdminResults= require('./content/admin/ChallengeAdminResults.jsx');
 //var ChallengeCancelApp= require('./content/challenge/cancel/CancelApp.jsx');
 
-//var AdminApp = require('./content/admin/AdminApp.jsx');
+var UserAdminApp = require('./content/admin/UserAdmin.jsx');
 //var CreateUser = require('./content/admin/CreateUser.jsx');
 //var CreateUserSuccess = require('./content/admin/CreateUserSuccess.jsx');
 
@@ -47,14 +46,16 @@ var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
 var UserApp  = require('./content/user/UserApp.jsx');
 //var UserPasswordApp = require('./content/user/UserPasswordApp.jsx');
-//var PayApp = require('./content/user/PayApp.jsx');
+//var PayApp = requiradme('./content/user/PayApp.jsx');
 //svar UserInfo= require('./content/user/UserInfo.jsx');
+
+
 
 var App = React.createClass({
     render: function () {
         return (
             <div>
-                <RouteHandler/>
+                {this.props.children}
                 <div id='page-ready'></div>
             </div>
         );
@@ -62,71 +63,65 @@ var App = React.createClass({
 });
 
 var RouteNotFound = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
-    },
     render: function(){
-        return (<div><h1><Link to="challenge" params={{userId: 1000}} >Not Found</Link></h1></div>);
+        return (<div><h1>Not Found</h1></div>);
     }
 });
-
+//<Route path="*" component={RouteNotFound}/>
 var routes = (
-    <Route handler={App}>
-        <NotFoundRoute handler={RouteNotFound}/>
-        <DefaultRoute name="default" handler={NavApp} />
-        <Route name="login" path="login" handler={LoginApp} />
-        <Route name="reset" path="reset" handler={ResetApp} />
-        <Route name="register" path="register" handler={RegisterApp} />
-        <Route name="error" path="error" handler={ErrorApp} />
-        <Route name="logout" path="logout" handler={LogoutApp} />
-        <Route name="nav" path="/app" handler={NavApp}>
-            <Route name="loading" path="loading" handler={LoadingApp} />
-            <Route name="home" path="home" handler={HomeApp}/>
-            <Route name="account" path="account" handler={HomeApp}/>
-            <Route name="user" path="user/:userId"  handler={UserApp}>
+    <Route path="/" component={App}>
+        <IndexRoute component={NavApp} />
+        <Route  path="login" component={LoginApp} />
+        <Route  path="reset" component={ResetApp} />
+        <Route  path="register" component={RegisterApp} />
+        <Route  path="error" component={ErrorApp} />
+        <Route  path="logout" component={LogoutApp} />
+        <Route  path="app" component={NavApp}>
+            <Route path="loading" component={LoadingApp} />
+            <Route path="home" component={HomeApp}/>
+            <Route path="account" component={HomeApp}/>
+            <Route path="user"  component={UserApp}/>
+            <Route path="admin" component={UserAdminApp} >
+                <Route path="users" component={UserAdminApp} />
             </Route>
-            <Route name="scout" path="scout/:statsId"  handler={StatApp}>
-                <Route name="stats" path="stats" handler={StatDisplay} />
-                <Route name="history" path="history" handler={StatHistory} />
+            <Route path="scout/:statsId"  component={StatApp}>
+                <Route path="stats" component={StatDisplay} />
+                <Route path="history" component={StatHistory} />
             </Route>
-            <Route name="team" path="team/:teamId" handler={TeamApp} >
-                <Route name="teamStandings" path="standings"  handler={TeamStandings} />
-                <Route name="teamChart" path="chart"  handler={TeamChart} />
-                <Route name="teamMemberResults" path="members"  handler={TeamMemberResultsApp} />
+            <Route  path="team/:teamId" component={TeamApp} >
+                <Route path="standings"  component={TeamStandings} />
+                <Route path="chart"  component={TeamChart} />
+                <Route path="members"  component={TeamMemberResultsApp} />
             </Route>
-            <Route name="season" path="season/:seasonId"  handler={SeasonApp} >
-                <Route name="seasonLeaders" path="leaders"  handler={SeasonLeaders} />
-                <Route name="seasonStandings" path="standings"  handler={SeasonStandings} />
-                <Route name="seasonResults" path="results"  handler={SeasonWeeklyResults} />
-                <Route name="seasonMatchResultsOnDay" path="teamresults/:matchId" handler={SeasonMatchResultsOnDay} />
+            <Route path="season/:seasonId"  component={SeasonApp} >
+                <Route path="leaders"  component={SeasonLeaders} />
+                <Route path="standings"  component={SeasonStandings} />
+                <Route path="results"  component={SeasonWeeklyResults} />
+                <Route path="teamresults/:matchId" component={SeasonMatchResultsOnDay} />
             </Route>
-
         </Route>
     </Route>
 );
 
-Router.run(routes, function (Handler) {
-    React.render(<Handler/>, document.getElementById('content'));
-});
-
+React.render((<Router>{routes}</Router>), document.getElementById('content'));
 /*
- <Route name="admin" path="admin" handler={AdminApp} >
- <Route name="createUser" path="create/user" handler={CreateUser} />
- <Route name="createUserSuccess" path="create/user/status" handler={CreateUserSuccess} />
- <Route name="challenges" path="challenges" handler={ChallengesApp} />
- <Route name="challengeUsers" path="challenges/user" handler={ChallengesUsers} />
- <Route name="challengeAdminResults" path="challenges/admin/results" handler={ChallengeAdminResults} />
+
+ <Route name="createUser" path="create/user" component={CreateUser} />
+ <Route name="createUserSuccess" path="create/user/status" component={CreateUserSuccess} />
+ <Route name="challenges" path="challenges" component={ChallengesApp} />
+ <Route name="challengeUsers" path="challenges/user" component={ChallengesUsers} />
+ <Route name="challengeAdminResults" path="challenges/admin/results" component={ChallengeAdminResults} />
  </Route>
 
 
- <Route name="challenge" path="challenge" handler={ChallengeApp} >
- <Route name="challengeMain" path="main"  handler={ChallengeMain} />
- <Route name="challengeSignUp" path="signup"  handler={ChallengeSignUp} />
- <Route name="challengeConfirm" path="confirm"  handler={ChallengeConfirmApp} />
- <Route name='challengeCancel' path="cancel"  handler={ChallengeCancelApp} />
- <Route name={Status.REQUEST.toLowerCase()} path={Status.REQUEST.toLowerCase()} handler={ChallengeRequestApp}/>
- <Route name={Status.PENDING.toLowerCase()} path={Status.PENDING.toLowerCase()} handler={ChallengePendingApp}/>
- <Route name={Status.ACCEPTED.toLowerCase()} path={Status.ACCEPTED.toLowerCase()} handler={ChallengeAcceptedApp}/>
- <Route name={Status.SENT.toLowerCase()} path={Status.SENT.toLowerCase()} handler={ChallengeSentApp}/>
+ <Route name="challenge" path="challenge" component={ChallengeApp} >
+ <Route name="challengeMain" path="main"  component={ChallengeMain} />
+ <Route name="challengeSignUp" path="signup"  component={ChallengeSignUp} />
+ <Route name="challengeConfirm" path="confirm"  component={ChallengeConfirmApp} />
+ <Route name='challengeCancel' path="cancel"  component={ChallengeCancelApp} />
+ <Route name={Status.REQUEST.toLowerCase()} path={Status.REQUEST.toLowerCase()} component={ChallengeRequestApp}/>
+ <Route name={Status.PENDING.toLowerCase()} path={Status.PENDING.toLowerCase()} component={ChallengePendingApp}/>
+ <Route name={Status.ACCEPTED.toLowerCase()} path={Status.ACCEPTED.toLowerCase()} component={ChallengeAcceptedApp}/>
+ <Route name={Status.SENT.toLowerCase()} path={Status.SENT.toLowerCase()} component={ChallengeSentApp}/>
  </Route>
  */

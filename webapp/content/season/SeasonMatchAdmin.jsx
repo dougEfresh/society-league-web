@@ -15,13 +15,17 @@ var SeasonAdmin = React.createClass({
     mixins: [UserContextMixin, Router.State, Router.Navigation],
     getInitialState: function () {
         return {
-            results: []
+            results: [],
+            teamMatch: {}
         };
     },
     getData: function () {
         Util.getData('/api/playerresult/get/teamMatch/' + this.getParams().matchId, function (d) {
             this.setState({results: d});
         }.bind(this));
+          Util.getData('/api/teammatch/' + this.getParams().matchId, function (d) {
+            this.setState({results: d});
+        }.bind(this));h
     },
     componentDidMount: function () {
         this.getData();

@@ -1,14 +1,19 @@
 var React = require('react/addons');
-var Router = require('react-router')
-    ,RouteHandler = Router.RouteHandler;
+var ReactRouter = require('react-router');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-var LeagueNav = require('./LeagueNav.jsx');
 var LoginApp = require('../login/LoginApp.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var LoadingApp  = require('../../jsx/components/LoadingApp.jsx');
+var TeamNav = require('./TeamNav.jsx');
+var AdminNav = require('./AdminNav.jsx');
+var SeasonNav = require('./SeasonNav.jsx');
+var HomeNav = require('./HomeNav.jsx');
+var StatNav = require('./StatNav.jsx');
+//var ChallengeNav = require('./ChallengeNav.jsx'); <ChallengeNav />
+var HomeApp = require('../home/HomeApp.jsx');
 
 var NavApp = React.createClass({
-    mixins: [UserContextMixin,Router.Navigation,Router.State],
+    mixins: [UserContextMixin],
     getInitialState: function() {
          return {
              loading: false,
@@ -31,14 +36,7 @@ var NavApp = React.createClass({
         if (DataStore.isLoading()) {
             return;
         }
-        if (DataStore.isLoaded() && DataStore.isAuthenticated()) {
-            if (this.isActive('default')) {
-                this.transitionTo('home');
-            }
-            return;
-        }
         DataStore.init();
-        //DataActions.init();
     },
     _onChange: function(){
         console.log('NavApp change: ' + this.getUser().id + ' Loading ' + DataStore.isLoading() + ' Authenticated: ' + DataStore.isAuthenticated());
@@ -54,7 +52,7 @@ var NavApp = React.createClass({
         if (!DataStore.isAuthenticated()) {
             console.log("LoginApp");
             return (
-                <LoginApp />
+                <LoginApp query={this.props.location.query} />
             )
         }
         if (DataStore.isLoading()) {
@@ -64,10 +62,37 @@ var NavApp = React.createClass({
                 </div>
             );
         }
+        var home = null;
+        //if (this.context.location.pathname == '/') {
+          //  home = (<HomeApp />);
+        //}
 
         return (
             <div>
-                <LeagueNav  />
+                  <div className="container outerWrapper"  >
+                <div className="account-wrapper">
+                    <div className="leagueNavGrid" >
+                        <div className="row">
+                            <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
+                                <ul className="nav nav-tabs">
+                                    <HomeNav />
+                                    <TeamNav />
+                                    <SeasonNav />
+                                    <StatNav />
+                                    <AdminNav />
+                                </ul>
+                            </div>
+                             <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
+                                <div className="container user-content">
+                                    {home}
+                                    {this.props.children}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style={{display: 'none'}} >{this.props.location.pathname}</div>
+            </div>
                 <div id='app-ready' ></div>
                 <div id={this.getUser().id} ></div>
             </div>

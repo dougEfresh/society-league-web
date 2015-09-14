@@ -1,6 +1,5 @@
 var React = require('react/addons');
 var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler
     , Link = Router.Link;
 
 var DataStore= require('../../jsx/stores/DataStore.jsx');
@@ -14,7 +13,10 @@ var StatNav = require('./StatNav.jsx');
 var HomeApp = require('../home/HomeApp.jsx');
 
 var LeagueNav = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin],
+    contextTypes: {
+        location: React.PropTypes.object
+    },
     getInitialState: function() {
         return {
             user: this.getUser()
@@ -38,7 +40,7 @@ var LeagueNav = React.createClass({
             return null
         }
         var home = null;
-        if (this.isActive('default')) {
+        if (this.context.location.pathname == '/') {
             home = (<HomeApp />);
         }
 
@@ -56,17 +58,16 @@ var LeagueNav = React.createClass({
                                     <AdminNav />
                                 </ul>
                             </div>
-
                              <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
                                 <div className="container user-content">
                                     {home}
-                                    <RouteHandler />
+                                    {this.props.children}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div style={{display: 'none'}} >{this.getPath()}</div>
+                <div style={{display: 'none'}} >{this.context.location.pathname}</div>
             </div>
         );
     }

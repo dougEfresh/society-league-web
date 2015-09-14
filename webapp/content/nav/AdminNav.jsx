@@ -8,11 +8,11 @@ var AdminNav = React.createClass({
     render: function() {
         var active = null;
         var user = this.getUser();
-        if (this.isActive('admin')) {
-            active="active";
-        }
+        //if (this.isActive('admin')) {
+          //  active="active";
+        //}
         if (!user.admin) {
-            return null;
+            console.log('warning user is not admin')
         }
         return (
             <li id="admin-nav" role="presentation" className={'dropdown ' + active}>
@@ -23,23 +23,8 @@ var AdminNav = React.createClass({
                </a>
                 <ul className="dropdown-menu" role="menu">
                     <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='challengeAdminResults' >
-                            Enter Results
-                        </Link>
-                    </li>
-                    <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='createUser' params={{userId: this.getUserId()}} >
-                            <span className="fa fa-user"></span>Create User
-                        </Link>
-                    </li>
-                    <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='challenges'>
-                            <span className="fa fa-trophy"></span>Challenges
-                        </Link>
-                    </li>
-                    <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='challengeUsers' >
-                            <span className="fa fa-users"></span>Challenge Users
+                        <Link className='navName' to='/app/admin/users'>
+                            <span className="fa fa-user"></span>Users
                         </Link>
                     </li>
                 </ul>

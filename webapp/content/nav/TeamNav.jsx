@@ -7,7 +7,10 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var TeamNav = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin],
+    contextTypes: {
+        location: React.PropTypes.object
+    },
     getInitialState: function () {
         return {
             update: Date.now(),
@@ -42,7 +45,7 @@ var TeamNav = React.createClass({
             );
         }.bind(this));
         var clName = "dropdown";
-        if (this.getPath().indexOf('/team/') >= 0) {
+        if (this.context.location.pathname.indexOf('app/team/') >= 0) {
             clName =  clName + " active";
         }
         return (

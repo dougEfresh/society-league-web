@@ -4,11 +4,13 @@ var Router = require('react-router')
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 
 var HomeNav = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
-
+    mixins: [UserContextMixin],
+    contextTypes: {
+        location: React.PropTypes.object
+    },
     render: function() {
         var active=null;
-        if (this.isActive('home') || this.isActive('default') | this.isActive('user')) {
+        if (this.context.location.pathname.indexOf('app/home') >= 0) {
             active="active";
         }
 

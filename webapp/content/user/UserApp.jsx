@@ -5,12 +5,36 @@ var Router = require('react-router')
     , Link = Router.Link
     , RouteHandler = Router.RouteHandler;
 
-var DataStore= require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
+var Util = require('../../jsx/util.jsx');
 
 var UserApp = React.createClass({
     mixins: [UserContextMixin, State, Navigation],
+    getInitialState: function() {
+        return {
+            update: Date.now(),
+            user: {id: "0"}
+        }
+    },
+    getData: function() {
+        Util.getData('/api/user/' + this.getUser().id , function(d){
+            this.setState({stats: d});
+        }.bind(this));
+    },
+    componentDidMount: function () {
+        this.getData();
+    },
+    componentWillReceiveProps: function (o, n) {
+        var now = Date.now();
+        if ( now - this.state.update > 1000*60)
+            this.getData();
+        this.getData();
+    },
+
     render: function() {
+        if (this.state.user.id == "0") {
+            return null;
+        }
         var header = (
         <div className="btn-group">
             <button className={this.isActive('info') ? 'btn btn-default' : 'btn btn-default'} responsize>
@@ -26,7 +50,7 @@ var UserApp = React.createClass({
                     {header}
                 </div>
                 <div className="panel-body">
-                    <RouteHandler />
+                    {this.props.children}
                 </div>
             </div>
         );

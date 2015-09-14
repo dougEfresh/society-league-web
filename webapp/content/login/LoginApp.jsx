@@ -1,14 +1,11 @@
 var React = require('react/addons');
-var Router = require('react-router');
-var Link = Router.Link;
+var ReactRouter = require('react-router');
+var Link = ReactRouter.Link;
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 
 var LoginApp = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
-    contextTypes: {
-        router: React.PropTypes.func
-    },
+    mixins: [UserContextMixin],
     getInitialState: function () {
         return {
             error: false,
@@ -47,11 +44,11 @@ var LoginApp = React.createClass({
         DataStore.setLoading(false);
         DataStore.resetAuth();
         var errorMsg = null;
-        if (this.getQuery().error == 'true') {
+        if (this.props.query.error == 'true') {
             errorMsg = <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>;
         }
 
-        if (this.getQuery().expired == 'true') {
+        if (this.props.query.expired == 'true') {
             errorMsg = <div className="form-group alert alert-danger" role="alert">Session Expired. Please login again.</div>;
         }
         return (

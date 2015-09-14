@@ -1,10 +1,9 @@
 var React = require('react/addons');
-var DivisionTypes = require('../constants/DivisionConstants.jsx');
 
 var BallIcon = React.createClass({
     getDefaultProps: function(){
         return {
-            type: DivisionTypes.EIGHT_BALL_WEDNESDAYS
+            type: "eight"
         }
     },
     getEight: function() {
