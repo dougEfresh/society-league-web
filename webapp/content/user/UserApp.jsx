@@ -1,15 +1,12 @@
 var React = require('react/addons');
 var Router = require('react-router')
-    , State = Router.State
-    , Navigation = Router.Navigation
     , Link = Router.Link
-    , RouteHandler = Router.RouteHandler;
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var UserApp = React.createClass({
-    mixins: [UserContextMixin, State, Navigation],
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {
             update: Date.now(),

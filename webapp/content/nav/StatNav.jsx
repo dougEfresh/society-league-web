@@ -5,12 +5,15 @@ var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 
 var StatNav = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin],
+    contextTypes: {
+        location: React.PropTypes.object
+    },
     render: function() {
         var active = "";
-        //if (this.isActive('stat') || this.isActive('stats')) {
-          //  active = "active";
-        //}
+        if (this.context.location.pathname.indexOf("stat") >=0) {
+            active = "active";
+        }
         return (
             <li id="stat-nav" className={"main-item dropdown " + active} >
                 <Link className='scoutNav' to='stats' params={{statsId: this.getUser().id}}>

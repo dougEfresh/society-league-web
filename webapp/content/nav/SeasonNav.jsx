@@ -1,14 +1,17 @@
 var React = require('react/addons');
 var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler
     , Link = Router.Link;
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var BallIcon = require('../../jsx/components/BallIcon.jsx');
 
 var SeasonNav = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
-    componentWillMount: function () {
+    mixins: [UserContextMixin],
+    contextTypes: {
+        location: React.PropTypes.object
+    },
+    componentWillMount: function ()
+    {
     },
     componentWillUnmount: function () {
     },
@@ -42,7 +45,6 @@ var SeasonNav = React.createClass({
             if (hs.season.name.toLowerCase().indexOf('mix') >=0 ) {
 //                <BallIcon type={'eight'} />
 ///                <BallIcon type={'nine'} />
-
                 title = (<div>Mon</div>);
             }
             if (hs.season.name.toLowerCase().indexOf('top') >=0 ) {
@@ -66,9 +68,9 @@ var SeasonNav = React.createClass({
             return null;
         }
         var clName = "dropdown";
-        //if (this.isActive('season')) {
-//            clName = clName + " active";
-  //      }
+        if (this.context.location.pathname.indexOf('season')>=0) {
+            clName = clName + " active";
+        }
         return (
              <li id="season-nav" role="presentation" className={clName} >
                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">

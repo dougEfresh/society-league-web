@@ -1,15 +1,14 @@
 var React = require('react/addons');
 var ReactPropTypes = React.PropTypes;
 var Router = require('react-router')
-    ,State = Router.State
     ,Link = Router.Link
-    ,RouteHandler = Router.RouteHandler;
+    , History = Router.History;
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var StatApp = React.createClass({
-    mixins: [UserContextMixin,State,Router.Navigation],
+    mixins: [UserContextMixin,History],
     getInitialState: function() {
         return {
             update: Date.now(),
@@ -19,7 +18,7 @@ var StatApp = React.createClass({
     getData: function() {
         Util.getData('/api/user/season/user/' + this.getUser().id, function(d){
             this.setState({users: d});
-        }.bind(this));
+        }.bind(this),null,'StatApp');
     },
     componentDidMount: function () {
         this.getData();

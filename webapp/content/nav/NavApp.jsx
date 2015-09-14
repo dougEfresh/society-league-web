@@ -63,9 +63,9 @@ var NavApp = React.createClass({
             );
         }
         var home = null;
-        //if (this.context.location.pathname == '/') {
-          //  home = (<HomeApp />);
-        //}
+        if (this.props.location.pathname == '/') {
+            home = (<HomeApp />);
+        }
 
         return (
             <div>

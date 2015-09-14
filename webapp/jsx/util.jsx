@@ -25,8 +25,9 @@ function getChallengeDates() {
     return dates;
 }
 
-function getData(url, callback, unauthCallback) {
-        console.log("Getting data from " + url);
+function getData(url, callback, unauthCallback, module) {
+    //console.log('Someone is getting data ' + arguments.callee.caller.toString());
+        console.log("["+ module + "] Getting data from " + url);
         $.ajax({
             url: url,
             dataType: 'json',

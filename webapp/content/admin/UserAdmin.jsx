@@ -40,16 +40,18 @@ var UserAdminApp = React.createClass({
     getData: function() {
         Util.getData('/api/user/all', function(d){
             this.setState({users: d});
-        }.bind(this));
+        }.bind(this),null,'UserAdminApp');
         Util.getData('/api/season', function(d){
             this.setState({seasons: d});
-        }.bind(this));
+        }.bind(this),null,'UserAdminApp');
           Util.getData('/api/season/handicaps', function(d){
             this.setState({handicaps: d});
-        }.bind(this));
+        }.bind(this),null,'UserAdminApp');
     },
     componentWillReceiveProps: function (o, n) {
-        this.getData();
+        var now = Date.now();
+        if (now - this.state.update > 1000*60)
+            this.getData();
     },
     render: function () {
         var users = this.state.users;

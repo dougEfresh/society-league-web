@@ -1,9 +1,7 @@
 var React = require('react/addons');
 var Router = require('react-router')
-    , State = Router.State
-    , Navigation = Router.Navigation
     , Link = Router.Link
-    , RouteHandler = Router.RouteHandler;
+    , History = Router.History
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamStandings = require('./TeamStandings.jsx');
@@ -12,7 +10,7 @@ var Util = require('../../jsx/util.jsx');
 var firstBy = require('../../lib/FirstBy.js');
 
 var TeamApp = React.createClass({
-    mixins: [UserContextMixin, State, Navigation],
+    mixins: [UserContextMixin,History],
      getInitialState: function() {
          return {
              update: Date.now(),
@@ -48,7 +46,8 @@ var TeamApp = React.createClass({
     getData: function() {
         Util.getData('/api/team/get/user/' + this.getUser().id, function(d){
             this.setState({teams: d});
-        }.bind(this));
+        }.bind(this), null, 'TeamApp'
+        );
     },
     componentWillReceiveProps: function (o, n) {
         var now = Date.now();

@@ -27,7 +27,8 @@ var TeamNav = React.createClass({
     getData: function() {
         Util.getData('/api/team/get/' + this.getUser().id + '/current', function(d){
             this.setState({data: d});
-        }.bind(this));
+        }.bind(this), null, 'TeamNav'
+        );
     },
     componentWillReceiveProps: function(nextProps) {
         var now = Date.now();

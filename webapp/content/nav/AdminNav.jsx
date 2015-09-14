@@ -4,13 +4,16 @@ var Router = require('react-router')
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 
 var AdminNav = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin],
+    contextTypes: {
+        location: React.PropTypes.object
+    },
     render: function() {
         var active = null;
         var user = this.getUser();
-        //if (this.isActive('admin')) {
-          //  active="active";
-        //}
+        if (this.context.location.pathname.indexOf('admin') >=0) {
+            active="active";
+        }
         if (!user.admin) {
             console.log('warning user is not admin')
         }

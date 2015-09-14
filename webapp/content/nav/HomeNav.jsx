@@ -13,7 +13,6 @@ var HomeNav = React.createClass({
         if (this.context.location.pathname.indexOf('app/home') >= 0) {
             active="active";
         }
-
         return (
             <li id="home-nav" role="presentation" className={'dropdown ' + active}>
                <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
@@ -23,7 +22,7 @@ var HomeNav = React.createClass({
                </a>
                 <ul className="dropdown-menu" role="menu">
                     <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='home'>
+                        <Link className='navName' to='/app/home'>
                             <span className="glyphicon glyphicon-home"></span>Home
                         </Link>
                     </li>

@@ -20,8 +20,8 @@ var HomeApp = React.createClass({
     },
     getData: function() {
         Util.getData('/api/stat/user/' + this.getUser().id , function(d){
-            this.setState({stats: d});
-        }.bind(this));
+            this.setState({stats: d})
+        }.bind(this), null, 'HomeApp');
     },
     componentDidMount: function () {
         this.getData();

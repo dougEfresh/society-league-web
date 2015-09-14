@@ -19,10 +19,10 @@ var RecentMatches = React.createClass({
     componentDidMount: function() {
         Util.getData('/api/playerresult/get/user/' + this.getUser().id + '/current', function(d){
             this.setState({data: d});
-        }.bind(this));
+        }.bind(this),null,'RecentMatches');
          Util.getData('/api/stat/user/' + this.getUser().id , function(d){
             this.setState({stats: d});
-        }.bind(this));
+        }.bind(this),null,'RecentMatches');
     },
     render: function() {
         if (this.state.data.length == 0) {

@@ -19,7 +19,7 @@ var UpcomingMatches = React.createClass({
     componentDidMount: function() {
         Util.getData('/api/teammatch/get/user/' + this.getUser().id + '/current', function(d){
             this.setState({data: d});
-        }.bind(this));
+        }.bind(this), null, 'UpComingMatches');
     },
     render: function() {
         var user = this.getUser();
