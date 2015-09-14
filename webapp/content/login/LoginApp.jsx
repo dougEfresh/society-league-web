@@ -70,13 +70,8 @@ var LoginApp = React.createClass({
                                 <button onKeyDown={this.handleSubmit} id="submit" type="button"   onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive">
                                     <b>Login</b>
                                 </button>
-                                <Link to='register'  >
-                                <button type="button" className="btn btn-sm btn-default btn-responsive">
-                                        <b>Register</b>
-                                </button>
-                                </Link>
+
                             </div>
-                            
                             <div className="col-lg-6 col-md-5 col-sm-12 col-xs-12">
                                 <Link to='reset'>
                                     <button type="button" className="btn btn-sm btn-default btn-responsive pull-right">
@@ -87,6 +82,15 @@ var LoginApp = React.createClass({
                         </div>
                 </form>
             </div>
+        /**
+         *
+         <Link to='register'  >
+         <button type="button" className="btn btn-sm btn-default btn-responsive">
+         <b>Register</b>
+         </button>
+         </Link>
+
+         */
         );
     }
 });
