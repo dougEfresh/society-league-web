@@ -27,7 +27,7 @@ var NavApp = require('./content/nav/NavApp.jsx');
 var ResetApp = require('./jsx/../content/ResetApp.jsx');
 var RegisterApp = require('./jsx/../content/RegisterApp.jsx');
 var LoginApp = require('./jsx/../content/login/LoginApp.jsx');
-var LogoutApp = require('./jsx/components/LogoutApp.jsx');
+var LogoutApp = require('./content/LogoutApp.jsx');
 var ErrorApp = require('./jsx/components/ErrorApp.jsx');
 
 var StatApp = require('./content/stat/StatApp.jsx');

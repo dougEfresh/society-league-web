@@ -29,7 +29,7 @@ var SeasonApp = React.createClass({
 
     },
     getData: function() {
-        Util.getData('/api/season/' + this.getParams().seasonId, function(d){
+        Util.getData('/api/season/' + this.props.params.seasonId, function(d){
             this.setState({season: d});
         }.bind(this), null, 'SeasonApp');
     },
@@ -43,22 +43,22 @@ var SeasonApp = React.createClass({
                 <div className="btn-group bot-margin">
                     <div id={display == 'none' ? 'season-standings-link-hidden' : 'season-standings-link'}
                          style={{display:display}}>
-                        <Link to='seasonStandings' params={this.getParams()}>
-                            <button className={this.isActive('seasonStandings') ? 'btn btn-success' : 'btn btn-default'}>
+                        <Link to={'/app/season/' + this.props.params.seasonId + '/standings' }>
+                            <button className={this.props.location.pathname.indexOf('standings') > 0 ? 'btn btn-success' : 'btn btn-default'}>
                             <span className="fa fa-trophy"></span><span className="main-item">Standings</span>
 
                     </button>
                         </Link>
                     </div>
-                    <Link to='seasonLeaders' params={this.getParams()}>
-                    <button className={this.isActive('seasonLeaders') ? 'btn btn-success' : 'btn btn-default'} >
+                    <Link to={'/app/season/' + this.props.params.seasonId + '/leaders' }>
 
+                    <button className={this.props.location.pathname.indexOf('leaders') >0 ? 'btn btn-success' : 'btn btn-default'} >
                             <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
-
                     </button>
                     </Link>
-                    <Link to='seasonResults' params={this.getParams()}>
-                    <button className={this.isActive('seasonResults') ? 'btn btn-success' : 'btn btn-default'} >
+                    <Link to={'/app/season/' + this.props.params.seasonId+ '/results' }>
+
+                    <button className={this.props.location.pathname.indexOf('results') > 0 ? 'btn btn-success' : 'btn btn-default'} >
                             <span className="fa  fa-history"></span><span className="main-item">Matches</span>
                     </button>
                     </Link>
@@ -71,7 +71,7 @@ var SeasonApp = React.createClass({
                         {header}
                     </div>
                     <div className="panel-body">
-                        <RouteHandler />
+                        {this.props.children}
                     </div>
             </div>
         );

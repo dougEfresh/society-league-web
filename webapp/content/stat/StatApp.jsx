@@ -55,18 +55,18 @@ var StatApp = React.createClass({
                     <div className="col-lg-6 col-md-6 col-xs-12 no-pad">
                         <select ref='user' onChange={this.changeUser}
                                 className="form-control"
-                                value={this.getParams().statsId}
+                                value={this.props.params.statsId}
                                 type={'select'}>
                             {options}
                         </select>
                     </div>
                     <div className="btn-group col-lg-6 col-md-6 col-xs-12 stats-btn">
-                        <Link to='stats' params={this.getParams()}>
+                        <Link to='stats' params={this.props.params}>
                             <button className={this.isActive('stats') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
                                 <span className="fa fa-bar-chart"></span>Stats
                             </button>
                         </Link>
-                        <Link to='history' params={this.getParams()}>
+                        <Link to='history' params={this.props.params}>
                             <button className={this.isActive('history') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
                                 <span className="fa fa-history"></span>History
                             </button>

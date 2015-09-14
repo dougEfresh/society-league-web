@@ -16,11 +16,11 @@ var TeamChart = React.createClass({
         }
     },
     getData: function() {
-        Util.getData('/api/stat/team/' + this.getParams().teamId, function(d){
+        Util.getData('/api/stat/team/' + this.props.params.teamId, function(d){
             this.setState({statTeam: d});
         }.bind(this));
 
-        Util.getData('/api/stat/team/' + this.getParams().teamId + '/members', function(d){
+        Util.getData('/api/stat/team/' + this.props.params.teamId + '/members', function(d){
             this.setState({statTeamMembers: d});
         }.bind(this));
     },
@@ -28,7 +28,7 @@ var TeamChart = React.createClass({
         this.getData();
     },
     componentWillReceiveProps: function (o, n) {
-        if (this.state.statTeam.id !=  this.getParams().teamId) {
+        if (this.state.statTeam.id !=  this.props.params.teamId) {
             this.getData();
         }
     },

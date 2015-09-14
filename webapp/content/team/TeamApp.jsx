@@ -27,19 +27,20 @@ var TeamApp = React.createClass({
     },
     onChange: function (e) {
         e.preventDefault();
-        if (this.isActive('teamStandings')) {
-            this.getParams().teamId = e.target.value;
-            this.transitionTo('teamStandings',this.getParams(),null);
+        debugger;
+        if (this.props.history.isActive('teamStandings')) {
+            this.props.teamId = e.target.value;
+            this.props.history('teamStandings',this.props.params,null);
         }
 
         if (this.isActive('teamMemberResults')) {
-            this.getParams().teamId = e.target.value;
-            this.transitionTo('teamMemberResults',this.getParams(),null);
+            this.props.teamId = e.target.value;
+            this.transitionTo('teamMemberResults',this.props.params,null);
         }
 
            if (this.isActive('teamChart')) {
-            this.getParams().teamId = e.target.value;
-            this.transitionTo('teamChart',this.getParams(),null);
+            this.props.teamId = e.target.value;
+            this.transitionTo('teamChart',this.props.params,null);
         }
 
     },
@@ -62,11 +63,10 @@ var TeamApp = React.createClass({
         }
         var team = null;
         teams.forEach(function(t){
-            if (this.getParams().teamId == t.id) {
+            if (this.props.params.teamId == t.id) {
                 team = t;
             }
         }.bind(this));
-
         if (team == null) {
             return null;
         }
@@ -90,26 +90,27 @@ var TeamApp = React.createClass({
         });
         var select = ( <select ref='user' onChange={this.onChange}
                                 className="form-control"
-                                value={this.getParams().teamId}
+                                value={this.props.params.teamId}
                                 type={'select'}>
                             {options}
                         </select>);
         var teamHeader = select;
         var header = (
                 <div style={{display: 'inline'}}>
-                    <Link to='teamStandings' params={this.getParams()}>
-                        <button className={this.isActive('teamStandings') ? 'btn btn-success' : 'btn btn-default'}>
+                    <Link to={'/app/team/' + this.props.params.teamId + '/standings'} >
+                        <button className={this.props.location.pathname.indexOf('standings') > 0 ? 'btn btn-success' : 'btn btn-default'}>
                             <i className="fa fa-users"></i><span className="main-item">{ ' Standings'}</span>
                         </button>
                     </Link>
-                    <Link to='teamMemberResults' params={this.getParams()}>
-                        <button  className={this.isActive('teamMemberResults') ? 'btn btn-success' : 'btn btn-default'}>
+                    <Link to={'/app/team/' + this.props.params.teamId  + '/members'}>
+                        <button  className={this.props.location.pathname.indexOf('members') > 0 ? 'btn btn-success' : 'btn btn-default'}>
                             <i className="fa  fa-list-ol"></i><span className="main-item">{ ' Results'}</span>
                         </button>
                     </Link>
-                    <Link to='teamChart' params={this.getParams()}>
-                        <button   className={this.isActive('teamChart') ? 'btn btn-success' : 'btn btn-default'}>
-                            <i className="fa fa-bar-chart"></i><span className="main-item">{ ' Chart'}</span>
+                    <Link to={'/app/team/' + this.props.params.teamId + '/chart'}>
+                        <button  className={this.props.location.pathname.indexOf('chart') > 0 ? 'btn btn-success' : 'btn btn-default'}>
+                            <i className="fa fa-bar-chart"></i>
+                            <span className="main-item">{ ' Chart'}</span>
                         </button>
                     </Link>
                 </div>
@@ -118,7 +119,7 @@ var TeamApp = React.createClass({
                 <div id="team-app">
                     {teamHeader}
                     {header}
-                    <RouteHandler />
+                    {this.props.children}
                 </div>
         );
 

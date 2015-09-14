@@ -13,25 +13,25 @@ var Util = require('../../jsx/util.jsx');
 
 
 var TeamResults = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin],
     getInitialState: function() {
-        return {filter: "",
+        return {
             results: [],
-            teamId : this.getParams().teamId,
+            teamId : this.props.params.teamId,
             update: Date.now()
         }
     },
     getData: function() {
-        Util.getData('/api/playerresult/get/team/' + this.getParams().teamId, function(d){
+        Util.getData('/api/playerresult/get/team/' + this.props.params.teamId, function(d){
             this.setState({results: d});
-        }.bind(this));
-
+        }.bind(this), null,
+            'TeamResults');
     },
     componentWillReceiveProps: function(n,o) {
         if (this.state.results.length == 0) {
             return;
         }
-        if (this.state.teamId != this.getParams().teamId) {
+        if (this.state.teamId != this.props.params.teamId) {
             this.getData();
         }
     },
@@ -40,7 +40,7 @@ var TeamResults = React.createClass({
     },
     render: function() {
         var rows = [];
-        var teamId = this.getParams().teamId;
+        var teamId = this.props.params.teamId;
         var results = this.state.results.sort(function(a,b) {
             var aHome = a.teamMatch.home.id == teamId;
             var bHome = b.teamMatch.home.id == teamId;
@@ -62,12 +62,11 @@ var TeamResults = React.createClass({
 
             return atm.name.localeCompare(btm.name);
         });
-
         results.forEach(function (result) {
             rows.push(<tr key={result.id}>
-                <td><UserLink user={result.teamMember} handicap={result.teamMemberHandicap} season={this.getParams().seasonId} /></td>
+                <td><UserLink user={result.teamMember} handicap={result.teamMemberHandicap} season={this.props.params.seasonId} /></td>
                 <td>{result.win ? 'W' : 'L'}</td>
-                <td><UserLink user={result.opponent}  handicap={result.opponentHandicap} season={this.getParams().seasonId} /></td>
+                <td><UserLink user={result.opponent}  handicap={result.opponentHandicap} season={this.props.params.seasonId} /></td>
                 <td><TeamLink team={result.opponentTeam} /></td>
                 <td>{Util.formatDateTime(result.teamMatch.matchDate)}</td>
             </tr>);
@@ -102,8 +101,8 @@ var sortDateFn = function(a,b) {
 };
 
 var sortPlayerFn = function(a,b) {
-    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
+    var ateamMember = a.winnersTeam.id == this.props.params.teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.props.params.teamId ? b.winner : b.loser;
     if (this.state.sort.sortPlayer.asc == 'true') {
         return ateamMember.name.localeCompare(bteamMember.name);
     }
@@ -111,8 +110,8 @@ var sortPlayerFn = function(a,b) {
 };
 
 var sortOpponentFn  = function(a,b){
-    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
+    var ateamMember = a.winnersTeam.id == this.props.params.teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.props.params.teamId ? b.winner : b.loser;
 
     if (this.state.sort.sortOpponent.asc == 'true')
         return a.getOpponent(ateamMember).name.localeCompare(b.getOpponent(bteamMember).name);
@@ -121,8 +120,8 @@ var sortOpponentFn  = function(a,b){
 };
 
 var sortOpponentTeamFn = function(a,b){
-    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
+    var ateamMember = a.winnersTeam.id == this.props.params.teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.props.params.teamId ? b.winner : b.loser;
     if (this.state.sort.sortTeam.asc == 'true')
         return a.getOpponentsTeam(ateamMember).name.localeCompare(b.getOpponentsTeam(bteamMember).name);
     else
@@ -131,8 +130,8 @@ var sortOpponentTeamFn = function(a,b){
 
 
 var sortWinFn = function(a,b) {
-    var ateamMember = a.winnersTeam.id == this.getParams().teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.getParams().teamId ? b.winner : b.loser;
+    var ateamMember = a.winnersTeam.id == this.props.params.teamId ? a.winner : a.loser;
+    var bteamMember = b.winnersTeam.id == this.props.params.teamId ? b.winner : b.loser;
     aWin = (a.isWinner(ateamMember) ? 'W' : 'L');
     bWin = (b.isWinner(bteamMember) ? 'W' : 'L');
     if (this.state.sort.sortWin.asc == 'true')

@@ -5,7 +5,7 @@ var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var TeamStandings = React.createClass({
-    mixins: [UserContextMixin,Router.State],
+    mixins: [UserContextMixin],
     getInitialState: function() {
          return {
              statTeam: {},
@@ -14,11 +14,11 @@ var TeamStandings = React.createClass({
         }
     },
     getData: function() {
-        Util.getData('/api/stat/team/' + this.getParams().teamId, function(d){
+        Util.getData('/api/stat/team/' + this.props.params.teamId, function(d){
             this.setState({statTeam: d});
         }.bind(this));
 
-        Util.getData('/api/stat/team/' + this.getParams().teamId + '/members', function(d){
+        Util.getData('/api/stat/team/' + this.props.params.teamId + '/members', function(d){
             this.setState({statTeamMembers: d});
         }.bind(this));
     },
@@ -26,14 +26,14 @@ var TeamStandings = React.createClass({
         this.getData();
     },
     componentWillReceiveProps: function (o, n) {
-        if (this.state.statTeam.id !=  this.getParams().teamId) {
+        if (this.state.statTeam.id !=  this.props.params.teamId) {
             this.getData();
         }
     },
     getHeader: function() {
         if (this.state.statTeam.team  && this.state.statTeam.team.nine) {
             return ( <tr>
-                    <th>Name</th>
+                <th>Name</th>
                 <th>Wins</th>
                 <th>Loses</th>
                 <th>Racks Won</th>
@@ -80,7 +80,7 @@ var TeamStandings = React.createClass({
         this.state.statTeamMembers.forEach(function(u){
             i++;
             rows.push(<tr key={i} >
-                <td><UserLink user={u.user}  season={this.getParams().seasonId}/> </td>
+                <td><UserLink user={u.user}  season={this.props.params.seasonId}/> </td>
                 <td>{u.wins}</td>
                 <td>{u.loses}</td>
                 <td>{u.racksWon}</td>

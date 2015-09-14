@@ -25,58 +25,12 @@ var DataStore = assign({}, EventEmitter.prototype, {
         }
         this.removeListener(CHANGE_EVENT, callback);
     },
-    init: function() {
-        console.log('Init DB');
-        loaded = false;
-        loading = true;
-        Util.getData('/api/user', function(d) {
-            console.log('Got me some data', JSON.stringify(d));
-            user = d;
-            //db.init(d);
-            DataStore.emitChange();
-        }.bind(this));
-    },
-    checkAge: function() {
-        if (Date.now() -_updateTime > 1000*60*5) {
-            if (loading == true) {
-                return;
-            }
-            console.log('Reloading data');
-            loading = true;
-            _updateTime = Date.now();
-            DataStore.init();
-        }
-    },
-    isLoading: function() {
-        return _loading;
-    },
-    isLoaded: function() {
-        return _user != undefined && _user.id != undefined && _user.id != "0";
-    },
-    setLoading: function(loading) {
-        _loading = loading;
-    },
-    setLoaded: function(loaded) {
-        _loaded = loaded;
-    },
-    resetAuth: function() {
-        _user = {id: "0"};
-    },
-    isAuthenticated: function() {
-        return _user.id != "0";
-    },
     setUser: function(u) {
         console.log('Setting user: '+ u.id);
         _user = u;
-        DataStore.emitChange();
     },
     getUser: function() {
         return _user;
-    },
-
-    replaceUser: function(user) {
-        _user = user;
-        DataStore.emitChange();
     },
     checkLogin: function() {
         console.log('Checking login stats');
@@ -104,7 +58,7 @@ var DataStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
      switch(action.actionType) {
          case 'INIT':
-             DataStore.init();
+             //DataStore.init();
              break;
          case 'CHECK':
       //       DataStore.checkLogin();

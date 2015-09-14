@@ -1,11 +1,15 @@
 var React = require('react/addons');
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
+var History = ReactRouter.History;
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 
 var LoginApp = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,History],
+    contextTypes: {
+        location: React.PropTypes.object
+    },
     getInitialState: function () {
         return {
             error: false,
@@ -28,27 +32,25 @@ var LoginApp = React.createClass({
             method: 'post',
             success: function (d) {
                 DataStore.setUser(d);
-                //DataStore.init();
-                if (this.isActive('login')) {
-                    this.transitionTo('home', null, null);
+                if (this.context.location.pathname == "/" || this.context.location.pathname == "/login") {
+                    this.history.replaceState(null, '/app/home');
+                    return;
                 }
+                this.history.replaceState(null, this.context.location.pathname,this.context.location.query);
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('authenticate', status, err.toString());
-                this.transitionTo('login',null,{error: 'true'});
+                this.history.pushState(null, '/login', {error: 'true'});
             }.bind(this)
         });
     },
     render: function () {
-        DataStore.setLoaded(false);
-        DataStore.setLoading(false);
-        DataStore.resetAuth();
         var errorMsg = null;
-        if (this.props.query.error == 'true') {
+        if (this.context.location.query.error == 'true') {
             errorMsg = <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>;
         }
 
-        if (this.props.query.expired == 'true') {
+        if (this.context.location.query.expired == 'true') {
             errorMsg = <div className="form-group alert alert-danger" role="alert">Session Expired. Please login again.</div>;
         }
         return (

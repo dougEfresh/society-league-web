@@ -31,6 +31,9 @@ var HomeNav = React.createClass({
                         <Link to='reset' query={{changePassword: true}}>
                             <span className="glyphicon glyphicon-copyright-mark"></span>Change Password</Link>
                     </li>
+                    <li className="teamNavLink" role="presentation">
+                        <Link to='/logout'>Log out</Link>
+                    </li>
                 </ul>
             </li>
         );

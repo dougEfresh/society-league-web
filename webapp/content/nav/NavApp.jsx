@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var ReactRouter = require('react-router');
+var History = ReactRouter.History;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var LoginApp = require('../login/LoginApp.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
@@ -11,65 +12,51 @@ var HomeNav = require('./HomeNav.jsx');
 var StatNav = require('./StatNav.jsx');
 //var ChallengeNav = require('./ChallengeNav.jsx'); <ChallengeNav />
 var HomeApp = require('../home/HomeApp.jsx');
+var Util = require('../../jsx/util.jsx');
 
 var NavApp = React.createClass({
-    mixins: [UserContextMixin],
+    mixins: [UserContextMixin,History],
     getInitialState: function() {
          return {
-             loading: false,
-             authenticated: false
-        }
+             user: DataStore.getUser()
+         }
     },
     componentWillMount: function() {
-        DataStore.addChangeListener(this._onChange);
+
     },
     componentWillUnmount: function() {
-        DataStore.removeChangeListener(this._onChange);
+        //DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
-        DataStore.checkLogin();
+        Util.getData('/api/user',function(d){
+                DataStore.setUser(d);
+                if (this.props.location.pathname == '/') {
+                    this._onChange();
+                    this.history.replaceState(null, '/app/home');
+                    return
+                }
+                this._onChange();
+                this.history.replaceState(null,this.props.location,this.props.location.query);
+            }.bind(this)
+            ,function() {this.history.pushState(null, '/login');}.bind(this)
+            ,'NavApp');
+
     },
     componentWillReceiveProps: function() {
-        if (!DataStore.isAuthenticated()) {
-            return;
-        }
-        if (DataStore.isLoading()) {
-            return;
-        }
-        DataStore.init();
     },
     _onChange: function(){
-        console.log('NavApp change: ' + this.getUser().id + ' Loading ' + DataStore.isLoading() + ' Authenticated: ' + DataStore.isAuthenticated());
-        if (DataStore.isAuthenticated() && !DataStore.isLoaded() && !DataStore.isLoading()) {
-            DataStore.init();
-        }
+        console.log('NavApp change: ' + this.getUser().id );
         this.setState({
-            loading: DataStore.isLoading(),
-            authenticated: DataStore.isAuthenticated()
+            user: DataStore.getUser()
         });
     },
     render: function() {
-        if (!DataStore.isAuthenticated()) {
-            console.log("LoginApp");
-            return (
-                <LoginApp query={this.props.location.query} />
-            )
+        if (this.getUser().id == "0") {
+            return null;
         }
-        if (DataStore.isLoading()) {
-            return (
-                <div id={'loading-' + DataStore.isLoading()}>
-                    <LoadingApp />
-                </div>
-            );
-        }
-        var home = null;
-        if (this.props.location.pathname == '/') {
-            home = (<HomeApp />);
-        }
-
-        return (
+       return (
             <div>
-                  <div className="container outerWrapper"  >
+                <div className="container outerWrapper"  >
                 <div className="account-wrapper">
                     <div className="leagueNavGrid" >
                         <div className="row">
@@ -84,7 +71,6 @@ var NavApp = React.createClass({
                             </div>
                              <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
                                 <div className="container user-content">
-                                    {home}
                                     {this.props.children}
                                 </div>
                             </div>

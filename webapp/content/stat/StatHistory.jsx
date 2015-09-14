@@ -18,10 +18,10 @@ var StatHistory = React.createClass({
          }
     },
     getData: function() {
-        Util.getData('/api/playerresult/get/user/' + this.getParams().statsId  + '/current', function(d) {
+        Util.getData('/api/playerresult/get/user/' + this.props.params.statsId  + '/current', function(d) {
             this.setState({results: d});
         }.bind(this));
-        Util.getData('/api/stat/user/' + this.getParams().statsId , function(d){
+        Util.getData('/api/stat/user/' + this.props.params.statsId , function(d){
             this.setState({stats: d});
         }.bind(this));
     },
@@ -46,8 +46,8 @@ var StatHistory = React.createClass({
          </div>
          */
         var user = this.getUser();
-        if (user.id != this.getParams().statsId) {
-            user = this.state.results[0].playerHome.id == this.getParams().statsId ?  this.state.results[0].playerHome :  this.state.results[0].playerAway;
+        if (user.id != this.props.params.statsId) {
+            user = this.state.results[0].playerHome.id == this.props.params.statsId ?  this.state.results[0].playerHome :  this.state.results[0].playerAway;
         }
         return (
                 <UserResults stats={this.state.stats} user={user} results={this.state.results} />

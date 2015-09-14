@@ -56,7 +56,7 @@ var SeasonNav = React.createClass({
             seasons.push(
                 <div key={hs.season.id}>
                 <li id={'season-link-'+ hs.season.id} key={hs.season.id} role="presentation">
-                    <Link  to="seasonStandings" params={{seasonId: hs.season.id}} >
+                    <Link  to={"/app/season/" + hs.season.id + '/standings'} >
                         {title}
                     </Link>
                 </li>

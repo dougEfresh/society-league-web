@@ -20,10 +20,10 @@ var SeasonAdmin = React.createClass({
         };
     },
     getData: function () {
-        Util.getData('/api/playerresult/get/teamMatch/' + this.getParams().matchId, function (d) {
+        Util.getData('/api/playerresult/get/teamMatch/' + this.props.params.matchId, function (d) {
             this.setState({results: d});
         }.bind(this));
-          Util.getData('/api/teammatch/' + this.getParams().matchId, function (d) {
+          Util.getData('/api/teammatch/' + this.props.params.matchId, function (d) {
             this.setState({results: d});
         }.bind(this));h
     },

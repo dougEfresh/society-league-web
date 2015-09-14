@@ -35,7 +35,7 @@ var UserApp = React.createClass({
         var header = (
         <div className="btn-group">
             <button className={this.isActive('info') ? 'btn btn-default' : 'btn btn-default'} responsize>
-                <Link to='info' params={this.getParams()}>
+                <Link to='info' params={this.props.params}>
                     <span className="fa fa-info"></span>Profile
                 </Link>
             </button>

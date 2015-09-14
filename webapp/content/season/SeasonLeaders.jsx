@@ -18,7 +18,7 @@ var SeasonLeaders = React.createClass({
 
     },
     getData: function() {
-        Util.getData('/api/stat/season/players/' + this.getParams().seasonId, function(d){
+        Util.getData('/api/stat/season/players/' + this.props.params.seasonId, function(d){
             this.setState({stats: d});
         }.bind(this));
     },
@@ -35,7 +35,7 @@ var SeasonLeaders = React.createClass({
         data.forEach(function(d){
             rows.push(
                 <tr key={d.user.id}>
-                    <td><UserLink user={d.user} season={this.getParams().seasonId} /> </td>
+                    <td><UserLink user={d.user} season={this.props.params.seasonId} /> </td>
                     <td><TeamLink team={d.team} /></td>
                     <td>{d.wins}</td>
                     <td>{d.loses}</td>

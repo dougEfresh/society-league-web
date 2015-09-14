@@ -15,7 +15,7 @@ var StatsDisplay = React.createClass({
          }
     },
     getData: function() {
-        Util.getData('/api/stat/user/' + this.getParams().statsId , function(d){
+        Util.getData('/api/stat/user/' + this.props.params.statsId , function(d){
             this.setState({stats: d});
         }.bind(this));
     },
@@ -30,7 +30,7 @@ var StatsDisplay = React.createClass({
     },
     getRows: function(data) {
         var rows = [];
-        var userId = this.getParams().statsId;
+        var userId = this.props.params.statsId;
         var cnt = 0;
         data.forEach(function(d){
             /*

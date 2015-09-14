@@ -2,12 +2,11 @@ var React = require('react/addons');
 var Util = require('../../jsx/util.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Router = require('react-router')
-    , RouteHandler = Router.RouteHandler
     , Route = Router.Route
     , Link = Router.Link;
 
 var SeasonWeeklyResults = React.createClass({
-    mixins: [Router.State],
+    mixins: [],
     getInitialState: function() {
         return {
             update: Date.now(),
@@ -15,7 +14,7 @@ var SeasonWeeklyResults = React.createClass({
         }
     },
     getData: function() {
-        Util.getData('/api/teammatch/get/season/' + this.getParams().seasonId, function(d){
+        Util.getData('/api/teammatch/get/season/' + this.props.params.seasonId, function(d){
             this.setState({results: d});
         }.bind(this));
     },
@@ -38,14 +37,14 @@ var SeasonWeeklyResults = React.createClass({
         results.forEach(function(r) {
             var md = r.matchDate;
             if (previousMd != md) {
-                  rows.push(<Results key={r.id} results={displayResults} />);
+                  rows.push(<Results seasonId={this.props.params.seasonId} key={r.id} results={displayResults} />);
                 displayResults = [];
                 displayResults.push(r);
             } else {
                 displayResults.push(r);
             }
             previousMd = md;
-        });
+        }.bind(this));
 
         return (
             <div id="season-team-results">
@@ -61,6 +60,7 @@ var Results = React.createClass({
         if (results.length == 0) {
             return null;
         }
+         var seasonId = this.props.seasonId;
         var rows = [];
         results.forEach(function(r) {
             var winner = r.home;
@@ -70,7 +70,7 @@ var Results = React.createClass({
                 loser = r.home;
             }
             var button = (
-                <Link to='seasonMatchResultsOnDay' params={{matchId: r.id, seasonId: r.season.id}}>
+                <Link to={'/app/season/' + seasonId + '/teamresults/' + r.id }>
                     <button className='btn btn-success'>
                         <span className="main-item">Results</span>
                     </button>

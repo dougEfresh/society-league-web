@@ -17,7 +17,7 @@ var SeasonStandings = React.createClass({
          }
     },
     getData: function() {
-        Util.getData('/api/stat/season/' + this.getParams().seasonId, function(d){
+        Util.getData('/api/stat/season/' + this.props.params.seasonId, function(d){
             this.setState({seasonStats: d});
         }.bind(this));
 
