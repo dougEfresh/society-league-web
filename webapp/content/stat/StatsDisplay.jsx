@@ -17,7 +17,7 @@ var StatsDisplay = React.createClass({
     getData: function() {
         Util.getData('/api/stat/user/' + this.props.params.statsId , function(d){
             this.setState({stats: d});
-        }.bind(this));
+        }.bind(this), null, 'StatDisplay');
     },
     componentDidMount: function () {
         this.getData();

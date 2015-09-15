@@ -30,13 +30,11 @@ var StatApp = React.createClass({
     },
     changeUser: function(e) {
         e.preventDefault();
-        if (this.isActive('stats')) {
-            this.transitionTo('stats', {statsId: e.target.value});
+        if (this.props.location.pathname.indexOf("stats") >= 0) {
+            this.props.history.pushState(null,'/app/scout/' + e.target.value + '/stats');
             return;
         }
-
-        this.transitionTo('history',{statsId: e.target.value})
-
+        this.props.history.pushState(null,'/app/scout/' + e.target.value + '/history');
     },
     render: function() {
         var users = this.state.users;
@@ -61,13 +59,13 @@ var StatApp = React.createClass({
                         </select>
                     </div>
                     <div className="btn-group col-lg-6 col-md-6 col-xs-12 stats-btn">
-                        <Link to='stats' params={this.props.params}>
-                            <button className={this.isActive('stats') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
+                        <Link className='scoutNav' to={'/app/scout/' + this.getUser().id +'/stats'}>
+                            <button className={this.props.location.pathname.indexOf('stats') >=0 ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
                                 <span className="fa fa-bar-chart"></span>Stats
                             </button>
                         </Link>
-                        <Link to='history' params={this.props.params}>
-                            <button className={this.isActive('history') ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
+                        <Link className='scoutNav' to={'/app/scout/' + this.getUser().id +'/history'}>
+                            <button className={this.props.location.pathname.indexOf('history') >= 0 ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
                                 <span className="fa fa-history"></span>History
                             </button>
                         </Link>
@@ -82,7 +80,7 @@ var StatApp = React.createClass({
                      {header}
                 </div>
                 <div className="panel-body">
-                    <RouteHandler />
+                    {this.props.children}
                 </div>
             </div>
         );

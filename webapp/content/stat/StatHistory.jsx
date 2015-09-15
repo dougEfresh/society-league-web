@@ -20,10 +20,10 @@ var StatHistory = React.createClass({
     getData: function() {
         Util.getData('/api/playerresult/get/user/' + this.props.params.statsId  + '/current', function(d) {
             this.setState({results: d});
-        }.bind(this));
+        }.bind(this), null, 'StatHistory');
         Util.getData('/api/stat/user/' + this.props.params.statsId , function(d){
             this.setState({stats: d});
-        }.bind(this));
+        }.bind(this), null, 'StatHistory');
     },
     componentDidMount: function () {
         this.getData();

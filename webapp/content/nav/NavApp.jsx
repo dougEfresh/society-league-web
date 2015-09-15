@@ -36,7 +36,7 @@ var NavApp = React.createClass({
                     return
                 }
                 this._onChange();
-                this.history.replaceState(null,this.props.location,this.props.location.query);
+                //this.history.replaceState(null,this.props.location,this.props.location.query);
             }.bind(this)
             ,function() {this.history.pushState(null, '/login');}.bind(this)
             ,'NavApp');
