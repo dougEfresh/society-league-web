@@ -18,7 +18,7 @@ var SeasonLink = React.createClass({
             return null;
         }
         return (
-            <Link className="seasonLink" to="seasonStandings" params={{seasonId: this.props.season.id}}>
+            <Link className="seasonLink" to={"/app/season/"+ this.props.season.id + '/standings'}>
                 {this.props.season.displayName}
             </Link>
         );

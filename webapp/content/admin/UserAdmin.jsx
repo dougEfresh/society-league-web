@@ -77,10 +77,27 @@ var UserAdminApp = React.createClass({
                     type={'select'}>
                 {options}
             </select>);
+
+        if (this.props.location.query.submitted == 'true') {
+            var q = this.props.location.query;
+            q.submitted = 'false';
+            q = {user: Qs.stringify(selectedUser)};
+            setTimeout(function() {
+                this.history.pushState(null, '/app/admin/users',q);
+                Util.getData('/api/user/all', function (d) {
+                    this.setState({users: d});
+                }.bind(this), null, 'UserAdminApp');
+            }.bind(this),2000);
+                return (
+                    <div className="alert alert-success" role="alert">
+                        {'Modified User! ' + selectedUser.name}
+                    </div>
+                );
+        }
         return (
             <div id="user-admin-app">
                 {select}
-                <UserModifyApp user={selectedUser} handicaps={handicaps}/>
+                <UserModifyApp  seasons={this.state.seasons} user={selectedUser} handicaps={handicaps}/>
             </div>
         );
     }
@@ -89,21 +106,36 @@ var UserAdminApp = React.createClass({
 var UserModifyApp = React.createClass({
     mixins: [UserContextMixin,History],
     getInitialState: function() {
+        var u = this.props.user;
         return {
-            handicapSeasons : []
+            id: u.id,
+            firstName: u.firstName,
+            lastName: u.lastName,
+            email: u.email
+        }
+    },
+    componentWillReceiveProps: function (n) {
+        if (this.state.id != n.user.id) {
+            this.setState({
+                id: n.user.id,
+                firstName: n.user.firstName,
+                lastName: n.user.lastName,
+                email: n.user.email
+            })
         }
     },
     handleCreate: function() {
-
+        this.handleSubmit('create');
     },
     handleModify: function() {
         this.handleSubmit('modify');
     },
     handleSubmit: function(type) {
         var u = this.props.user;
-        u.firstName =  React.findDOMNode(this.refs.firstName).value;
-        u.lastName =  React.findDOMNode(this.refs.lastName).value;
-        u.email =  React.findDOMNode(this.refs.email).value;
+        u.firstName =  React.findDOMNode(this.refs.firstName).value.length > 1 ? React.findDOMNode(this.refs.firstName).value : u.firstName;
+        u.lastName =  React.findDOMNode(this.refs.lastName).value.length > 1 ? React.findDOMNode(this.refs.lastName).value : u.lastName;
+        u.email =  React.findDOMNode(this.refs.email).value .length > 1 ?  React.findDOMNode(this.refs.email).value : u.email;
+
         if (u.handicapSeasons == undefined) {
             u.handicapSeasons = [];
         }
@@ -152,12 +184,23 @@ var UserModifyApp = React.createClass({
     },
     getHandicaps: function() {
         var seasons = [];
+        var userSeason = [];
+        var activeSeason = [];
+        this.props.seasons.forEach(function(s){
+            if (s.active) {
+                activeSeason.push(s);
+            }
+        });
         if (this.props.user.handicapSeasons == undefined || this.props.user.handicapSeasons.length == 0) {
             return null;
         }
         this.props.user.handicapSeasons.forEach(function(hs) {
+            if (!hs.season.active) {
+                return;
+            }
             var options = [];
             var s = hs.season;
+            userSeason.push(s);
             this.props.handicaps.forEach(function(h) {
                 options.push(<option key={h + '-' + s.id} value={h + '-' + s.id}>{h}</option>);
             });
@@ -178,7 +221,20 @@ var UserModifyApp = React.createClass({
                  </div>
              );
         }.bind(this));
+        activeSeason
         return seasons;
+    },
+    onChange: function(e) {
+        e.preventDefault();
+        var firstName =  React.findDOMNode(this.refs.firstName).value;
+        var lastName =  React.findDOMNode(this.refs.lastName).value;
+        var email =  React.findDOMNode(this.refs.email).value;
+        this.setState({
+            firstName: firstName,
+            lastName: lastName,
+            email: email
+        })
+
     },
     render: function () {
         var u = this.props.user;
@@ -193,19 +249,19 @@ var UserModifyApp = React.createClass({
                <div className="panel-body">
                    <form id='login' className="login-form form-signin form-horizontal">
                        <div className="form-group">
-                           <label htmlFor="firstname" className="col-sm-2 control-label">First Name</label>
+                           <label htmlFor="firstName" className="col-sm-2 control-label">First Name</label>
                            <div className="col-sm-10">
                                <input ref='firstName' id="firstname"
                                       type="input" name="firstName"
-                                      placeholder={u.firstName == undefined ? "enter first name" : u.firstName}
+                                      value = {this.state.firstName} onChange={this.onChange}
                                       className="form-control" />
                            </div>
                        </div>
                        <div className="form-group">
-                           <label htmlFor="lastname" className="col-sm-2 control-label">Last Name</label>
+                           <label htmlFor="lastName" className="col-sm-2 control-label">Last Name</label>
                            <div className="col-sm-10">
                                <input ref='lastName' id="lastname" type="input" name="lastName"
-                                      placeholder={u.lastName == undefined ? "enter lastname name" : u.lastName}
+                                      value = {this.state.lastName} onChange={this.onChange}
                                       className="form-control" />
                            </div>
                        </div>
@@ -213,7 +269,8 @@ var UserModifyApp = React.createClass({
                            <label htmlFor="email" className="col-sm-2 control-label">Email</label>
                            <div className="col-sm-10">
                                <input ref='email' id="email" type="input" name="email"
-                                      placeholder={u.email == undefined ? "enter lastname name" : u.email}
+                                      value = {this.state.email}
+                                      onChange={this.onChange}
                                       className="form-control" />
                            </div>
                        </div>
@@ -238,10 +295,10 @@ var UserModifyApp = React.createClass({
                        {this.getHandicaps()}
                        <div className="form-group">
                            <div className="col-sm-offset-2 col-sm-10">
-                                <button style={{display: u.id == undefined ? 'inline' : 'none'}} id="submit" type="button" onClick={this.handleCreate} className="btn btn-sm btn-primary btn-responsive">
+                                <button style={{display: u.id == undefined ? 'inline' : 'none'}} id="create" type="button" onClick={this.handleCreate} className="btn btn-sm btn-primary btn-responsive">
                                    <b>Create</b>
                                </button>
-                               <button id="submit" type="button" onClick={this.handleModify} className="btn btn-sm btn-primary btn-responsive">
+                               <button  style={{display: u.id == undefined ? 'none' : 'inline'}} id="submit" type="button" onClick={this.handleModify} className="btn btn-sm btn-primary btn-responsive">
                                    <b>Modify</b>
                                </button>
                            </div>

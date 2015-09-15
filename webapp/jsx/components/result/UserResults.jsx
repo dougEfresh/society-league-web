@@ -66,7 +66,7 @@ var ResultEight = React.createClass({
                 <tr key={r.id}>
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
-                <td><Link to='seasonMatchResultsOnDay' params={{matchId: r.teamMatch.id, seasonId: r.season.id}}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
+                    <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                 <td>{r.teamMemberHandicap}</td>
 
                 </tr>);
@@ -111,7 +111,7 @@ var ResultNine = React.createClass({
         var rows = [];
         this.props.results.forEach(function(r) {
             rows.push(<tr key={r.id}>
-                <td><Link to='seasonMatchResultsOnDay' params={{matchId: r.teamMatch.id, seasonId: r.season.id}}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
+                <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td>{r.teamMemberRacks + ' - ' + r.opponentRacks}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>

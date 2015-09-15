@@ -37,7 +37,7 @@ var UserLink = React.createClass({
             name += ' (' + hc + ')';
         }
         return (
-                <Link to='stats' params={{statsId: this.props.user.id}}>
+                <Link to={'/app/scout/' + this.props.user.id + '/stats'}>
                     {name}
                 </Link>
         );
