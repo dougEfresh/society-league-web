@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <title>Leagues</title>
+
+
+	<style type="text/css">
+	   <!--
+		@page {
+		  size: auto;   /* auto is the initial value */
+		  margin: .25in;
+		}
+		body {
+			font-family: 'Arial', Helvetica, sans-serif;
+			font-weight: bold;
+		}
+		.wrapper {
+			display: block;
+			float: left;
+			width: 100%;
+			height: 100%;
+		}
+		.header {
+			display: block;
+			float: left;
+			width: 100%;
+			height: 225px;
+			background-image: url('img/tg-scoresheet-header.jpg');
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+		.content {
+			display: block;
+			float: left;
+			width: 100%;
+			margin-top: 0px;
+		}
+		.row-wrap {
+			float: left;
+			padding: 0px 0px;
+			margin: 0px 3% 0px 0px;
+			width: 48%;
+			border: 1px #000 solid;
+		}
+		.last {
+			margin: 0px 0px;
+		}
+		.row {
+			float: left;
+			padding: 0px 0px;
+			margin: 0px 0px 0px 0px;
+			width: 100%;		
+		}
+		.col {
+			float: left;
+			width: 66%;
+			height: 15px;
+			padding: 10px 0px 10px 0px;
+			text-indent: 20px;
+			font-size: 13px;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+		.black {
+			background: #000;
+			color: #fff;
+		}
+		.col-options {
+			width: 11%;
+			font-size: 13px;
+			text-indent: 0px;
+			text-align: center;
+			border-left: 1px #fff solid;
+		}
+		.border-black-left {
+			border-left: 1px #000 solid;
+		}
+		.border-black-top {
+			border-top: 1px #000 solid;
+		}
+		.no-border {
+			border: none;
+		}
+		.player-sign {
+			margin-top: 200px;
+			border-top: 1px #000 solid;
+			text-align: right;
+			padding: 10px 0px;
+			width: 100%;
+
+		}
+		.player-col {
+			float: left;
+			width: 48%;
+			height: 15px;
+			padding: 10px 0px 10px 0px;
+			text-indent: 0px;
+			text-align: center;
+			font-size: 13px;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+		.player-col-options {
+			width: 9%;
+			font-size: 13px;
+			text-indent: 0px;
+			text-align: center;
+			height: 100%;
+			border-left: 1px #fff solid;
+			padding: 10px 3px 0px 3px;
+			margin: 0px 0px 0px 0px;
+		}
+		table {
+			border-spacing: 0px;
+		}
+		td {
+			border: 1px #000 solid;
+			padding: 10px 10px;
+		}
+		.no-border {
+			border: none;
+		}
+		.player-name {
+
+		}
+		.player-hc {
+
+		}
+		.player-rw {
+
+		}
+		.player-rl {
+
+		}
+		.player-total {
+
+		}
+	   
+	   -->
+	</style>
+
+    </head>
+
+	<body>
+	<div class="wrapper">
+		<div class="header">
+		</div>
+		<div class="content">
+			<div class="row-wrap">
+				<div class="row black">
+					<div class="col">CHALLENGER</div>
+					<div class="col col-options">HC</div>
+					<div class="col col-options">W</div>
+					<div class="col col-options">L</div>
+				</div>
+				<div class="column border-black-top">
+					<!-- Player Info -->
+					<div class="col">Jared Pereira</div>
+					<div class="col col-options border-black-left">6</div>
+					<div class="col col-options border-black-left">7</div>
+					<div class="col col-options border-black-left">7</div>
+				</div>
+
+			</div>
+
+			<div class="row-wrap last">
+				<div class="row black">
+					<div class="col">OPPONENT</div>
+					<div class="col col-options">HC</div>
+					<div class="col col-options">W</div>
+					<div class="col col-options">L</div>
+				</div>
+				<div class="column border-black-top">
+					<!-- Player Info -->
+					<div class="col">Jared Pereira</div>
+					<div class="col col-options border-black-left">6</div>
+					<div class="col col-options border-black-left">7</div>
+					<div class="col col-options border-black-left">7</div>
+				</div>
+			</div>
+			<div class="row">
+				<table width="99%" align="center" style="text-align: center;margin-top: 100px;">
+					<tr>
+						<td width="10%" class="no-border"> </td>
+						<td width="46%" class="black">PLAYERS</td>
+						<td width="10%" class="black">HC</td>
+						<td width="10%" class="black">RACE</td>
+						<td width="10%" class="black">GAMES WON</td>
+						<td width="10%" class="black">W/L</td>
+					</tr>
+					<tr>
+						<td width="10%" class="black" style="border-bottom: 1px #FFF solid;">CHALLENGER</td>
+						<td width="46%" style="border-bottom: none;border-right: none;"></td>
+						<td width="10%" style="border-bottom: none;border-right: none;"></td>
+						<td width="10%" style="border-bottom: none;border-right: none;"></td>
+						<td width="10%" style="border-bottom: none;border-right: none;"></td>
+						<td width="10%" style="border-bottom: none;"></td>
+					</tr>
+					<tr>
+						<td width="10%" class="black">OPPONENT</td>
+						<td width="50%" style="border-right: none;"></td>
+						<td width="10%" style="border-right: none;"></td>
+						<td width="10%" style="border-right: none;"></td>
+						<td width="10%" style="border-right: none;"></td>
+						<td width="10%"></td>
+					</tr>
+
+				</table>
+			</div>
+			<div class="row-wrap no-border">
+				<div class="row player-sign">
+					Challenger Signature
+				</div>
+			</div>
+			<div class="row-wrap no-border last">
+				<div class="row player-sign">
+					Opponent Signature
+				</div>
+			</div>
+			
+
+
+		</div>
+	</div>
+	</body>
+	</html>
