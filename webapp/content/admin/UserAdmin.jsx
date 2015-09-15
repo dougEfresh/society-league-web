@@ -221,7 +221,37 @@ var UserModifyApp = React.createClass({
                  </div>
              );
         }.bind(this));
-        activeSeason
+        activeSeason.forEach(function(s){
+            var found = false;
+            userSeason.forEach(function(us){
+                if (s.id==us.id) {
+                    found=true;
+                }
+            });
+            if (found) {
+                return;
+            }
+            var options = [];
+            options.push(<option key={'N/A-' + s.id} value={'N/A-' + s.id}>{'N/A'}</option>);
+            this.props.handicaps.forEach(function(h) {
+                options.push(<option key={h + '-' + s.id} value={h + '-' + s.id}>{h}</option>);
+            });
+            var select = (
+                <select ref={'handicap-'+ s.id} onChange={this.handicapChange}
+                        className="form-control"
+                        type={'select'}>
+                    {options}
+                </select>);
+
+             seasons.push(
+                 <div key={s.id} className="form-group">
+                     <label htmlFor="season" className="col-sm-2 control-label">{s.name.split(',')[2]}</label>
+                     <div className="col-sm-10">
+                         {select}
+                     </div>
+                 </div>
+             );
+        }.bind(this));
         return seasons;
     },
     onChange: function(e) {

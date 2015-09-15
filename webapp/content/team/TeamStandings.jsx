@@ -80,7 +80,7 @@ var TeamStandings = React.createClass({
         this.state.statTeamMembers.forEach(function(u){
             i++;
             rows.push(<tr key={i} >
-                <td><UserLink user={u.user}  season={this.props.params.seasonId}/> </td>
+                <td><UserLink user={u.user} season={u.team.season.id}/> </td>
                 <td>{u.wins}</td>
                 <td>{u.loses}</td>
                 <td>{u.racksWon}</td>
