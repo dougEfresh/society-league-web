@@ -11,7 +11,7 @@ var RecentMatches = require('./RecentMatches.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var HomeApp = React.createClass({
-    mixins: [UserContextMixin,Router.State],
+    mixins: [UserContextMixin],
      getInitialState: function() {
          return {
              update: Date.now(),
@@ -28,8 +28,9 @@ var HomeApp = React.createClass({
     },
     componentWillReceiveProps: function (o, n) {
         var now = Date.now();
-        if ( now - this.state.update > 1000*60)
+        if (now - this.state.update > 1000*60)
             this.getData();
+
        this.getData();
     },
     render: function () {
@@ -43,16 +44,16 @@ var HomeApp = React.createClass({
 
             });
         }
-        var welcome =  <span id="welcome-name">{'Welcome ' + user.firstName }
-            {record}</span>;
-        var button = null;
+        var welcome = (
+            <span id="welcome-name">{'Welcome ' + user.firstName }
+                {record}
+            </span>);
 
         return (
             <div id="home-app">
                 <h2 className="welcome" >
                     <span className="glyphicon glyphicon-user"></span>
                     {welcome}
-                    {button}
                 </h2>
                 <UpcomingMatches />
                 <RecentMatches />
