@@ -80,6 +80,11 @@ var LoginApp = React.createClass({
                                     <button type="button" className="btn btn-sm btn-default btn-responsive pull-right">
                                         <b>Forgot Password?</b>
                                     </button>
+                                    <Link to='register'  >
+                                    <button type="button" className="btn btn-sm btn-default btn-responsive">
+                                        <b>Register</b>
+                                    </button>
+                                </Link>
                                 </Link>
                             </div>
                         </div>
@@ -87,11 +92,7 @@ var LoginApp = React.createClass({
             </div>
         /**
          *
-         <Link to='register'  >
-         <button type="button" className="btn btn-sm btn-default btn-responsive">
-         <b>Register</b>
-         </button>
-         </Link>
+
 
          */
         );
