@@ -28,18 +28,18 @@ var TeamApp = React.createClass({
     onChange: function (e) {
         e.preventDefault();
 
-        if (this.props.history.location.pathname.indexOf("standings")) {
-            this.props.history.pushState('/app/team/' + e.target.value + '/standings',null);
+        if (this.props.location.pathname.indexOf("standings")) {
+            this.props.history.pushState(null,'/app/team/' + e.target.value + '/standings',null);
             return;
         }
 
-        if (this.props.history.location.pathname.indexOf("members")) {
-            this.props.history.pushState('/app/team/' + e.target.value + '/members',null);
+        if (this.props.location.pathname.indexOf("members")) {
+            this.props.history.pushState(null,'/app/team/' + e.target.value + '/members',null);
             return;
         }
 
-        if (this.props.history.location.pathname.indexOf("chart")) {
-            this.props.history.pushState('/app/team/' + e.target.value + '/chart',null);
+        if (this.props.location.pathname.indexOf("chart")) {
+            this.props.history.pushState(null,'/app/team/' + e.target.value + '/chart',null);
             return;
         }
     },
