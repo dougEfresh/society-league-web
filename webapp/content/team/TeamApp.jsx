@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var Router = require('react-router')
     , Link = Router.Link
-    , History = Router.History
+    , History = Router.History;
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamStandings = require('./TeamStandings.jsx');
@@ -27,22 +27,21 @@ var TeamApp = React.createClass({
     },
     onChange: function (e) {
         e.preventDefault();
-        debugger;
-        if (this.props.history.isActive('teamStandings')) {
-            this.props.teamId = e.target.value;
-            this.props.history('teamStandings',this.props.params,null);
+
+        if (this.props.history.location.pathname.indexOf("standings")) {
+            this.props.history.pushState('/app/team/' + e.target.value + '/standings',null);
+            return;
         }
 
-        if (this.isActive('teamMemberResults')) {
-            this.props.teamId = e.target.value;
-            this.transitionTo('teamMemberResults',this.props.params,null);
+        if (this.props.history.location.pathname.indexOf("members")) {
+            this.props.history.pushState('/app/team/' + e.target.value + '/members',null);
+            return;
         }
 
-           if (this.isActive('teamChart')) {
-            this.props.teamId = e.target.value;
-            this.transitionTo('teamChart',this.props.params,null);
+        if (this.props.history.location.pathname.indexOf("chart")) {
+            this.props.history.pushState('/app/team/' + e.target.value + '/chart',null);
+            return;
         }
-
     },
     getData: function() {
         Util.getData('/api/team/get/user/' + this.getUser().id, function(d){
@@ -88,7 +87,7 @@ var TeamApp = React.createClass({
             }
             options.push(<option key={t.id} value={t.id}>{t.name}</option>);
         });
-        var select = ( <select ref='user' onChange={this.onChange}
+        var select = (<select ref='user' onChange={this.onChange}
                                 className="form-control"
                                 value={this.props.params.teamId}
                                 type={'select'}>

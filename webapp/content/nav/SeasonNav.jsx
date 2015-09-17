@@ -68,7 +68,7 @@ var SeasonNav = React.createClass({
             return null;
         }
         var clName = "dropdown";
-        if (this.context.location.pathname.indexOf('season')>=0) {
+        if (this.context.location.pathname.indexOf('/app/season')>=0) {
             clName = clName + " active";
         }
         return (

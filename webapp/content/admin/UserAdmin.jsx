@@ -139,10 +139,15 @@ var UserModifyApp = React.createClass({
         if (u.handicapSeasons == undefined) {
             u.handicapSeasons = [];
         }
+        var handicapSeasons = [];
         u.handicapSeasons.forEach(function(hs){
-            hs.season = {id: hs.season.id};
-            hs.handicapDisplay = null;
+            if (hs.handicap != 'NA') {
+                hs.season = {id: hs.season.id};
+                hs.handicapDisplay = null;
+                handicapSeasons.push(hs);
+            }
         });
+        u.handicapSeasons = handicapSeasons;
         Util.sendData(u,'/api/user/admin/' + type,function(d){
             var query = {user: Qs.stringify(d),submitted:true};
             this.history.pushState(null, '/app/admin/users', query);
@@ -184,23 +189,32 @@ var UserModifyApp = React.createClass({
     },
     getHandicaps: function() {
         var seasons = [];
-        var userSeason = [];
-        var activeSeason = [];
-        this.props.seasons.forEach(function(s){
-            if (s.active) {
-                activeSeason.push(s);
-            }
-        });
-        if (this.props.user.handicapSeasons == undefined || this.props.user.handicapSeasons.length == 0) {
-            return null;
+        if (this.props.user.handicapSeasons == undefined) {
+            this.props.user.handicapSeasons = [];
         }
+        this.props.seasons.forEach(function(s){
+            if (!s.active)
+                return;
+
+            var found = false;
+            this.props.user.handicapSeasons.forEach(function (hs) {
+                if (hs.season.id == s.id) {
+                    found = true;
+                }
+            });
+            if (found)
+                return;
+
+            this.props.user.handicapSeasons.push({handicap: 'NA', season: s});
+        }.bind(this));
+
         this.props.user.handicapSeasons.forEach(function(hs) {
             if (!hs.season.active) {
                 return;
             }
             var options = [];
             var s = hs.season;
-            userSeason.push(s);
+            options.push(<option key={'NA-' + s.id} value={'NA-' + s.id}>{'NA'}</option>);
             this.props.handicaps.forEach(function(h) {
                 options.push(<option key={h + '-' + s.id} value={h + '-' + s.id}>{h}</option>);
             });
@@ -208,37 +222,6 @@ var UserModifyApp = React.createClass({
                 <select ref={'handicap-'+ s.id} onChange={this.handicapChange}
                         className="form-control"
                         value={hs.handicap + '-' + s.id}
-                        type={'select'}>
-                    {options}
-                </select>);
-
-             seasons.push(
-                 <div key={s.id} className="form-group">
-                     <label htmlFor="season" className="col-sm-2 control-label">{s.name.split(',')[2]}</label>
-                     <div className="col-sm-10">
-                         {select}
-                     </div>
-                 </div>
-             );
-        }.bind(this));
-        activeSeason.forEach(function(s){
-            var found = false;
-            userSeason.forEach(function(us){
-                if (s.id==us.id) {
-                    found=true;
-                }
-            });
-            if (found) {
-                return;
-            }
-            var options = [];
-            options.push(<option key={'N/A-' + s.id} value={'N/A-' + s.id}>{'N/A'}</option>);
-            this.props.handicaps.forEach(function(h) {
-                options.push(<option key={h + '-' + s.id} value={h + '-' + s.id}>{h}</option>);
-            });
-            var select = (
-                <select ref={'handicap-'+ s.id} onChange={this.handicapChange}
-                        className="form-control"
                         type={'select'}>
                     {options}
                 </select>);
@@ -340,17 +323,7 @@ var UserModifyApp = React.createClass({
        }
 });
 
-var UseHandicapSeasons = React.createClass({
-     render: function () {
-         var u = this.props.user;
-         if (u == null || u == undefined || u.id == "-1") {
-             return null;
-         }
 
-     }
-
-
-});
 module.exports = UserAdminApp;
 
 
