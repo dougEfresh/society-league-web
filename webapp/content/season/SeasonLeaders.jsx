@@ -9,7 +9,7 @@ var TeamLink = require('../../../webapp/jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var SeasonLeaders = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {
             update: Date.now(),
