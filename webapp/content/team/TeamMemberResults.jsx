@@ -24,8 +24,7 @@ var TeamResults = React.createClass({
     getData: function() {
         Util.getData('/api/playerresult/get/team/' + this.props.params.teamId, function(d){
             this.setState({results: d});
-        }.bind(this), null,
-            'TeamResults');
+        }.bind(this), null,'TeamResults');
     },
     componentWillReceiveProps: function(n,o) {
         if (this.state.results.length == 0) {
@@ -94,48 +93,3 @@ var TeamResults = React.createClass({
 });
 
 module.exports = TeamResults;
-
-
-var sortDateFn = function(a,b) {
-    return b.getMatchDate().localeCompare(a.getMatchDate());
-};
-
-var sortPlayerFn = function(a,b) {
-    var ateamMember = a.winnersTeam.id == this.props.params.teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.props.params.teamId ? b.winner : b.loser;
-    if (this.state.sort.sortPlayer.asc == 'true') {
-        return ateamMember.name.localeCompare(bteamMember.name);
-    }
-    return bteamMember.name.localeCompare(ateamMember.name);
-};
-
-var sortOpponentFn  = function(a,b){
-    var ateamMember = a.winnersTeam.id == this.props.params.teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.props.params.teamId ? b.winner : b.loser;
-
-    if (this.state.sort.sortOpponent.asc == 'true')
-        return a.getOpponent(ateamMember).name.localeCompare(b.getOpponent(bteamMember).name);
-    else
-        return b.getOpponent(ateamMember).name.localeCompare(a.getOpponent(bteamMember).name);
-};
-
-var sortOpponentTeamFn = function(a,b){
-    var ateamMember = a.winnersTeam.id == this.props.params.teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.props.params.teamId ? b.winner : b.loser;
-    if (this.state.sort.sortTeam.asc == 'true')
-        return a.getOpponentsTeam(ateamMember).name.localeCompare(b.getOpponentsTeam(bteamMember).name);
-    else
-        return b.getOpponentsTeam(ateamMember).name.localeCompare(a.getOpponentsTeam(bteamMember).name);
-};
-
-
-var sortWinFn = function(a,b) {
-    var ateamMember = a.winnersTeam.id == this.props.params.teamId ? a.winner : a.loser;
-    var bteamMember = b.winnersTeam.id == this.props.params.teamId ? b.winner : b.loser;
-    aWin = (a.isWinner(ateamMember) ? 'W' : 'L');
-    bWin = (b.isWinner(bteamMember) ? 'W' : 'L');
-    if (this.state.sort.sortWin.asc == 'true')
-        return aWin.localeCompare(bWin);
-    else
-        return bWin.localeCompare(aWin);
-};

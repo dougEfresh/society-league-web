@@ -71,7 +71,7 @@ function formatDateTime(dt) {
     return m.format('ddd MMM Do');
 }
 
-function sendData(data, url, callback) {
+function sendData(url, data, callback,errCallback) {
         console.log("Sending data: " + JSON.stringify(data));
         $.ajax({
             async: true,
@@ -93,6 +93,9 @@ function sendData(data, url, callback) {
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
+                if (errCallback) {
+                    errCallback();
+                }
                 //this.redirect('error');
             }.bind(this)
         })

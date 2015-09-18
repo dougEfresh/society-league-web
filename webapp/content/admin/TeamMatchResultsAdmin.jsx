@@ -115,17 +115,6 @@ var MatchAResultsAdmin = React.createClass({
         dates.forEach(function(d) {
             dateOptions.push(<option key={d} value={d}>{d.split('T')[0]}</option>);
         });
-        var selectedDate = this.props.location.query.date == undefined ? '-1' : this.props.location.query.date;
-        /*
-        <select
-          onChange={this.onDateChange}
-             className="form-control"
-   value={selectedDate}
-  type={'select'}>
-            {dateOptions}
-        </select>
-         <TeamMatchResults teamMatches={this.state.teamMatches} date={this.props.location.query.date} />
-        */
         return (
             <div id="season-admin-app">
                 <select ref='season'

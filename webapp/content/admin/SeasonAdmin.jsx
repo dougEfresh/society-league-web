@@ -147,7 +147,7 @@ var SeasonModifyApp = React.createClass({
             startDates.push(<option key={future} value={future}>{future.split('T')[0]}</option>);
         }
         var divisionOptions = [];
-        divisionOptions.push(<option key={'UNKNOWN'} value={'UNKONWN'}>Unknown</option>);
+        divisionOptions.push(<option key={'UNKNOWN'} value={'UNKONWN'}>Choose Division</option>);
         this.props.divisions.forEach(function(d){
             divisionOptions.push(<option key={d} value={d}>{d}</option>);
         });
@@ -193,7 +193,7 @@ var SeasonModifyApp = React.createClass({
                            <div className="col-sm-10">
                                <select ref='type' onChange={this.onChange('type')} className="form-control" value={s.type == undefined ? "UNKNOWN" : s.type}
                                        type={'select'}>
-                                   <option key={'UNKNOWN'} value={'UNKNOWN'}>Unknown</option>
+                                   <option key={'UNKNOWN'} value={'UNKNOWN'}>Choose Type</option>
                                    <option key={'WINTER'} value={'WINTER'}>Winter</option>
                                    <option key={'SPRING'} value={'SPRING'}>Spring</option>
                                    <option key={'SUMMER'} value={'SUMMER'}>Summer</option>

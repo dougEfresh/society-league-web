@@ -46,21 +46,18 @@ var SeasonApp = React.createClass({
                         <Link to={'/app/season/' + this.props.params.seasonId + '/standings' }>
                             <button className={this.props.location.pathname.indexOf('standings') > 0 ? 'btn btn-success' : 'btn btn-default'}>
                             <span className="fa fa-trophy"></span><span className="main-item">Standings</span>
-
-                    </button>
+                            </button>
                         </Link>
                     </div>
-                    <Link to={'/app/season/' + this.props.params.seasonId + '/leaders' }>
-
-                    <button className={this.props.location.pathname.indexOf('leaders') >0 ? 'btn btn-success' : 'btn btn-default'} >
-                            <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
-                    </button>
-                    </Link>
                     <Link to={'/app/season/' + this.props.params.seasonId+ '/results' }>
-
-                    <button className={this.props.location.pathname.indexOf('results') > 0 ? 'btn btn-success' : 'btn btn-default'} >
+                        <button className={this.props.location.pathname.indexOf('results') > 0 ? 'btn btn-success' : 'btn btn-default'} >
                             <span className="fa  fa-history"></span><span className="main-item">Matches</span>
-                    </button>
+                        </button>
+                    </Link>
+                    <Link to={'/app/season/' + this.props.params.seasonId + '/leaders' }>
+                        <button className={this.props.location.pathname.indexOf('leaders') >0 ? 'btn btn-success' : 'btn btn-default'} >
+                            <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
+                        </button>
                     </Link>
                 </div>
         );

@@ -11,7 +11,7 @@ var AdminNav = React.createClass({
     render: function() {
         var active = null;
         var user = this.getUser();
-        if (this.context.location.pathname.indexOf('admin') >=0) {
+        if (this.context.location.pathname.indexOf('/app/admin') >=0) {
             active="active";
         }
         if (!user.admin) {
@@ -36,12 +36,12 @@ var AdminNav = React.createClass({
                         </Link>
                     </li>
                     <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='/app/admin/results'>
+                        <Link className='navName' to='/app/admin/team/results'>
                             <span className="fa fa-user"></span>Team Results
                         </Link>
                     </li>
                      <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='/app/admin/results'>
+                        <Link className='navName' to='/app/admin/player/results'>
                             <span className="fa fa-user"></span>Player Results
                         </Link>
                     </li>

@@ -22,6 +22,7 @@ var Status = require('./lib/Status');
 var UserAdminApp = require('./content/admin/UserAdmin.jsx');
 var SeasonAdminApp = require('./content/admin/SeasonAdmin.jsx');
 var TeamMatchResultsAdmin = require('./content/admin/TeamMatchResultsAdmin.jsx');
+var PlayerMatchResultsAdmin = require('./content/admin/PlayerMatchResultsAdmin.jsx');
 
 //var CreateUser = require('./content/admin/CreateUser.jsx');
 //var CreateUserSuccess = require('./content/admin/CreateUserSuccess.jsx');
@@ -86,7 +87,8 @@ var routes = (
             <Route path="user"  component={UserApp}/>
 
             <Route path="admin/users" component={UserAdminApp} />
-            <Route path="admin/results" component={TeamMatchResultsAdmin} />
+            <Route path="admin/team/results" component={TeamMatchResultsAdmin} />
+            <Route path="admin/player/results" component={PlayerMatchResultsAdmin} />
             <Route path="admin/seasons" component={SeasonAdminApp} />
 
             <Route path="scout/:statsId"  component={StatApp}>
