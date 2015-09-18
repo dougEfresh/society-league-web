@@ -115,7 +115,7 @@ var SeasonModifyApp = React.createClass({
             });
         }.bind(this));
     },
-    onChange(type){
+    onChange: function(type){
         return function() {
             if (!this.refs.hasOwnProperty(type)) {
                 console.warn('Could not find prop ' + type + ' on refs');

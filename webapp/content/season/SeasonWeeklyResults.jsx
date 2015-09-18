@@ -106,7 +106,7 @@ var NineBallTeamMatch = React.createClass({
             options: options
         }
     },
-    onChange(type){
+    onChange: function(type){
         return function(e) {
             var tm = this.state.teamMatch;
             e.preventDefault();
