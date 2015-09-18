@@ -35,16 +35,6 @@ var AdminNav = React.createClass({
                             <span className="fa fa-user"></span>Seasons
                         </Link>
                     </li>
-                    <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='/app/admin/team/results'>
-                            <span className="fa fa-user"></span>Team Results
-                        </Link>
-                    </li>
-                     <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='/app/admin/player/results'>
-                            <span className="fa fa-user"></span>Player Results
-                        </Link>
-                    </li>
                 </ul>
             </li>
         );
