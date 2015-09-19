@@ -17,18 +17,22 @@ var SeasonLeaders = React.createClass({
         }
 
     },
-    getData: function() {
-        Util.getData('/api/stat/season/players/' + this.props.params.seasonId, function(d){
+    getData: function(id) {
+        Util.getData('/api/stat/season/players/' + id, function(d){
             this.setState({stats: d});
         }.bind(this));
     },
     componentDidMount: function () {
-        this.getData();
+        this.getData(this.props.params.seasonId);
     },
-    componentWillReceiveProps: function (o, n) {
-        var now = Date.now();
-        if ( now - this.state.update > 1000*60)
-            this.getData();
+    componentWillReceiveProps: function(n) {
+        if (n.params.seasonId != this.props.params.seasonId) {
+            //this.setState({
+              //  loading : true
+            //});
+            this.getData(n.params.seasonId);
+            return;
+        }
     },
     getRows : function(data) {
         var rows = []  ;

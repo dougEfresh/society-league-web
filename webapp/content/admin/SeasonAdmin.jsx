@@ -108,12 +108,14 @@ var SeasonModifyApp = React.createClass({
     },
     handleSubmit: function(type) {
         var s = this.props.season;
-        Util.sendData(s,'/api/season/admin/' + type,function(d){
+        Util.sendData('/api/season/admin/' + type,s,function(d){
             this.setState({
                 season: d,
                 submitted: true
             });
-        }.bind(this));
+        }.bind(this),
+            function () { this.history.pushState(null, '/app/error');}
+        ).bind(this);
     },
     onChange: function(type){
         return function() {
@@ -129,6 +131,12 @@ var SeasonModifyApp = React.createClass({
         }.bind(this)
     },
     render: function () {
+        if (!this.getUser().admin){
+            return (
+                <div className="alert alert-error" role="alert">
+                    <h3>Go away you plebian</h3>
+                </div>);
+        }
         var s = this.state.season;
         var startDates = [];
         var now = moment();

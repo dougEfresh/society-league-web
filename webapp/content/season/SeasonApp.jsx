@@ -12,7 +12,7 @@ var SeasonApp = React.createClass({
     getInitialState: function () {
         return {
             update: Date.now(),
-            season: {}
+            seasons: []
         }
     },
     componentWillMount: function () {
@@ -24,21 +24,50 @@ var SeasonApp = React.createClass({
     },
     componentWillReceiveProps: function() {
         var now = Date.now();
-        if (now - this.state.update > 1000*60)
+        if (now - this.state.update > 1000*60) {
             this.getData();
-
+        }
     },
     getData: function() {
-        Util.getData('/api/season/' + this.props.params.seasonId, function(d){
-            this.setState({season: d});
+        Util.getData('/api/season', function(d){
+            this.setState({seasons: d});
         }.bind(this), null, 'SeasonApp');
     },
-    render: function() {
-        var user = this.getUser();
-        if (!this.state.season.name) {
-            return null;
+    onChange: function (e) {
+        e.preventDefault();
+        if (this.props.location.pathname.indexOf('/standings') >=0 ) {
+            this.history.pushState(null,'/app/season/' + e.target.value +'/standings');
+            return;
         }
+
+        if (this.props.location.pathname.indexOf('/leaders') >=0 ) {
+            this.history.pushState(null,'/app/season/' +  e.target.value +'/leaders');
+            return;
+        }
+
+        if (this.props.location.pathname.indexOf('/results') >=0 )  {
+            this.history.pushState(null,'/app/season/' +  e.target.value +'/results');
+            return;
+        }
+    },
+    render: function() {
+        if (this.state.seasons.length == 0)
+            return null;
+
         var display = 'inline';
+        var seasons = [];
+        if (this.getUser().admin) {
+            seasons = this.state.seasons;
+        } else {
+            this.state.seasons.forEach(function (s) {
+                this.getUser().handicapSeasons.forEach(function(hs){
+                    if (s.id == hs.season.id) {
+                        seasons.push(s);
+                    }
+                }.bind(this));
+            }.bind(this))
+        }
+
         var header = (
                 <div className="btn-group bot-margin">
                     <div id={display == 'none' ? 'season-standings-link-hidden' : 'season-standings-link'}
@@ -61,10 +90,30 @@ var SeasonApp = React.createClass({
                     </Link>
                 </div>
         );
+        var options = [];
+        seasons = seasons.sort(function(a,b){
+            return b.startDate.localeCompare(a.startDate);
+        });
+        seasons.forEach(function(s) {
+            options.push(<option key={s.id} value={s.id}>{s.displayName}</option>);
+        });
+        if (this.props.params.seasonId == undefined) {
+            setTimeout(function(){
+                this.history.pushState(null,'/app/season/' +  seasons[0].id + '/standings');
+            }.bind(this),250);
+            return null;
+        }
         return (
             <div id={'season-app'} className="panel panel-default">
                     <div className="panel-heading">
-                        <h3>{this.state.season.displayName}</h3>
+                        <select
+                            ref='season'
+                            onChange={this.onChange}
+                            className="form-control"
+                            value={this.props.params.seasonId}
+                            type={'select'}>
+                            {options}
+                         </select>
                         {header}
                     </div>
                     <div className="panel-body">

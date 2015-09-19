@@ -42,7 +42,7 @@ var TeamMemberResultsApp = require('./content/team/TeamMemberResults.jsx');
 var SeasonApp = require('./content/season/SeasonApp.jsx');
 var SeasonLeaders = require('./content/season/SeasonLeaders.jsx');
 var SeasonStandings = require('./content/season/SeasonStandings.jsx');
-var SeasonWeeklyResults = require('./content/season/SeasonWeeklyResults.jsx');
+var SeasonWeeklyMatches = require('./content/season/SeasonWeeklyMatches.jsx');
 var SeasonMatchResultsOnDay = require('./content/season/SeasonMatchResultsOnDay.jsx');
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
@@ -96,11 +96,11 @@ var routes = (
                 <Route path="chart"  component={TeamChart} />
                 <Route path="members"  component={TeamMemberResultsApp} />
             </Route>
-            <Route path="season/:seasonId"  component={SeasonApp} >
-                <Route path="leaders"  component={SeasonLeaders} />
-                <Route path="standings"  component={SeasonStandings} />
-                <Route path="results"  component={SeasonWeeklyResults} />
-                <Route path="teamresults/:matchId" component={SeasonMatchResultsOnDay} />
+            <Route path="season" component={SeasonApp} >
+                <Route path=":seasonId/leaders"  component={SeasonLeaders} />
+                <Route path=":seasonId/standings"  component={SeasonStandings} />
+                <Route path=":seasonId/results"  component={SeasonWeeklyMatches} />
+                <Route path=":seasonId/teamresults/:matchId" component={SeasonMatchResultsOnDay} />
             </Route>
         </Route>
     </Route>

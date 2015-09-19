@@ -13,23 +13,27 @@ var SeasonStandings = React.createClass({
     getInitialState: function() {
          return {
              update: Date.now(),
-             seasonStats: []
+             seasonStats: [],
+             loading: false
          }
     },
-    getData: function() {
-        Util.getData('/api/stat/season/' + this.props.params.seasonId, function(d){
-            this.setState({seasonStats: d});
-        }.bind(this));
+    getData: function(id) {
+        Util.getData('/api/stat/season/' + id, function(d){
+            this.setState({seasonStats: d, loading: false});
+        }.bind(this),null,'SeasonStandings');
 
     },
     componentDidMount: function () {
-        this.getData();
+        this.getData(this.props.params.seasonId);
     },
-    componentWillReceiveProps: function (o, n) {
-        //var now = Date.now();
-        //if (now - this.state.update > 1000 * 60)
-//            this.getData();
-         this.getData();
+    componentWillReceiveProps: function (n) {
+        if (n.params.seasonId != this.props.params.seasonId) {
+            //this.setState({
+              //  loading : true
+            //});
+            this.getData(n.params.seasonId);
+            return;
+        }
     },
     render: function() {
         if (this.state.seasonStats.length == 0)

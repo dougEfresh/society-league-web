@@ -15,7 +15,7 @@ var AdminNav = React.createClass({
             active="active";
         }
         if (!user.admin) {
-            console.log('warning user is not admin')
+           return null;
         }
         return (
             <li id="admin-nav" role="presentation" className={'dropdown ' + active}>

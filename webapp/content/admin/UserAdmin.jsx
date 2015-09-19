@@ -59,6 +59,12 @@ var UserAdminApp = React.createClass({
             this.getData();
     },
     render: function () {
+        if (!this.getUser().admin){
+            return (
+                <div className="alert alert-error" role="alert">
+                <h3>Go away you plebian</h3>
+            </div>);
+        }
         var users = this.state.users;
         var handicaps = this.state.handicaps;
         if (users.length < 1 || handicaps.length < 1) {
@@ -148,9 +154,11 @@ var UserModifyApp = React.createClass({
             }
         });
         u.handicapSeasons = handicapSeasons;
-        Util.sendData(u,'/api/user/admin/' + type,function(d){
+        Util.sendData('/api/user/admin/' + type,u, function(d){
             var query = {user: Qs.stringify(d),submitted:true};
             this.history.pushState(null, '/app/admin/users', query);
+        }.bind(this), function() {
+            this.history.pushState(null, '/app/error');
         }.bind(this));
     },
     handicapChange: function(e) {
