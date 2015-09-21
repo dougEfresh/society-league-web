@@ -44,10 +44,17 @@ var TeamApp = React.createClass({
         }
     },
     getData: function() {
-        Util.getData('/api/team/get/user/' + this.getUser().id, function(d){
-            this.setState({teams: d});
-        }.bind(this), null, 'TeamApp'
-        );
+        if (this.getUser().admin) {
+            Util.getData('/api/team/active', function (d) {
+                    this.setState({teams: d});
+                }.bind(this), null, 'TeamApp'
+            );
+        } else {
+            Util.getData('/api/team/get/user/' + this.getUser().id, function (d) {
+                    this.setState({teams: d});
+                }.bind(this), null, 'TeamApp'
+            );
+        }
     },
     componentWillReceiveProps: function (o, n) {
         var now = Date.now();

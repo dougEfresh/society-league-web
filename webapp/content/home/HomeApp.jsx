@@ -2,7 +2,7 @@ var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
-//var UpcomingChallenges = require('./UpcomingChallenges.jsx');
+var UpcomingChallenges = require('./UpcomingChallenges.jsx');
 var UpcomingMatches = require('./UpcomingMatches.jsx');
 var RecentMatches = require('./RecentMatches.jsx');
 //var ChallengePendingApp = require('../challenge/pending/ChallengePendingApp.jsx');
@@ -55,6 +55,7 @@ var HomeApp = React.createClass({
                     <span className="glyphicon glyphicon-user"></span>
                     {welcome}
                 </h2>
+                <UpcomingChallenges />
                 <UpcomingMatches />
                 <RecentMatches />
             </div>

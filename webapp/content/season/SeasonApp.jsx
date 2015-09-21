@@ -56,8 +56,14 @@ var SeasonApp = React.createClass({
 
         var display = 'inline';
         var seasons = [];
+        var season = {};
         if (this.getUser().admin) {
             seasons = this.state.seasons;
+             this.state.seasons.forEach(function (s) {
+                 if (s.id == this.props.params.seasonId) {
+                    season = s;
+                }
+             }.bind(this));
         } else {
             this.state.seasons.forEach(function (s) {
                 this.getUser().handicapSeasons.forEach(function(hs){
@@ -65,7 +71,21 @@ var SeasonApp = React.createClass({
                         seasons.push(s);
                     }
                 }.bind(this));
+                if (s.id == this.props.params.seasonId) {
+                    season = s;
+                }
             }.bind(this))
+        }
+
+        var leaders =
+            (<Link to={'/app/season/' + this.props.params.seasonId + '/leaders' }>
+            <button className={this.props.location.pathname.indexOf('leaders') >0 ? 'btn btn-success' : 'btn btn-default'} >
+                <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
+            </button>
+        </Link>);
+
+        if (season.division != undefined && season.division.indexOf('CHALLENGE')>=0) {
+            leaders = null;
         }
 
         var header = (
@@ -83,13 +103,10 @@ var SeasonApp = React.createClass({
                             <span className="fa  fa-history"></span><span className="main-item">Matches</span>
                         </button>
                     </Link>
-                    <Link to={'/app/season/' + this.props.params.seasonId + '/leaders' }>
-                        <button className={this.props.location.pathname.indexOf('leaders') >0 ? 'btn btn-success' : 'btn btn-default'} >
-                            <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
-                        </button>
-                    </Link>
+                    {leaders}
                 </div>
         );
+
         var options = [];
         seasons = seasons.sort(function(a,b){
             return b.startDate.localeCompare(a.startDate);

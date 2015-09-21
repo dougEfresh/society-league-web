@@ -40,11 +40,14 @@ var SeasonWeeklyResults = React.createClass({
                 <LoadingApp />
             )
         }
+        results = results.sort(function(a,b){
+            return b.matchDate.split('T')[0].localeCompare(a.matchDate.split('T')[0]);
+        });
         var rows = [];
-        var previousMd = results[0].matchDate;
+        var previousMd = results[0].matchDate.split('T')[0];
         var displayResults = [];
         results.forEach(function(r) {
-            var md = r.matchDate;
+            var md = r.matchDate.split('T')[0];
             if (previousMd != md) {
                   rows.push(<TeamMatches key={r.id} teamMatches={displayResults} />);
                 displayResults = [];

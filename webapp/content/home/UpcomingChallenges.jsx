@@ -1,4 +1,3 @@
-/*
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
@@ -6,15 +5,27 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UserLink= require('../../jsx/components/links/UserLink.jsx');
 var TeamLink= require('../../jsx/components/links/TeamLink.jsx');
 var moment = require('moment');
-var Status = require('../../lib/Status');
-var slotDao = require('../../lib/SlotDao');
-var MatchDao = require('../../lib/dao/MatchDao');
-var util = require('../challenge/challengeUtil');
+var Util = require('../../jsx/util.jsx');
 var Handicap = require('../../lib/Handicap');
+var Status = require('../../lib/Status');
 
 var UpcomingChallenges = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
-      cancel: function(e) {
+    mixins: [UserContextMixin,Router.History],
+    getInitialState: function() {
+         return {
+             data: []
+        }
+    },
+    componentWillMount: function() {
+    },
+    componentWillUnmount: function() {
+    },
+    componentDidMount: function() {
+        Util.getData('/api/challenge/user/' + this.getUser().id, function(d){
+            this.setState({data: d});
+        }.bind(this), null, 'UpComingChallenge');
+    },
+    cancel: function(e) {
         e.preventDefault();
         //ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
         var request = {
@@ -22,30 +33,31 @@ var UpcomingChallenges = React.createClass({
             opponent: null,
             challenges: [e.target.id]
         };
-        this.transitionTo('challengeCancel',{},request);
+        //this.transitionTo('challengeCancel',{},request);
         //util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
     },
     render: function() {
         var user = this.getUser();
-        if (user.id == "0" || !user.challenge) {
+        if (!user.challenge || this.state.data.length == 0) {
             return null;
         }
-        var matchDao = new MatchDao(this.getDb());
-        var upComingChallenges = matchDao.getUpcomingChallenges(this.getUser());
-
-        var matches = [];
-        for (var i=0; i<upComingChallenges.length ; i++) {
-            var match = upComingChallenges[i];
-            var m = moment(match.selectedSlot.date);
-            var opponent = match.getUserOpponent(this.getUser());
-            var hc = Handicap.race(this.getUser().getRawChallengeHandicap(), opponent.getRawChallengeHandicap());
-            matches.push(
-                <li key={match.getId()} className="list-group-item col-lg-12 col-xs-12">
+        var challenges = [];
+        for (var i=0; i< this.state.data.length ; i++) {
+            var challenge = this.state.data[i];
+            if (challenge.status != Status.ACCEPTED) {
+                continue;
+            }
+            var m = moment(challenge.date);
+            var opponent =  challenge.userOpponent;
+            if (opponent.id == this.getUser().id) {
+                opponent = challenge.userChallenger;
+            }
+           challenges.push(
+                <li key={challenge.id} className="list-group-item col-lg-12 col-xs-12">
                     <div className="col-lg-10 col-md-10 col-xs-12">
-                    <span id={'challenge-'+ match.getId()} className="next-match pull-left">
+                    <span id={'challenge-'+ challenge.id} className="next-match pull-left">
                         {m.format('ddd MMM Do ') + ' at '  + m.format('h:mm a') + ' vs. '}
                         <UserLink user={opponent}/>
-                        <span>{' (' + opponent.getChallengeHandicap() + ' ' + hc + ') '}</span>
                     </span>
                     </div>
                     <div className="col-lg-2 col-md-2 col-xs-12">
@@ -53,30 +65,21 @@ var UpcomingChallenges = React.createClass({
                                 type="button"
                                 className="btn btn-sm btn-danger btn-responsive">
                             <span  className="glyphicon glyphicon-remove"></span>
-                            <b id={match.getId()}>Decline Challenge</b>
+                            <b id={challenge.id}>Decline Challenge</b>
                         </button>
                     </div>
                 </li>
             );
         }
-        if (matches.length == 0) {
+        if (challenges.length == 0) {
             return null;
-                        return (
-                <div id={'upcoming-challenges'} className="panel panel-default">
-                    <div className="panel-heading" >Upcoming Challenges</div>
-                        <div className="panel-body" >
-                            <span id="no-challenges">You have no matches scheduled</span>
-                        </div>
-                </div>
-            )
-
         }
         return (
               <div id={'upcoming-challenges'} className="panel panel-default">
                     <div className="panel-heading" >Upcoming Challenges</div>
                         <div className="panel-body" >
                         <ul className="list-group home-upcoming-challenges">
-                            {matches}
+                            {challenges}
                         </ul>
                         </div>
               </div>
@@ -85,4 +88,3 @@ var UpcomingChallenges = React.createClass({
 });
 
 module.exports = UpcomingChallenges;
- */

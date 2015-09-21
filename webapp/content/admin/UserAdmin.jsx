@@ -117,7 +117,8 @@ var UserModifyApp = React.createClass({
             id: u.id,
             firstName: u.firstName,
             lastName: u.lastName,
-            email: u.email
+            email: u.email,
+            reset: false
         }
     },
     componentWillReceiveProps: function (n) {
@@ -257,15 +258,37 @@ var UserModifyApp = React.createClass({
         })
 
     },
+    reset: function() {
+        Util.sendData("/api/user/reset/request",{id: this.props.user.id},function(){
+            this.setState({
+                reset: true
+            })
+        }.bind(this));
+    },
     render: function () {
         var u = this.props.user;
         if (u == undefined) {
             u = {}
         }
+        if (this.state.reset) {
+            setTimeout(function () {
+                this.setState({
+                    reset: false
+                });
+            }.bind(this), 3000);
+            return (
+                <div className="alert alert-success" role="alert">
+                    {'Sent Password Reset to ' + u.email}
+                    <p>Please wait 3 seconds</p>
+                </div>
+            );
+        }
+        var userType = u.admin ? "fa fa-user-plus" : "fa fa-user";
         return (
            <div id="modify-user" className="panel panel-default">
                <div className="panel-heading">
-                   <h2><span className="fa fa-user-plus"></span>{u.name}</h2>
+                   <h2><span className={userType}></span>{u.name}</h2>
+                   <button type="button" className="btn btn-sm btn-primary btn-responsive" onClick={this.reset}>Send Password Reset</button>
                </div>
                <div className="panel-body">
                    <form id='login' className="login-form form-signin form-horizontal">

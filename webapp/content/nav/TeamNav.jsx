@@ -39,15 +39,22 @@ var TeamNav = React.createClass({
         var teams = [];
         var user = this.getUser();
         this.state.data.forEach(function(t) {
+            if (t.challenge) {
+                return;
+            }
             teams.push(
                 <li key={t.name} className="teamNavLink" role="presentation">
                     <Link to={'/app/team/' + t.id + '/standings'} >{t.name}</Link>
                 </li>
             );
         }.bind(this));
+
         var clName = "dropdown";
         if (this.context.location.pathname.indexOf('app/team/') >= 0) {
             clName =  clName + " active";
+        }
+        if (teams.length == 0) {
+            return null;
         }
         return (
               <li id="team-nav" role="presentation" className={clName} >

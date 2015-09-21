@@ -48,6 +48,9 @@ var UpcomingMatches = React.createClass({
                 </tr>
             );
         });
+        if (rows.length == 0){
+            return null;
+        }
         return (
 
             <div id={'no-recent-matches'} className="panel panel-default">

@@ -39,8 +39,21 @@ var SeasonStandings = React.createClass({
         if (this.state.seasonStats.length == 0)
             return null;
         var rows = [];
-        if (this.state.seasonStats[0].season.nine) {
+        if (this.state.seasonStats[0].season.challenge) {
             this.state.seasonStats.forEach(function (s) {
+                rows.push(
+                    <tr key={s.team.id}>
+                        <td><TeamLink team={s.team} season={s.team.season}/></td>
+                        <td>{s.wins}</td>
+                        <td>{s.loses}</td>
+                        <td>{0}</td>
+                        <td>{s.racksWon}</td>
+                        <td>{s.racksLost}</td>
+                        <td>{s.rackPct.toFixed(3)}</td>
+                    </tr>)
+            }.bind(this));
+        } else if (this.state.seasonStats[0].season.nine) {
+               this.state.seasonStats.forEach(function (s) {
                 rows.push(
                     <tr key={s.team.id}>
                         <td><TeamLink team={s.team} season={s.team.season}/></td>
@@ -50,7 +63,7 @@ var SeasonStandings = React.createClass({
                         <td>{s.setLoses}</td>
                         <td>{s.racksWon}</td>
                         <td>{s.racksLost}</td>
-                        <td>{s.rackPct.toFixed(2)}</td>
+                        <td>{s.rackPct.toFixed(3)}</td>
                     </tr>)
             }.bind(this));
         } else {
@@ -62,10 +75,9 @@ var SeasonStandings = React.createClass({
                         <td>{s.loses}</td>
                         <td>{s.racksWon}</td>
                         <td>{s.racksLost}</td>
-                        <td>{s.rackPct.toFixed(2)}</td>
+                        <td>{s.rackPct.toFixed(3)}</td>
                     </tr>)
             }.bind(this));
-
         }
 
         var header = (<tr>
@@ -78,15 +90,27 @@ var SeasonStandings = React.createClass({
             <th>Racks Lost</th>
             <th>Pct</th>
         </tr>);
-        if (!this.state.seasonStats[0].season.nine) {
+        if (this.state.seasonStats[0].season.challenge) {
             header = ( <tr>
             <th>Team</th>
             <th>W</th>
             <th>L</th>
+                    <th>Points</th>
             <th>Racks Won</th>
             <th>Racks Lost</th>
+
             <th>Pct</th>
         </tr>
+            );
+        } else if (!this.state.seasonStats[0].season.nine) {
+            header = ( <tr>
+                    <th>Team</th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>Racks Won</th>
+                    <th>Racks Lost</th>
+                    <th>Pct</th>
+                </tr>
             );
         }
         return (
