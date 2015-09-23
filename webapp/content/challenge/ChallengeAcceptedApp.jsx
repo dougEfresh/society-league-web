@@ -17,6 +17,9 @@ var ChallengeAcceptedApp = React.createClass({
         if (this.state.challenge == undefined) {
             return null;
         }
+        if (this.state.challenge != Status.ACCEPTED) {
+            return null;
+        }
         var challenge = this.state.challenge;
         var m = moment(challenge.date);
         var opponent = challenge.userOpponent;
@@ -24,22 +27,22 @@ var ChallengeAcceptedApp = React.createClass({
             opponent = challenge.userChallenger;
         }
         return (
-              <li key={challenge.id} className="list-group-item col-lg-12 col-xs-12">
-                        <div className="col-lg-10 col-md-10 col-xs-12">
+            <li className="list-group-item col-lg-12 col-xs-12">
+                <div className="col-lg-10 col-md-10 col-xs-12">
                     <span id={'challenge-'+ challenge.id} className="next-match pull-left">
                         {m.format('ddd MMM Do ') + ' at ' + m.format('h:mm a') + ' vs. '}
                         <UserLink user={opponent}/>
                     </span>
-                        </div>
-                        <div className="col-lg-2 col-md-2 col-xs-12">
-                            <button onClick={this.cancel}
-                                    type="button"
-                                    className="btn btn-sm btn-danger btn-responsive">
-                                <span className="glyphicon glyphicon-remove"></span>
-                                <b id={challenge.id}>Decline Challenge</b>
-                            </button>
-                        </div>
-                    </li>
+                </div>
+                <div className="col-lg-2 col-md-2 col-xs-12">
+                    <button onClick={this.cancel}
+                            type="button"
+                            className="btn btn-sm btn-danger btn-responsive">
+                        <span className="glyphicon glyphicon-remove"></span>
+                        <b id={challenge.id}>Decline Challenge</b>
+                    </button>
+                </div>
+            </li>
         );
     }
 });

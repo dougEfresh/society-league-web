@@ -9,7 +9,7 @@ var Util = require('../../jsx/util.jsx');
 var Handicap = require('../../lib/Handicap');
 var Status = require('../../lib/Status');
 
-var UpcomingChallenges = React.createClass({
+var ChallengePendingApp =  React.createClass({
     getInitialState: function() {
         return {challenge: this.props.challenge};
     },
@@ -17,6 +17,35 @@ var UpcomingChallenges = React.createClass({
         if (this.state.challenge == undefined) {
             return null;
         }
-        return <h1>Pending</h1>
+        if (this.state.challenge != Status.PENDING) {
+            return null;
+        }
+        var challenge = this.state.challenge;
+        var m = moment(challenge.date);
+        var opponent = challenge.userOpponent;
+        if (opponent.id == this.getUser().id) {
+            opponent = challenge.userChallenger;
+        }
+        return (
+            <li className="list-group-item col-lg-12 col-xs-12">
+                <div className="col-lg-10 col-md-10 col-xs-12">
+                    <span id={'challenge-'+ challenge.id} className="next-match pull-left">
+                        {m.format('ddd MMM Do ') + ' at ' + m.format('h:mm a') + ' vs. '}
+                        <UserLink user={opponent}/>
+                    </span>
+                </div>
+                <div className="col-lg-2 col-md-2 col-xs-12">
+                    <button onClick={this.cancel}
+                            type="button"
+                            className="btn btn-sm btn-danger btn-responsive">
+                        <span className="glyphicon glyphicon-remove"></span>
+                        <b id={challenge.id}>Decline Challenge</b>
+                    </button>
+                </div>
+            </li>
+        );
     }
 });
+
+
+module.exports = ChallengePendingApp;
