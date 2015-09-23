@@ -52,6 +52,41 @@ function getData(url, callback, unauthCallback, module) {
         });
     }
 
+function getSomeData(options) {
+    //url, callback, unauthCallback, module
+    //console.log('Someone is getting data ' + arguments.callee.caller.toString());
+        console.log("["+ options.module + "] Getting data from " + options.url);
+        $.ajax({
+            url: options.url,
+            dataType: 'json',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                    if (options.unAuthCallback) {
+                        options.unAuthCallback();
+                        return;
+                    }
+                    window.location = '/#/login?expired=true'
+                }.bind(this)
+            },
+            success: function (d) {
+                options.callback(d);
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(options.url, status, err.toString());
+                console.log('Redirecting to error');
+                if (options.errorCallBack) {
+                    options.errorCallBack(zhr,status,err);
+                    return;
+                }
+                if (options.router) {
+                    options.router.pushState(null, '/error');
+                }
+            }.bind(this)
+        });
+    }
+
+
 function getHandicap(user,seasonId) {
     var hc = "N/A";
     if (user == undefined || user.handicapSeasons == undefined) {
@@ -106,4 +141,4 @@ function sendData(url, data, callback,errCallback) {
 module.exports = {nextChallengeDate: getNextChallengeDay,
     getData: getData,
     sendData: sendData,
-    getChallengeDates: getChallengeDates, getHandicap: getHandicap, formatDateTime: formatDateTime};
+    getChallengeDates: getChallengeDates, getHandicap: getHandicap, formatDateTime: formatDateTime, getSomeData: getSomeData};

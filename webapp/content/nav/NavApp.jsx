@@ -10,7 +10,7 @@ var AdminNav = require('./AdminNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
 var HomeNav = require('./HomeNav.jsx');
 var StatNav = require('./StatNav.jsx');
-//var ChallengeNav = require('./ChallengeNav.jsx'); <ChallengeNav />
+var ChallengeNav = require('./ChallengeNav.jsx'); <ChallengeNav />
 var HomeApp = require('../home/HomeApp.jsx');
 var Util = require('../../jsx/util.jsx');
 
@@ -22,25 +22,24 @@ var NavApp = React.createClass({
          }
     },
     componentWillMount: function() {
-
     },
     componentWillUnmount: function() {
-        //DataStore.removeChangeListener(this._onChange);
     },
     componentDidMount: function() {
-        Util.getData('/api/user',function(d){
+        Util.getSomeData({
+            url: '/api/user',
+            callback: function(d) {
                 DataStore.setUser(d);
                 if (this.props.location.pathname == '/') {
                     this._onChange();
                     this.history.replaceState(null, '/app/home');
                     return
                 }
-                this._onChange();
-                //this.history.replaceState(null,this.props.location,this.props.location.query);
-            }.bind(this)
-            ,function() {this.history.pushState(null, '/login');}.bind(this)
-            ,'NavApp');
-
+            }.bind(this),
+            router: this.props.history,
+            module: 'NavApp',
+            unAuthCallback: function() {this.history.pushState(null, '/login');}.bind(this)
+        });
     },
     componentWillReceiveProps: function() {
     },
@@ -63,6 +62,7 @@ var NavApp = React.createClass({
                             <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
                                 <ul className="nav nav-tabs">
                                     <HomeNav />
+                                    <ChallengeNav />
                                     <TeamNav />
                                     <SeasonNav />
                                     <StatNav />

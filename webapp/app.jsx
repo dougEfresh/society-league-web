@@ -12,8 +12,9 @@ var Status = require('./lib/Status');
 //var ChallengeSentApp = require('./content/challenge/sent/ChallengeSentApp.jsx');
 ///var ChallengeSignUp = require('./content/challenge/ChallengeSignUp.jsx');
 //var ChallengeConfirmApp = require('./content/challenge/ChallengeConfirmApp.jsx');
+
 //var ChallengeMain= require('./content/challenge/Main.jsx');
-//var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
+var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
 //var ChallengesApp = require('./content/admin/Challenges.jsx');
 //var ChallengesUsers= require('./content/admin/ChallengeUsers.jsx');
 //var ChallengeAdminResults= require('./content/admin/ChallengeAdminResults.jsx');
@@ -86,7 +87,8 @@ var routes = (
 
             <Route path="admin/users" component={UserAdminApp} />
             <Route path="admin/seasons" component={SeasonAdminApp} />
-
+            <Route name="challenge" path="challenge" component={ChallengeApp} >
+            </Route>
             <Route path="scout/:statsId"  component={StatApp}>
                 <Route path="stats" component={StatDisplay} />
                 <Route path="history" component={StatHistory} />
@@ -117,7 +119,7 @@ React.render((<Router>{routes}</Router>), document.getElementById('content'));
  </Route>
 
 
- <Route name="challenge" path="challenge" component={ChallengeApp} >
+ p
  <Route name="challengeMain" path="main"  component={ChallengeMain} />
  <Route name="challengeSignUp" path="signup"  component={ChallengeSignUp} />
  <Route name="challengeConfirm" path="confirm"  component={ChallengeConfirmApp} />

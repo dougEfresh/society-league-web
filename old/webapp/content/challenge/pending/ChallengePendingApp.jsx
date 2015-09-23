@@ -6,10 +6,10 @@ var DataStore = require('../../../jsx/stores/DataStore.jsx');
 var Status = require('../../../lib/Status');
 
 var ChallengePendingApp = React.createClass({
-    mixins: [UserContextMixin,Router.Navigation,Router.State],
+    mixins: [UserContextMixin],
     getInitialState: function () {
         return  {
-            challengeGroups: []
+            challenges: []
         };
     },
     componentWillMount: function () {

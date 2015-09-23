@@ -40,13 +40,21 @@ var SeasonStandings = React.createClass({
             return null;
         var rows = [];
         if (this.state.seasonStats[0].season.challenge) {
-            this.state.seasonStats.forEach(function (s) {
+            var stats = this.state.seasonStats.sort(function(a,b){
+                if (b.points > a.points) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+
+            });
+            stats.forEach(function (s) {
                 rows.push(
                     <tr key={s.team.id}>
                         <td><TeamLink team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
                         <td>{s.loses}</td>
-                        <td>{0}</td>
+                        <td>{s.points.toFixed(3)}</td>
                         <td>{s.racksWon}</td>
                         <td>{s.racksLost}</td>
                         <td>{s.rackPct.toFixed(3)}</td>

@@ -3,67 +3,54 @@ var Router = require('react-router')
     , Link = Router.Link;
 var DataStore = require('../../jsx/stores/DataStore.jsx');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
+var Util = require('../../jsx/util.jsx');
 
-/*
 var ChallengeNav = React.createClass({
-    mixins: [UserContextMixin,Router.State],
+    mixins: [UserContextMixin],
+    contextTypes: {
+        location: React.PropTypes.object
+    },
     getInitialState: function () {
         return {
-            user: this.getUser()
+            challenges: []
         }
     },
     componentWillMount: function () {
-        DataStore.addChangeListener(this._onChange);
+
     },
     componentWillUnmount: function () {
-        DataStore.removeChangeListener(this._onChange);
+
     },
     componentDidMount: function () {
-        this.setState({user: this.getUser()});
     },
-    _onChange: function () {
-        this.setState({
-            user: this.getUser()
-        });
-    },
-    genLink: function(c,type,glyph,name) {
-        if (type == Status.REQUEST) {
-            return (
-                <Link to={'challengeMain'} >
-                    <span className={"glyphicon glyphicon-" + glyph}></span>
-                    {'Request'}
-                </Link>
-            )
-        }
-        return c[type].length != 0 ? (
-
-                <Link to={'challengeMain'} >
-                    <span id={type.toLowerCase() +'-link'}>
-                        <span className={"glyphicon glyphicon-" + glyph}></span>
-                    {name}
-                     <span id={type.toLowerCase() +'-counter'} className="badge">
-                         {c[type].length}</span>
-                    </span>
-                </Link>
-            )
-            : null;
-    },
-    render: function() {
-        var u = this.getUser();
-        if (u.id == "0") {
+    render: function () {
+        if (!this.getUser().challenge) {
             return null;
         }
-        return null;
+        var className = "dropdown ";
+        if (this.context.location.pathname.indexOf('app/challenge') >= 0) {
+            className += "active";
+        }
+        return (
+              <li id="challenge-nav" role="presentation" className={className}>
+                 <Link to="/app/challenge" >
+                     <span className='fa fa-trophy'></span>
+                     <span className="main-item">
+                         Challenges
+                     </span>
+                 </Link>
+             </li>
+        )
+    }
+});
+
         /*
         var c = u.challenges;
         var counter = c[Status.SENT].length
             + c[Status.PENDING].length
             + c[Status.ACCEPTED].length;
 
-        var active = "";
-        if (this.getPath().indexOf('/challenge/') >= 0) {
-            active = "active";
-        }
+
         var noChallenge = (
             <ul className="dropdown-menu" role="menu">
                 <li id="challenge-signup-link" className="teamNavLink" role="presentation">
@@ -117,6 +104,7 @@ var ChallengeNav = React.createClass({
 
     }
 });
+*/
 
 module.exports = ChallengeNav;
- */
+

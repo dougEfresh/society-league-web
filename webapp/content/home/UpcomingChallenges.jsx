@@ -8,6 +8,7 @@ var moment = require('moment');
 var Util = require('../../jsx/util.jsx');
 var Handicap = require('../../lib/Handicap');
 var Status = require('../../lib/Status');
+var ChallengPendingApp = require('../challenge/ChallengePendingApp.jsx');
 
 var UpcomingChallenges = React.createClass({
     mixins: [UserContextMixin,Router.History],
@@ -42,47 +43,68 @@ var UpcomingChallenges = React.createClass({
             return null;
         }
         var challenges = [];
+        var pending = [];
         for (var i=0; i< this.state.data.length ; i++) {
             var challenge = this.state.data[i];
-            if (challenge.status != Status.ACCEPTED) {
-                continue;
-            }
-            var m = moment(challenge.date);
-            var opponent =  challenge.userOpponent;
-            if (opponent.id == this.getUser().id) {
-                opponent = challenge.userChallenger;
-            }
-           challenges.push(
-                <li key={challenge.id} className="list-group-item col-lg-12 col-xs-12">
-                    <div className="col-lg-10 col-md-10 col-xs-12">
+            if (challenge.status  == Status.ACCEPTED) {
+                var m = moment(challenge.date);
+                var opponent = challenge.userOpponent;
+                if (opponent.id == this.getUser().id) {
+                    opponent = challenge.userChallenger;
+                }
+                challenges.push(
+                    <li key={challenge.id} className="list-group-item col-lg-12 col-xs-12">
+                        <div className="col-lg-10 col-md-10 col-xs-12">
                     <span id={'challenge-'+ challenge.id} className="next-match pull-left">
-                        {m.format('ddd MMM Do ') + ' at '  + m.format('h:mm a') + ' vs. '}
+                        {m.format('ddd MMM Do ') + ' at ' + m.format('h:mm a') + ' vs. '}
                         <UserLink user={opponent}/>
                     </span>
-                    </div>
-                    <div className="col-lg-2 col-md-2 col-xs-12">
-                        <button onClick={this.cancel}
-                                type="button"
-                                className="btn btn-sm btn-danger btn-responsive">
-                            <span  className="glyphicon glyphicon-remove"></span>
-                            <b id={challenge.id}>Decline Challenge</b>
-                        </button>
-                    </div>
-                </li>
-            );
-        }
-        if (challenges.length == 0) {
-            return null;
-        }
-        return (
-              <div id={'upcoming-challenges'} className="panel panel-default">
-                    <div className="panel-heading" >Upcoming Challenges</div>
-                        <div className="panel-body" >
-                        <ul className="list-group home-upcoming-challenges">
-                            {challenges}
-                        </ul>
                         </div>
-              </div>
+                        <div className="col-lg-2 col-md-2 col-xs-12">
+                            <button onClick={this.cancel}
+                                    type="button"
+                                    className="btn btn-sm btn-danger btn-responsive">
+                                <span className="glyphicon glyphicon-remove"></span>
+                                <b id={challenge.id}>Decline Challenge</b>
+                            </button>
+                        </div>
+                    </li>
+                );
+            }
+            if (challenge.status  == Status.PENDING) {
+                pending.push(<ChallengePendingApp challenge={challenge} />)
+            }
+        }
+        var upComingChallenges = null;
+        var pendingChallenges = null;
+        if (challenges.length > 0) {
+            upComingChallenges = ( <div id={'pending-challenges'} className="panel panel-default">
+                  <div className="panel-heading" >Upcoming Challenges</div>
+                  <div className="panel-body" >
+                      <ul className="list-group home-upcoming-challenges">
+                          {challenges}
+                      </ul>
+                  </div>
+              </div>);
+        }
+
+        if (pending.length > 0) {
+               pendingChallenges = ( <div id={'pending-challenges'} className="panel panel-warning">
+                  <div className="panel-heading" >Pending Challenges</div>
+                  <div className="panel-body" >
+                      <ul className="list-group home-upcoming-challenges">
+                          {pending}
+                      </ul>
+                  </div>
+              </div>);
+
+        }
+
+        return (
+            <div>
+                {pendingChallenges}
+                {upComingChallenges}
+            </div>
         )
     }
 });
