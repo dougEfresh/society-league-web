@@ -8,8 +8,8 @@ var moment = require('moment');
 var Util = require('../../jsx/util.jsx');
 var Handicap = require('../../lib/Handicap');
 var Status = require('../../lib/Status');
-var ChallengPendingApp = require('../challenge/ChallengePendingApp.jsx');
-var ChallengAcceptedApp = require('../challenge/ChallengePendingApp.jsx');
+var ChallengePendingApp = require('../challenge/ChallengePendingApp.jsx');
+var ChallengeAcceptedApp = require('../challenge/ChallengeAcceptedApp.jsx');
 
 var UpcomingChallenges = React.createClass({
     mixins: [UserContextMixin,Router.History],
@@ -26,17 +26,6 @@ var UpcomingChallenges = React.createClass({
         Util.getData('/api/challenge/user/' + this.getUser().id, function(d){
             this.setState({data: d});
         }.bind(this), null, 'UpComingChallenge');
-    },
-    cancel: function(e) {
-        e.preventDefault();
-        //ChallengeActions.cancelChallenge(this.getUserId(),this.props.challengeGroup);
-        var request = {
-            challenger: null,
-            opponent: null,
-            challenges: [e.target.id]
-        };
-        //this.transitionTo('challengeCancel',{},request);
-        //util.sendStatus('/api/challenge/' + Status.CANCELLED.toLowerCase() + '/' + this.getUser().id,request);
     },
     render: function() {
         var user = this.getUser();
@@ -78,7 +67,6 @@ var UpcomingChallenges = React.createClass({
               </div>);
 
         }
-
         return (
             <div>
                 {pendingChallenges}

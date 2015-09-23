@@ -18,7 +18,7 @@ var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
 //var ChallengesApp = require('./content/admin/Challenges.jsx');
 //var ChallengesUsers= require('./content/admin/ChallengeUsers.jsx');
 //var ChallengeAdminResults= require('./content/admin/ChallengeAdminResults.jsx');
-//var ChallengeCancelApp= require('./content/challenge/cancel/CancelApp.jsx');
+var ChallengeCancelApp= require('./content/challenge/ChallengeCancelApp.jsx');
 
 var UserAdminApp = require('./content/admin/UserAdmin.jsx');
 var SeasonAdminApp = require('./content/admin/SeasonAdmin.jsx');
@@ -88,6 +88,7 @@ var routes = (
             <Route path="admin/users" component={UserAdminApp} />
             <Route path="admin/seasons" component={SeasonAdminApp} />
             <Route name="challenge" path="challenge" component={ChallengeApp} >
+                <Route path=":challengeId/cancel" component={ChallengeCancelApp} />
             </Route>
             <Route path="scout/:statsId"  component={StatApp}>
                 <Route path="stats" component={StatDisplay} />
@@ -119,7 +120,7 @@ React.render((<Router>{routes}</Router>), document.getElementById('content'));
  </Route>
 
 
- p
+
  <Route name="challengeMain" path="main"  component={ChallengeMain} />
  <Route name="challengeSignUp" path="signup"  component={ChallengeSignUp} />
  <Route name="challengeConfirm" path="confirm"  component={ChallengeConfirmApp} />

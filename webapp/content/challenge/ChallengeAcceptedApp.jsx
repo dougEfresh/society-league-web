@@ -10,6 +10,7 @@ var Handicap = require('../../lib/Handicap');
 var Status = require('../../lib/Status');
 
 var ChallengeAcceptedApp = React.createClass({
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {challenge: this.props.challenge};
     },
@@ -17,7 +18,7 @@ var ChallengeAcceptedApp = React.createClass({
         if (this.state.challenge == undefined) {
             return null;
         }
-        if (this.state.challenge != Status.ACCEPTED) {
+        if (this.state.challenge.status != Status.ACCEPTED) {
             return null;
         }
         var challenge = this.state.challenge;
@@ -35,12 +36,12 @@ var ChallengeAcceptedApp = React.createClass({
                     </span>
                 </div>
                 <div className="col-lg-2 col-md-2 col-xs-12">
-                    <button onClick={this.cancel}
-                            type="button"
-                            className="btn btn-sm btn-danger btn-responsive">
+                    <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
+                    <button type="button" className="btn btn-sm btn-danger btn-responsive">
                         <span className="glyphicon glyphicon-remove"></span>
-                        <b id={challenge.id}>Decline Challenge</b>
+                        <b>Decline Challenge</b>
                     </button>
+                    </Link>
                 </div>
             </li>
         );

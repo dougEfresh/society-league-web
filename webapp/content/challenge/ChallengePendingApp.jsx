@@ -10,6 +10,7 @@ var Handicap = require('../../lib/Handicap');
 var Status = require('../../lib/Status');
 
 var ChallengePendingApp =  React.createClass({
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {challenge: this.props.challenge};
     },
@@ -17,7 +18,7 @@ var ChallengePendingApp =  React.createClass({
         if (this.state.challenge == undefined) {
             return null;
         }
-        if (this.state.challenge != Status.PENDING) {
+        if (this.state.challenge.status != Status.PENDING) {
             return null;
         }
         var challenge = this.state.challenge;

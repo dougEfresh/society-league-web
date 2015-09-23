@@ -3,7 +3,12 @@ var Router = require('react-router');
 
 var ChallengeApp = React.createClass({
     render: function() {
-        return <h2>Challenges</h2>
+        return (
+            <div>
+                <h2>Challenges</h2>
+                {this.props.children}
+            </div>
+        );
     }
 });
 

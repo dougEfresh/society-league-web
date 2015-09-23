@@ -10,7 +10,7 @@ var AdminNav = require('./AdminNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
 var HomeNav = require('./HomeNav.jsx');
 var StatNav = require('./StatNav.jsx');
-var ChallengeNav = require('./ChallengeNav.jsx'); <ChallengeNav />
+var ChallengeNav = require('./ChallengeNav.jsx');
 var HomeApp = require('../home/HomeApp.jsx');
 var Util = require('../../jsx/util.jsx');
 
@@ -30,6 +30,9 @@ var NavApp = React.createClass({
             url: '/api/user',
             callback: function(d) {
                 DataStore.setUser(d);
+                this.setState({
+                    user: d
+                });
                 if (this.props.location.pathname == '/') {
                     this._onChange();
                     this.history.replaceState(null, '/app/home');
