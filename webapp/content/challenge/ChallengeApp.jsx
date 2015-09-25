@@ -11,11 +11,14 @@ var Status = require('../../lib/Status');
 var ChallengePendingApp = require('../challenge/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('../challenge/ChallengeAcceptedApp.jsx');
 var UpcomingChallenges = require('../home/UpcomingChallenges.jsx');
+
 var ChallengeApp = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
          return {
-             data: []
+             slots: [],
+             dates: [],
+             challengers: []
         }
     },
     componentWillMount: function() {
@@ -23,16 +26,35 @@ var ChallengeApp = React.createClass({
     componentWillUnmount: function() {
     },
     componentDidMount: function() {
-        /*
+        var dateFunc = function(d){
+            var dates = {};
+            d.forEach(function(s){
+                dates[s.timeStamp.split('T')[0]] = 1;
+            });
+            for(var dt in dates) {
+                this.state.dates.push(dt);
+            }
+            this.setState({slots: d});
+        }.bind(this);
+
         Util.getSomeData({
-                url: '/api/challenge/user/' + this.getUser().id,
-                callback: function(d){this.setState({data: d});}.bind(this),
-                module:'ChallngeApp'}
+                url: '/api/challenge/slots',
+                callback: dateFunc,
+                module: 'ChallengeApp'
+            }
         );
-        */
+        Util.getSomeData({
+                url: '/api/challenge/users',
+                callback: function(d) {this.setState({challengers: d});}.bind(this),
+                module: 'ChallengeApp'
+            }
+        );
     },
 
     render: function() {
+        if (this.state.slots.length == 0|| this.state.challengers.length == 0) {
+            return null;
+        }
         return (
             <div>
                 <div className="panel panel-primary">
@@ -41,6 +63,7 @@ var ChallengeApp = React.createClass({
                     <div className="page-elements">
                         <form id="request-app"  >
                             <div>
+                                <h3>{this.state.challengers.length}</h3>
                             </div>
                         </form>
                     </div>
