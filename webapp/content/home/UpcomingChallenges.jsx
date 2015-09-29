@@ -10,6 +10,7 @@ var Handicap = require('../../lib/Handicap');
 var Status = require('../../lib/Status');
 var ChallengePendingApp = require('../challenge/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('../challenge/ChallengeAcceptedApp.jsx');
+var ChallengeSentApp = require('../challenge/ChallengeSentApp.jsx');
 
 var UpcomingChallenges = React.createClass({
     mixins: [UserContextMixin,Router.History],
@@ -22,10 +23,21 @@ var UpcomingChallenges = React.createClass({
     },
     componentWillUnmount: function() {
     },
+    getData: function() {
+        if (this.validUser)
+            Util.getSomeData( {url: '/api/challenge/user/' + this.getUser().id,
+                callback:  function (d) {this.setState({data: d})}.bind(this),
+                router: this.context.history,
+                module: 'UpcomingChallenges'
+            });
+    },
+    componentWillReceiveProps: function(nextProps) {
+        if (nextProps.refresh) {
+            this.getData();
+        }
+    },
     componentDidMount: function() {
-        Util.getData('/api/challenge/user/' + this.getUser().id, function(d){
-            this.setState({data: d});
-        }.bind(this), null, 'UpComingChallenge');
+        this.getData();
     },
     render: function() {
         var user = this.getUser();
@@ -34,17 +46,23 @@ var UpcomingChallenges = React.createClass({
         }
         var challenges = [];
         var pending = [];
+        var sent = [];
         for (var i=0; i< this.state.data.length ; i++) {
             var challenge = this.state.data[i];
             if (challenge.status  == Status.ACCEPTED) {
                 challenges.push(<ChallengeAcceptedApp key={challenge.id} challenge={challenge} />);
             }
-            if (challenge.status  == Status.PENDING) {
+            if (challenge.status  == Status.PENDING && challenge.userOpponent.id == this.getUser().id ) {
                 pending.push(<ChallengePendingApp key={challenge.id} challenge={challenge} />);
+            }
+            if (challenge.status  == Status.PENDING && challenge.userChallenger.id == this.getUser().id ) {
+                sent.push(<ChallengeSentApp key={challenge.id} challenge={challenge} />);
             }
         }
         var upComingChallenges = null;
         var pendingChallenges = null;
+        var sentChallenges = null;
+
         if (challenges.length > 0) {
             upComingChallenges = ( <div id={'pending-challenges'} className="panel panel-default">
                   <div className="panel-heading" >Upcoming Challenges</div>
@@ -57,20 +75,32 @@ var UpcomingChallenges = React.createClass({
         }
 
         if (pending.length > 0) {
-               pendingChallenges = ( <div id={'pending-challenges'} className="panel panel-warning">
-                  <div className="panel-heading" >Pending Challenges</div>
-                  <div className="panel-body" >
-                      <ul className="list-group home-upcoming-challenges">
-                          {pending}
-                      </ul>
-                  </div>
-              </div>);
+            pendingChallenges = ( <div id={'pending-challenges'} className="panel panel-warning">
+                <div className="panel-heading" >Pending Challenges</div>
+                <div className="panel-body" >
+                    <ul className="list-group home-upcoming-challenges">
+                        {pending}
+                    </ul>
+                </div>
+            </div>);
+
+        }
+        if (sent.length > 0) {
+            sentChallenges = ( <div id={'pending-challenges'} className="panel panel-success">
+                <div className="panel-heading" >Sent Challenges</div>
+                <div className="panel-body" >
+                    <ul className="list-group home-upcoming-challenges">
+                        {sent}
+                    </ul>
+                </div>
+            </div>);
 
         }
         return (
             <div>
                 {pendingChallenges}
                 {upComingChallenges}
+                {sentChallenges}
             </div>
         )
     }

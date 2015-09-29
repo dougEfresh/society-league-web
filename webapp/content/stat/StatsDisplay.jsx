@@ -7,64 +7,50 @@ var SeasonLink = require('../../jsx/components/links/SeasonLink.jsx');
 var StatsPie = require('./StatsPie.jsx');
 
 var StatsDisplay = React.createClass({
-    mixins: [UserContextMixin,Router.State],
+    mixins: [UserContextMixin,],
      getInitialState: function() {
          return {
              update: Date.now(),
              stats: []
          }
     },
-    getData: function() {
-        Util.getData('/api/stat/user/' + this.props.params.statsId , function(d){
-            this.setState({stats: d});
-        }.bind(this), null, 'StatDisplay');
+    getData: function(statsId) {
+        Util.getSomeData(
+            {
+                url:  '/api/stat/user/' + statsId,
+                callback:  function(d){this.setState({stats: d});}.bind(this),
+                module: 'StatDisplay',
+                router: this.props.history
+            }
+        );
     },
     componentDidMount: function () {
-        this.getData();
+        this.getData(this.props.params.statsId);
     },
-    componentWillReceiveProps: function (o, n) {
-        var now = Date.now();
-        if ( now - this.state.update > 1000*60)
-            this.getData();
-       this.getData();
+    componentWillReceiveProps: function (n) {
+       this.getData(n.params.statsId);
     },
     getRows: function(data) {
         var rows = [];
-        var userId = this.props.params.statsId;
         var cnt = 0;
+        data = data.sort(function(a,b) {
+            if (a.type == 'ALL') {
+                return -1
+            }
+            if (b.type == 'ALL') {
+                return -1
+            }
+            return b.season.displayName.localeCompare(a.season.displayName);
+        });
+
         data.forEach(function(d){
-            /*
-            if (d.type == 'challenge') {
-
-                return;
-            }
-            var type = d.getType();
-            var hc = '';
-
-            if (d.getType() == 'season') {
-                type = d.season.getDisplayName();
-                hc = user.getCurrentHandicap(d.season.id);
-            }
-            if (d.getType() == 'all') {
-                type = 'overall';
-            }
-//<td> {d.getPoints()} </td>
-             */
-            var hc = "";
-            if (d.team && d.user) {
-                d.user.handicapSeasons.forEach(function(hs){
-                    if (hs.season.id == d.team.season.id) {
-                        hc = Handicap.formatHandicap(hs.handicap);
-                    }
-                });
-            }
+            var hc = d.handicap;
             cnt += 1;
-            var type = d.type;
-            if (d.type == 'USER_SEASON') {
-                type = <SeasonLink season={d.team.season} />;
-            }
+            var type = null;
             if (d.type == 'ALL') {
                 type = 'Lifetime';
+            } else {
+                type = <SeasonLink season={d.season} />;
             }
 
             rows.push(

@@ -29,7 +29,7 @@ var SeasonApp = React.createClass({
         }
     },
     getData: function() {
-        Util.getData('/api/season', function(d){
+        Util.getData('/api/season/active', function(d){
             this.setState({seasons: d});
         }.bind(this), null, 'SeasonApp');
     },

@@ -30,7 +30,7 @@ var StatApp = React.createClass({
     },
     changeUser: function(e) {
         e.preventDefault();
-        if (this.props.location.pathname.indexOf("stats") >= 0) {
+        if (this.props.location.pathname.indexOf("/stats") >= 0) {
             this.props.history.pushState(null,'/app/scout/' + e.target.value + '/stats');
             return;
         }
@@ -59,12 +59,12 @@ var StatApp = React.createClass({
                         </select>
                     </div>
                     <div className="btn-group col-lg-6 col-md-6 col-xs-12 stats-btn">
-                        <Link className='scoutNav' to={'/app/scout/' + this.getUser().id +'/stats'}>
+                        <Link className='scoutNav' to={'/app/scout/' +  this.props.params.statsId +'/stats'}>
                             <button className={this.props.location.pathname.indexOf('stats') >=0 ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
                                 <span className="fa fa-bar-chart"></span>Stats
                             </button>
                         </Link>
-                        <Link className='scoutNav' to={'/app/scout/' + this.getUser().id +'/history'}>
+                        <Link className='scoutNav' to={'/app/scout/' + this.props.params.statsId +'/history'}>
                             <button className={this.props.location.pathname.indexOf('history') >= 0 ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
                                 <span className="fa fa-history"></span>History
                             </button>
@@ -73,7 +73,7 @@ var StatApp = React.createClass({
                 </div>
             </div>
         );
-        //<h3><span className="fa fa-bar-chart"></span>Stats</h3>
+        
         return (
             <div id="scout-app" className="panel panel-default">
                 <div className="panel-heading">

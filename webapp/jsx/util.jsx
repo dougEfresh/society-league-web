@@ -106,6 +106,39 @@ function formatDateTime(dt) {
     return m.format('ddd MMM Do');
 }
 
+function sendSomeData(options) {
+        console.log("Sending data: " + JSON.stringify(options.data));
+        $.ajax({
+            async: true,
+            processData: false,
+            url: options.url,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(options.data),
+            method: 'post',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                    window.location = '/#/login?expired=true'
+                }.bind(this)
+            },
+            success: function (d) {
+                console.log("Got " + JSON.stringify(d) + " back from server");
+                options.callback(d);
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(options.url,url, status, err.toString());
+                if (options.errCallback) {
+                    options.errCallback();
+                    return;
+                }
+                if (options.router) {
+                    options.router.pushState(null, '/error', {err: err.toString()});
+                }
+            }.bind(this)
+        })
+    }
+
 function sendData(url, data, callback,errCallback) {
         console.log("Sending data: " + JSON.stringify(data));
         $.ajax({
@@ -131,14 +164,53 @@ function sendData(url, data, callback,errCallback) {
                 if (errCallback) {
                     errCallback();
                 }
+
                 //this.redirect('error');
             }.bind(this)
         })
     }
 
+function postSomeData(options) {
+        console.log("Sending data: " + JSON.stringify(options.data));
+        $.ajax({
+            async: true,
+            processData: false,
+            url: options.url,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(options.data),
+            method: 'post',
+            statusCode: {
+                401: function () {
+                    console.log('I Need to Authenticate');
+                    window.location = '/#/login?expired=true'
+                }.bind(this)
+            },
+            success: function (d) {
+                console.log("Got " + JSON.stringify(d) + " back from server");
+                options.callback(d);
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.warn(options.url, xhr.responseText);
+                if (options.errCallback) {
+                    options.errCallback();
+                    return;
+                }
+                if (options.router) {
+                    options.router.pushState(null, '/error', {err: xhr.responseText});
+                }
+            }.bind(this)
+        })
+    }
 
 
-module.exports = {nextChallengeDate: getNextChallengeDay,
+module.exports = {
+    nextChallengeDate: getNextChallengeDay,
     getData: getData,
     sendData: sendData,
-    getChallengeDates: getChallengeDates, getHandicap: getHandicap, formatDateTime: formatDateTime, getSomeData: getSomeData};
+    getChallengeDates: getChallengeDates,
+    getHandicap: getHandicap,
+    formatDateTime: formatDateTime,
+    getSomeData: getSomeData,
+    postSomeData: postSomeData
+};

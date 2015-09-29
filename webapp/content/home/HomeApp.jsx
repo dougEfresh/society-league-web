@@ -39,7 +39,10 @@ var HomeApp = React.createClass({
         if (this.state.stats.length > 0) {
             this.state.stats.forEach(function(s){
                 if (s.type == 'ALL') {
-                    record = (<span>{' - Lifetime Record -  W:' + s.wins + ' L:' + s.loses}</span>)
+                    record = (<div style={{display: 'inline'}}>
+                        <span className="label label-success">{'W:' + s.wins}</span>
+                        <span className="label label-danger">{'L:' + s.loses}</span>
+                    </div>);
                 }
 
             });

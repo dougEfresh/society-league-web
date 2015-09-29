@@ -49,7 +49,7 @@ var ChallengeRequestSlots = React.createClass({
 });
 
 var SlotButton = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin],
     propTypes: {
         slot: ReactPropTypes.object.isRequired,
         any: ReactPropTypes.bool.isRequired
@@ -73,10 +73,9 @@ var SlotButton = React.createClass({
             q.selected['slot'+this.props.slot.id] > 0
             ) || this.props.any;
         return (
-                <button className={selected ? 'btn btn-success' : 'btn btn-default'}
-                        onClick={this.onClick}>
+                <button className={selected ? 'btn btn-success' : 'btn btn-default'} onClick={this.onClick}>
                     <span className={selected ? 'fa fa-check' : 'fa fa-times'}></span>
-                    {this.props.slot.getTime()}
+                    {this.props.slot.time}
                 </button>
          );
     }

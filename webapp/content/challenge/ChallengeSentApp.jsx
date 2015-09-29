@@ -9,7 +9,7 @@ var Util = require('../../jsx/util.jsx');
 var Handicap = require('../../lib/Handicap');
 var Status = require('../../lib/Status');
 
-var ChallengePendingApp =  React.createClass({
+var ChallengeSentApp =  React.createClass({
     mixins: [UserContextMixin,Router.History],
     contextTypes: {
         location: React.PropTypes.object
@@ -43,27 +43,13 @@ var ChallengePendingApp =  React.createClass({
             return (<span className="label label-default">{this.props.challenge.slots[0].time}</span>);
         }
         var slots = [];
-        slots.push(<option key={"-1"} value={"-1"}>{'choose'}</option>);
         var sorted = this.props.challenge.slots.sort(function(a,b){
            return a.timeStamp.localeCompare(b.timeStamp);
         });
         sorted.forEach(function (s) {
-            slots.push(<option key={s.id} value={s.id}>{s.time}</option>);
+            slots.push(<span className="label label-default" key={s.id} >{s.time}</span>);
         }.bind(this));
-        return (
-             <form id="request-game">
-                  <div className="form-field form-group">
-                      <div className="form-group slot-time">
-                          <select ref='slot' onChange={this.onSelectSlot}
-                                  className="form-control"
-                                  value={this.state.challenge.acceptedSlot == undefined ? -1 : this.state.challenge.acceptedSlot.id }
-                                  type={'select'}>
-                              {slots}
-                          </select>
-                      </div>
-                  </div>
-             </form>
-        );
+        return        slots;
     },
     accept: function() {
         var  request = {
@@ -94,13 +80,8 @@ var ChallengePendingApp =  React.createClass({
         var challenge = this.state.challenge;
         var opponent = challenge.userOpponent;
         if (opponent.id == this.getUser().id) {
-            opponent = challenge.userChallenger;
+            return null;
         }
-        var accept = (<button className="btn btn-sm"  disabled={!this.valid()}
-                               onClick={this.accept} key={'accept'}
-                              bsStyle={!this.valid() ? 'primary' : 'success'} >
-            <span className="fa fa-thumbs-up"></span>Accept</button>);
-
         var deny = (
             <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
                 <button className="btn btn-sm"  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} >
@@ -118,20 +99,16 @@ var ChallengePendingApp =  React.createClass({
                         <UserLink user={opponent}/>
                     </span>
                 </div>
-                <div className="col-lg-2 col-md-2 col-xs-12">
+                  <div className="col-lg-2 col-md-2 col-xs-12">
                     {this.renderSelectOptions()}
                 </div>
                 <div className="col-lg-2 col-md-2 col-xs-12">
                     {deny}
                 </div>
-                <div className="col-lg-2 col-md-2 col-xs-12">
-                    {accept}
-                </div>
-
             </li>
         );
     }
 });
 
 
-module.exports = ChallengePendingApp;
+module.exports = ChallengeSentApp;

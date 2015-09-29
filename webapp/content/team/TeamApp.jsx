@@ -88,8 +88,14 @@ var TeamApp = React.createClass({
         var prevSeason = teams[0].season;
         options.push(<option key={prevSeason.id} value={prevSeason.id}>{'------- ' + prevSeason.displayName +' -------'}</option>);
         teams.forEach(function(t) {
+            if (t.challenge) {
+                return;
+            }
             if (prevSeason.id != t.season.id) {
                 prevSeason = t.season;
+                if (prevSeason.challenge)
+                    return
+
                 options.push(<option key={prevSeason.id} value={prevSeason.id}>{'-------  ' + prevSeason.displayName +' -------'}</option>);
             }
             options.push(<option key={t.id} value={t.id}>{t.name}</option>);

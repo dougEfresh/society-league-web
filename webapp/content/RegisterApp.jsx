@@ -4,7 +4,7 @@ var UserContextMixin = require('./../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../jsx/stores/DataStore.jsx');
 
 var RegisterApp = React.createClass({
-    mixins: [UserContextMixin,Router.State,Router.Navigation],
+    mixins: [UserContextMixin],
     contextTypes: {
         router: React.PropTypes.func
     },

@@ -17,21 +17,19 @@ var StatHistory = React.createClass({
              stats: []
          }
     },
-    getData: function() {
-        Util.getData('/api/playerresult/get/user/' + this.props.params.statsId  + '/current', function(d) {
+    getData: function(statsId) {
+        Util.getData('/api/playerresult/get/user/' + statsId  + '/current', function(d) {
             this.setState({results: d});
         }.bind(this), null, 'StatHistory');
-        Util.getData('/api/stat/user/' + this.props.params.statsId , function(d){
+        Util.getData('/api/stat/user/' + statsId , function(d){
             this.setState({stats: d});
         }.bind(this), null, 'StatHistory');
     },
     componentDidMount: function () {
-        this.getData();
+        this.getData(this.props.params.statsId);
     },
-    componentWillReceiveProps: function (o, n) {
-        //var now = Date.now();
-        //if ( now - this.state.update > 1000*60)
-            this.getData();
+    componentWillReceiveProps: function (n) {
+        this.getData(n.params.statsId);
     },
 
     render: function() {

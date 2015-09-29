@@ -26,13 +26,13 @@ var TeamNav = React.createClass({
     },
     getData: function() {
         Util.getData('/api/team/get/' + this.getUser().id + '/current', function(d){
-            this.setState({data: d});
+            this.setState({data: d, update: Date.now()});
         }.bind(this), null, 'TeamNav'
         );
     },
     componentWillReceiveProps: function(nextProps) {
         var now = Date.now();
-        if (now - this.state.update > 1000*60)
+        if (now - this.state.update > 1000*60*2)
             this.getData();
     },
     render: function() {

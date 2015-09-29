@@ -30,10 +30,16 @@ var CancelApp = React.createClass({
     cancel: function(e) {
         e.preventDefault();
         var request = { id: this.props.params.challengeId };
-        util.sendData('/api/challenge/cancel',request, function(d) {
-            this.props.history.pushState(null,'/app/challenge');
-        }.bind(this));
+        Util.postSomeData({
+            url: '/api/challenge/cancel',
+            data: request,
+            module: 'CancelApp',
+            callback: function (d) {
+                this.props.history.pushState(null, '/app/challenge')
+            }.bind(this)
+        });
     },
+
     render: function() {
         var challenge = null;
         this.state.challenges.forEach(function(c){
@@ -48,6 +54,7 @@ var CancelApp = React.createClass({
         if (opponent.id == this.getUser().id) {
             opponent = challenge.userChallenger;
         }
+
         return (
                 <div id="cancel-app" >
                     <h2 className="form-signin-heading">{'Decline Challenge against  ' + opponent.name + '?'}</h2>
