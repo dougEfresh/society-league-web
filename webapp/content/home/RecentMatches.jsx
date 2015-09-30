@@ -35,32 +35,11 @@ var RecentMatches = React.createClass({
                   </div>
             )
         }
-        var results = this.state.data;
-        results = results.sort(function(a,b){
-            return b.teamMatch.matchDate.localeCompare(a.teamMatch.matchDate);
-        });
-
-        var lastXSeasonMatches = {};
-        for(var i =0; i < results.length ; i++) {
-            var id = results[i].season.id;
-            if (!lastXSeasonMatches.hasOwnProperty(id)) {
-                lastXSeasonMatches[id] = [];
-            }
-            if (lastXSeasonMatches[id].length > 6) {
-                continue;
-            }
-            lastXSeasonMatches[id].push(results[i]);
-        }
-
-        var recentMatches = [];
-        for(var seasonId in lastXSeasonMatches) {
-            recentMatches  = recentMatches.concat(lastXSeasonMatches[seasonId]);
-        }
         return (
             <div id={'no-recent-matches'} className="panel panel-default">
                 <div className="panel-heading" >Recent Matches</div>
                 <div className="panel-body" >
-                    <UserResults stats={this.state.stats} results={recentMatches} />
+                    <UserResults stats={this.state.stats} results={this.state.data} limit={6} />
                 </div>
             </div>
         )

@@ -73,7 +73,7 @@ var StatApp = React.createClass({
                 </div>
             </div>
         );
-        
+
         return (
             <div id="scout-app" className="panel panel-default">
                 <div className="panel-heading">
