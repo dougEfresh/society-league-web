@@ -68,7 +68,7 @@ var ResultEight = React.createClass({
     render: function() {
         var rows = [];
         var limit = this.props.limit == null ? this.props.results.length : this.props.limit;
-        for (var i = 0; i< limit; i++ ) {
+        for (var i = 0; i< limit && i< this.props.results.length; i++ ) {
             var r = this.props.results[i];
             rows.push(
                 <tr key={r.id}>
@@ -122,7 +122,7 @@ var ResultNine = React.createClass({
     render: function() {
         var rows = [];
         var limit = this.props.limit == null ? this.props.results.length : this.props.limit;
-        for (var i = 0; i< limit; i++ ) {
+        for (var i = 0; i< limit && i< this.props.results.length; i++ ) {
             var r = this.props.results[i];
             rows.push(<tr key={r.id}>
                 <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
@@ -174,8 +174,11 @@ var ResultChallenge = React.createClass({
     render: function() {
         var rows = [];
         var limit = this.props.limit == null ? this.props.results.length : this.props.limit;
-        for (var i = 0; i< limit; i++ ) {
+        for (var i = 0; i< limit && i< this.props.results.length; i++ ) {
             var r = this.props.results[i];
+            if (r == undefined) {
+                continue;
+            }
             rows.push(<tr key={r.id}>
                 <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                 <td>{r.win ? 'W' : 'L'}</td>

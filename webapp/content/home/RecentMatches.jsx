@@ -8,7 +8,7 @@ var RecentMatches = React.createClass({
     mixins: [UserContextMixin],
      getInitialState: function() {
          return {
-             data: [],
+             data: null,
              stats: []
         }
     },
@@ -25,7 +25,7 @@ var RecentMatches = React.createClass({
         }.bind(this),null,'RecentMatches');
     },
     render: function() {
-        if (this.state.data.length == 0) {
+        if (this.state.data == null) {
             return (
                 <div id={'no-recent-matches'} className="panel panel-default">
                       <div className="panel-heading" >Recent Matches</div>

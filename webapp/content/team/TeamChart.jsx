@@ -45,7 +45,7 @@ var TeamChart = React.createClass({
         var wins = [];
         var lost = [];
 
-        if (team.team.season.nine) {
+        if (team.season && team.season.nine) {
             label.push('team');
             wins.push(team.wins);
             lost.push(team.loses);
