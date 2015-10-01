@@ -215,7 +215,7 @@ var ResultChallenge = React.createClass({
                          <th>P</th>
                          <th>Avg Points</th>
                          <th>Match #</th>
-                         <th>Formula  | (Points*10-MatchNum)/10</th>
+                         <th>Formula  | (Points*(10-MatchNum))/10</th>
                          <th>Score</th>
                          <th>Opponent</th>
                          <th>HC</th>
