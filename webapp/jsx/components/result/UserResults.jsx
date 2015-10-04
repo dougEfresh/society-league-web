@@ -9,39 +9,42 @@ var Router = require('react-router')
     , Link = Router.Link;
 
 var UserResults = React.createClass({
-    getDefaultProps: function() {
-        return {results: null, stats:[], limit: null};
+     getInitialState: function() {
+         return {
+             results: [],
+             stats: [],
+             user: this.props.user,
+             season: this.props.season
+        }
+    },
+    componentWillMount: function() { },
+    componentWillUnmount: function() { },
+    componentDidMount: function() { this.getData();  },
+    componentWillReceiveProps: function(nextProps) {
+        this.state.user = nextProps.user;
+        this.state.season = nextProps.season;
+        this.getData();
+    },
+    getData: function() {
+        Util.getData('/api/playerresult/user/' + this.state.user.id + '/' + this.state.season.id, function(d){
+            this.setState({results: d});
+        }.bind(this),null,'RecentMatches');
+        Util.getData('/api/stat/user/' + this.state.user.id  + '/' + this.state.season.id, function(d){
+            this.setState({stats: d});
+        }.bind(this),null,'RecentMatches');
     },
     render: function() {
-        var rows = [];
-        if (this.props.results == null) {
+        if (this.state.results.length ==0 || this.state.stats.length == 0) {
             return null;
-        }
-        var seasonResults = this.props.results;
-        var cnt = 0;
-        for (var season in seasonResults) {
-            if (season == null) {
-                continue;
-            }
-            if (seasonResults.hasOwnProperty(season)) {
-                var seasonStat=null;
-                this.props.stats.forEach(function(s){
-                    if ( s.season && s.season.id == season ) {
-                        seasonStat = s;
-                    }
-                });
-
-                rows.push(<SeasonResults limit={this.props.limit}
-                                         stats={seasonStat} key={season}
-                                         season={seasonStat.season}
-                                         results={seasonResults[season]}
-                    />);
-            }
         }
         return (
             <div id="user-results">
-                {rows}
-            </div>
+                <SeasonResults limit={this.props.limit}
+                               stats={this.state.stats}
+                               season={this.state.season}
+                               results={this.state.results}
+                    />
+                </div>
         );
 
     }

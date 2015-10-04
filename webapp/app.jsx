@@ -22,6 +22,7 @@ var ChallengeCancelApp= require('./content/challenge/ChallengeCancelApp.jsx');
 
 var UserAdminApp = require('./content/admin/UserAdmin.jsx');
 var SeasonAdminApp = require('./content/admin/SeasonAdmin.jsx');
+var TeamAdminApp = require('./content/admin/SeasonAdmin.jsx');
 
 //var CreateUser = require('./content/admin/CreateUser.jsx');
 //var CreateUserSuccess = require('./content/admin/CreateUserSuccess.jsx');
@@ -87,6 +88,8 @@ var routes = (
 
             <Route path="admin/users" component={UserAdminApp} />
             <Route path="admin/seasons" component={SeasonAdminApp} />
+            <Route path="admin/teams" component={TeamAdminApp} />
+
             <Route path="challenge/:challengeId/cancel" component={ChallengeCancelApp} />
             <Route name="challenge" path="challenge" component={ChallengeApp} >
             </Route>

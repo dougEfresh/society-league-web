@@ -6,44 +6,22 @@ var Util = require('../../jsx/util.jsx');
 
 var RecentMatches = React.createClass({
     mixins: [UserContextMixin],
-     getInitialState: function() {
-         return {
-             data: null,
-             stats: []
-        }
-    },
-    componentWillMount: function() {
-    },
-    componentWillUnmount: function() {
-    },
-    componentDidMount: function() {
-        Util.getData('/api/playerresult/get/user/' + this.getUser().id + '/current', function(d){
-            this.setState({data: d});
-        }.bind(this),null,'RecentMatches');
-         Util.getData('/api/stat/user/' + this.getUser().id , function(d){
-            this.setState({stats: d});
-        }.bind(this),null,'RecentMatches');
-    },
+
     render: function() {
-        if (this.state.data == null) {
-            return (
-                <div id={'no-recent-matches'} className="panel panel-default">
-                      <div className="panel-heading" >Recent Matches</div>
-                      <div className="panel-body" >
-                        <span>You have not played any matches</span>
-                      </div>
-                  </div>
-            )
-        }
+        var rows = [];
+        this.getUser().seasons.forEach(function(s){
+            if (s.active)
+                rows.push(<UserResults key={s.id} user={this.getUser()} season={s} limit={6} />);
+        }.bind(this));
         return (
             <div id={'no-recent-matches'} className="panel panel-default">
                 <div className="panel-heading" >Recent Matches</div>
                 <div className="panel-body" >
-                    <UserResults stats={this.state.stats} results={this.state.data} limit={6} />
+                    {rows}
                 </div>
             </div>
         )
     }
 });
 
-module.exports = RecentMatches
+module.exports = RecentMatches;

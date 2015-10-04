@@ -7,6 +7,12 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
+var options = [];
+for(var i = 0; i<12; i++) {
+    options.push(<option key={i} value={i}>{i}</option>);
+}
+var loserTeamMemberOptions= [];
+var winerTeamMemberOptions= [];
 
 var MatchResultsOnDay = React.createClass({
     mixins: [UserContextMixin],
@@ -21,7 +27,6 @@ var MatchResultsOnDay = React.createClass({
         Util.getData('/api/playerresult/teammatch/' + this.props.params.matchId, function (d) {
             this.setState({results: d});
         }.bind(this),null,'SeasonMatchResultsOnDay');
-
         Util.getData('/api/teammatch/members/' + this.props.params.matchId, function (d) {
             this.setState({teamMembers: d});
         }.bind(this),null,'SeasonMatchResultsOnDay');
@@ -37,48 +42,56 @@ var MatchResultsOnDay = React.createClass({
         if (now - this.state.update > 1000 * 60)
             this.getData();
     },
+    isAdmin: function(){
+        if (this.getUser().admin) {
+            if (this.props.location.query.admin != undefined && !this.props.location.query.admin) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    },
     render: function () {
         if (this.state.teamMatch.id == undefined){
             return null;
         }
-        return <MatchResults teamMatch={this.state.teamMatch} teamMembers={this.state.teamMembers} results={this.state.results}/>;
+        return <MatchResults admin={this.isAdmin()} teamMatch={this.state.teamMatch} teamMembers={this.state.teamMembers} results={this.state.results}/>;
     }
 });
 
+
+
 var MatchResults = React.createClass({
-    mixins: [UserContextMixin],
     getInitialState: function () {
-        var options = [];
-        for(var i = 0; i<41 ; i++) {
-            options.push(<option key={i} value={i}>{i}</option>);
-        }
         return {
             results: this.props.results,
-            matchNumber: 0,
-            options: options
         };
     },
-    deleteMatch: function(e) {
-        e.preventDefault();
+    componentWillReceiveProps: function (n) {
+       this.setState({
+           results: n.results
+       })
+    },
+    remove: function(r) {
         if (this.state.results.length == 0) {
             return ;
         }
-        var r = this.state.results[this.state.results.length-1];
-        if (r.id == undefined) {
-            this.state.results.pop();
-            this.setState({
-                results: this.state.results
-            });
-            return;
+        for(var i = 0; i< this.state.results.length; i++) {
+            if (this.state.results[i] == null){
+                continue;
+            }
+            if (r.id == this.state.results[i].id) {
+                this.state.results[i] = null;
+                break;
+            }
         }
+        this.setState({results: this.state.results});
+
         console.log("Removing " + r.id + " from server");
     },
-
     addMatch: function(e) {
         e.preventDefault();
         var results = this.state.results;
-        var num = this.state.matchNumber;
-        num++;
         var winner = this.props.teamMembers.winners[0];
         var loser = this.props.teamMembers.losers[0];
         var teamWinnerHandicap = null;
@@ -103,40 +116,56 @@ var MatchResults = React.createClass({
             loserTeamHandicap: teamLoserHandicap,
             playerHomeRacks: 0,
             playerAwayRacks: 0,
-            matchNumber: num
+            season: this.props.teamMatch.season
         };
-        results.push(r);
-
+        var matchNum = 0;
+        for(var i = 0; i< results.length; i++) {
+            if (results[i] == undefined || results[i] == null) {
+                matchNum = i+1;
+                r.matchNumber= matchNum;
+                results[i] = r;
+                break;
+            }
+        }
+        if (matchNum == 0) {
+            r.matchNumber = results.length+1;
+            results.push(r);
+        }
         this.setState({
-            results: results,
-            matchNumber: num
+            results: results
         });
-
     },
 
     render: function() {
         var rows = [];
         var cnt = 0;
         this.state.results.forEach(function(r){
-            rows.push(<Result key={cnt++} options={this.state.options} teamMatch={this.props.teamMatch} teamMembers={this.props.teamMembers} result={r} />);
+            if (r != null)
+                rows.push(
+                    <Result key={cnt++}
+                            admin={this.props.admin}
+                            remove={this.remove}
+                            teamMatch={this.props.teamMatch}
+                            teamMembers={this.props.teamMembers}
+                            result={r} />
+                );
         }.bind(this));
         var add = null;
-        var del = null;
-        if (this.getUser().admin){
+        if (this.props.admin){
             add = (<button onClick={this.addMatch}><span className="glyphicon glyphicon-plus-sign" ></span><b>Add</b></button>);
-            del = (<button onClick={this.deleteMatch}><span className="glyphicon glyphicon-minus-sign" ></span><b>Delete</b></button>);
         }
         return (
             <div className="table-responsive">
                 <h2>{'Match Results - ' + Util.formatDateTime(this.props.teamMatch.matchDate)}</h2>
                 {add}
-                {del}
                 <table className="table table-condensed table-stripped" >
                     <thead>
                     <tr>
+                        <th>Match #</th>
                         <th><TeamLink team={this.props.teamMatch.winner} /></th>
                         <th>Racks</th>
                         <th>W/L</th>
+                        <th style={{display: this.props.admin ? 'table-cell' : 'none'}} ></th>
                         <th><TeamLink team={this.props.teamMatch.loser} /></th>
                         <th>Racks</th>
                     </tr>
@@ -151,40 +180,27 @@ var MatchResults = React.createClass({
 });
 
 var Result =  React.createClass({
-    mixins: [UserContextMixin],
     getInitialState: function () {
         return {
-            result: this.props.result
+            result: this.props.result,
         };
     },
-    onChange: function(e) {
-
+    componentWillReceiveProps: function (n) {
+       this.setState({
+           result: n.result
+       })
     },
-    getRacks: function(type) {
-        var racks = 0;
-        if (type == 'winners') {
-            racks = this.state.result.winnerTeamRacks;
-        }
-        racks = this.state.result.loserTeamRacks;
-        if (this.getUser().admin) {
-
-            return (
-                <select ref='user' onChange={this.onChange}
-                        className="form-control"
-                        value={racks}
-                        type={'select'}>
-                    {this.props.options}
-                </select>);
-        }
-
-        return racks;
+    onChange: function(pr) {
+        this.setState({
+            result : pr
+        })
     },
     getPlayer: function(type) {
-        var r = this.state.result;
+        var r = this.props.result;
         var player = type == 'winners' ? r.winnerTeamPlayer : r.loserTeamPlayer;
         var hc = type == 'winners' ? r.winnerTeamHandicap : r.loserTeamHandicap;
 
-        if (!this.getUser().admin) {
+        if (!this.props.admin) {
             return (<UserLink user={player} handicap={hc}/>);
         }
 
@@ -201,16 +217,88 @@ var Result =  React.createClass({
                 {options}
             </select>);
     },
+    remove: function(e) {
+        e.preventDefault();
+        this.props.remove(this.state.result);
+    },
     render: function() {
+        var r = this.state.result;
+        if (r == undefined || r == null)
+            return null;
+
         return (
             <tr>
+                <td>{r.matchNumber}</td>
                 <td>{this.getPlayer('winners')}</td>
-                <td>{this.getRacks('winners')}</td>
-                <td>{this.getRacks('winners') > this.getRacks('losers') ? 'W' : 'L'}</td>
+                <td><RackResult  admin={this.props.admin} onChange={this.onChange} result={r}  type={'winner'} /></td>
+                <td>{r.winnerTeamRacks > r.loserTeamRacks ? 'W' : 'L'}</td>
+                <td style={{display: this.props.admin ? 'table-cell' : 'none'}} >
+                    <button className='btn btn-danger btn-xs' onClick={this.remove}><b>X</b></button>
+                </td>
                 <td>{this.getPlayer('losers')}</td>
-                <td>{this.getRacks('losers')}</td>
+                <td>
+                    <RackResult admin={this.props.admin} onChange={this.onChange} result={r} type={'loser'} />
+                </td>
             </tr>
         );
+    }
+});
+
+var TeamMember = React.createClass({
+     getPlayer: function(type) {
+        var r = this.props.result;
+        var player = type == 'winners' ? r.winnerTeamPlayer : r.loserTeamPlayer;
+        var hc = type == 'winners' ? r.winnerTeamHandicap : r.loserTeamHandicap;
+
+        if (!this.props.admin) {
+            return (<UserLink user={player} handicap={hc}/>);
+        }
+
+        var options = [];
+        this.props.teamMembers[type].forEach(function(u) {
+            options.push(<option key={u.id} value={u.id}>{u.name}</option>);
+        });
+
+        return (
+            <select ref='user' onChange={this.onChange}
+                    className="form-control"
+                    value={player.id}
+                    type={'select'}>
+                {options}
+            </select>);
+    },
+    render: function(){
+        return null;
+    }
+});
+
+var RackResult = React.createClass({
+    onChange: function(e) {
+        e.preventDefault();
+        var type = 'home';
+        if (this.props.type == 'winner') {
+            type = this.props.r.winnerType;
+        } else {
+            type = this.props.r.loserType;
+        }
+        Util.getSomeData({
+            url: '/api/playerresult/racks/' + this.props.result.id  + '/' + type + '/' + e.target.value,
+            callback: function(d) {this.props.onChange(d)}.bind(this),
+            module: 'RackResult'
+        });
+    },
+    render: function() {
+        var racks = this.props.type == 'winner' ? this.props.result.winnerTeamRacks :  this.props.result.loserTeamRacks;
+        if (this.props.admin) {
+            return (<select onChange={this.onChange}
+                            className="form-control"
+                            value={racks}
+                            type={'select'}>
+                {options}
+            </select>);
+        }
+
+        return  <span>{racks}</span>
     }
 });
 

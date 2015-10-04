@@ -9,7 +9,7 @@ var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var SeasonStandings = React.createClass({
-    mixins: [UserContextMixin,Router.State],
+    mixins: [UserContextMixin],
     getInitialState: function() {
          return {
              update: Date.now(),
@@ -27,13 +27,7 @@ var SeasonStandings = React.createClass({
         this.getData(this.props.params.seasonId);
     },
     componentWillReceiveProps: function (n) {
-        if (n.params.seasonId != this.props.params.seasonId) {
-            //this.setState({
-              //  loading : true
-            //});
-            this.getData(n.params.seasonId);
-            return;
-        }
+        this.getData(n.params.seasonId);
     },
     render: function() {
         if (this.state.seasonStats.length == 0)
@@ -100,7 +94,7 @@ var SeasonStandings = React.createClass({
         </tr>);
         if (this.state.seasonStats[0].season.challenge) {
             header = ( <tr>
-            <th>Team</th>
+            <th></th>
             <th>W</th>
             <th>L</th>
                     <th>Points</th>

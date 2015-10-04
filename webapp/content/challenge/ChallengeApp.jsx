@@ -11,6 +11,7 @@ var Status = require('../../lib/Status');
 var ChallengePendingApp = require('../challenge/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('../challenge/ChallengeAcceptedApp.jsx');
 var UpcomingChallenges = require('../home/UpcomingChallenges.jsx');
+var SeasonStandings = require('../season/SeasonStandings.jsx');
 
 var ChallengeApp = React.createClass({
     mixins: [UserContextMixin],
@@ -116,7 +117,12 @@ var ChallengeApp = React.createClass({
 
         if (this.state.refresh)
             this.state.refresh = false;
-
+        var season;
+        this.getUser().seasons.forEach(function(s){
+            if (s.challenge) {
+                season = s;
+            }
+        });
         return (
             <div>
                 <div className="panel panel-primary">
@@ -138,6 +144,10 @@ var ChallengeApp = React.createClass({
 
                 </div>
                 <UpcomingChallenges refresh={refresh}/>
+                <div>
+                    <h3>Leaders </h3>
+                    <SeasonStandings params={{seasonId: season.id}} />
+                </div>
             </div>
         );
     }
