@@ -17,7 +17,7 @@ var UpcomingMatches = React.createClass({
     componentWillUnmount: function() {
     },
     componentDidMount: function() {
-        Util.getData('/api/teammatch/get/user/' + this.getUser().id + '/current', function(d){
+        Util.getData('/api/teammatch/user/' + this.getUser().id + '/current', function(d){
             this.setState({data: d});
         }.bind(this), null, 'UpComingMatches');
     },

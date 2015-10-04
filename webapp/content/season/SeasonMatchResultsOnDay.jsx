@@ -1,18 +1,20 @@
 var React = require('react/addons');
 var Router = require('react-router')
     , Route = Router.Route
-    , Link = Router.Link;
+    , Link = Router.Link
+    , History = Router.History;
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
+
 var options = [];
 for(var i = 0; i<12; i++) {
     options.push(<option key={i} value={i}>{i}</option>);
 }
 var loserTeamMemberOptions= [];
-var winerTeamMemberOptions= [];
+var winnerTeamMemberOptions= [];
 
 var MatchResultsOnDay = React.createClass({
     mixins: [UserContextMixin],
@@ -27,9 +29,23 @@ var MatchResultsOnDay = React.createClass({
         Util.getData('/api/playerresult/teammatch/' + this.props.params.matchId, function (d) {
             this.setState({results: d});
         }.bind(this),null,'SeasonMatchResultsOnDay');
-        Util.getData('/api/teammatch/members/' + this.props.params.matchId, function (d) {
+        var cb = function callBack (d) {
             this.setState({teamMembers: d});
-        }.bind(this),null,'SeasonMatchResultsOnDay');
+            d['winners'].forEach(function(u){
+                winnerTeamMemberOptions.push(<option key={u.id} value={u.id}>{u.name}</option>);
+            });
+            d['losers'].forEach(function(u){
+                loserTeamMemberOptions.push(<option key={u.id} value={u.id}>{u.name}</option>);
+            });
+        }.bind(this);
+
+        Util.getSomeData({
+            url: '/api/teammatch/members/' + this.props.params.matchId,
+            callback: cb,
+            module: 'SeasonMatchResultsOnDay',
+            router: this.props.history
+        });
+
         Util.getData('/api/teammatch/' + this.props.params.matchId, function (d) {
             this.setState({teamMatch: d});
         }.bind(this),null,'SeasonMatchResultsOnDay');
@@ -62,9 +78,10 @@ var MatchResultsOnDay = React.createClass({
 
 
 var MatchResults = React.createClass({
+    mixins: [ History ],
     getInitialState: function () {
         return {
-            results: this.props.results,
+            results: this.props.results
         };
     },
     componentWillReceiveProps: function (n) {
@@ -180,9 +197,10 @@ var MatchResults = React.createClass({
 });
 
 var Result =  React.createClass({
+    mixins: [ History ],
     getInitialState: function () {
         return {
-            result: this.props.result,
+            result: this.props.result
         };
     },
     componentWillReceiveProps: function (n) {
@@ -194,28 +212,6 @@ var Result =  React.createClass({
         this.setState({
             result : pr
         })
-    },
-    getPlayer: function(type) {
-        var r = this.props.result;
-        var player = type == 'winners' ? r.winnerTeamPlayer : r.loserTeamPlayer;
-        var hc = type == 'winners' ? r.winnerTeamHandicap : r.loserTeamHandicap;
-
-        if (!this.props.admin) {
-            return (<UserLink user={player} handicap={hc}/>);
-        }
-
-        var options = [];
-        this.props.teamMembers[type].forEach(function(u) {
-            options.push(<option key={u.id} value={u.id}>{u.name}</option>);
-        });
-
-        return (
-            <select ref='user' onChange={this.onChange}
-                    className="form-control"
-                    value={player.id}
-                    type={'select'}>
-                {options}
-            </select>);
     },
     remove: function(e) {
         e.preventDefault();
@@ -229,15 +225,17 @@ var Result =  React.createClass({
         return (
             <tr>
                 <td>{r.matchNumber}</td>
-                <td>{this.getPlayer('winners')}</td>
-                <td><RackResult  admin={this.props.admin} onChange={this.onChange} result={r}  type={'winner'} /></td>
+                <td><TeamMember winners={winnerTeamMemberOptions} admin={this.props.admin} onChange={this.onChange} result={r} /></td>
+                <td>
+                    <RackResult admin={this.props.admin} onChange={this.onChange} result={r} type={this.props.result.winnerType} />
+                </td>
                 <td>{r.winnerTeamRacks > r.loserTeamRacks ? 'W' : 'L'}</td>
                 <td style={{display: this.props.admin ? 'table-cell' : 'none'}} >
                     <button className='btn btn-danger btn-xs' onClick={this.remove}><b>X</b></button>
                 </td>
-                <td>{this.getPlayer('losers')}</td>
+                <td><TeamMember losers={loserTeamMemberOptions} admin={this.props.admin} onChange={this.onChange} result={r} /></td>
                 <td>
-                    <RackResult admin={this.props.admin} onChange={this.onChange} result={r} type={'loser'} />
+                    <RackResult admin={this.props.admin} onChange={this.onChange} result={r} type={this.props.result.loserType} />
                 </td>
             </tr>
         );
@@ -245,50 +243,55 @@ var Result =  React.createClass({
 });
 
 var TeamMember = React.createClass({
-     getPlayer: function(type) {
+    mixins: [ History ],
+    onChange: function(e) {
+        e.preventDefault();
+        var type = 'home';
+        if (this.props.winners != undefined) {
+            type = this.props.result.winnerType;
+        } else {
+            type = this.props.result.loserType;
+        }
+        Util.getSomeData({
+            url: '/api/playerresult/' + this.props.result.id  + '/' + type + '/' + e.target.value,
+            callback: function(d) {this.props.onChange(d)}.bind(this),
+            module: 'RackResult',
+            router: this.history
+        });
+    },
+    render: function(){
         var r = this.props.result;
-        var player = type == 'winners' ? r.winnerTeamPlayer : r.loserTeamPlayer;
-        var hc = type == 'winners' ? r.winnerTeamHandicap : r.loserTeamHandicap;
-
+        var player = this.props.winners != undefined ? r.winnerTeamPlayer : r.loserTeamPlayer;
+        var hc =  this.props.winners != undefined ? r.winnerTeamHandicap : r.loserTeamHandicap;
         if (!this.props.admin) {
             return (<UserLink user={player} handicap={hc}/>);
         }
-
-        var options = [];
-        this.props.teamMembers[type].forEach(function(u) {
-            options.push(<option key={u.id} value={u.id}>{u.name}</option>);
-        });
-
         return (
             <select ref='user' onChange={this.onChange}
                     className="form-control"
                     value={player.id}
                     type={'select'}>
-                {options}
-            </select>);
-    },
-    render: function(){
-        return null;
+                {this.props.winners == undefined ? this.props.losers : this.props.winners}
+            </select>
+        );
+
     }
 });
 
 var RackResult = React.createClass({
+    mixins: [ History ],
     onChange: function(e) {
         e.preventDefault();
-        var type = 'home';
-        if (this.props.type == 'winner') {
-            type = this.props.r.winnerType;
-        } else {
-            type = this.props.r.loserType;
-        }
+        var type = this.props.type;
         Util.getSomeData({
             url: '/api/playerresult/racks/' + this.props.result.id  + '/' + type + '/' + e.target.value,
             callback: function(d) {this.props.onChange(d)}.bind(this),
-            module: 'RackResult'
+            module: 'RackResult',
+            router: this.history
         });
     },
     render: function() {
-        var racks = this.props.type == 'winner' ? this.props.result.winnerTeamRacks :  this.props.result.loserTeamRacks;
+        var racks = this.props.result[this.props.type +'Racks'];
         if (this.props.admin) {
             return (<select onChange={this.onChange}
                             className="form-control"

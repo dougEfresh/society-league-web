@@ -79,9 +79,7 @@ function getSomeData(options) {
                     options.errorCallBack(zhr,status,err);
                     return;
                 }
-                if (options.router) {
-                    options.router.pushState(null, '/error');
-                }
+                defaultErrorHandler(options.router,xhr);
             }.bind(this)
         });
     }
@@ -102,7 +100,6 @@ function getHandicap(user,seasonId) {
 var now = moment();
 function formatDateTime(dt) {
     var m = moment(dt);
-
     return m.format('ddd MMM Do');
 }
 
@@ -132,9 +129,7 @@ function sendSomeData(options) {
                     options.errCallback();
                     return;
                 }
-                if (options.router) {
-                    options.router.pushState(null, '/error', {err: err.toString()});
-                }
+                defaultErrorHandler(options.router,xhr);
             }.bind(this)
         })
     }
@@ -196,12 +191,18 @@ function postSomeData(options) {
                     options.errCallback();
                     return;
                 }
-                if (options.router) {
-                    options.router.pushState(null, '/error', {err: xhr.responseText});
-                }
+                defaultErrorHandler(options.router,xhr);
             }.bind(this)
         })
-    }
+}
+
+function defaultErrorHandler(router,xhr) {
+    if (!router)
+        return;
+    if (window.location.indexOf("/error") >= 0)
+        return;
+    router.pushState(null, '/error', {err: xhr.responseText});
+}
 
 
 module.exports = {
