@@ -29,9 +29,12 @@ var SeasonApp = React.createClass({
         }
     },
     getData: function() {
-        Util.getData('/api/season/active', function(d){
-            this.setState({seasons: d});
-        }.bind(this), null, 'SeasonApp');
+        Util.getSomeData(
+            {url: '/api/season/active',
+                callback: function(d) {this.setState({seasons: d}); }.bind(this),
+                module: 'SeasonApp',
+                router: this.props.router
+            });
     },
     onChange: function (e) {
         e.preventDefault();
@@ -49,6 +52,7 @@ var SeasonApp = React.createClass({
             this.history.pushState(null,'/app/season/' +  e.target.value +'/results');
             return;
         }
+        this.history.pushState(null,'/app/season/' +  e.target.value +'/results');
     },
     render: function() {
         if (this.state.seasons.length == 0)
@@ -99,7 +103,7 @@ var SeasonApp = React.createClass({
                         </Link>
                     </div>
                     <Link to={'/app/season/' + this.props.params.seasonId+ '/results' }>
-                        <button className={this.props.location.pathname.indexOf('results') > 0 ? 'btn btn-success' : 'btn btn-default'} >
+                        <button className={this.props.location.pathname.indexOf('/results') > 0 ? 'btn btn-success' : 'btn btn-default'} >
                             <span className="fa  fa-history"></span><span className="main-item">Matches</span>
                         </button>
                     </Link>
@@ -121,7 +125,8 @@ var SeasonApp = React.createClass({
             return null;
         }
         return (
-            <div id={'season-app'} className="panel panel-default">
+            <div>
+                <div id={'season-app'} className="panel panel-default">
                     <div className="panel-heading">
                         <select
                             ref='season'
@@ -129,13 +134,13 @@ var SeasonApp = React.createClass({
                             className="form-control"
                             value={this.props.params.seasonId}
                             type={'select'}>
-                            {options}
-                         </select>
-                        {header}
-                    </div>
-                    <div className="panel-body">
-                        {this.props.children}
-                    </div>
+                        {options}
+                    </select>
+                    {header}
+                </div>
+                <div className="panel-body"> </div>
+            </div>
+                {this.props.children}
             </div>
         );
     }

@@ -31,6 +31,8 @@ var MatchResultsOnDay = React.createClass({
         }.bind(this),null,'SeasonMatchResultsOnDay');
         var cb = function callBack (d) {
             this.setState({teamMembers: d});
+            winnerTeamMemberOptions = [];
+            loserTeamMemberOptions = [];
             d['winners'].forEach(function(u){
                 winnerTeamMemberOptions.push(<option key={u.id} value={u.id}>{u.name}</option>);
             });
@@ -60,9 +62,9 @@ var MatchResultsOnDay = React.createClass({
     },
     isAdmin: function(){
         if (this.getUser().admin) {
-            if (this.props.location.query.admin != undefined && !this.props.location.query.admin) {
-                return false;
-            }
+//            if (this.props.location.query.admin != undefined && this.props.location.query.admin == "n") {
+  //              return false;
+    //        }
             return true;
         }
         return false;
@@ -172,9 +174,10 @@ var MatchResults = React.createClass({
             add = (<button onClick={this.addMatch}><span className="glyphicon glyphicon-plus-sign" ></span><b>Add</b></button>);
         }
         return (
+            <div>
+                {add}
             <div className="table-responsive">
                 <h2>{'Match Results - ' + Util.formatDateTime(this.props.teamMatch.matchDate)}</h2>
-                {add}
                 <table className="table table-condensed table-stripped" >
                     <thead>
                     <tr>
@@ -191,6 +194,7 @@ var MatchResults = React.createClass({
                     {rows}
                     </tbody>
                 </table>
+            </div>
             </div>
         )
     }
@@ -253,7 +257,7 @@ var TeamMember = React.createClass({
             type = this.props.result.loserType;
         }
         Util.getSomeData({
-            url: '/api/playerresult/' + this.props.result.id  + '/' + type + '/' + e.target.value,
+            url: '/api/playerresult/player/' + this.props.result.id  + '/' + type + '/' + e.target.value,
             callback: function(d) {this.props.onChange(d)}.bind(this),
             module: 'RackResult',
             router: this.history

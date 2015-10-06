@@ -125,6 +125,10 @@ function sendSomeData(options) {
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(options.url,url, status, err.toString());
+                if (xhr.responseText.indexOf("Invalid remember-me token") >= 0) {
+                    window.location = '/#/login?expired=true';
+                    return;
+                }
                 if (options.errCallback) {
                     options.errCallback();
                     return;
@@ -187,6 +191,10 @@ function postSomeData(options) {
             }.bind(this),
             error: function (xhr, status, err) {
                 console.warn(options.url, xhr.responseText);
+                if (xhr.responseText.indexOf("Invalid remember-me token") >= 0) {
+                    window.location = '/#/login?expired=true'
+                    return;
+                }
                 if (options.errCallback) {
                     options.errCallback();
                     return;
@@ -199,7 +207,7 @@ function postSomeData(options) {
 function defaultErrorHandler(router,xhr) {
     if (!router)
         return;
-    if (window.location.indexOf("/error") >= 0)
+    if (window.location.hash.indexOf("/error") >= 0)
         return;
     router.pushState(null, '/error', {err: xhr.responseText});
 }
