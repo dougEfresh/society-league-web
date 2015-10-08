@@ -39,25 +39,33 @@ var HomeApp = React.createClass({
         if (this.state.stats.length > 0) {
             this.state.stats.forEach(function(s){
                 if (s.type == 'ALL') {
-                    record = (<div style={{display: 'inline'}}>
-                        <span className="label label-success">{'W:' + s.wins}</span>
-                        <span className="label label-danger">{'L:' + s.loses}</span>
-                    </div>);
+                    record = (<div style={{display: 'inline'}} className="ss-label-group">
+                <ul>
+                        <li className="ss-label-win">W</li>
+                        <li className="ss-label-default">{s.wins}</li>
+                        </ul>
+                <ul>
+                        <li className="ss-label-lose">L</li>
+                        <li className="ss-label-default">{s.loses}</li>
+                </ul>
+                </div>);
                 }
 
             });
         }
         var welcome = (
-            <span id="welcome-name">{'Welcome ' + user.firstName }
-                {record}
+            <span id="welcome-name">{'Welcome ' + user.firstName } 
             </span>);
 
         return (
             <div id="home-app">
+                <div className="welcome-wrap">
                 <h2 className="welcome" >
                     <span className="glyphicon glyphicon-user"></span>
                     {welcome}
                 </h2>
+                {record}
+                </div>
                 <UpcomingChallenges />
                 <UpcomingMatches />
                 <RecentMatches />

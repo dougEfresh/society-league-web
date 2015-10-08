@@ -1,6 +1,8 @@
 @charset "UTF-8";
 /* CSS Document */
 /*#leagueApp > div > div > div > div > div.col-md-2.col-xs-12 > nav > ul > div > div.seasonNavLink > div > div.panel-body > li:nth-child(1) > a > div > span.eightBall.badge*/
+/* Society Red: #9c302d */
+
 a:link, a:visited {
 	color: #9c302d;
 }
@@ -20,6 +22,57 @@ span.eightBall.badge {
 span.nineBall.badge {
 	background-color: yellow; !important;
 	color: black; !important;
+}
+span .home-badge {
+	margin: -10px 0px 0px 10px;
+	padding: 5px 10px;
+	background: #fff;
+	color: #333!important;
+}
+.welcome-wrap {
+	float: left;
+	width: 98%;
+	padding: 10px 20px;
+}
+.welcome {
+	float: left;
+	width: auto;
+}
+.ss-label-group ul {
+	float: left;
+	width: auto;
+	list-style-type: none;
+	margin: 20px 0px 0px 20px;
+	font-size: 18px;
+	padding: 0px 0px;
+}
+.ss-label-group li {
+	float:left;
+	width: auto;
+	padding: 10px 20px;
+	margin: 0px 0px;
+	-webkit-box-shadow: 2px 1px 2px 0px rgba(0,0,0,1);
+	-moz-box-shadow: 2px 1px 2px 0px rgba(0,0,0,1);
+	box-shadow: 2px 1px 2px 0px rgba(0,0,0,1);
+
+}
+li.ss-label-win {
+	background: #9c302d;
+	color: #fff;
+	padding: 10px 10px;
+}
+li.ss-label-default {
+	background: #666;
+	color: #fff;
+	-moz-border-radius-topright: 10px;
+	-moz-border-radius-bottomright: 10px;
+
+	-webkit-border-top-right-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+}
+.ss-label-lose {
+	background: #000;
+	color: #fff;
 }
 
 .slot-time {

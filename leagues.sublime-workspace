@@ -38,6 +38,10 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/Users/jared/Desktop/Society/society-leagues-web/webapp"
+	],
 	"file_history":
 	[
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/home/RecentMatches.jsx",
@@ -129,7 +133,7 @@
 		"height": 0.0
 	},
 	"pinned_build_system": "",
-	"project": "app.sublime-project",
+	"project": "leagues.sublime-project",
 	"replace":
 	{
 		"height": 42.0
@@ -170,7 +174,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 324.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
