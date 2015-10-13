@@ -25,9 +25,12 @@ var TeamNav = React.createClass({
         this.getData();
     },
     getData: function() {
-        Util.getData('/api/team/get/' + this.getUser().id + '/current', function(d){
+        Util.getSomeData({url: '/api/team/get/' + this.getUser().id + '/current',
+            callback: function(d){
             this.setState({data: d, update: Date.now()});
-        }.bind(this), null, 'TeamNav'
+            }.bind(this),
+                module: 'TeamNav',
+                router: this.props.router}
         );
     },
     componentWillReceiveProps: function(nextProps) {

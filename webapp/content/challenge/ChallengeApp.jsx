@@ -239,6 +239,9 @@ var ChallengeRequestOpponent = React.createClass({
         options.push(<option key={0} value={0}>{'Choose Your Enemy'}</option>);
         this.state.opponents.forEach(function(t) {
             var handicapSeason = {};
+            if (t.challengeUser == null || t.challengeUser == undefined) {
+                return;
+            }
             t.challengeUser.handicapSeasons.forEach(function(hs) {
                 if (hs.season.challenge)
                     handicapSeason = hs;

@@ -3,6 +3,7 @@ var ReactPropTypes = React.PropTypes;
 var Router = require('react-router')
     ,Link = Router.Link;
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
+var Handicap = require('../../../lib/Handicap');
 
 var UserLink = React.createClass({
     mixins: [UserContextMixin],
@@ -28,13 +29,13 @@ var UserLink = React.createClass({
         } else  if (this.props.season != undefined) {
             this.props.user.handicapSeasons.forEach(function(hs){
                 if (hs.season.id == this.props.season) {
-                    hc = hs.handicapDisplay;
+                    hc = hs.handicap;
                 }
             }.bind(this));
 
         }
         if (hc.length > 0) {
-            name += ' (' + hc + ')';
+            name += ' (' + Handicap.formatHandicap(hc)+ ')';
         }
         return (
                 <Link to={'/app/scout/' + this.props.user.id + '/stats'}>

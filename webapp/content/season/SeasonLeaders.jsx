@@ -15,21 +15,19 @@ var SeasonLeaders = React.createClass({
             update: Date.now(),
             stats: []
         }
-
     },
     getData: function(id) {
-        Util.getData('/api/stat/season/players/' + id, function(d){
-            this.setState({stats: d});
-        }.bind(this));
+        Util.getSomeData({ url: '/api/stat/season/players/' + id,
+            callback: function(d){this.setState({stats: d});}.bind(this),
+            module: 'SeasonLeaders',
+            router: this.props.history
+        })
     },
     componentDidMount: function () {
         this.getData(this.props.params.seasonId);
     },
     componentWillReceiveProps: function(n) {
         if (n.params.seasonId != this.props.params.seasonId) {
-            //this.setState({
-              //  loading : true
-            //});
             this.getData(n.params.seasonId);
             return;
         }

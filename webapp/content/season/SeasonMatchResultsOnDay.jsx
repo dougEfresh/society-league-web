@@ -8,6 +8,7 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
+var Handicap = require('../../lib/Handicap');
 
 var options = [];
 for(var i = 0; i<12; i++) {
@@ -22,7 +23,8 @@ var MatchResultsOnDay = React.createClass({
         return {
             results: [],
             teamMembers: {},
-            teamMatch: {}
+            teamMatch: {},
+            adminMode: false
         };
     },
     getData: function () {
@@ -60,20 +62,27 @@ var MatchResultsOnDay = React.createClass({
         if (now - this.state.update > 1000 * 60)
             this.getData();
     },
-    isAdmin: function(){
-        if (this.getUser().admin) {
-//            if (this.props.location.query.admin != undefined && this.props.location.query.admin == "n") {
-  //              return false;
-    //        }
-            return true;
-        }
-        return false;
+    adminMode: function(e) {
+        e.preventDefault();
+        this.setState({
+            adminMode : !this.state.adminMode
+        });
     },
     render: function () {
         if (this.state.teamMatch.id == undefined){
             return null;
         }
-        return <MatchResults admin={this.isAdmin()} teamMatch={this.state.teamMatch} teamMembers={this.state.teamMembers} results={this.state.results}/>;
+        var adminMode = null;
+        if (this.getUser().admin){
+            //TODO Button Group
+            adminMode = (<button className={this.state.adminMode ? "'btn btn-success" : "btn-btn-default"}  onClick={this.adminMode}><span className="glyphicon glyphicon-user" ></span>
+                <b>Admin Mode</b>
+            </button>);
+        }
+        return <div>
+            {adminMode}
+            <MatchResults admin={this.state.admin} teamMatch={this.state.teamMatch} teamMembers={this.state.teamMembers} results={this.state.results}/>;
+            </div>
     }
 });
 
@@ -154,7 +163,29 @@ var MatchResults = React.createClass({
             results: results
         });
     },
+    getHeader: function() {
+        if (this.props.teamMatch.season.nine)
+            return (<tr>
+            <th>Match #</th>
+            <th><TeamLink team={this.props.teamMatch.winner} /></th>
+            <th>Racks</th>
+            <th>W/L</th>
+            <th style={{display: this.props.admin ? 'table-cell' : 'none'}} ></th>
+            <th><TeamLink team={this.props.teamMatch.loser} /></th>
+            <th>Racks</th>
+        </tr>);
 
+        return (
+            <tr>
+            <th>Match #</th>
+            <th><TeamLink team={this.props.teamMatch.winner} /></th>
+            <th>W/L</th>
+            <th style={{display: this.props.admin ? 'table-cell' : 'none'}} ></th>
+            <th><TeamLink team={this.props.teamMatch.loser} /></th>
+        </tr>
+        );
+
+    },
     render: function() {
         var rows = [];
         var cnt = 0;
@@ -180,15 +211,7 @@ var MatchResults = React.createClass({
                 <h2>{'Match Results - ' + Util.formatDateTime(this.props.teamMatch.matchDate)}</h2>
                 <table className="table table-condensed table-stripped" >
                     <thead>
-                    <tr>
-                        <th>Match #</th>
-                        <th><TeamLink team={this.props.teamMatch.winner} /></th>
-                        <th>Racks</th>
-                        <th>W/L</th>
-                        <th style={{display: this.props.admin ? 'table-cell' : 'none'}} ></th>
-                        <th><TeamLink team={this.props.teamMatch.loser} /></th>
-                        <th>Racks</th>
-                    </tr>
+                    {this.getHeader()}
                     </thead>
                     <tbody>
                     {rows}
@@ -226,23 +249,45 @@ var Result =  React.createClass({
         if (r == undefined || r == null)
             return null;
 
-        return (
-            <tr>
-                <td>{r.matchNumber}</td>
-                <td><TeamMember winners={winnerTeamMemberOptions} admin={this.props.admin} onChange={this.onChange} result={r} /></td>
-                <td>
-                    <RackResult admin={this.props.admin} onChange={this.onChange} result={r} type={this.props.result.winnerType} />
-                </td>
-                <td>{r.winnerTeamRacks > r.loserTeamRacks ? 'W' : 'L'}</td>
-                <td style={{display: this.props.admin ? 'table-cell' : 'none'}} >
-                    <button className='btn btn-danger btn-xs' onClick={this.remove}><b>X</b></button>
-                </td>
-                <td><TeamMember losers={loserTeamMemberOptions} admin={this.props.admin} onChange={this.onChange} result={r} /></td>
-                <td>
-                    <RackResult admin={this.props.admin} onChange={this.onChange} result={r} type={this.props.result.loserType} />
-                </td>
-            </tr>
-        );
+        if (this.props.result.season.nine) {
+            return (
+                <tr>
+                    <td>{r.matchNumber}</td>
+                    <td><TeamMember winners={winnerTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
+                                    result={r}/></td>
+                    <td>
+                        <RackResult admin={this.props.admin} onChange={this.onChange} result={r}
+                                    type={this.props.result.winnerType}/>
+                    </td>
+                    <td>{r.winnerTeamRacks > r.loserTeamRacks ? 'W' : 'L'}</td>
+                    <td style={{display: this.props.admin ? 'table-cell' : 'none'}}>
+                        <button className='btn btn-danger btn-xs' onClick={this.remove}><b>X</b></button>
+                    </td>
+                    <td><TeamMember losers={loserTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
+                                    result={r}/></td>
+                    <td>
+                        <RackResult admin={this.props.admin} onChange={this.onChange} result={r}
+                                    type={this.props.result.loserType}/>
+                    </td>
+                </tr>
+            );
+
+        }
+          return (
+                <tr>
+                    <td>{r.matchNumber}</td>
+                    <td><TeamMember winners={winnerTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
+                                    result={r}/></td>
+                    <td>{r.winnerTeamRacks > r.loserTeamRacks ? 'W' : 'L'}</td>
+                    <td style={{display: this.props.admin ? 'table-cell' : 'none'}}>
+                        <button className='btn btn-danger btn-xs' onClick={this.remove}><b>X</b></button>
+                    </td>
+                    <td><TeamMember losers={loserTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
+                                    result={r}/></td>
+                </tr>
+            );
+
+
     }
 });
 
@@ -304,7 +349,6 @@ var RackResult = React.createClass({
                 {options}
             </select>);
         }
-
         return  <span>{racks}</span>
     }
 });

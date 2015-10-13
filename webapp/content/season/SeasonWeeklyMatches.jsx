@@ -96,7 +96,8 @@ var SeasonWeeklyResults = React.createClass({
         var rows = [];
         for (var md in results) {
             if (results.hasOwnProperty(md))
-                rows.push(<TeamMatches addMatch={this.addMatch} removeMatch={this.removeMatch}
+                rows.push(<TeamMatches addMatch={this.addMatch}
+                                       removeMatch={this.removeMatch}
                                        admin={this.state.adminMode}
                                        teams={this.state.teams}
                                        key={md}
@@ -136,7 +137,44 @@ var TeamMatches = React.createClass({
             this.props.addMatch(e,dt);
         }.bind(this);
     },
+    getHeader: function(season) {
+        if (season.challenge) {
+            return (
+                <tr>
+                    <td></td>
+                    <td>Racks</td>
+                    <td></td>
+                    <td></td>
+                    <td>Racks</td>
+                </tr>
+            )
+        }
+        if (season.nine) {
+            return (
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Racks</td>
+                    <td>Wins</td>
+                    <td></td>
+                    <td></td>
+                    <td>Racks</td>
+                    <td>Wins</td>
+                </tr>
+            )
+        }
+          return (
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Racks</td>
+                    <td></td>
+                    <td></td>
+                    <td>Racks</td>
+                </tr>
+            )
 
+    },
      render: function() {
         if (this.props.teamMatches.length == 0) {
             return null;
@@ -144,9 +182,12 @@ var TeamMatches = React.createClass({
         var rows = [];
         this.props.teamMatches.forEach(function(r) {
             if (r.season.challenge)
+                rows.push(<ChallengeTeamMatch removeMatch={this.props.removeMatch} admin={this.props.admin} key={r.id} teamMatch={r} />);
+            else if (r.season.nine)
                 rows.push(<NineBallTeamMatch removeMatch={this.props.removeMatch} admin={this.props.admin} key={r.id} teamMatch={r} />);
             else
-                rows.push(<NineBallTeamMatch removeMatch={this.props.removeMatch} admin={this.props.admin} key={r.id} teamMatch={r} />);
+                rows.push(<EightBallTeamMatch removeMatch={this.props.removeMatch} admin={this.props.admin} key={r.id} teamMatch={r} />);
+
         }.bind(this));
          var season  = this.props.teamMatches[0].season;
          var add = null;
@@ -162,15 +203,7 @@ var TeamMatches = React.createClass({
                     <th>{add}</th>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td style={{display: season.nine && !season.challenge ? 'table-cell' : 'none'}} >Wins</td>
-                        <td>Racks</td>
-                        <td></td>
-                        <td style={{display: season.nine && !season.challenge ? 'table-cell' : 'none'}} >Wins</td>
-                        <td>Racks</td>
-                    </tr>
+                    {this.getHeader(season)}
                     {rows}
                     </tbody>
                     <tfoot>
@@ -179,6 +212,166 @@ var TeamMatches = React.createClass({
                 </table>
             </div>
         );
+    }
+});
+
+var EightBallTeamMatch = React.createClass({
+    mixins: [UserContextMixin],
+    getInitialState: function() {
+        return {
+            teamMatch: this.props.teamMatch
+        }
+    },
+    reload: function(d) {
+        this.setState({
+            teamMatch: d
+        })
+    },
+    onChange: function(e) {
+        e.preventDefault();
+        var tm = this.state.teamMatch;
+        var winnerId = React.findDOMNode(this.refs.winner).value;
+        var loserId = React.findDOMNode(this.refs.loser).value;
+        if (tm.winner.id  != winnerId) {
+            Util.getSomeData({
+                url: '/api/teammatch/admin/modify/' +tm.id  + '/team/winner/' + winnerId,
+                module: 'TeamMatchTeamModify',
+                callback: function(d) {this.setState({teamMatch: d})}.bind(this)
+            });
+        }
+
+        if (tm.loser.id  != loserId) {
+            Util.getSomeData({
+                url: '/api/teammatch/admin/modify/' + tm.id  + '/team/loser/' + winnerId,
+                module: 'TeamMatchTeamModify',
+                callback: function(d) {this.setState({teamMatch: d})}.bind(this)
+            });
+        }
+    },
+    removeMatch: function() {
+        return function(e) {
+            return this.props.removeMatch(e,this.state.teamMatch.id);
+        }.bind(this)
+    },
+    render: function() {
+
+        if (this.state.error) {
+            return(
+                <tr>
+                    <td colSpan="5">
+                        <div className="alert alert-error" role="alert">
+                            {'Error!  Please refresh your browser and try again' }
+                        </div>
+                    </td>
+                </tr>
+            );
+        }
+
+        var tm = this.state.teamMatch;
+        var winner = <TeamLink team={tm.winner}></TeamLink>;
+        var loser = <TeamLink team={tm.loser}></TeamLink>;
+        if (this.props.admin) {
+            winner = <select ref={'winner'} onChange={this.onChange} className="form-control" value={tm.winner.id} type={'select'}> {teamOptions} </select>;
+            loser = <select ref={'loser'} onChange={this.onChange} className="form-control" value={tm.loser.id} type={'select'}> {teamOptions} </select>;
+        }
+        var results = null;
+        if (this.props.admin || tm.hasResults || tm.results ) {
+            results = <Link to={'/app/season/' + tm.season.id + '/teamresults/' + tm.id}>Results</Link>;
+        }
+        var remove = <button className='btn btn-danger btn-xs' onClick={this.removeMatch()}><b>X</b></button>;
+        if (this.props.admin)
+            remove = null;
+        return (
+            <tr>
+                <td>{results}</td>
+                <td>{winner}</td>
+                <td>
+                    <TeamResult admin={this.props.admin} type={'racks'} callback={this.reload} teamMatch={tm} team={tm.winner} result={tm.winnerRacks}/>
+                </td>
+                <td>{remove}</td>
+                <td>{loser}</td>
+                <td>
+                    <TeamResult admin={this.props.admin} type={'racks'} callback={this.reload} teamMatch={tm} team={tm.loser} result={tm.loserRacks}/>
+                </td>
+            </tr>);
+    }
+});
+
+var ChallengeTeamMatch = React.createClass({
+    mixins: [UserContextMixin],
+    getInitialState: function() {
+        return {
+            teamMatch: this.props.teamMatch
+        }
+    },
+    reload: function(d) {
+        this.setState({
+            teamMatch: d
+        })
+    },
+    onChange: function(e) {
+        e.preventDefault();
+        var tm = this.state.teamMatch;
+        var winnerId = React.findDOMNode(this.refs.winner).value;
+        var loserId = React.findDOMNode(this.refs.loser).value;
+        if (tm.winner.id  != winnerId) {
+            Util.getSomeData({
+                url: '/api/teammatch/admin/modify/' +tm.id  + '/team/winner/' + winnerId,
+                module: 'TeamMatchTeamModify',
+                callback: function(d) {this.setState({teamMatch: d})}.bind(this)
+            });
+        }
+
+        if (tm.loser.id  != loserId) {
+            Util.getSomeData({
+                url: '/api/teammatch/admin/modify/' + tm.id  + '/team/loser/' + winnerId,
+                module: 'TeamMatchTeamModify',
+                callback: function(d) {this.setState({teamMatch: d})}.bind(this)
+            });
+        }
+    },
+    removeMatch: function() {
+        return function(e) {
+            return this.props.removeMatch(e,this.state.teamMatch.id);
+        }.bind(this)
+    },
+    render: function() {
+
+        if (this.state.error) {
+            return(
+                <tr>
+                    <td colSpan="5">
+                        <div className="alert alert-error" role="alert">
+                            {'Error!  Please refresh your browser and try again' }
+                        </div>
+                    </td>
+                </tr>
+            );
+        }
+
+        var tm = this.state.teamMatch;
+        var winner = <TeamLink team={tm.winner}></TeamLink>;
+        var loser = <TeamLink team={tm.loser}></TeamLink>;
+        if (this.props.admin) {
+            winner = <select ref={'winner'} onChange={this.onChange} className="form-control" value={tm.winner.id} type={'select'}> {teamOptions} </select>;
+            loser = <select ref={'loser'} onChange={this.onChange} className="form-control" value={tm.loser.id} type={'select'}> {teamOptions} </select>;
+        }
+        var remove = <button className='btn btn-danger btn-xs' onClick={this.removeMatch()}><b>X</b></button>;
+        if (this.props.admin)
+            remove = null;
+        return (
+            <tr>
+                <td style={{display: 'none'}}> {null} </td>
+                <td >{winner}</td>
+                <td>
+                    <TeamResult admin={this.props.admin} type={'racks'} callback={this.reload} teamMatch={tm} team={tm.winner} result={tm.winnerRacks}/>
+                </td>
+                <td>{remove}</td>
+                <td>{loser}</td>
+                <td>
+                    <TeamResult admin={this.props.admin} type={'racks'} callback={this.reload} teamMatch={tm} team={tm.loser} result={tm.loserRacks}/>
+                </td>
+            </tr>);
     }
 });
 
@@ -239,29 +432,34 @@ var NineBallTeamMatch = React.createClass({
         if (this.props.admin || tm.hasResults || tm.results ) {
             results = <Link to={'/app/season/' + tm.season.id + '/teamresults/' + tm.id}>Results</Link>;
         }
+        if (tm.challenge) {
+            results = null;
+        }
         var winner = <TeamLink team={tm.winner}></TeamLink>;
         var loser = <TeamLink team={tm.loser}></TeamLink>;
         if (this.props.admin) {
             winner = <select ref={'winner'} onChange={this.onChange} className="form-control" value={tm.winner.id} type={'select'}> {teamOptions} </select>;
             loser = <select ref={'loser'} onChange={this.onChange} className="form-control" value={tm.loser.id} type={'select'}> {teamOptions} </select>;
         }
-
+        var remove = <button className='btn btn-danger btn-xs' onClick={this.removeMatch()}><b>X</b></button>;
+        if (this.props.admin)
+            remove = null;
         return (
             <tr>
                 <td> {results} </td>
-                <td style={{display:  tm.nine && !tm.challenge ? 'table-cell' :'none'}} >{winner}</td>
-                <td style={{display:  tm.nine && !tm.challenge ? 'table-cell' :'none'}} >
+                <td>{winner}</td>
+                <td>
                     <TeamResult admin={this.props.admin} type={'wins'} callback={this.reload} teamMatch={tm} team={tm.winner} result={tm.winnerSetWins}/>
                 </td>
                 <td>
                     <TeamResult admin={this.props.admin} type={'racks'} callback={this.reload} teamMatch={tm} team={tm.winner} result={tm.winnerRacks}/>
                 </td>
-                <td style={{display: this.props.admin ? 'table-cell' : 'none'}} >
-                    <button className='btn btn-danger btn-xs' onClick={this.removeMatch()}><b>X</b></button>
+                <td>
+                    {remove}
                 </td>
 
-                <td style={{display:  tm.nine && !tm.challenge ? 'table-cell' :'none'}} >{loser}</td>
-                <td style={{display:  tm.nine && !tm.challenge ? 'table-cell' :'none'}} >
+                <td>{loser}</td>
+                <td>
                     <TeamResult admin={this.props.admin} type={'wins'} callback={this.reload} teamMatch={tm} team={tm.loser} result={tm.loserSetWins}/>
                 </td>
                 <td>
@@ -270,7 +468,6 @@ var NineBallTeamMatch = React.createClass({
             </tr>);
     }
 });
-
 
 var TeamResult = React.createClass({
     getInitialState: function() {

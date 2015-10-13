@@ -7,7 +7,7 @@ var SeasonLink = require('../../jsx/components/links/SeasonLink.jsx');
 var StatsPie = require('./StatsPie.jsx');
 
 var StatsDisplay = React.createClass({
-    mixins: [UserContextMixin,],
+    mixins: [UserContextMixin],
      getInitialState: function() {
          return {
              update: Date.now(),
@@ -33,16 +33,6 @@ var StatsDisplay = React.createClass({
     getRows: function(data) {
         var rows = [];
         var cnt = 0;
-        data = data.sort(function(a,b) {
-            if (a.type == 'ALL') {
-                return -1
-            }
-            if (b.type == 'ALL') {
-                return -1
-            }
-            return b.season.displayName.localeCompare(a.season.displayName);
-        });
-
         data.forEach(function(d){
             var hc = d.handicap;
             cnt += 1;

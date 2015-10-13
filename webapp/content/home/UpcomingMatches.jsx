@@ -31,10 +31,14 @@ var UpcomingMatches = React.createClass({
         this.state.data = this.state.data.sort(function(a,b){
             return a.matchDate.localeCompare(b.matchDate);
         });
-
+        var cnt = 0;
         this.state.data.forEach(function(m){
             var md = moment(m.matchDate);
+            cnt++;
             if (md.isBefore(now)) {
+                return;
+            }
+            if (cnt > 4) {
                 return;
             }
             rows.push (

@@ -6,7 +6,7 @@ var ErrorApp = React.createClass({
     mixins: [UserContextMixin],
     backup: function(e) {
         e.preventDefault();
-        this.props.history.goBack();
+        this.props.history.pushState(null,'/login')
     },
     render: function () {
         var msg = "";
@@ -15,14 +15,11 @@ var ErrorApp = React.createClass({
         }
         var errMsg =
             <div className="panel-body">
-                <span>Unexpected error occurred</span>
-                <p>
-                <span>Click <Link to='/login' >here </Link> to login again</span>
-                </p>
+                <span><b>Unexpected error occurred</b> Please Login again:</span>
                 <div>
                   <button onClick={this.backup} type="button" className="btn btn-sm btn-primary btn-responsive ">
-                                <b>Go Back</b>
-                            </button>
+                      <b>Login</b>
+                  </button>
                 </div>
                 <p>
                     <pre>{msg}</pre>

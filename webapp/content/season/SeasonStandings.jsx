@@ -18,16 +18,27 @@ var SeasonStandings = React.createClass({
          }
     },
     getData: function(id) {
-        Util.getData('/api/stat/season/' + id, function(d){
-            this.setState({seasonStats: d, loading: false});
-        }.bind(this),null,'SeasonStandings');
+        Util.getSomeData(
+            {
+                url: '/api/stat/season/' + id,
+                callback: function (d) {
+                    this.setState({seasonStats: d, loading: false})
+                }.bind(this),
+                module: 'SeasonStandings',
+                router: this.props.history
+            }
+        );
 
     },
     componentDidMount: function () {
-        this.getData(this.props.params.seasonId);
+        if(this.props.seasonId)
+            this.getData(this.props.seasonId);
+        else
+            this.getData(this.props.params.seasonId);
     },
     componentWillReceiveProps: function (n) {
-        this.getData(n.params.seasonId);
+        if (n.params != undefined)
+            this.getData(n.params.seasonId);
     },
     render: function() {
         if (this.state.seasonStats.length == 0)

@@ -45,15 +45,18 @@ var TeamApp = React.createClass({
     },
     getData: function() {
         if (this.getUser().admin) {
-            Util.getData('/api/team/active', function (d) {
+            Util.getData(
+                '/api/team/active', function (d) {
                     this.setState({teams: d});
                 }.bind(this), null, 'TeamApp'
             );
         } else {
-            Util.getData('/api/team/get/user/' + this.getUser().id, function (d) {
-                    this.setState({teams: d});
-                }.bind(this), null, 'TeamApp'
-            );
+              Util.getSomeData({url: '/api/team/get/user' + this.getUser().id,
+                      callback:function (d) {
+                          this.setState({teams: d})}.bind(this),
+                      module: 'TeamApp',
+                      router: this.props.router}
+              );
         }
     },
     componentWillReceiveProps: function (o, n) {

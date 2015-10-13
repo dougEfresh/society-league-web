@@ -127,8 +127,15 @@ var ResultNine = React.createClass({
         var limit = this.props.limit == null ? this.props.results.length : this.props.limit;
         for (var i = 0; i< limit && i< this.props.results.length; i++ ) {
             var r = this.props.results[i];
+            var lnk =  <Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link>;
+
+            if (!r.season.active) {
+                lnk = <span>{Util.formatDateTime(r.teamMatch.matchDate)}</span>
+            }
             rows.push(<tr key={r.id}>
-                <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
+                <td>
+                    {lnk}
+                </td>
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td>{r.teamMemberRacks + ' - ' + r.opponentRacks}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
@@ -158,7 +165,6 @@ var ResultNine = React.createClass({
                          <th>W/L</th>
                          <th>Score</th>
                          <th>Opponent</th>
-                         <th>HC</th>
                      </tr>
                 </thead>
                 <tbody>
