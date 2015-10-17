@@ -44,11 +44,11 @@ var TeamApp = React.createClass({
                 }.bind(this), module: 'TeamApp', router: this.props.history}
             );
         } else {
-              Util.getSomeData({url: '/api/team/get/user' + this.getUser().id,
+              Util.getSomeData({url: '/api/team/get/user/' + this.getUser().id,
                       callback:function (d) {
                           this.setState({teams: d})}.bind(this),
                       module: 'TeamApp',
-                      router: this.props.router}
+                      router: this.props.history}
               );
         }
     },
