@@ -7,18 +7,20 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UserLink = require('../../../webapp/jsx/components/links/UserLink.jsx');
 var TeamLink = require('../../../webapp/jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
+var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 
 var SeasonLeaders = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
         return {
             update: Date.now(),
-            stats: []
+            stats: [],
+            loading: true
         }
     },
     getData: function(id) {
         Util.getSomeData({ url: '/api/stat/season/players/' + id,
-            callback: function(d){this.setState({stats: d});}.bind(this),
+            callback: function(d){this.setState({stats: d, loading: false});}.bind(this),
             module: 'SeasonLeaders',
             router: this.props.history
         })
@@ -27,6 +29,7 @@ var SeasonLeaders = React.createClass({
         this.getData(this.props.params.seasonId);
     },
     componentWillReceiveProps: function(n) {
+        this.setState({loading: true});
         if (n.params.seasonId != this.props.params.seasonId) {
             this.getData(n.params.seasonId);
             return;
@@ -51,8 +54,8 @@ var SeasonLeaders = React.createClass({
     },
     render: function() {
         var stats = this.state.stats;
-        if (stats.length == 0){
-            return null;
+        if (this.state.loading) {
+            return (<LoadingApp /> )
         }
 
         return (

@@ -39,18 +39,18 @@ var TeamStandings = React.createClass({
         if (this.state.statTeam.team  && this.state.statTeam.team.nine) {
             return ( <tr>
                 <th>Name</th>
-                <th>Wins</th>
-                <th>Loses</th>
-                <th>Racks Won</th>
-                <th>Racks Lost</th>
+                <th>W</th>
+                <th>L</th>
+                <th>RW</th>
+                <th>RL</th>
                 <th>Pct</th>
                 </tr>);
         }
         return (
             <tr>
                 <th>Name</th>
-                <th>Wins</th>
-                <th>Loses</th>
+                <th>W</th>
+                <th>L</th>
             </tr>);
     },
     getRows: function() {
