@@ -197,7 +197,7 @@ var TeamMatches = React.createClass({
         }
         return (
             <div className="table-responsive">
-                <table className="table table-condensed table-stripped table-responsive" >
+                <table className="table table-hover table-condensed table-striped table-responsive">
                     <thead>
                     <th colSpan="1">{Util.formatDateTime(this.props.date)}</th>
                     <th>{add}</th>

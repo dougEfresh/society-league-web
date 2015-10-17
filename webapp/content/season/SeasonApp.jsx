@@ -138,7 +138,6 @@ var SeasonApp = React.createClass({
                     </select>
                     {header}
                 </div>
-                <div className="panel-body"> </div>
             </div>
                 {this.props.children}
             </div>

@@ -209,7 +209,7 @@ var MatchResults = React.createClass({
                 {add}
             <div className="table-responsive">
                 <h2>{'Match Results - ' + Util.formatDateTime(this.props.teamMatch.matchDate)}</h2>
-                <table className="table table-condensed table-stripped" >
+                <table className="table table-condensed table-striped" >
                     <thead>
                     {this.getHeader()}
                     </thead>
