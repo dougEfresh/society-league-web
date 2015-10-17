@@ -83,7 +83,7 @@ var ResultScramble = React.createClass({
                     <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                     <td><UserLink user={r.opponentPartner} handicap={r.opponentPartnerHandicap} season={r.season.id} /></td>
                     <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
-                    <td>{r.teamMemberHandicap}</td>
+                    <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
            var statDisplay = (<div>
@@ -137,7 +137,7 @@ var ResultEight = React.createClass({
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                     <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
-                <td>{r.teamMemberHandicap}</td>
+                <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
 
                 </tr>);
         }
@@ -197,7 +197,7 @@ var ResultNine = React.createClass({
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td>{r.teamMemberRacks + ' - ' + r.opponentRacks}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
-                <td>{r.teamMemberHandicap}</td>
+                <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
 
@@ -223,6 +223,7 @@ var ResultNine = React.createClass({
                          <th>W/L</th>
                          <th>Score</th>
                          <th>Opponent</th>
+                         <th>HC</th>
                      </tr>
                 </thead>
                 <tbody>
@@ -256,7 +257,7 @@ var ResultChallenge = React.createClass({
                 <td>{r.matchPoints ? r.matchPoints.calculation  : ''}</td>
                 <td>{r.teamMemberRacks + ' - ' + r.opponentRacks}</td>
                 <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
-                <td>{r.teamMemberHandicap}</td>
+                <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
         var statDisplay = (<div>

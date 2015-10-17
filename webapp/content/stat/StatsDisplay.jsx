@@ -34,7 +34,7 @@ var StatsDisplay = React.createClass({
         var rows = [];
         var cnt = 0;
         data.forEach(function(d){
-            var hc = d.handicap;
+            var hc = Handicap.formatHandicap(d.handicap);
             cnt += 1;
             var type = null;
             if (d.type == 'ALL') {
