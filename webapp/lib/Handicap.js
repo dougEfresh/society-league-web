@@ -20,6 +20,8 @@ var formatHandicap = function(hc) {
             return 'O';
         case 'PRO':
             return 'P';
+        case 'UNKNOWN':
+            return "";
     }
     return hc.replace('PLUS','+');
 };

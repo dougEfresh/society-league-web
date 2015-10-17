@@ -18,7 +18,6 @@ var TeamApp = React.createClass({
         }
     },
     componentWillMount: function () {
-
     },
     componentWillUnmount: function () {
     },
@@ -27,28 +26,22 @@ var TeamApp = React.createClass({
     },
     onChange: function (e) {
         e.preventDefault();
-
-        if (this.props.location.pathname.indexOf("standings")) {
-            this.props.history.pushState(null,'/app/team/' + e.target.value + '/standings',null);
-            return;
-        }
-
-        if (this.props.location.pathname.indexOf("members")) {
+        if (this.props.location.pathname.indexOf("members") >= 0) {
             this.props.history.pushState(null,'/app/team/' + e.target.value + '/members',null);
             return;
         }
-
-        if (this.props.location.pathname.indexOf("chart")) {
+        if (this.props.location.pathname.indexOf("chart") >= 0) {
             this.props.history.pushState(null,'/app/team/' + e.target.value + '/chart',null);
             return;
         }
+        this.props.history.pushState(null,'/app/team/' + e.target.value + '/standings',null);
     },
     getData: function() {
         if (this.getUser().admin) {
-            Util.getData(
-                '/api/team/active', function (d) {
-                    this.setState({teams: d});
-                }.bind(this), null, 'TeamApp'
+            Util.getSomeData({url:
+                '/api/team/active', callback:  function (d) {
+                    this.setState({teams: d})
+                }.bind(this), module: 'TeamApp', router: this.props.history}
             );
         } else {
               Util.getSomeData({url: '/api/team/get/user' + this.getUser().id,

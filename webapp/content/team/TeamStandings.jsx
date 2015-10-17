@@ -13,22 +13,27 @@ var TeamStandings = React.createClass({
              update : Date.now()
         }
     },
-    getData: function() {
-        Util.getData('/api/stat/team/' + this.props.params.teamId, function(d){
-            this.setState({statTeam: d});
-        }.bind(this));
+    getData: function(id) {
+        Util.getSomeData(
+            {
+                url: '/api/stat/team/' + id ,
+                callback: function(d){this.setState({statTeam: d});}.bind(this),
+                module: 'TeamStandings',
+                router: this.props.history
+            });
 
-        Util.getData('/api/stat/team/' + this.props.params.teamId + '/members', function(d){
-            this.setState({statTeamMembers: d});
-        }.bind(this));
+        Util.getSomeData(
+            { url: '/api/stat/team/' + id + '/members',
+                callback: function(d){this.setState({statTeamMembers: d})}.bind(this),
+                module: 'TeamStandings',
+                router: this.props.history}
+        );
     },
     componentDidMount: function () {
-        this.getData();
+        this.getData(this.props.params.teamId);
     },
-    componentWillReceiveProps: function (o, n) {
-        if (this.state.statTeam.id !=  this.props.params.teamId) {
-            this.getData();
-        }
+    componentWillReceiveProps: function (n) {
+        this.getData(n.params.teamId);
     },
     getHeader: function() {
         if (this.state.statTeam.team  && this.state.statTeam.team.nine) {

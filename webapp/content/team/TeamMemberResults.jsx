@@ -21,21 +21,19 @@ var TeamResults = React.createClass({
             update: Date.now()
         }
     },
-    getData: function() {
-        Util.getData('/api/playerresult/get/team/' + this.props.params.teamId, function(d){
-            this.setState({results: d});
-        }.bind(this), null,'TeamResults');
+    getData: function(id) {
+        Util.getSomeData(
+            {url: '/api/playerresult/get/team/' + id,
+            callback : function(d){this.setState({results: d}); }.bind(this),
+            module: 'TeamResults',
+            router: this.props.history
+        });
     },
-    componentWillReceiveProps: function(n,o) {
-        if (this.state.results.length == 0) {
-            return;
-        }
-        if (this.state.teamId != this.props.params.teamId) {
-            this.getData();
-        }
+    componentWillReceiveProps: function(n) {
+        this.getData(n.params.teamId);
     },
     componentDidMount: function() {
-        this.getData();
+        this.getData(this.props.params.teamId);
     },
     render: function() {
         var rows = [];

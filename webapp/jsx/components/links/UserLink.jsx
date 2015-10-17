@@ -7,9 +7,6 @@ var Handicap = require('../../../lib/Handicap');
 
 var UserLink = React.createClass({
     mixins: [UserContextMixin],
-    propTypes: {
-        user: ReactPropTypes.object.isRequired
-    },
     getDefaultProps: function(){
         return {
             user: null

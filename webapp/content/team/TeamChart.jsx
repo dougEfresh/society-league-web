@@ -6,8 +6,7 @@ var Chart = require('../../jsx/components/Chart.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var TeamChart = React.createClass({
-    mixins: [UserContextMixin,Router.State],
-
+    mixins: [UserContextMixin],
     getInitialState: function() {
         return {
             update: Date.now(),
@@ -15,22 +14,27 @@ var TeamChart = React.createClass({
             statTeamMembers: []
         }
     },
-    getData: function() {
-        Util.getData('/api/stat/team/' + this.props.params.teamId, function(d){
-            this.setState({statTeam: d});
-        }.bind(this));
+    getData: function(id) {
+        Util.getSomeData({ url: '/api/stat/team/' + id,
+            callback: function(d){this.setState({statTeam: d});}.bind(this),
+            module: 'TeamChart',
+            router: this.props.history
+        });
 
-        Util.getData('/api/stat/team/' + this.props.params.teamId + '/members', function(d){
-            this.setState({statTeamMembers: d});
-        }.bind(this));
+        Util.getSomeData(
+            {
+                url: '/api/stat/team/' + id + '/members',
+                callback: function(d){ this.setState({statTeamMembers: d});}.bind(this),
+                module: 'TeamChar',
+                router: this.props.history
+            }
+        );
     },
     componentDidMount: function () {
-        this.getData();
+        this.getData(this.props.params.teamId);
     },
-    componentWillReceiveProps: function (o, n) {
-        if (this.state.statTeam.id !=  this.props.params.teamId) {
-            this.getData();
-        }
+    componentWillReceiveProps: function (n) {
+        this.getData(n.params.teamId);
     },
     render: function() {
         var label = [];

@@ -55,8 +55,8 @@ function getData(url, callback, unauthCallback, module) {
 function getSomeData(options) {
     //url, callback, unauthCallback, module
     //console.log('Someone is getting data ' + arguments.callee.caller.toString());
-        console.log("["+ options.module + "] Getting data from " + options.url);
-        $.ajax({
+    console.log("["+ options.module + "] " + options.url);
+    $.ajax({
             url: options.url,
             dataType: 'json',
             statusCode: {
@@ -104,7 +104,7 @@ function formatDateTime(dt) {
 }
 
 function sendSomeData(options) {
-        console.log("Sending data: " + JSON.stringify(options.data));
+        console.log(JSON.stringify(options.data));
         $.ajax({
             async: true,
             processData: false,

@@ -17,9 +17,13 @@ var UpcomingMatches = React.createClass({
     componentWillUnmount: function() {
     },
     componentDidMount: function() {
-        Util.getData('/api/teammatch/user/' + this.getUser().id + '/current', function(d){
-            this.setState({data: d});
-        }.bind(this), null, 'UpComingMatches');
+        Util.getSomeData(
+            {
+                url: '/api/teammatch/user/' + this.getUser().id + '/current',
+                callback : function(d){this.setState({data: d});}.bind(this),
+                module: 'UpComingMatches'
+            }
+        );
     },
     render: function() {
         var user = this.getUser();
@@ -34,10 +38,10 @@ var UpcomingMatches = React.createClass({
         var cnt = 0;
         this.state.data.forEach(function(m){
             var md = moment(m.matchDate);
-            cnt++;
             if (md.isBefore(now)) {
                 return;
             }
+            cnt++;
             if (cnt > 4) {
                 return;
             }
