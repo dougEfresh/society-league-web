@@ -14,6 +14,11 @@ var options = [];
 for(var i = 0; i<12; i++) {
     options.push(<option key={i} value={i}>{i}</option>);
 }
+
+var eightOptions = [];
+eightOptions.push(<option key={0} value={0}>{0}</option>);
+eightOptions.push(<option key={1} value={1}>{1}</option>);
+
 var loserTeamMemberOptions= [];
 var winnerTeamMemberOptions= [];
 
@@ -75,18 +80,17 @@ var MatchResultsOnDay = React.createClass({
         var adminMode = null;
         if (this.getUser().admin){
             //TODO Button Group
-            adminMode = (<button className={this.state.adminMode ? "'btn btn-success" : "btn-btn-default"}  onClick={this.adminMode}><span className="glyphicon glyphicon-user" ></span>
+            adminMode = (
+                <button className={this.state.adminMode ? "'btn btn-success" : "btn-btn-default"}  onClick={this.adminMode}><span className="glyphicon glyphicon-user" ></span>
                 <b>Admin Mode</b>
             </button>);
         }
         return <div>
             {adminMode}
-            <MatchResults admin={this.state.admin} teamMatch={this.state.teamMatch} teamMembers={this.state.teamMembers} results={this.state.results}/>;
+            <MatchResults admin={this.state.adminMode} teamMatch={this.state.teamMatch} teamMembers={this.state.teamMembers} results={this.state.results}/>;
             </div>
     }
 });
-
-
 
 var MatchResults = React.createClass({
     mixins: [ History ],
@@ -249,7 +253,7 @@ var Result =  React.createClass({
         if (r == undefined || r == null)
             return null;
 
-        if (this.props.result.season.nine) {
+        if (this.props.result.season.nine || this.props.admin) {
             return (
                 <tr>
                     <td>{r.matchNumber}</td>
@@ -273,7 +277,7 @@ var Result =  React.createClass({
             );
 
         }
-          return (
+        return (
                 <tr>
                     <td>{r.matchNumber}</td>
                     <td><TeamMember winners={winnerTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
@@ -346,7 +350,7 @@ var RackResult = React.createClass({
                             className="form-control"
                             value={racks}
                             type={'select'}>
-                {options}
+                {this.props.result.season.nine ? options : eightOptions}
             </select>);
         }
         return  <span>{racks}</span>
