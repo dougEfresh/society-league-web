@@ -94,6 +94,7 @@ var SeasonWeeklyResults = React.createClass({
             return (<LoadingApp /> )
         }
         var rows = [];
+        var cnt=0;
         for (var md in results) {
             if (results.hasOwnProperty(md))
                 rows.push(<TeamMatches addMatch={this.addMatch}
@@ -102,7 +103,9 @@ var SeasonWeeklyResults = React.createClass({
                                        teams={this.state.teams}
                                        key={md}
                                        date={md}
-                                       teamMatches={results[md]} />);
+                                       teamMatches={results[md]}
+                                       week={++cnt}
+                    />);
         }
         var add = null;
         var adminMode = null;
@@ -191,15 +194,20 @@ var TeamMatches = React.createClass({
         }.bind(this));
          var season  = this.props.teamMatches[0].season;
          var add = null;
+         var sheet = null;
 
         if (this.props.admin){
             add = (<button onClick={this.addMatch()}><span className="glyphicon glyphicon-plus-sign" ></span><b>Add</b></button>);
+            sheet = (<a href={"http://leagues.societybilliards.com/admin/sheets/sheets-season.php?season_id=" + season.legacyId + "&week=" + this.props.week}
+                        target="_new" style={{float:'right', marginLeft:'5px'}}>
+                <img src="/img/scoresheets.jpg" height="16"/>
+                </a>);
         }
         return (
             <div className="table-responsive">
                 <table className="table table-hover table-condensed table-striped table-responsive">
                     <thead>
-                    <th colSpan="1">{Util.formatDateTime(this.props.date)}</th>
+                    <th colSpan="1">{Util.formatDateTime(this.props.date)} {sheet}</th>
                     <th>{add}</th>
                     </thead>
                     <tbody>

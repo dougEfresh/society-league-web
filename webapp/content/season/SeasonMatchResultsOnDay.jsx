@@ -16,8 +16,8 @@ for(var i = 0; i<12; i++) {
 }
 
 var eightOptions = [];
-eightOptions.push(<option key={0} value={0}>{0}</option>);
-eightOptions.push(<option key={1} value={1}>{1}</option>);
+eightOptions.push(<option key={'W'} value={'W'}>{'W'}</option>);
+eightOptions.push(<option key={'L'} value={'L'}>{'L'}</option>);
 
 var loserTeamMemberOptions= [];
 var winnerTeamMemberOptions= [];
@@ -253,7 +253,7 @@ var Result =  React.createClass({
         if (r == undefined || r == null)
             return null;
 
-        if (this.props.result.season.nine || this.props.admin) {
+        if (this.props.result.season.nine) {
             return (
                 <tr>
                     <td>{r.matchNumber}</td>
@@ -277,6 +277,30 @@ var Result =  React.createClass({
             );
 
         }
+        if (this.props.admin) {
+             return (
+                <tr>
+                    <td>{r.matchNumber}</td>
+                    <td><TeamMember winners={winnerTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
+                                    result={r}/></td>
+                    <td>
+                        <RackResultEight user={this.props.result.winnerTeamPlayer} admin={this.props.admin} onChange={this.onChange} result={r}
+                                    type={this.props.result.winnerType}/>
+                    </td>
+                    <td>{r.winnerTeamRacks > r.loserTeamRacks ? 'W' : 'L'}</td>
+                    <td style={{display: this.props.admin ? 'table-cell' : 'none'}}>
+                        <button className='btn btn-danger btn-xs' onClick={this.remove}><b>X</b></button>
+                    </td>
+                    <td><TeamMember losers={loserTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
+                                    result={r}/></td>
+                    <td>
+                        <RackResultEight user={this.props.result.loserTeamPlayer} admin={this.props.admin} onChange={this.onChange} result={r}
+                                    type={this.props.result.loserType}/>
+                    </td>
+                </tr>
+            );
+
+        }
         return (
                 <tr>
                     <td>{r.matchNumber}</td>
@@ -286,8 +310,10 @@ var Result =  React.createClass({
                     <td style={{display: this.props.admin ? 'table-cell' : 'none'}}>
                         <button className='btn btn-danger btn-xs' onClick={this.remove}><b>X</b></button>
                     </td>
-                    <td><TeamMember losers={loserTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
-                                    result={r}/></td>
+                    <td>
+                        <TeamMember losers={loserTeamMemberOptions} admin={this.props.admin} onChange={this.onChange}
+                                    result={r}/>
+                    </td>
                 </tr>
             );
 
@@ -356,6 +382,36 @@ var RackResult = React.createClass({
         return  <span>{racks}</span>
     }
 });
+
+var RackResultEight = React.createClass({
+    mixins: [ History ],
+    onChange: function(e) {
+        e.preventDefault();
+        var type = e.target.value == 'W' ? 'winner' : 'loser';
+
+        Util.getSomeData({
+            url: '/api/playerresult/' + this.props.result.id  + '/' + type  + '/' + this.props.user.id,
+            callback: function(d) {this.props.onChange(d)}.bind(this),
+            module: 'RackResult',
+            router: this.history
+        });
+    },
+    render: function() {
+
+        var racks = this.props.result[this.props.type +'Racks'];
+        if (this.props.admin) {
+            return (
+                <select onChange={this.onChange}
+                        className="form-control"
+                        value={racks >  0 ? 'W' : 'L'}
+                        type={'select'}>
+                {eightOptions}
+                </select>);
+        }
+        return  <span>{racks}</span>
+    }
+});
+
 
 
 module.exports = MatchResultsOnDay;

@@ -6,31 +6,18 @@ var ReactRouter = require('react-router')
     , IndexRoute = ReactRouter.IndexRoute;
 
 var Status = require('./lib/Status');
-//var ChallengeRequestApp = require('./content/challenge/request/ChallengeRequestApp.jsx');
-//var ChallengePendingApp = require('./content/challenge/pending/ChallengePendingApp.jsx');
-//var ChallengeAcceptedApp = require('./content/challenge/accepted/ChallengeAcceptedApp.jsx');
-//var ChallengeSentApp = require('./content/challenge/sent/ChallengeSentApp.jsx');
-///var ChallengeSignUp = require('./content/challenge/ChallengeSignUp.jsx');
-//var ChallengeConfirmApp = require('./content/challenge/ChallengeConfirmApp.jsx');
-
-//var ChallengeMain= require('./content/challenge/Main.jsx');
 var ChallengeApp = require('./content/challenge/ChallengeApp.jsx');
-//var ChallengesApp = require('./content/admin/Challenges.jsx');
-//var ChallengesUsers= require('./content/admin/ChallengeUsers.jsx');
-//var ChallengeAdminResults= require('./content/admin/ChallengeAdminResults.jsx');
 var ChallengeCancelApp= require('./content/challenge/ChallengeCancelApp.jsx');
 
 var UserAdminApp = require('./content/admin/UserAdmin.jsx');
 var SeasonAdminApp = require('./content/admin/SeasonAdmin.jsx');
 var TeamAdminApp = require('./content/admin/SeasonAdmin.jsx');
 
-//var CreateUser = require('./content/admin/CreateUser.jsx');
-//var CreateUserSuccess = require('./content/admin/CreateUserSuccess.jsx');
-
 var NavApp = require('./content/nav/NavApp.jsx');
 var ResetApp = require('./jsx/../content/ResetApp.jsx');
 var RegisterApp = require('./jsx/../content/RegisterApp.jsx');
 var LoginApp = require('./jsx/../content/login/LoginApp.jsx');
+var FacebookLogin = require('./jsx/../content/login/FacebookLogin.jsx');
 var LogoutApp = require('./content/LogoutApp.jsx');
 var ErrorApp = require('./jsx/components/ErrorApp.jsx');
 
@@ -49,11 +36,6 @@ var SeasonMatchResultsOnDay = require('./content/season/SeasonMatchResultsOnDay.
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
 var UserApp  = require('./content/user/UserApp.jsx');
-//var UserPasswordApp = require('./content/user/UserPasswordApp.jsx');
-//var PayApp = requiradme('./content/user/PayApp.jsx');
-//svar UserInfo= require('./content/user/UserInfo.jsx');
-
-
 
 var App = React.createClass({
     render: function () {
@@ -71,11 +53,11 @@ var RouteNotFound = React.createClass({
         return (<div><h1>Not Found</h1></div>);
     }
 });
-//<Route path="*" component={RouteNotFound}/>
 var routes = (
     <Route path="/" component={App}>
         <IndexRoute component={NavApp} />
         <Route  path="login" component={LoginApp} />
+        <Route  path="fb" component={FacebookLogin} />
         <Route  path="reset" component={ResetApp} />
         <Route  path="register" component={RegisterApp} />
         <Route  path="error" component={ErrorApp} />
