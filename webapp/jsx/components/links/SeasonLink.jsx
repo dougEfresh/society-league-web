@@ -14,20 +14,12 @@ var SeasonLink = React.createClass({
         }
     },
     render: function() {
-        if (this.props.season == null) {
+        if (this.props.season == null || this.props.user == null) {
             return null;
         }
-        if (this.props.season.active) {
-            return (
-                <Link className="seasonLink" to={"/app/season/"+ this.props.season.id + '/standings'}>
+        return (<Link className="seasonLink" to={"/app/scout/"+ this.props.user.id + '/' + this.props.season.id +'/history'}>
                     {this.props.season.displayName}
-                </Link>
-            );
-        } else {
-            return (
-                <span>{this.props.season.displayName}</span>
-            );
-        }
+        </Link>);
     }
 });
 

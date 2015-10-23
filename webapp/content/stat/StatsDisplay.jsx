@@ -40,7 +40,7 @@ var StatsDisplay = React.createClass({
             if (d.type == 'ALL') {
                 type = 'Lifetime';
             } else {
-                type = <SeasonLink season={d.season} />;
+                type = <SeasonLink user={d.user} season={d.season} />;
             }
 
             rows.push(

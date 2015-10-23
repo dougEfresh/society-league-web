@@ -21,23 +21,42 @@ var UserLink = React.createClass({
         }
         var hc = "";
         var name = this.props.user.name;
+        //TODO speed up
         if (this.props.handicap != undefined) {
             hc = this.props.handicap;
-        } else  if (this.props.season != undefined) {
+        } else if (this.props.season != undefined) {
             this.props.user.handicapSeasons.forEach(function(hs){
                 if (hs.season.id == this.props.season) {
                     hc = hs.handicap;
                 }
             }.bind(this));
-
         }
         if (hc.length > 0) {
             name += ' (' + Handicap.formatHandicap(hc)+ ')';
         }
+        var user = this.props.user;
+
+        if (user.profile) {
+            var query = '?';
+            if (this.props.height)
+                query += 'height=' + this.props.height + '&';
+            if (this.props.width)
+                query += 'height=' + this.props.width + '&';
+            if (this.props.type)
+                query += 'type=' + this.props.type + '&';
+
+            return (
+            <Link to={'/app/scout/' + this.props.user.id + '/stats'}>
+                <img src={user.userProfile.imageUrl + query}> </img>
+                {name}
+            </Link>
+            )
+        }
         return (
-                <Link to={'/app/scout/' + this.props.user.id + '/stats'}>
-                    {name}
-                </Link>
+
+            <Link to={'/app/scout/' + this.props.user.id + '/stats'}>
+                {name}
+            </Link>
         );
     }
 });

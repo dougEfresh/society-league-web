@@ -118,9 +118,9 @@ var ChallengeApp = React.createClass({
         if (this.state.refresh)
             this.state.refresh = false;
         var season;
-        this.getUser().seasons.forEach(function(s){
-            if (s.challenge) {
-                season = s;
+        this.getUser().handicapSeasons.forEach(function(s){
+            if (s.season.challenge) {
+                season = s.season;
             }
         });
         return (

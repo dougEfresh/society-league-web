@@ -64,7 +64,7 @@ var LoginApp = React.createClass({
                             <div className="form-group">
                                 <input ref='password' id="password" ref='password' type='password' name='password' placeholder='enter password'className="form-control" > </input>
                             </div>
-                             <input type="hidden" value="true" name="springRememberMe" />
+                            <input type="hidden" value="true" name="springRememberMe" />
                             {errorMsg}
                         </div>
                         <div className="row">

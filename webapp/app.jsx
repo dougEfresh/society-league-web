@@ -18,6 +18,7 @@ var ResetApp = require('./jsx/../content/ResetApp.jsx');
 var RegisterApp = require('./jsx/../content/RegisterApp.jsx');
 var LoginApp = require('./jsx/../content/login/LoginApp.jsx');
 var FacebookLogin = require('./jsx/../content/login/FacebookLogin.jsx');
+var FacebookSignUp = require('./jsx/../content/login/FacebookSignUp.jsx');
 var LogoutApp = require('./content/LogoutApp.jsx');
 var ErrorApp = require('./jsx/components/ErrorApp.jsx');
 
@@ -56,8 +57,10 @@ var RouteNotFound = React.createClass({
 var routes = (
     <Route path="/" component={App}>
         <IndexRoute component={NavApp} />
-        <Route  path="login" component={LoginApp} />
+        <Route  path="login" component={FacebookLogin} />
         <Route  path="fb" component={FacebookLogin} />
+        <Route  path="facebook/signup" component={FacebookSignUp} />
+        <Route  path="fb/signup" component={FacebookSignUp} />
         <Route  path="reset" component={ResetApp} />
         <Route  path="register" component={RegisterApp} />
         <Route  path="error" component={ErrorApp} />
@@ -77,7 +80,7 @@ var routes = (
             </Route>
             <Route path="scout/:statsId"  component={StatApp}>
                 <Route path="stats" component={StatDisplay} />
-                <Route path="history" component={StatHistory} />
+                <Route path=":seasonId/history" component={StatHistory} />
             </Route>
             <Route  path="team/:teamId" component={TeamApp} >
                 <Route path="standings"  component={TeamStandings} />

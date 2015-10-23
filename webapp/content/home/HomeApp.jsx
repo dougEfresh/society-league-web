@@ -9,6 +9,7 @@ var RecentMatches = require('./RecentMatches.jsx');
 //var ChallengeSignUp = require('../challenge/ChallengeSignUp.jsx');
 //var LeaderBoard = require('../challenge/standings/LeaderBoard.jsx');
 var Util = require('../../jsx/util.jsx');
+var UserLink = require('../../jsx/components/links/UserLink.jsx');
 
 var HomeApp = React.createClass({
     mixins: [UserContextMixin],
@@ -53,16 +54,17 @@ var HomeApp = React.createClass({
 
             });
         }
-        var welcome = (
-            <span id="welcome-name">{'Welcome ' + user.firstName } 
-            </span>);
-
+        var season ;
+        user.handicapSeasons.forEach(function(s){
+            if (s.season.active)
+                season = s.season;
+        });
+        var img = <UserLink user={user} season={season} type={'normal'} />
         return (
             <div id="home-app">
                 <div className="welcome-wrap">
                 <h2 className="welcome" >
-                    <span className="glyphicon glyphicon-user"></span>
-                    {welcome}
+                    {img}
                 </h2>
                 {record}
                 </div>

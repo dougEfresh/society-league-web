@@ -44,17 +44,19 @@ var LoginApp = React.createClass({
             errorMsg = <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>;
         }
 
-        if (this.context.location.query.expired == 'true') {
-            errorMsg = <div className="form-group alert alert-danger" role="alert">Session Expired. Please login again.</div>;
-        }
         return (
             <div id="login-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
-                <form name="fb_signin" id="fb_signin" action="/signin/facebook" method="POST">
-                        <h2 className="form-signin-heading">Please Log In</h2>
+                <form name="fb_signin" id="fb_signin" action="/api/signup" method="POST">
+                        <h2 className="form-signin-heading">Please Provide Registered Email</h2>
+                        <div className="form-field form-group">
+                            <div  className="form-group">
+                                <input ref='email' id="email" type="input" name="email" placeholder="enter email" className="form-control"/>
+                                <input type="hidden" value="true" name="springRememberMe" />
+                                <input type="hidden" name="scope" value="public_profile,email,user_friends"></input>
+                            </div>
+                        </div>
                         <div className="row">
-                             <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
-                                 <input type="hidden" name="scope" value="public_profile,email,user_friends"></input>
-                                 <input type="hidden" value="true" name="springRememberMe" />
+                            <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
                                  <button className="btn btn-block btn-social btn-facebook" type="submit">
                                      <i className="fa fa-facebook"></i>
                                      Sign in with Facebook

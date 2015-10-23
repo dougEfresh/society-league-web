@@ -9,9 +9,9 @@ var RecentMatches = React.createClass({
 
     render: function() {
         var rows = [];
-        this.getUser().seasons.forEach(function(s){
-            if (s.active)
-                rows.push(<UserResults key={s.id} user={this.getUser()} season={s} limit={6} />);
+        this.getUser().handicapSeasons.forEach(function(s){
+            if (s.season.active)
+                rows.push(<UserResults key={s.season.id} user={this.getUser()} season={s.season} limit={6} />);
         }.bind(this));
         return (
             <div id={'no-recent-matches'} className="panel panel-default">

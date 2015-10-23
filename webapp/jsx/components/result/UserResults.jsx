@@ -35,7 +35,7 @@ var UserResults = React.createClass({
         );
     },
     render: function() {
-        if (this.state.results.length ==0 || this.state.stats.length == 0) {
+        if (this.state.results.length == 0 || this.state.stats.length == 0) {
             return null;
         }
         return (
@@ -80,8 +80,8 @@ var ResultScramble = React.createClass({
             rows.push(
                 <tr key={r.id}>
                     <td>{r.win ? 'W' : 'L'}</td>
-                    <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
-                    <td><UserLink user={r.opponentPartner} handicap={r.opponentPartnerHandicap} season={r.season.id} /></td>
+                    <td><UserLink type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
+                    <td><UserLink type={'small'} user={r.opponentPartner} handicap={r.opponentPartnerHandicap} season={r.season.id} /></td>
                     <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                     <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
@@ -135,7 +135,7 @@ var ResultEight = React.createClass({
             rows.push(
                 <tr key={r.id}>
                 <td>{r.win ? 'W' : 'L'}</td>
-                <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
+                <td><UserLink type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                     <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                 <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
 
@@ -256,7 +256,7 @@ var ResultChallenge = React.createClass({
                 <td>{r.matchPoints ? r.matchPoints.matchNum : '0'}</td>
                 <td>{r.matchPoints ? r.matchPoints.calculation  : ''}</td>
                 <td>{r.teamMemberRacks + ' - ' + r.opponentRacks}</td>
-                <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
+                <td><UserLink type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                 <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }

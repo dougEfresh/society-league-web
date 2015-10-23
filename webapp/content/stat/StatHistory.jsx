@@ -16,38 +16,60 @@ var StatHistory = React.createClass({
              season: null
          }
        },
-    getData: function(statsId) {
+    getData: function(statsId,seasonId) {
         Util.getSomeData({
             url: '/api/user/' + statsId,
             module: 'StatHistory',
             router: this.props.history,
-            callback: function(d) {this.setState({user: d})}.bind(this)
+            callback: function(d) {
+                this.setState({user: d})}.bind(this)
+        });
+        Util.getSomeData({
+            url: '/api/season/' + seasonId,
+            module: 'StatHistory',
+            router: this.props.history,
+            callback: function(d) {
+                this.setState({season: d})}.bind(this)
         })
     },
     componentDidMount: function () {
-        this.getData(this.props.params.statsId);
+        this.getData(this.props.params.statsId,this.props.params.seasonId);
     },
     componentWillReceiveProps: function (n) {
-        this.getData(n.params.statsId);
+        this.getData(n.params.statsId,n.params.seasonId);
     },
     onChange: function(e) {
         e.preventDefault();
-        this.setState({selectedSeason: e.target.value});
+        console.log('sw  to ' + e.target.value);
+        this.setState({user: null});
+        this.props.history.pushState(null,'/app/scout/' + this.props.params.statsId + '/' + e.target.value + '/history');
     },
     render: function() {
-        if (this.state.user == null) {
+        if (this.state.user == null || this.state.season == null) {
             return null;
         }
-
-        var rows = [];
-        this.state.user.seasons.forEach(function(s){
-            if (s.active)
-                rows.push(<UserResults key={s.id} user={this.state.user} season={s} />);
+        var seasons = [];
+        this.state.user.handicapSeasons.forEach(function(s){
+            seasons.push(<option key={s.season.id} value={s.season.id}>{s.season.displayName}</option>);
         }.bind(this));
+
+        var selectorSeason  = (<select
+                ref='season'
+                onChange={this.onChange}
+                className="form-control"
+                value={this.state.season.id}
+                type={'select'}>
+                {seasons}
+            </select>);
 
         return (
             <div>
-                {rows}
+                <div>
+                    {selectorSeason}
+                </div>
+            <div>
+                <UserResults user={this.state.user} season={this.state.season} />
+            </div>
             </div>
         );
     }

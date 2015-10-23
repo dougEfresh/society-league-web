@@ -24,9 +24,7 @@ var StatApp = React.createClass({
         this.getData();
     },
     componentWillReceiveProps: function (o, n) {
-        var now = Date.now();
-        if (now - this.state.update > 1000*60)
-            this.getData();
+        this.getData();
     },
     changeUser: function(e) {
         e.preventDefault();
@@ -45,7 +43,7 @@ var StatApp = React.createClass({
         var options = [];
         users.forEach(function(u){
             options.push(<option key={u.id} value={u.id}>{u.name}</option>);
-        });
+        }.bind(this));
 
         var header = (
             <div className="row">
@@ -62,11 +60,6 @@ var StatApp = React.createClass({
                         <Link className='scoutNav' to={'/app/scout/' +  this.props.params.statsId +'/stats'}>
                             <button className={this.props.location.pathname.indexOf('stats') >=0 ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
                                 <span className="fa fa-bar-chart"></span>Stats
-                            </button>
-                        </Link>
-                        <Link className='scoutNav' to={'/app/scout/' + this.props.params.statsId +'/history'}>
-                            <button className={this.props.location.pathname.indexOf('history') >= 0 ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
-                                <span className="fa fa-history"></span>History
                             </button>
                         </Link>
                     </div>
