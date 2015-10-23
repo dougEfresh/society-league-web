@@ -30,7 +30,7 @@ var SeasonNav = React.createClass({
              <li id="season-nav" role="presentation" className={clName} >
                  <Link className='season-nav' to={'/app/season'}>
                      <span className="fa fa-server"></span>
-                     <span className="main-item">Seasons</span>&nbsp;
+                     <span className="main-item">My Divisions</span>&nbsp;
                  </Link>
              </li>
         );
