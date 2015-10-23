@@ -4,6 +4,7 @@ var Link = ReactRouter.Link;
 var History = ReactRouter.History;
 var UserContextMixin = require('./../../jsx/mixins/UserContextMixin.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
+var Util = require('../../jsx/util.jsx');
 
 var LoginApp = React.createClass({
     mixins: [UserContextMixin,History],
@@ -15,11 +16,29 @@ var LoginApp = React.createClass({
             error: false,
             loggedIn: false
         };
-    },   
+    },
+    handleSubmit: function(e){
+        e.preventDefault();
+        var email = React.findDOMNode(this.refs.email).value;
+        if (email == null || email == undefined || email.length < 2) {
+            console.log('Errror with email');
+            this.props.history.pushState(null,'/facebook/signup',{error: "Invalid email. Please try again"});
+            return;
+        }
+        Util.postSomeData({
+            url: '/api/signup?email=' + email,
+            data: {email: email},
+            callback: function(d) {
+                DataStore.setUser(d);
+                this.props.history.replaceState(null, '/app/home');
+            }.bind(this)
+        });
+    },
+
     render: function () {
         var errorMsg = null;
-        if (this.context.location.query.error == 'true') {
-            errorMsg = <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>;
+        if (this.context.location.query.error != undefined) {
+            errorMsg = <div className="form-group alert alert-danger" role="alert">{this.context.location.query.error}</div>;
         }
 
         return (
@@ -32,10 +51,11 @@ var LoginApp = React.createClass({
                                 <input type="hidden" value="true" name="springRememberMe" />
                                 <input type="hidden" name="scope" value="public_profile,email,user_friends"></input>
                             </div>
+                            {errorMsg}
                         </div>
                         <div className="row">
                             <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
-                                 <button  className="btn btn-sm btn-primary btn-responsive" type="submit">
+                                 <button onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive" type="submit">
                                      Submit
                                  </button>
                             </div>

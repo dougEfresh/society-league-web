@@ -59,6 +59,7 @@ var routes = (
         <IndexRoute component={NavApp} />
         <Route  path="login" component={FacebookLogin} />
         <Route  path="fb" component={FacebookLogin} />
+        <Route  path="legacy" component={LoginApp} />
         <Route  path="facebook/signup" component={FacebookSignUp} />
         <Route  path="fb/signup" component={FacebookSignUp} />
         <Route  path="reset" component={ResetApp} />

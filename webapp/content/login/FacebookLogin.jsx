@@ -59,6 +59,13 @@ var LoginApp = React.createClass({
                                      <i className="fa fa-facebook"></i>
                                      Sign in with Facebook
                                  </button>
+                             </div>
+                            <div className="col-lg-6 col-md-5 col-sm-12 col-xs-12">
+                                <Link to='/legacy'>
+                                    <button type="button" className="btn btn-sm btn-default btn-responsive pull-right">
+                                        <b>Username/Password</b>
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                 </form>

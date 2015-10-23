@@ -32,11 +32,7 @@ var LoginApp = React.createClass({
             method: 'post',
             success: function (d) {
                 DataStore.setUser(d);
-                if (this.context.location.pathname == "/" || this.context.location.pathname == "/login") {
-                    this.history.replaceState(null, '/app/home');
-                    return;
-                }
-                this.history.replaceState(null, this.context.location.pathname,this.context.location.query);
+                this.props.history.replaceState(null, '/app/home');
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('authenticate', status, err.toString());
@@ -72,7 +68,6 @@ var LoginApp = React.createClass({
                                 <button onKeyDown={this.handleSubmit} id="submit" type="button"   onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive">
                                     <b>Login</b>
                                 </button>
-
                             </div>
                             <div className="col-lg-6 col-md-5 col-sm-12 col-xs-12">
                                 <Link to='reset'>
