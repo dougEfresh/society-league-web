@@ -6,6 +6,7 @@ var Router = require('react-router')
 
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
+var UserLink = require('../../jsx/components/links/UserLink.jsx');
 
 var StatApp = React.createClass({
     mixins: [UserContextMixin,History],
@@ -41,31 +42,50 @@ var StatApp = React.createClass({
         }
 
         var options = [];
+        var selectedUser = null;
         users.forEach(function(u){
+            if (u.id == this.props.params.statsId)
+                selectedUser = u;
+
             options.push(<option key={u.id} value={u.id}>{u.name}</option>);
         }.bind(this));
 
-        var header = (
-            <div className="row">
-                <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                    <div className="col-lg-6 col-md-6 col-xs-12 no-pad">
-                        <select ref='user' onChange={this.changeUser}
-                                className="form-control"
-                                value={this.props.params.statsId}
-                                type={'select'}>
-                            {options}
-                        </select>
-                    </div>
-                    <div className="btn-group col-lg-6 col-md-6 col-xs-12 stats-btn">
-                        <Link className='scoutNav' to={'/app/scout/' +  this.props.params.statsId +'/stats'}>
-                            <button className={this.props.location.pathname.indexOf('stats') >=0 ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
-                                <span className="fa fa-bar-chart"></span>Stats
-                            </button>
-                        </Link>
+        var header = null;
+        if (this.props.location.pathname.indexOf('history') > 0) {
+              header = (
+                  <div className="row">
+                      <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                          <div className="col-lg-6 col-md-6 col-xs-12 no-pad">
+                              <UserLink user={selectedUser} type='normal'/>
+                          </div>
+                      </div>
+                  </div>
+
+        );
+        } else {
+            header = (
+                <div className="row">
+                    <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <div className="col-lg-6 col-md-6 col-xs-12 no-pad">
+                            <select ref='user' onChange={this.changeUser}
+                                    className="form-control"
+                                    value={this.props.params.statsId}
+                                    type={'select'}>
+                                {options}
+                            </select>
+                        </div>
+                        <div className="btn-group col-lg-6 col-md-6 col-xs-12 stats-btn">
+                            <Link className='scoutNav' to={'/app/scout/' +  this.props.params.statsId +'/stats'}>
+                                <button
+                                    className={this.props.location.pathname.indexOf('stats') >=0 ? 'btn btn-success btn-responsive' : 'btn btn-default btn-responsive'}>
+                                    <span className="fa fa-bar-chart"></span>Stats
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
 
         return (
             <div id="scout-app" className="panel panel-default">
