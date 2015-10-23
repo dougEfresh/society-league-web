@@ -62,7 +62,7 @@ var TeamResults = React.createClass({
 
             return atm.name.localeCompare(btm.name);
         });
-        
+
         var season = results[0].season;
         results.forEach(function (result) {
             if (!season.nine) {

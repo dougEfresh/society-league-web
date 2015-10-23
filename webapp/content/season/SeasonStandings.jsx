@@ -99,8 +99,8 @@ var SeasonStandings = React.createClass({
             <th>L</th>
             <th>Set Wins</th>
             <th>Set Loses</th>
-            <th>Racks Won</th>
-            <th>Racks Lost</th>
+            <th>RW</th>
+            <th>RL</th>
             <th>Pct</th>
         </tr>);
         if (this.state.seasonStats[0].season.challenge) {
@@ -109,8 +109,8 @@ var SeasonStandings = React.createClass({
             <th>W</th>
             <th>L</th>
                     <th>Points</th>
-            <th>Racks Won</th>
-            <th>Racks Lost</th>
+            <th>RW</th>
+            <th>RL</th>
 
             <th>Pct</th>
         </tr>
@@ -120,8 +120,8 @@ var SeasonStandings = React.createClass({
                     <th>Team</th>
                     <th>W</th>
                     <th>L</th>
-                    <th>Racks Won</th>
-                    <th>Racks Lost</th>
+                    <th>RW</th>
+                    <th>RL</th>
                     <th>Pct</th>
                 </tr>
             );
