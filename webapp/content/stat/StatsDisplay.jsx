@@ -87,12 +87,15 @@ var StatsDisplay = React.createClass({
                      {rows}
                      </tbody>
                 </table>
-                 <div className="panel-heading" >Charts </div>
-                 <div className="panel-body" >
-                     {statCharts}
-                 </div>
+
              </div>
          );
+        /*
+        <div className="panel-heading" >Charts </div>
+        <div className="panel-body" >
+            {statCharts}
+        </div>
+         */
      }
 });
 

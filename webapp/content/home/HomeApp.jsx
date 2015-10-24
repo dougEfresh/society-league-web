@@ -5,11 +5,9 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UpcomingChallenges = require('./UpcomingChallenges.jsx');
 var UpcomingMatches = require('./UpcomingMatches.jsx');
 var RecentMatches = require('./RecentMatches.jsx');
-//var ChallengePendingApp = require('../challenge/pending/ChallengePendingApp.jsx');
-//var ChallengeSignUp = require('../challenge/ChallengeSignUp.jsx');
-//var LeaderBoard = require('../challenge/standings/LeaderBoard.jsx');
 var Util = require('../../jsx/util.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
+var UserInfo = require('./UserInfo.jsx');
 
 var HomeApp = React.createClass({
     mixins: [UserContextMixin],
@@ -36,38 +34,9 @@ var HomeApp = React.createClass({
     },
     render: function () {
         var user = this.getUser();
-        var record = null;
-        if (this.state.stats.length > 0) {
-            this.state.stats.forEach(function(s){
-                if (s.type == 'ALL') {
-                    record = (<div style={{display: 'inline'}} className="ss-label-group">
-                <ul>
-                        <li className="ss-label-win">W</li>
-                        <li className="ss-label-default">{s.wins}</li>
-                        </ul>
-                <ul>
-                        <li className="ss-label-lose">L</li>
-                        <li className="ss-label-default">{s.loses}</li>
-                </ul>
-                </div>);
-                }
-
-            });
-        }
-        var season ;
-        user.handicapSeasons.forEach(function(s){
-            if (s.season.active)
-                season = s.season;
-        });
-        var img = <UserLink user={user} season={season} type={'normal'} />
         return (
             <div id="home-app">
-                <div className="welcome-wrap">
-                <h2 className="welcome" >
-                    {img}
-                </h2>
-                {record}
-                </div>
+                <UserInfo user={user} stats={this.state.stats} />
                 <UpcomingChallenges />
                 <UpcomingMatches />
                 <RecentMatches />
