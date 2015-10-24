@@ -16,7 +16,8 @@ var UserInfo = React.createClass({
         if (this.props.stats.length > 0) {
             this.props.stats.forEach(function(s){
                 if (s.type == 'ALL') {
-                    record = (<div style={{display: 'inline'}} className="ss-label-group">
+                    record = (
+                        <div style={{display: 'inline'}} className="ss-label-group">
                         <ul>
                             <li className="ss-label-win">W</li>
                             <li className="ss-label-default">{s.wins}</li>
@@ -30,19 +31,30 @@ var UserInfo = React.createClass({
 
             });
         }
-        var season = null;
-        user.handicapSeasons.forEach(function(s){
-            if (s.season.active)
-                season = s.season;
-        });
-        var img = <UserLink user={user} season={season} type={'normal'} />;
-        if (!user.userProfile) {
-             img = <span className="glyphicon glyphicon-user"></span>;
+        var lnk = null;
+        if (user.profile) {
+            var query = '?';
+            if (this.props.height)
+                query += 'height=' + this.props.height + '&';
+            if (this.props.width)
+                query += 'height=' + this.props.width + '&';
+            if (this.props.type)
+                query += 'type=' + this.props.type + '&';
+
+            lnk = (
+                <Link to={'/app/scout/' + user.id + '/stats'}>
+                    <img src={user.userProfile.imageUrl + query}> </img>
+                    {user.firstName}
+                </Link>
+            );
+        } else {
+            lnk = (<Link to={'/app/scout/' +user.id + '/stats'}> <span className="glyphicon glyphicon-user"></span>{'user.firstName} </Link>);
         }
+        //lnk = (<Link to={'/app/scout/' +user.id + '/stats'}> <span className="glyphicon glyphicon-user"></span>{user.firstName} </Link>);
         return (
             <div className="welcome-wrap">
                 <h2 className="welcome" >
-                    {img}
+                    {lnk}
                 </h2>
                 {record}
             </div>
