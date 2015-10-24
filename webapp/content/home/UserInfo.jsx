@@ -48,7 +48,7 @@ var UserInfo = React.createClass({
                 </Link>
             );
         } else {
-            lnk = (<Link to={'/app/scout/' +user.id + '/stats'}> <span className="glyphicon glyphicon-user"></span>{'user.firstName} </Link>);
+            lnk = (<Link to={'/app/scout/' +user.id + '/stats'}> <span className="glyphicon glyphicon-user"></span>{user.firstName} </Link>);
         }
         //lnk = (<Link to={'/app/scout/' +user.id + '/stats'}> <span className="glyphicon glyphicon-user"></span>{user.firstName} </Link>);
         return (
