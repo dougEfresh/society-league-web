@@ -98,11 +98,12 @@ li.ss-label-default {
 .navName {
     color: whitesmoke; !important;
 }
+
 body {
     /*margin-top: 0px;*/ /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 	padding-top: 70px;
 	padding-bottom: 30px;
-	font-size: 11px
+	/*font-size: 11px */
 }
 
 .ss-navbar-background {

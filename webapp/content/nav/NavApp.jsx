@@ -79,11 +79,12 @@ var NavApp = React.createClass({
                                 <a href="#/app/home">Home</a>
                             </li>
                             <li><a href="#contact">Stats</a></li>
-                            <li><a href="#contact">Profile</a></li>
+                            <li><a href="#contact">{this.getUser().firstName}</a></li>
                         </ul>
                         <form className="navbar-form navbar-right">
+
                             <input type="text" className="form-control" placeholder="Search..."/>
-                            </form>
+                        </form>
                     </div>
                 </div>
             </nav>

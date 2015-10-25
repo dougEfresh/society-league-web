@@ -39,8 +39,7 @@ var SeasonLeaders = React.createClass({
         var rows = []  ;
         var cnt=1;
         data.forEach(function(d) {
-            if (this.props.limit && rows.length <= this.props.limit) {
-                rows.push(
+            rows.push(
                     <tr key={d.user.id}>
                         <td>{cnt++}</td>
                         <td><UserLink user={d.user} season={this.props.params.seasonId}/></td>
@@ -52,7 +51,6 @@ var SeasonLeaders = React.createClass({
                         <td>{d.winPct.toFixed(3)}</td>
                     </tr>
                 );
-            }
         }.bind(this));
         return rows;
     },
@@ -61,7 +59,6 @@ var SeasonLeaders = React.createClass({
         if (this.state.loading) {
             return (<LoadingApp /> )
         }
-
         return (
                 <div className="table-responsive">
                     <table className="table table-hover table-bordered table-condensed table-striped table-responsive">

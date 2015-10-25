@@ -55,7 +55,7 @@ function getData(url, callback, unauthCallback, module) {
 function getSomeData(options) {
     //url, callback, unauthCallback, module
     //console.log('Someone is getting data ' + arguments.callee.caller.toString());
-    //console.log("["+ options.module + "] " + options.url);
+    console.log("["+ options.module + "] " + options.url);
     $.ajax({
             url: options.url,
             dataType: 'json',

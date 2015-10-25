@@ -118,16 +118,21 @@ var SeasonWeeklyResults = React.createClass({
             </button>);
         }
 
+        var results = [];
+        var oneRow = [];
+        for(var i = 1; i<rows.length; i++) {
+            oneRow.push( <div key={i} className={"col-xs-6 col-md-3"}>{rows[i-1]}</div>);
+            if (i != 0 && i % 4 == 0) {
+                results.push(<div key={i*10} className="row" >{oneRow}</div>);
+                oneRow = [];
+            }
+        }
+         results.push(<div key={'random'} className="row" >{oneRow}</div>);
+
         return (
-                <div id={'season-app'} className="panel panel-default">
-                    <div className="panel-heading">
-                        {add}
-                        {adminMode}
-                    </div>
-                     <div className="panel-body" >
-                         {rows}
-                     </div>
-                </div>
+            <div>
+                {results}
+            </div>
         );
     }
 });
@@ -145,7 +150,6 @@ var TeamMatches = React.createClass({
             return (
                 <tr>
                     <td></td>
-                    <td>Racks</td>
                     <td></td>
                     <td></td>
                     <td>Racks</td>
@@ -157,7 +161,6 @@ var TeamMatches = React.createClass({
                 <tr>
                     <td></td>
                     <td></td>
-                    <td>Racks</td>
                     <td>Wins</td>
                     <td></td>
                     <td></td>
@@ -170,7 +173,6 @@ var TeamMatches = React.createClass({
                 <tr>
                     <td></td>
                     <td></td>
-                    <td>Racks</td>
                     <td></td>
                     <td></td>
                     <td>Racks</td>
@@ -291,7 +293,6 @@ var EightBallTeamMatch = React.createClass({
             remove = null;
         return (
             <tr>
-                <td>{results}</td>
                 <td>{winner}</td>
                 <td>
                     <TeamResult admin={this.props.admin} type={'racks'} callback={this.reload} teamMatch={tm} team={tm.winner} result={tm.winnerRacks}/>
@@ -369,7 +370,6 @@ var ChallengeTeamMatch = React.createClass({
             remove = null;
         return (
             <tr>
-                <td style={{display: 'none'}}> {null} </td>
                 <td >{winner}</td>
                 <td>
                     <TeamResult admin={this.props.admin} type={'racks'} callback={this.reload} teamMatch={tm} team={tm.winner} result={tm.winnerRacks}/>
@@ -454,7 +454,6 @@ var NineBallTeamMatch = React.createClass({
             remove = null;
         return (
             <tr>
-                <td> {results} </td>
                 <td>{winner}</td>
                 <td>
                     <TeamResult admin={this.props.admin} type={'wins'} callback={this.reload} teamMatch={tm} team={tm.winner} result={tm.winnerSetWins}/>
