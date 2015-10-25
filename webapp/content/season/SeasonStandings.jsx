@@ -44,6 +44,7 @@ var SeasonStandings = React.createClass({
         if (this.state.seasonStats.length == 0)
             return null;
         var rows = [];
+        var activeTeam = this.props.activeTeam == undefined ? {id: 0} : this.props.activeTeam;
         if (this.state.seasonStats[0].season.challenge) {
             var stats = this.state.seasonStats.sort(function(a,b){
                 if (b.points > a.points) {
@@ -58,9 +59,9 @@ var SeasonStandings = React.createClass({
                     return;
 
                 rows.push(
-                    <tr key={s.team.id}>
+                    <tr className={activeTeam.id == s.team.id  ? "danger" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
-                        <td><TeamLink team={s.team} season={s.team.season}/></td>
+                        <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
                         <td>{s.loses}</td>
                         <td>{s.points.toFixed(3)}</td>
@@ -74,9 +75,9 @@ var SeasonStandings = React.createClass({
                    if (this.props.limit && rows.length >= this.props.limit)
                        return;
                 rows.push(
-                    <tr key={s.team.id}>
+                    <tr  className={activeTeam.id == s.team.id  ? "danger" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
-                        <td><TeamLink team={s.team} season={s.team.season}/></td>
+                        <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
                         <td>{s.loses}</td>
                         <td>{s.setWins}</td>
@@ -91,9 +92,9 @@ var SeasonStandings = React.createClass({
                 if (this.props.limit && rows.length >= this.props.limit)
                     return;
                 rows.push(
-                    <tr key={s.team.id}>
+                    <tr className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
-                        <td><TeamLink team={s.team} season={s.team.season}/></td>
+                        <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
                         <td>{s.loses}</td>
                         <td>{s.racksWon}</td>

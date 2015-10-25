@@ -48,17 +48,14 @@ var UserLink = React.createClass({
                 query += 'height=25&width=25'
             }
             return (
-            <Link to={'/app/scout/' + this.props.user.id + '/stats'}>
+            <a href='#' onClick={this.props.onClick} >
                 <img src={user.userProfile.imageUrl + query}> </img>
                 {name}
-            </Link>
+            </a>
             )
         }
         return (
-
-            <Link to={'/app/scout/' + this.props.user.id + '/stats'}>
-                {name}
-            </Link>
+             <a href='#' onClick={this.props.onClick} >{name} </a>
         );
     }
 });

@@ -78,7 +78,6 @@ var NavApp = React.createClass({
                             <li className={active == 'home' ? 'active dropdown' : 'notActive dropdown'}>
                                 <a href="#/app/home">Home</a>
                             </li>
-                            <li><a href="#contact">My Divisions</a></li>
                             <li><a href="#contact">Stats</a></li>
                             <li><a href="#contact">Profile</a></li>
                         </ul>

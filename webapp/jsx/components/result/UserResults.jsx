@@ -26,6 +26,9 @@ var UserResults = React.createClass({
         this.getData();
     },
     getData: function() {
+        if (!this.state.user) {
+            return ;
+        }
         Util.getSomeData(
             { url:'/api/playerresult/user/' + this.state.user.id + '/' + this.state.season.id,
                 callback: function(d){this.setState({results: d});}.bind(this), module: 'UserResult'}
@@ -35,7 +38,7 @@ var UserResults = React.createClass({
         );
     },
     render: function() {
-        if (this.state.results.length == 0 || this.state.stats.length == 0) {
+        if (this.state.user == null || this.state.user == undefined || this.state.results.length == 0 || this.state.stats.length == 0) {
             return null;
         }
         return (
@@ -96,14 +99,8 @@ var ResultScramble = React.createClass({
 
         return (
              <div className="table-responsive">
-                 <table className="table table-condensed table-responsive" >
+                 <table className="table tabled-bordered table-striped  table-condensed table-responsive" >
                      <thead>
-                     <tr>
-                         <th colSpan="4">
-                         <SeasonLink season={this.props.season}/>
-                             {statDisplay}
-                     </th>
-                     </tr>
                      <tr>
                          <th>W/L</th>
                          <th>Opponent</th>
@@ -151,14 +148,8 @@ var ResultEight = React.createClass({
 
         return (
              <div className="table-responsive">
-                 <table className="table table-condensed table-responsive" >
+                 <table className="table tabled-bordered table-striped  table-condensed table-responsive" >
                      <thead>
-                     <tr>
-                         <th colSpan="4">
-                         <SeasonLink season={this.props.season}/>
-                             {statDisplay}
-                     </th>
-                     </tr>
                      <tr>
                          <th>W/L</th>
                          <th>Opponent</th>
@@ -210,14 +201,8 @@ var ResultNine = React.createClass({
         }
         return (
              <div className="table-responsive">
-                 <table className="table table-condensed table-responsive" >
+                 <table className="table table-bordered table-striped table-condensed table-responsive" >
                      <thead>
-                     <tr>
-                         <th colSpan="4">
-                             <SeasonLink season={this.props.season}/>
-                             {statDisplay}
-                         </th>
-                     </tr>
                      <tr>
                          <th>Date</th>
                          <th>W/L</th>
@@ -270,14 +255,8 @@ var ResultChallenge = React.createClass({
         }
         return (
              <div className="table-responsive">
-                 <table className="table table-condensed table-responsive" >
+                 <table className="table tabled-bordered table-striped  table-condensed table-responsive" >
                      <thead>
-                     <tr>
-                         <th colSpan="4">
-                             <SeasonLink season={this.props.season}/>
-                             {statDisplay}
-                         </th>
-                     </tr>
                      <tr>
                          <th>Date</th>
                          <th>W/L</th>

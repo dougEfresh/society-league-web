@@ -28,9 +28,9 @@ var TeamLink = React.createClass({
         }
 
         return (
-            <Link className="teamLink" to={"/app/team/" + this.props.team.id + '/standings'}>
+            <a onClick={this.props.onClick} className="teamLink" href='#'>
                 {this.props.team.name}
-            </Link>
+            </a>
         );
     }
 });

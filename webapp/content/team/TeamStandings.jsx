@@ -51,6 +51,7 @@ var TeamStandings = React.createClass({
                 <th>Name</th>
                 <th>W</th>
                 <th>L</th>
+                <th>PCT</th>
             </tr>);
     },
     getRows: function() {
@@ -62,37 +63,30 @@ var TeamStandings = React.createClass({
             return null;
         var rows = [];
         var i = 0;
-        if (this.props.noteam == undefined) {
-            rows.push(
-                <tr key={i}>
-                    <td> {stat.team.name} </td>
-                    <td>{stat.wins}</td>
-                    <td>{stat.loses}</td>
-                    <td>{stat.racksWon}</td>
-                    <td>{stat.racksLost}</td>
-                    <td>{stat.winPct.toFixed(3)}</td>
-                </tr>);
-        }
-        this.state.statTeamMember = this.state.statTeamMembers.sort(function(a,b) {
-            if (a.winPct>b.winPct) {
-                return -1;
-            }
-            if (a.winPct<b.winPct) {
-                return 1;
-            }
-            return 0;
-        });
+
+        var activeUser = this.props.activeUser ? this.props.activeUser : {id: 0};
 
         this.state.statTeamMembers.forEach(function(u){
             i++;
-            rows.push(<tr key={i} >
-                <td><UserLink user={u.user} season={u.season.id}/> </td>
-                <td>{u.wins}</td>
-                <td>{u.loses}</td>
-                <td>{u.racksWon}</td>
-                <td>{u.racksLost}</td>
-                <td>{u.winPct.toFixed(3)}</td>
-            </tr>);
+            if (u.season.nine) {
+                rows.push(
+                    <tr className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
+                        <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
+                        <td>{u.wins}</td>
+                        <td>{u.loses}</td>
+                        <td>{u.racksWon}</td>
+                        <td>{u.racksLost}</td>
+                        <td>{u.winPct.toFixed(3)}</td>
+                    </tr>);
+            } else {
+                 rows.push(
+                    <tr className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
+                        <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
+                        <td>{u.wins}</td>
+                        <td>{u.loses}</td>
+                        <td>{u.winPct.toFixed(3)}</td>
+                    </tr>);
+            }
         }.bind(this));
         return (
             <div className="table-responsive">
@@ -113,3 +107,25 @@ var TeamStandings = React.createClass({
 
 
 module.exports = TeamStandings;
+  /*
+ if (this.props.noteam == undefined) {
+ rows.push(
+ <tr key={i}>
+ <td> {stat.team.name} </td>
+ <td>{stat.wins}</td>
+ <td>{stat.loses}</td>
+ <td>{stat.racksWon}</td>
+ <td>{stat.racksLost}</td>
+ <td>{stat.winPct.toFixed(3)}</td>
+ </tr>);
+ }
+ this.state.statTeamMember = this.state.statTeamMembers.sort(function(a,b) {
+ if (a.winPct>b.winPct) {
+ return -1;
+ }
+ if (a.winPct<b.winPct) {
+ return 1;
+ }
+ return 0;
+ });
+ */

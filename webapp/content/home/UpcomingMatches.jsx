@@ -59,10 +59,7 @@ var UpcomingMatches = React.createClass({
         return (
             <div className="col-xs-12 col-md-3">
                 <div className="table-responsive">
-                <table className="table table-condensed table-responsive" >
-                    <thead>
-                    <tr><th></th><th></th></tr>
-                    </thead>
+                <table className="table table-condensed table-striped table-bordered table-responsive" >
                     <tbody>{rows}</tbody>
                 </table>
                 </div>

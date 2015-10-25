@@ -6,7 +6,12 @@
 .ss-home-app {
 	background-color: #eee;
 }
-
+.table>tbody>tr.active>td {
+	background-color: #f2dede;
+}
+.season-hide {
+	display: none;
+}
 p {
 	font-size: 11px;
 	margin-top: 0px;
