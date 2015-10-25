@@ -43,7 +43,7 @@ var SeasonLeaders = React.createClass({
                     <tr key={d.user.id}>
                         <td>{cnt++}</td>
                         <td><UserLink user={d.user} season={this.props.params.seasonId}/></td>
-                        <td><TeamLink team={d.team}/></td>
+                        <td><TeamLink onClick={this.props.onClick(d.team)} team={d.team}/></td>
                         <td>{d.wins}</td>
                         <td>{d.loses}</td>
                         <td>{d.racksWon}</td>

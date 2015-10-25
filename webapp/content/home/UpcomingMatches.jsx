@@ -28,15 +28,15 @@ var UpcomingMatches = React.createClass({
     render: function() {
         var user = this.getUser();
         var rows = [];
-        var now = moment().subtract(1,'days');
+        var now = moment().subtract(1, 'days');
         if (this.state.data.length == 0) {
             return null;
         }
-        this.state.data = this.state.data.sort(function(a,b){
+        this.state.data = this.state.data.sort(function (a, b) {
             return a.matchDate.localeCompare(b.matchDate);
         });
         var cnt = 0;
-        this.state.data.forEach(function(m){
+        this.state.data.forEach(function (m) {
             var md = moment(m.matchDate);
             if (md.isBefore(now)) {
                 return;
@@ -45,76 +45,26 @@ var UpcomingMatches = React.createClass({
             if (cnt > 3) {
                 return;
             }
-            rows.push (
-                    <tr key={m.id}>
-                        <td><span> {Util.formatDateTime(m.matchDate)}</span></td>
-                        <td><TeamLink team={m.opponentTeam} /></td>
-                    </tr>
+            rows.push(
+                <tr key={m.id}>
+                    <td><span> {Util.formatDateTime(m.matchDate)}</span></td>
+                    <td><TeamLink onClick={this.props.onClick(m.opponentTeam)} team={m.opponentTeam}/></td>
+                </tr>
             );
-        });
-        if (rows.length == 0){
+        }.bind(this));
+        if (rows.length == 0) {
             return null;
         }
 
         return (
             <div className="col-xs-12 col-md-3">
                 <div className="table-responsive">
-                <table className="table table-condensed table-striped table-bordered table-responsive" >
-                    <tbody>{rows}</tbody>
-                </table>
+                    <table className="table table-condensed table-striped table-bordered table-responsive">
+                        <tbody>{rows}</tbody>
+                    </table>
                 </div>
             </div>
         );
-        /*
-        var teams = this.getUser().getCurrentTeams();
-        var yesterday = moment().subtract(1,'day');
-        var upComingMatches = [];
-
-        teams.forEach(function(t){
-            var matches = t.getMatches();
-            matches.forEach(function(m) {
-                var mDate = moment(m.matchDate);
-                if (mDate.isAfter(yesterday)) {
-                    upComingMatches.push(m);
-                }
-            });
-        });
-
-        upComingMatches = upComingMatches.sort(function(a,b){
-            return b.matchDate.localeCompare(a.matchDate);
-        });
-        var matches = [];
-        for (var i=0; i < upComingMatches.length && i < 3; i++) {
-            var match = upComingMatches[i];
-            var m = moment(match.matchDate);
-                matches.push(
-                    <span key={i} className="next-match">
-                        {m.format('ddd MMM Do ') }
-                        <TeamLink team={match.winner} seasonId={match.season.id}/>
-                        {' vs. '}
-                        <TeamLink team={match.loser} seasonId={match.season.id}/>
-                    </span>
-                );
-        }
-        if (matches.length == 0) {
-            return (
-                <div id={'upcoming-matches'} className="panel panel-default">
-                    <div className="panel-heading" >Upcoming Matches</div>
-                        <div className="panel-body" >
-                            <span id="no-matches">You have no matches scheduled</span>
-                        </div>
-                </div>
-            );
-        }
-        return (
-            <div id={'upcoming-matches'} className="panel panel-default">
-                <div className="panel-heading" >Upcoming Matches</div>
-                <div className="panel-body" >
-                    {matches}
-                </div>
-            </div>
-        )
-        */
     }
 });
 

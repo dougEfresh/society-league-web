@@ -60,6 +60,12 @@ var NavApp = React.createClass({
         if (this.props.location.pathname.indexOf('/app/home') > 0) {
 
         }
+        var challengeNav = null;
+        //if (this.getUser().challenge) {
+            challengeNav =   <li className={'notActive dropdown'}>
+                <a href="#/app/challenge">Challenge</a>
+            </li>
+        //}
         return (
             <div style={{style: 'inline'}}>
             <nav className="navbar navbar-inverse navbar-fixed-top ss-navbar-background">
@@ -78,6 +84,7 @@ var NavApp = React.createClass({
                             <li className={active == 'home' ? 'active dropdown' : 'notActive dropdown'}>
                                 <a href="#/app/home">Home</a>
                             </li>
+                            {challengeNav}
                             <li><a href="#contact">Stats</a></li>
                             <li><a href="#contact">{this.getUser().firstName}</a></li>
                         </ul>

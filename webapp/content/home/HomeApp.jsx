@@ -117,7 +117,7 @@ var HomeApp = React.createClass({
     changeTeam: function(t) {
         return function(e) {
             e.preventDefault();
-            this.setState({activeTeam: t, activeUser: null});
+            this.setState({activeTeam: t, activeUser: null, activeSeason: t.season, showLeaders: false,showSchedule: false, showStandings: true});
             console.log('Setting team to ' + t.name);
         }.bind(this);
     },
@@ -199,7 +199,7 @@ var HomeApp = React.createClass({
         var display =  seasonStandings;
         if (this.state.showLeaders) {
             display = <div className="row">
-                <SeasonLeaders params={{seasonId: this.state.activeSeason.id}} />
+                <SeasonLeaders onClick={this.changeTeam} params={{seasonId: this.state.activeSeason.id}} />
             </div>
         }
         if (this.state.showSchedule) {
@@ -212,11 +212,11 @@ var HomeApp = React.createClass({
                 <h4>Upcoming Matches</h4>
                 <div className="row">
                     <div className="col-xs-12  col-md-12">
-                        <UpcomingChallenges data={this.state.challenges}/>
+                        <UpcomingChallenges  onClick={this.changeTeam} data={this.state.challenges}/>
                     </div>
                 </div>
                 <div className="row">
-                    <UpcomingMatches />
+                    <UpcomingMatches onClick={this.changeTeam}/>
                 </div>
                 <ul className="nav nav-tabs">
                     {seasonTabs}
