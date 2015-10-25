@@ -196,7 +196,7 @@ var HomeApp = React.createClass({
 
             );
         }.bind(this));
-        var display =  {seasonStandings};
+        var display =  seasonStandings;
         if (this.state.showLeaders) {
             display = <div className="row">
                 <SeasonLeaders params={{seasonId: this.state.activeSeason.id}} />
