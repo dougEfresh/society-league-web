@@ -42,44 +42,31 @@ var UpcomingMatches = React.createClass({
                 return;
             }
             cnt++;
-            if (cnt > 4) {
+            if (cnt > 3) {
                 return;
             }
             rows.push (
-                <tr key={m.id}>
-                    <td>
-                        {Util.formatDateTime(m.matchDate)}
-                    </td>
-                    <td>
-                        <TeamLink team={m.opponentTeam} />
-                    </td>
-                </tr>
+                    <tr key={m.id}>
+                        <td><span> {Util.formatDateTime(m.matchDate)}</span></td>
+                        <td><TeamLink team={m.opponentTeam} /></td>
+                    </tr>
             );
         });
         if (rows.length == 0){
             return null;
         }
-        return (
 
-            <div id={'no-recent-matches'} className="panel panel-default">
-                <div className="panel-heading" >Upcoming Matches</div>
-                <div className="panel-body" >
-                    <div className="table-responsive">
-                    <table className="table table-condensed table-responsive" >
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Opponent</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {rows}
-                        </tbody>
-                    </table>
-                </div>
+        return (
+            <div className="col-xs-12 col-md-3">
+                <div className="table-responsive">
+                <table className="table table-condensed table-responsive" >
+                    <thead>
+                    <tr><th></th><th></th></tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                </table>
                 </div>
             </div>
-
         );
         /*
         var teams = this.getUser().getCurrentTeams();

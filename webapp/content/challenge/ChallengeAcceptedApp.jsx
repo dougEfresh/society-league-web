@@ -27,23 +27,24 @@ var ChallengeAcceptedApp = React.createClass({
         if (opponent.id == this.getUser().id) {
             opponent = challenge.userChallenger;
         }
+        //<li className="list-group-item col-lg-12 col-xs-12">
+        //<UserLink user={opponent}/>
         return (
-            <li className="list-group-item col-lg-12 col-xs-12">
+            <div className="row">
                 <div className="col-lg-10 col-md-10 col-xs-12">
                     <span id={'challenge-'+ challenge.id} className="next-match pull-left">
-                        {m.format('ddd MMM Do ') + ' at ' + m.format('h:mm a') + ' vs. '}
-                        <UserLink user={opponent}/>
+                        {m.format('ddd MMM Do ') + ' at ' + m.format('h:mm a') + ' vs. ' + opponent.name.substring(0,8) + '.'}
                     </span>
                 </div>
                 <div className="col-lg-2 col-md-2 col-xs-12">
                     <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
-                    <button type="button" className="btn btn-sm btn-danger btn-responsive">
-                        <span className="glyphicon glyphicon-remove"></span>
-                        <b>Decline Challenge</b>
-                    </button>
+                        <button type="button" className="btn btn-sm btn-danger btn-responsive">
+                            <span className="glyphicon glyphicon-remove"></span>
+                            <b>Decline Challenge</b>
+                        </button>
                     </Link>
                 </div>
-            </li>
+            </div>
         );
     }
 });

@@ -38,7 +38,7 @@ var TeamStandings = React.createClass({
     getHeader: function() {
         if (this.state.statTeam.team  && this.state.statTeam.team.nine) {
             return ( <tr>
-                <th>Name</th>
+                <th>{this.state.statTeam.team.name}</th>
                 <th>W</th>
                 <th>L</th>
                 <th>RW</th>
@@ -62,16 +62,17 @@ var TeamStandings = React.createClass({
             return null;
         var rows = [];
         var i = 0;
-
-        rows.push(
-            <tr key={i}>
-            <td> {stat.team.name} </td>
-                <td>{stat.wins}</td>
-                <td>{stat.loses}</td>
-                <td>{stat.racksWon}</td>
-                <td>{stat.racksLost}</td>
-                <td>{stat.winPct.toFixed(3)}</td>
-        </tr>);
+        if (this.props.noteam == undefined) {
+            rows.push(
+                <tr key={i}>
+                    <td> {stat.team.name} </td>
+                    <td>{stat.wins}</td>
+                    <td>{stat.loses}</td>
+                    <td>{stat.racksWon}</td>
+                    <td>{stat.racksLost}</td>
+                    <td>{stat.winPct.toFixed(3)}</td>
+                </tr>);
+        }
         this.state.statTeamMember = this.state.statTeamMembers.sort(function(a,b) {
             if (a.winPct>b.winPct) {
                 return -1;
@@ -94,8 +95,8 @@ var TeamStandings = React.createClass({
             </tr>);
         }.bind(this));
         return (
-             <div className="table-responsive">
-                 <table className="table table-condensed table-striped table-responsive" >
+            <div className="table-responsive">
+                <table className="table table-bordered table-condensed table-striped table-grid table-responsive" >
                 <thead>
                 {this.getHeader()}
                 <tbody>

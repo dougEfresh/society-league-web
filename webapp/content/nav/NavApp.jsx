@@ -56,38 +56,55 @@ var NavApp = React.createClass({
         if (this.getUser().id == "0") {
             return null;
         }
-       return (
-            <div>
-                <div className="container outerWrapper"  >
-                <div className="account-wrapper">
-                    <div className="leagueNavGrid" >
-                        <div className="row">
-                            <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
-                                <ul className="nav nav-tabs">
-                                    <HomeNav />
-                                    <ChallengeNav />
-                                    <TeamNav />
-                                    <SeasonNav />
-                                    <StatNav />
-                                    <AdminNav />
-                                </ul>
-                            </div>
-                             <div className="col-lg-12 col-md-12 col-xs-12 user-nav">
-                                <div className="container user-content">
-                                    {this.props.children}
-                                </div>
-                            </div>
-                        </div>
+        var active = 'home';
+        if (this.props.location.pathname.indexOf('/app/home') > 0) {
+
+        }
+        return (
+            <div style={{style: 'inline'}}>
+            <nav className="navbar navbar-inverse navbar-fixed-top ss-navbar-background">
+                <div className="container">
+                    <div className="navbar-header">
+                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span className="sr-only">Toggle navigation</span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                        </button>
+                        <a className="navbar-brand logo" href="http://www.societybilliards.com"></a>
+                    </div>
+                    <div id="navbar" className="navbar-collapse collapse">
+                        <ul className="nav navbar-nav">
+                            <li className={active == 'home' ? 'active dropdown' : 'notActive dropdown'}>
+                                <a href="#/app/home">Home</a>
+                            </li>
+                            <li><a href="#contact">My Divisions</a></li>
+                            <li><a href="#contact">Stats</a></li>
+                            <li><a href="#contact">Profile</a></li>
+                        </ul>
+                        <form className="navbar-form navbar-right">
+                            <input type="text" className="form-control" placeholder="Search..."/>
+                            </form>
                     </div>
                 </div>
-                <div style={{display: 'none'}} >{this.props.location.pathname}</div>
+            </nav>
+                {this.props.children}
             </div>
-                <div id='app-ready' ></div>
-                <div id={this.getUser().id} ></div>
-            </div>
-
-        );
+        )
     }
 });
-
+/*
+<li className="dropdown">
+    <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span className="caret"></span></a>
+    <ul className="dropdown-menu">
+        <li><a href="#">Reset Password</a></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li role="separator" className="divider"></li>
+        <li className="dropdown-header">Nav header</li>
+        <li><a href="#">Separated link</a></li>
+        <li><a href="#">One more separated link</a></li>
+    </ul>
+</li>
+   */
 module.exports = NavApp;

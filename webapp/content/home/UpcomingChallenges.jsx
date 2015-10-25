@@ -14,41 +14,16 @@ var ChallengeSentApp = require('../challenge/ChallengeSentApp.jsx');
 
 var UpcomingChallenges = React.createClass({
     mixins: [UserContextMixin,Router.History],
-    getInitialState: function() {
-         return {
-             data: []
-        }
-    },
-    componentWillMount: function() {
-    },
-    componentWillUnmount: function() {
-    },
-    getData: function() {
-        if (this.validUser)
-            Util.getSomeData( {url: '/api/challenge/user/' + this.getUser().id,
-                callback:  function (d) {this.setState({data: d})}.bind(this),
-                router: this.context.history,
-                module: 'UpcomingChallenges'
-            });
-    },
-    componentWillReceiveProps: function(nextProps) {
-        if (nextProps.refresh) {
-            this.getData();
-        }
-    },
-    componentDidMount: function() {
-        this.getData();
-    },
     render: function() {
         var user = this.getUser();
-        if (!user.challenge || this.state.data.length == 0) {
+        if (!user.challenge || this.props.data.length == 0) {
             return null;
         }
         var challenges = [];
         var pending = [];
         var sent = [];
-        for (var i=0; i< this.state.data.length ; i++) {
-            var challenge = this.state.data[i];
+        for (var i=0; i< this.props.data.length ; i++) {
+            var challenge = this.props.data[i];
             if (challenge.status  == Status.ACCEPTED) {
                 challenges.push(<ChallengeAcceptedApp key={challenge.id} challenge={challenge} />);
             }
@@ -94,8 +69,20 @@ var UpcomingChallenges = React.createClass({
                     </ul>
                 </div>
             </div>);
-
         }
+
+        return (
+            <table className="table table-condensed table-striped table-responsive" >
+                <thead>
+                <tr><th></th></tr>
+                </thead>
+                <tbody></tbody>
+                </table>
+        );
+        /*
+                        <h4>Upcoming Challenges</h4>
+                {challenges}
+
         return (
             <div>
                 {pendingChallenges}
@@ -103,6 +90,7 @@ var UpcomingChallenges = React.createClass({
                 {sentChallenges}
             </div>
         )
+        */
     }
 });
 

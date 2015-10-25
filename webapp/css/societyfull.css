@@ -3,25 +3,24 @@
 /*#leagueApp > div > div > div > div > div.col-md-2.col-xs-12 > nav > ul > div > div.seasonNavLink > div > div.panel-body > li:nth-child(1) > a > div > span.eightBall.badge*/
 /* Society Red: #9c302d */
 
+.ss-home-app {
+	background-color: #eee;
+}
+
+p {
+	font-size: 11px;
+	margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 1px;
+}
 a:link, a:visited {
 	color: #9c302d;
 }
 a:hover, a:active {
 	color: #9c302d;
 }
-#leagueApp > .eightBall {
-	background-color: black; !important;
-}
 .no-pad {
 	padding: 0px 0px;
-}
-span.eightBall.badge {
-	background-color: black; !important;
-}
-
-span.nineBall.badge {
-	background-color: yellow; !important;
-	color: black; !important;
 }
 span .home-badge {
 	margin: -10px 0px 0px 10px;
@@ -95,8 +94,29 @@ li.ss-label-default {
     color: whitesmoke; !important;
 }
 body {
-    margin-top: 0px; /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    /*margin-top: 0px;*/ /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+	padding-top: 70px;
+	padding-bottom: 30px;
+	font-size: 11px
 }
+
+.ss-navbar-background {
+	background-color: #080808;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+	background-color: #222;
+}
+
+.navbar-inverse .navbar-nav > a.ss-navbar-active  > a {
+	color: white; !important
+}
+
+.ss-navbar-active  a {
+	color: white;
+}
+
+
 span.glyphicon {
 	margin-right: 5px;	
 }
@@ -170,12 +190,15 @@ button a.active {
 }
 
 .logo {
+	/*
 	float:left;
 	display:block;
 	margin: 0px 0px; 
 	padding:0px 0px;
 	width: 80%;
-	height:70px;
+	height:75px;
+	*/
+	width: 150px;
 	background-image: url(../img/sbb-logo-mobile.jpg);
 	background-size: 100% 100%;
 	background-repeat:no-repeat;	
@@ -185,6 +208,7 @@ button a.active {
 	width: 100%;
 	height: 100%;
 }
+
 header.page-header {
     background: #2d3e50;
     color: #eee;
@@ -317,15 +341,17 @@ h2.form-signin-heading {
 }
 .footer {
   width: 100%;
-  /* Set the fixed height of the footer here */
+  /* Set the fixed height of the ss-naver here */
 }
 .footer .container {
 	margin-top: 200px;
-	background-color: #000;
-	color: #fff;
+	border-color: #080808;
+	background-color: #080808;
+	color: #9d9d9d;
+
 }
 .footer .container a, .footer.container a:visited {
-	color: #fff;
+	color: #9d9d9d;
 }
 .footer .container ul {
 	float: left;
@@ -502,6 +528,7 @@ ol.request-directions li {
 .stats-btn {
 	padding: 0px 0px;
 }
+
 @media (min-width: 768px) {
 .wrap {
 	min-width: 940px;
@@ -573,16 +600,28 @@ ol.request-directions li {
     background-color: rgba(138, 30, 27, 1);
 	background: -webkit-linear-gradient(top, rgba(138, 30, 27, 1) 0%, rgba(66, 4, 5, 1) 100%);
     background: linear-gradient(to bottom, rgba(138, 30, 27, 1) 0%, rgba(66, 4, 5, 1) 100%);
-}	
+}
+
+
 .logo {
-	float:left;
-	display: block;
-	width: 200px;
-	margin: 0px 0px; 
-	padding:0px 0px;
-	height: 114px;
-	background-image: url(../img/sbb-logo-2.jpg);
-	background-size:autos;	
+	/*
+		float:left;
+		display:block;
+		margin: 0px 0px;
+		padding:0px 0px;
+		width: 80%;
+		height:75px;
+*/
+	width: 150px
+		background-image: url(../img/sbb-logo-mobile.jpg);
+		background-size: 100% 100%;
+		background-repeat:no-repeat;
+}
+
+.logo a {
+		display: block;
+		width: 100%;
+		height: 100%;
 }
 
 #content {

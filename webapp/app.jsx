@@ -83,7 +83,7 @@ var routes = (
                 <Route path="stats" component={StatDisplay} />
                 <Route path=":seasonId/history" component={StatHistory} />
             </Route>
-            <Route  path="team/:teamId" component={TeamApp} >
+            <Route path="team/:teamId" component={TeamApp} >
                 <Route path="standings"  component={TeamStandings} />
                 <Route path="chart"  component={TeamChart} />
                 <Route path="members"  component={TeamMemberResultsApp} />

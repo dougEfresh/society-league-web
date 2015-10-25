@@ -44,7 +44,9 @@ var UserLink = React.createClass({
                 query += 'height=' + this.props.width + '&';
             if (this.props.type)
                 query += 'type=' + this.props.type + '&';
-
+            if (query = '?') {
+                query += 'height=25&width=25'
+            }
             return (
             <Link to={'/app/scout/' + this.props.user.id + '/stats'}>
                 <img src={user.userProfile.imageUrl + query}> </img>

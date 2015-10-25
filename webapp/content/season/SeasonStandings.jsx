@@ -54,8 +54,12 @@ var SeasonStandings = React.createClass({
 
             });
             stats.forEach(function (s) {
+                if (this.props.limit && rows.length >= this.props.limit)
+                    return;
+
                 rows.push(
                     <tr key={s.team.id}>
+                        <td>{rows.length+1}</td>
                         <td><TeamLink team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
                         <td>{s.loses}</td>
@@ -67,8 +71,11 @@ var SeasonStandings = React.createClass({
             }.bind(this));
         } else if (this.state.seasonStats[0].season.nine) {
                this.state.seasonStats.forEach(function (s) {
+                   if (this.props.limit && rows.length >= this.props.limit)
+                       return;
                 rows.push(
                     <tr key={s.team.id}>
+                        <td>{rows.length+1}</td>
                         <td><TeamLink team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
                         <td>{s.loses}</td>
@@ -81,8 +88,11 @@ var SeasonStandings = React.createClass({
             }.bind(this));
         } else {
             this.state.seasonStats.forEach(function (s) {
+                if (this.props.limit && rows.length >= this.props.limit)
+                    return;
                 rows.push(
                     <tr key={s.team.id}>
+                        <td>{rows.length+1}</td>
                         <td><TeamLink team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
                         <td>{s.loses}</td>
@@ -94,21 +104,23 @@ var SeasonStandings = React.createClass({
         }
 
         var header = (<tr>
-            <th>Team</th>
+            <th>#</th>
+            <th>{this.props.notitle ? null :  this.state.seasonStats[0].season.displayName}</th>
             <th>W</th>
             <th>L</th>
-            <th>Set Wins</th>
-            <th>Set Loses</th>
+            <th>SW</th>
+            <th>SL</th>
             <th>RW</th>
             <th>RL</th>
             <th>Pct</th>
         </tr>);
         if (this.state.seasonStats[0].season.challenge) {
             header = ( <tr>
-            <th></th>
+                    <th>#</th>
+            <th>{this.props.notitle ? null : 'Top Gun'}</th>
             <th>W</th>
             <th>L</th>
-                    <th>Points</th>
+                    <th>P</th>
             <th>RW</th>
             <th>RL</th>
 
@@ -117,7 +129,8 @@ var SeasonStandings = React.createClass({
             );
         } else if (!this.state.seasonStats[0].season.nine) {
             header = ( <tr>
-                    <th>Team</th>
+                    <th>#</th>
+                    <th>{this.props.notitle ? null  : this.state.seasonStats[0].season.displayName}</th>
                     <th>W</th>
                     <th>L</th>
                     <th>RW</th>
@@ -128,11 +141,9 @@ var SeasonStandings = React.createClass({
         }
         return (
             <div className="table-responsive">
-            <table className="table table-condensed table-striped table-responsive" >
-                <thead>
-                <tr>
+                <table className="table table-bordered table-condensed table-striped table-responsive" >
+                    <thead>
                     {header}
-                </tr>
                 <tbody>
                 {rows}
                 </tbody>

@@ -29,7 +29,7 @@ var SeasonLeaders = React.createClass({
         this.getData(this.props.params.seasonId);
     },
     componentWillReceiveProps: function(n) {
-        this.setState({loading: true});
+        //this.setState({loading: true});
         if (n.params.seasonId != this.props.params.seasonId) {
             this.getData(n.params.seasonId);
             return;
@@ -37,18 +37,22 @@ var SeasonLeaders = React.createClass({
     },
     getRows : function(data) {
         var rows = []  ;
-        data.forEach(function(d){
-            rows.push(
-                <tr key={d.user.id}>
-                    <td><UserLink user={d.user} season={this.props.params.seasonId} /> </td>
-                    <td><TeamLink team={d.team} /></td>
-                    <td>{d.wins}</td>
-                    <td>{d.loses}</td>
-                    <td>{d.racksWon}</td>
-                    <td>{d.racksLost}</td>
-                    <td>{d.winPct.toFixed(3)}</td>
-                </tr>
-            );
+        var cnt=1;
+        data.forEach(function(d) {
+            if (this.props.limit && rows.length <= this.props.limit) {
+                rows.push(
+                    <tr key={d.user.id}>
+                        <td>{cnt++}</td>
+                        <td><UserLink user={d.user} season={this.props.params.seasonId}/></td>
+                        <td><TeamLink team={d.team}/></td>
+                        <td>{d.wins}</td>
+                        <td>{d.loses}</td>
+                        <td>{d.racksWon}</td>
+                        <td>{d.racksLost}</td>
+                        <td>{d.winPct.toFixed(3)}</td>
+                    </tr>
+                );
+            }
         }.bind(this));
         return rows;
     },
@@ -60,9 +64,11 @@ var SeasonLeaders = React.createClass({
 
         return (
                 <div className="table-responsive">
-                    <table className="table table-hover table-condensed table-striped table-responsive">
+                    <table className="table table-hover table-bordered table-condensed table-striped table-responsive">
+                        <thead>
                     <tr>
-                        <th>Player</th>
+                        <th>#</th>
+                        <th>Leaders</th>
                         <th>Team</th>
                         <th>W</th>
                         <th>L</th>
@@ -70,6 +76,7 @@ var SeasonLeaders = React.createClass({
                         <th>RL</th>
                         <th>%</th>
                     </tr>
+                    </thead>
                      <tbody>
                      {this.getRows(stats)}
                      </tbody>
