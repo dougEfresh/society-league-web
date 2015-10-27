@@ -88,7 +88,7 @@ var StatApp = React.createClass({
         }
 
         return (
-            <div id="scout-app" className="panel panel-default">
+            <div id="scout-app" className="container ss-home-app">
                 <div className="panel-heading">
                      {header}
                 </div>

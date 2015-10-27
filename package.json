@@ -37,6 +37,6 @@
     "uglify-js": "2.4.24",
     "json-proxy": "0.3.1",
     "morgan": "1.5.2",
-"unirest":"0.4.2"
+    "unirest":"0.4.2"
   }
 }

@@ -24,6 +24,7 @@ var ErrorApp = require('./jsx/components/ErrorApp.jsx');
 
 var StatApp = require('./content/stat/StatApp.jsx');
 var StatDisplay = require('./content/stat/StatsDisplay.jsx');
+var StatGraph = require('./content/stat/StatsPie.jsx');
 var StatHistory = require('./content/stat/StatHistory.jsx');
 var HomeApp = require('./jsx/../content/home/HomeApp.jsx');
 var TeamApp = require('./content/team/TeamApp.jsx');

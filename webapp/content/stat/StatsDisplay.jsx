@@ -65,14 +65,36 @@ var StatsDisplay = React.createClass({
         if (rows.length < 1) {
             return (<h3>No matches have been played</h3>);
         }
-        var statCharts = [];
-        var cnt = 0;
+        var eight = [];
+        var nine = [];
         this.state.stats.forEach(function(s){
-            statCharts.push(<StatsPie key={cnt++} stats={s} />);
-        });
+            if (s.season == undefined || s.season.active)
+                return;
 
+            if (s.season.nine || s.season.challenge) {
+                nine.push(s);
+                return;
+            }
+            eight.push(s);
+        });
+        //
+
+        var labels = [];
+        var wins = [];
+        var loses = [];
+        nine.forEach(function(s){
+            labels.push(s.season.displayName.substring(0,5));
+            wins.push(s.wins);
+            loses.push(s.loses);
+        });
          return (
              <div className="table-responsive">
+                 <div>
+                     <StatsPie stats={nine} />
+                 </div>
+                 <div>
+                     <StatsPie stats={eight} />
+                 </div>
                  <table className="table table-striped table-hover table-condensed">
                     <tr>
                         <th>Type</th>
@@ -87,7 +109,6 @@ var StatsDisplay = React.createClass({
                      {rows}
                      </tbody>
                 </table>
-
              </div>
          );
         /*

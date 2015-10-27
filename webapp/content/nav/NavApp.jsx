@@ -63,9 +63,10 @@ var NavApp = React.createClass({
         var challengeNav = null;
         //if (this.getUser().challenge) {
             challengeNav =   <li className={'notActive dropdown'}>
-                <a href="#/app/challenge">Challenge</a>
-            </li>
+                <a href="#/app/challenge">Top Gun</a>
+            </li>;
         //}
+
         return (
             <div style={{style: 'inline'}}>
             <nav className="navbar navbar-inverse navbar-fixed-top ss-navbar-background">
@@ -85,8 +86,8 @@ var NavApp = React.createClass({
                                 <a href="#/app/home">Home</a>
                             </li>
                             {challengeNav}
-                            <li><a href="#contact">Stats</a></li>
-                            <li><a href="#contact">{this.getUser().firstName}</a></li>
+                            <li><a href={"#/app/scout/" + this.getUser().id + '/stats'}>Stats</a></li>
+                            <li><a href="#contact">{'Profile'}</a></li>
                         </ul>
                         <form className="navbar-form navbar-right">
 

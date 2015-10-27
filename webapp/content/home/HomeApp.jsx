@@ -27,9 +27,7 @@ var HomeApp = React.createClass({
              adminMode: false,
              activeSeason: null,
              activeUser: this.getUser(),
-             showSchedule: false,
-             showLeaders: false,
-             showStandings: true
+             show: 'standings'
          }
     },
     getData: function() {
@@ -117,7 +115,7 @@ var HomeApp = React.createClass({
     changeTeam: function(t) {
         return function(e) {
             e.preventDefault();
-            this.setState({activeTeam: t, activeUser: null, activeSeason: t.season, showLeaders: false,showSchedule: false, showStandings: true});
+            this.setState({activeTeam: t, activeUser: null, activeSeason: t.season, show: 'standings'});
             console.log('Setting team to ' + t.name);
         }.bind(this);
     },
@@ -133,17 +131,10 @@ var HomeApp = React.createClass({
             console.log('Setting season to ' + s.displayName);
         }.bind(this);
     },
-    showSchedule: function(e) {
-        e.preventDefault();
-        this.setState({showSchedule: true, showLeaders: false, showStandings: false})
-    },
-    showLeaders: function(e) {
-        e.preventDefault();
-        this.setState({showSchedule: false, showLeaders: true, showStandings: false})
-    },
-    showStandings: function(e) {
-        e.preventDefault();
-        this.setState({showSchedule: false, showLeaders: false, showStandings: true})
+    show: function(type,s) {
+        return function(e) {
+            e.preventDefault();
+            this.setState({show: type,activeSeason: s})}.bind(this);
     },
     render: function () {
         var user = this.state.user;
@@ -177,6 +168,10 @@ var HomeApp = React.createClass({
             var ss = this.processSeason(s);
             cnt++;
             seasonStandings.push(ss);
+            var displayName = s.displayName.substr(9,15);
+            if (s.challenge) {
+                displayName = 'Top Gun';
+            }
             seasonTabs.push(
                 <li key={s.id} role="presentation" className={this.state.activeSeason.id == s.id ? "active dropdown" : "none dropdown"}>
                 <a className="dropdown-toggle"
@@ -184,25 +179,24 @@ var HomeApp = React.createClass({
                    href="#" role="button"
                    aria-haspopup="true"
                    aria-expanded="false"
-                   onClick={this.changeSeason(s)}
                    href="#">
-                    {s.displayName}<span className="caret"></span></a>
+                    {displayName}<span className="caret"></span></a>
                     <ul className="dropdown-menu">
-                        <li><a onClick={this.showStandings} href='#'>Standings</a></li>
-                        <li><a onClick={this.showSchedule} href='#'>Schedule</a></li>
-                        <li><a onClick={this.showLeaders} href='#'>Leaders</a></li>
+                        <li><a onClick={this.show('standings',s)} href='#'>Standings</a></li>
+                        <li><a onClick={this.show('schedule',s)} href='#'>Schedule</a></li>
+                        <li><a onClick={this.show('leaders',s)} href='#'>Leaders</a></li>
                     </ul>
                 </li>
 
             );
         }.bind(this));
         var display =  seasonStandings;
-        if (this.state.showLeaders) {
+        if (this.state.show == 'leaders') {
             display = <div className="row">
                 <SeasonLeaders onClick={this.changeTeam} params={{seasonId: this.state.activeSeason.id}} />
             </div>
         }
-        if (this.state.showSchedule) {
+        if (this.state.show == 'schedule') {
             display = <div className="row">
                 <SeasonMatches params={{seasonId: this.state.activeSeason.id}} />
             </div>
