@@ -93,6 +93,13 @@ var NavApp = React.createClass({
         e.preventDefault();
         this.setState({toggleSeason: !this.state.toggleSeason});
     },
+    toggleDivision: function(s){
+        return function(e) {
+            e.preventDefault();
+            s.toggle = s.toggle == undefined ? true : !s.toggle;
+            this.setState({toggleSeason: this.state.toggleSeason});
+        }.bind(this)
+    },
     goHome: function(e) {
         e.preventDefault();
         this.closeSide(e);
@@ -136,9 +143,23 @@ var NavApp = React.createClass({
             if (!s.season.active) {
                 return;
             }
-            seasonNav.push(<li className="active" key={s.season.id}>
-                <a onClick={this.changeSeason(s.season)} href="#">{s.season.displayName}</a>
-            </li>);
+            seasonNav.push(
+                <li className="" key={s.season.id}>
+                    <a onClick={this.toggleDivision(s)} href="#">{s.season.displayName}<span className="fa arrow"></span></a>
+                    <ul className={"nav nav-third-level collapse" + (s.toggle ? " in" : "")} aria-expanded="true">
+                    <li>
+                        <a href="#">Schedule</a>
+                    </li>
+                    <li>
+                        <a href="#">Standings</a>
+                    </li>
+                    <li>
+                        <a href="#">Leaders</a>
+                    </li>
+                </ul>
+                </li>
+            );
+            //
 
         }.bind(this));
 
@@ -159,11 +180,6 @@ var NavApp = React.createClass({
                         <a className="navbar-brand logo" href="http://www.societybilliards.com"></a>
                     </div>
                     <ul id="top-menu" className="nav navbar-top-links navbar-right">
-                        <li className="dropdown">
-                            <a className="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i className="fa fa-bell fa-fw"></i>  <i className="fa fa-caret-down"></i>
-                            </a>
-                        </li>
                         <li className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                                 {profilePic}
