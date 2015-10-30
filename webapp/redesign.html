@@ -8,27 +8,43 @@
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-social.css">
-    <link rel="stylesheet" href="css/societyredesign.css">
+    <link rel="stylesheet" href="css/society/society-dashboard.css">
+    <link rel="stylesheet" href="css/society/society-logo.css">
+    <link rel="stylesheet" href="css/society/society-footer.css">
+    <link rel="stylesheet" href="css/society/society-sidemenu.css">
+    <link rel="stylesheet" href="css/society/society-topmenu.css">
+    <link rel="stylesheet" href="css/society/society-panels.css">
+    <link rel="stylesheet" href="css/society/society-tables.css">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     </head>
-<body role="document" class="full">
+<body class="full" >
 <div id="content"></div>
-<footer class="footer" role="contentinfo">
-    <div id="inner-footer" class="container">
-        <ul>
-            <li><a href="http://www.societybilliards.com/mapsdirections">Map + Directions</a></li>
-            <li><a href="http://www.societybilliards.com/hoursrates">Hours + Rates</a></li>
-            <li><a href="http://www.societybilliards.com/site-map">Site Map</a></li>
-            <li class="footer-address">10 E 21 Street NY, NY 10010<br />(btw Broadway & 5th avenue)<br />t+
-                <a href="tel:+212.420.1000">212.420.1000</a><br />
-                <a href="mailto:info@societybilliards.com">info@societybilliards.com</a>
-            </li>
-            <li><a href="mailto:info@societybilliards.com">Employment</a></li>
-            <li><a href="http://www.societybilliards.com/contact">Contact</a></li>
-        </ul>
-    </div><!-- end inner-footer -->
-</footer>
+<!--
+
+<!-- end inner-footer -->
 <script src="js/bundle.js"></script>
+<script>
+    $(window).bind("load resize", function () {
+            console.log('Changing size');
+            topOffset = 50;
+            width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+            if (width < 768) {
+                $('div.navbar-collapse').addClass('collapse');
+                $('.sidbar-nav').addClass('collapse');
+                //$('.sidbar-nav').addClass('in');
+                topOffset = 100; // 2-row-menu
+            } else {
+                $('div.navbar-collapse').removeClass('collapse');
+            }
+
+            height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
+            height = height - topOffset;
+            if (height < 1) height = 1;
+            if (height > topOffset) {
+                $("#page-wrapper").css("min-height", (height) + "px");
+            }
+        });
+</script>
 </body>
 </html>

@@ -115,8 +115,9 @@ var HomeApp = React.createClass({
     changeTeam: function(t) {
         return function(e) {
             e.preventDefault();
-            this.setState({activeTeam: t, activeUser: null, activeSeason: t.season, show: 'standings'});
-            console.log('Setting team to ' + t.name);
+            this.props.history.pushState(null,'/app/team/' + t.id);
+            //this.setState({activeTeam: t, activeUser: null, activeSeason: t.season, show: 'standings'});
+            console.log('Going  team to ' + t.name);
         }.bind(this);
     },
     changeSeason: function(s) {
@@ -201,14 +202,74 @@ var HomeApp = React.createClass({
                 <SeasonMatches params={{seasonId: this.state.activeSeason.id}} />
             </div>
         }
-        return (
-            <div id="home-app" className="container ss-home-app">
-                <h4>Upcoming Matches</h4>
-                <div className="row">
-                    <div className="col-xs-12  col-md-12">
-                        <UpcomingChallenges  onClick={this.changeTeam} data={this.state.challenges}/>
+        var seasonLeaders = [];
+        this.getUser().handicapSeasons.forEach(function(hs){
+            var s = hs.season;
+            if (!s.active) {
+                return;
+            }
+            seasonLeaders.push(
+                <div key={s.id} className="col-xs-12 col-md-4">
+                    <div className="panel panel-default panel-leaders">
+                        <div className="panel-heading">
+                            <i className="fa fa-sitemap"></i> {'Top Players ' + s.displayName.substr(8,15)}
+                        </div>
+                        <div className="panel-body">
+                            <SeasonLeaders  onClick={this.changeTeam} params={{seasonId: s.id}} limit={5} />
+                        </div>
                     </div>
                 </div>
+            )
+        }.bind(this));
+
+        return (
+            <div id='home-app'>
+                <div className="welcome" align="center">
+                    <p>Society Billiards League Home Page</p>
+                </div>
+
+                <div className="headerHome">Welcome Doug</div>
+                <div className="headerHome">My Teams</div>
+                <div className="plain_text">
+                    You can also manage your account settings by clicking on the <b>'My Teams'</b> link in the left panel to change
+                    your personal data including your email address, name, phone number, and home address.
+                </div>
+
+                <div className="headerHome">Stats</div>
+                <div className="plain_text">
+                    To get a quick look at every season you've played in, the <b>'Stats'</b> section contains <b>'My History'</b> &amp; <b>'My Opponents'</b>
+                    which breaks down your history by individual seasons and a complete history of every opponent you've ever played. In my opponents, you will
+                    be able to sort by opponent or zero in on all matches played bettween you and that opponent, their team.
+                </div>
+
+                <div className="row">
+                    <div className="col-xs-12 col-md-3">
+                        <div className="panel panel-default panel-upcoming">
+                        <div className="panel-heading">
+                            <i className="fa fa-bell fa-fw"></i> Upcoming Matches
+                        </div>
+                            <div className="panel-body">
+                                <UpcomingMatches onClick={this.changeTeam} data={this.state.challenges}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    {seasonLeaders}
+                </div>
+       </div>
+        );
+    }
+});
+
+/*
+  <div id="home-app" className="container ss-home-app">
+                <h4>Upcoming Matches</h4>
+ <div className="row">
+ <div className="col-xs-12  col-md-12">
+ <UpcomingChallenges  onClick={this.changeTeam} data={this.state.challenges}/>
+ </div>
+ </div>
                 <div className="row">
                     <UpcomingMatches onClick={this.changeTeam}/>
                 </div>
@@ -217,8 +278,5 @@ var HomeApp = React.createClass({
                 </ul>
                 {display}
             </div>
-        );
-    }
-});
-
+ */
 module.exports = HomeApp;

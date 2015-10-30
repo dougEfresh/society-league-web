@@ -21,12 +21,17 @@ var UserResults = React.createClass({
     componentWillUnmount: function() { },
     componentDidMount: function() { this.getData();  },
     componentWillReceiveProps: function(nextProps) {
+        if (nextProps.user == undefined || nextProps.season == undefined) {
+            this.setState({user:null});
+            return;
+        }
+
         this.state.user = nextProps.user;
         this.state.season = nextProps.season;
         this.getData();
     },
     getData: function() {
-        if (!this.state.user) {
+        if (this.state.user == null || this.state.user == undefined || this.state.season == null || this.state.season == undefined) {
             return ;
         }
         Util.getSomeData(

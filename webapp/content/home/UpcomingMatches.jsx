@@ -46,7 +46,7 @@ var UpcomingMatches = React.createClass({
                 return;
             }
             rows.push(
-                <tr key={m.id}>
+                <tr onClick={this.props.onClick(m.opponentTeam)} key={m.id}>
                     <td><span> {Util.formatDateTime(m.matchDate)}</span></td>
                     <td><TeamLink onClick={this.props.onClick(m.opponentTeam)} team={m.opponentTeam}/></td>
                 </tr>
@@ -57,13 +57,11 @@ var UpcomingMatches = React.createClass({
         }
 
         return (
-            <div className="col-xs-12 col-md-3">
                 <div className="table-responsive">
                     <table className="table table-condensed table-striped table-bordered table-responsive">
                         <tbody>{rows}</tbody>
                     </table>
                 </div>
-            </div>
         );
     }
 });

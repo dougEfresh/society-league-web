@@ -10,7 +10,6 @@ var TeamStandings = React.createClass({
          return {
              statTeam: {},
              statTeamMembers: [],
-             update : Date.now()
         }
     },
     getData: function(id) {
@@ -30,15 +29,23 @@ var TeamStandings = React.createClass({
         );
     },
     componentDidMount: function () {
-        this.getData(this.props.params.teamId);
+        if (this.props.team != undefined)
+            this.getData(this.props.team.id);
     },
     componentWillReceiveProps: function (n) {
-        this.getData(n.params.teamId);
+        if (n.team == undefined || n.team == null)
+            return ;
+        if (this.props.team == undefined || this.props.team == null) {
+            this.getData(n.team.id);
+            return;
+        }
+        if (this.props.team.id  != n.team.id)
+            this.getData(n.team.id);
     },
     getHeader: function() {
         if (this.state.statTeam.team  && this.state.statTeam.team.nine) {
             return ( <tr>
-                <th>{this.state.statTeam.team.name}</th>
+                <th></th>
                 <th>W</th>
                 <th>L</th>
                 <th>RW</th>
@@ -70,7 +77,7 @@ var TeamStandings = React.createClass({
             i++;
             if (u.season.nine) {
                 rows.push(
-                    <tr className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
+                    <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
                         <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
                         <td>{u.wins}</td>
                         <td>{u.loses}</td>
@@ -80,7 +87,7 @@ var TeamStandings = React.createClass({
                     </tr>);
             } else {
                  rows.push(
-                    <tr className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
+                    <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
                         <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
                         <td>{u.wins}</td>
                         <td>{u.loses}</td>
@@ -90,15 +97,15 @@ var TeamStandings = React.createClass({
         }.bind(this));
         return (
             <div className="table-responsive">
-                <table className="table table-bordered table-condensed table-striped table-grid table-responsive" >
+                <table className="table table-hover table-bordered table-condensed table-striped table-grid table-responsive" >
                 <thead>
                 {this.getHeader()}
                 <tbody>
                 {rows}
                 </tbody>
                 </thead>
-            </table>
-             </div>
+                </table>
+            </div>
         );
 
 

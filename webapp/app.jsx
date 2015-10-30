@@ -27,7 +27,7 @@ var StatDisplay = require('./content/stat/StatsDisplay.jsx');
 var StatGraph = require('./content/stat/StatsPie.jsx');
 var StatHistory = require('./content/stat/StatHistory.jsx');
 var HomeApp = require('./jsx/../content/home/HomeApp.jsx');
-var TeamApp = require('./content/team/TeamApp.jsx');
+var DisplayApp = require('./content/display/DisplayApp.jsx');
 var TeamStandings= require('./content/team/TeamStandings.jsx');
 var TeamMemberResultsApp = require('./content/team/TeamMemberResults.jsx');
 var SeasonApp = require('./content/season/SeasonApp.jsx');
@@ -84,20 +84,21 @@ var routes = (
                 <Route path="stats" component={StatDisplay} />
                 <Route path=":seasonId/history" component={StatHistory} />
             </Route>
-            <Route path="team/:teamId" component={TeamApp} >
-                <Route path="standings"  component={TeamStandings} />
-                <Route path="chart"  component={TeamChart} />
-                <Route path="members"  component={TeamMemberResultsApp} />
-            </Route>
-            <Route path="season" component={SeasonApp} >
-                <Route path=":seasonId/leaders"  component={SeasonLeaders} />
-                <Route path=":seasonId/standings"  component={SeasonStandings} />
-                <Route path=":seasonId/results"  component={SeasonWeeklyMatches} />
-                <Route path=":seasonId/teamresults/:matchId" component={SeasonMatchResultsOnDay} />
-            </Route>
+
+            <Route path="display/:seasonId/:teamId/:userId" component={DisplayApp} > </Route>
+            <Route path="display/:seasonId/:teamId" component={DisplayApp} ></Route>
+            <Route path="display/:seasonId" component={DisplayApp} ></Route>
         </Route>
     </Route>
 );
+/*
+ <Route path="season" component={SeasonApp} >
+ <Route path=":seasonId/leaders"  component={SeasonLeaders} />
+ <Route path=":seasonId/standings"  component={SeasonStandings} />
+ <Route path=":seasonId/results"  component={SeasonWeeklyMatches} />
+ <Route path=":seasonId/teamresults/:matchId" component={SeasonMatchResultsOnDay} />
+ </Route>
+ */
 
 React.render((<Router>{routes}</Router>), document.getElementById('content'));
 /*

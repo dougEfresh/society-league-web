@@ -12,33 +12,38 @@ var SeasonStandings = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
          return {
-             update: Date.now(),
              seasonStats: [],
              loading: false
          }
     },
     getData: function(id) {
         Util.getSomeData(
-            {
-                url: '/api/stat/season/' + id,
-                callback: function (d) {
-                    this.setState({seasonStats: d, loading: false})
-                }.bind(this),
-                module: 'SeasonStandings',
-                router: this.props.history
-            }
-        );
-
+                {
+                    url: '/api/stat/season/' + id,
+                    callback: function (d) {
+                        this.setState({seasonStats: d, loading: false})
+                    }.bind(this),
+                    module: 'SeasonStandings',
+                    router: this.props.history
+                }
+            );
     },
     componentDidMount: function () {
-        if(this.props.seasonId)
-            this.getData(this.props.seasonId);
-        else
-            this.getData(this.props.params.seasonId);
+        if (this.props.season != undefined && this.props.season != null)
+            this.getData(this.props.season.id);
     },
     componentWillReceiveProps: function (n) {
-        if (n.params != undefined)
-            this.getData(n.params.seasonId);
+        if (n.season != undefined && n.season != null) {
+            if (this.props.season == null) {
+                this.getData(n.season.id);
+                return;
+            }
+            if (this.props.season.id != n.season.id) {
+                this.getData(n.season.id);
+                return;
+            }
+
+        }
     },
     render: function() {
         if (this.state.seasonStats.length == 0)
@@ -59,7 +64,7 @@ var SeasonStandings = React.createClass({
                     return;
 
                 rows.push(
-                    <tr className={activeTeam.id == s.team.id  ? "danger" : "none"} key={s.team.id}>
+                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
@@ -75,7 +80,7 @@ var SeasonStandings = React.createClass({
                    if (this.props.limit && rows.length >= this.props.limit)
                        return;
                 rows.push(
-                    <tr  className={activeTeam.id == s.team.id  ? "danger" : "none"} key={s.team.id}>
+                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
@@ -92,7 +97,7 @@ var SeasonStandings = React.createClass({
                 if (this.props.limit && rows.length >= this.props.limit)
                     return;
                 rows.push(
-                    <tr className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
+                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td>{s.wins}</td>
@@ -106,7 +111,7 @@ var SeasonStandings = React.createClass({
 
         var header = (<tr>
             <th>#</th>
-            <th>{this.props.notitle ? null :  this.state.seasonStats[0].season.displayName}</th>
+            <th>{this.props.notitle ? 'Team' :  this.state.seasonStats[0].season.displayName}</th>
             <th>W</th>
             <th>L</th>
             <th>SW</th>
@@ -118,7 +123,7 @@ var SeasonStandings = React.createClass({
         if (this.state.seasonStats[0].season.challenge) {
             header = ( <tr>
                     <th>#</th>
-            <th>{this.props.notitle ? null : 'Top Gun'}</th>
+            <th>{this.props.notitle ? 'Team' : 'Top Gun'}</th>
             <th>W</th>
             <th>L</th>
                     <th>P</th>
@@ -142,7 +147,7 @@ var SeasonStandings = React.createClass({
         }
         return (
             <div className="table-responsive">
-                <table className="table table-bordered table-condensed table-striped table-responsive" >
+                <table className="table table-hover table-bordered table-condensed table-striped table-responsive" >
                     <thead>
                     {header}
                 <tbody>

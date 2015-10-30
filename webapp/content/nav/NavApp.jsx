@@ -4,7 +4,7 @@ var History = ReactRouter.History;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var LoginApp = require('../login/LoginApp.jsx');
 var DataStore = require('../../jsx/stores/DataStore.jsx');
-var LoadingApp  = require('../../jsx/components/LoadingApp.jsx');
+var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var TeamNav = require('./TeamNav.jsx');
 var AdminNav = require('./AdminNav.jsx');
 var SeasonNav = require('./SeasonNav.jsx');
@@ -15,20 +15,26 @@ var HomeApp = require('../home/HomeApp.jsx');
 var Util = require('../../jsx/util.jsx');
 
 var NavApp = React.createClass({
-    mixins: [UserContextMixin,History],
-    getInitialState: function() {
-         return {
-             user: DataStore.getUser()
-         }
+    mixins: [UserContextMixin, History],
+
+    getInitialState: function () {
+        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        return {
+            user: DataStore.getUser(),
+            toggleTeam: false,
+            toggleSeason: false,
+            toggleUser: false,
+            teams: [],
+            toggleTeamActive: {},
+            seasons: [],
+            mobile : width < 768,
+            toggleSide : width > 768
+        }
     },
-    componentWillMount: function() {
-    },
-    componentWillUnmount: function() {
-    },
-    componentDidMount: function() {
+    componentDidMount: function () {
         Util.getSomeData({
             url: '/api/user',
-            callback: function(d) {
+            callback: function (d) {
                 DataStore.setUser(d);
                 this.setState({
                     user: d
@@ -41,18 +47,66 @@ var NavApp = React.createClass({
             }.bind(this),
             router: this.props.history,
             module: 'NavApp',
-            unAuthCallback: function() {this.history.pushState(null, '/login');}.bind(this)
+            unAuthCallback: function () {
+                this.history.pushState(null, '/login');
+            }.bind(this)
         });
+
+        Util.getSomeData({
+            url: '/api/team/get/user',
+            callback: function(d){ d.forEach(function(t) {t.active=true} ); this.setState({teams: d})}.bind(this),
+            module: 'NavApp',
+            router: this.props.history
+        })
     },
-    componentWillReceiveProps: function() {
-    },
-    _onChange: function(){
-        console.log('NavApp change: ' + this.getUser().id );
+    _onChange: function () {
+        console.log('NavApp change: ' + this.getUser().id);
         this.setState({
             user: DataStore.getUser()
         });
     },
-    render: function() {
+    changeTeam: function(t) {
+        return function(e) {
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            if (!this.state.mobile)
+                this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id);
+            else
+                this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id);
+            //this.setState({activeTeam: t, activeUser: null, activeSeason: t.season, show: 'standings'});
+            console.log('Going  team to ' + t.name);
+        }.bind(this);
+    },
+    changeSeason: function(s) {
+        return function(e) {
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/display/' + s.id);
+            console.log('Going  season to ' + s.displayName);
+        }.bind(this);
+    },
+    toggleTeam: function(e){
+        e.preventDefault();
+        this.setState({toggleTeam: !this.state.toggleTeam});
+    },
+    toggleSeason: function(e){
+        e.preventDefault();
+        this.setState({toggleSeason: !this.state.toggleSeason});
+    },
+    goHome: function(e) {
+        e.preventDefault();
+        this.closeSide(e);
+        this.props.history.pushState(null,'/app/home');
+    },
+    closeSide: function(e) {
+        e.preventDefault();
+        this.setState({toggleSide: false});
+    },
+    sideOpenClose: function(e) {
+        e.preventDefault();
+        this.setState({toggleSide: !this.state.toggleSide});
+    },
+    render: function () {
         if (this.getUser().id == "0") {
             return null;
         }
@@ -62,17 +116,41 @@ var NavApp = React.createClass({
         }
         var challengeNav = null;
         //if (this.getUser().challenge) {
-            challengeNav =   <li className={'notActive dropdown'}>
-                <a href="#/app/challenge">Top Gun</a>
-            </li>;
+        challengeNav = <li className={'notActive dropdown'}>
+            <a href="#/app/challenge">Top Gun</a>
+        </li>;
         //}
 
+        var teamNav =  [];
+        this.state.teams.forEach(function(t) {
+            var cls = t.active ? "active" : "notactive";
+            teamNav.push(
+                <li className={cls} key={t.id}>
+                    <a onClick={this.changeTeam(t)} href="#">{t.name}</a>
+                </li>);
+
+        }.bind(this));
+
+        var seasonNav =  [];
+        this.getUser().handicapSeasons.forEach(function(s) {
+            if (!s.season.active) {
+                return;
+            }
+            seasonNav.push(<li className="active" key={s.season.id}>
+                <a onClick={this.changeSeason(s.season)} href="#">{s.season.displayName}</a>
+            </li>);
+
+        }.bind(this));
+
+        var profilePic = <i className="fa fa-user profile"></i>;
+        if (this.getUser().profile) {
+            profilePic = <img className="profile" src={this.getUser().userProfile.imageUrl + '?width=20&height=20'}> </img>
+        }
         return (
-            <div style={{style: 'inline'}}>
-            <nav className="navbar navbar-inverse navbar-fixed-top ss-navbar-background">
-                <div className="container">
+            <div id="wrapper">
+                <nav className="navbar navbar-inverse navbar-static-top" role="navigation" style={{marginBottom: 0}}>
                     <div className="navbar-header">
-                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <button type="button" className="navbar-toggle" onClick={this.sideOpenClose}>
                             <span className="sr-only">Toggle navigation</span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
@@ -80,39 +158,71 @@ var NavApp = React.createClass({
                         </button>
                         <a className="navbar-brand logo" href="http://www.societybilliards.com"></a>
                     </div>
-                    <div id="navbar" className="navbar-collapse collapse">
-                        <ul className="nav navbar-nav">
-                            <li className={active == 'home' ? 'active dropdown' : 'notActive dropdown'}>
-                                <a href="#/app/home">Home</a>
+                    <ul id="top-menu" className="nav navbar-top-links navbar-right">
+                        <li className="dropdown">
+                            <a className="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i className="fa fa-bell fa-fw"></i>  <i className="fa fa-caret-down"></i>
+                            </a>
+                        </li>
+                        <li className="dropdown">
+                            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+                                {profilePic}
+                                {this.getUser().firstName} <b className="caret">
+                                </b></a>
+                            <ul className="dropdown-menu">
+                                <li>
+                                    <a href="#"><i className="fa fa-fw fa-user"></i> Profile</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i className="fa fa-fw fa-gear"></i> Settings</a>
+                                </li>
+                                <li className="divider"></li>
+                                <li>
+                                    <a href="#"><i className="fa fa-fw fa-power-off"></i> Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div className={"navbar-default sidebar-nav navbar-collapse sidebar " + (this.state.toggleSide  ? " in " : " collapse") } role="navigation">
+                        <ul className="nav" id="side-menu">
+                            <li className="sidebar-search">
+                                <div className="input-group custom-search-form">
+                                    <input type="text" className="form-control" placeholder="Search..."/>
+                                    <span className="input-group-btn">
+                                        <button className="btn btn-default" type="button">
+                                            <i className="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
                             </li>
-                            {challengeNav}
-                            <li><a href={"#/app/scout/" + this.getUser().id + '/stats'}>Stats</a></li>
-                            <li><a href="#contact">{'Profile'}</a></li>
+                            <li >
+                                <a onClick={this.goHome}  href="#"><i className="fa fa-fw fa-home"></i> Home</a>
+                            </li>
+                            <li className={this.state.toggleTeam ? "active" : "notactive"}>
+                                <a onClick={this.toggleTeam} href="#"><i className="fa fa-fw fa-users"></i> My Teams<span className="fa arrow"></span></a>
+                                <ul className={"nav nav-second-level collapse " + (this.state.toggleTeam ? " in"  : "")}>
+                                    {teamNav}
+                                </ul>
+                            </li>
+                            <li className={this.state.toggleSeason ? "active" : "notactive"}>
+                                <a onClick={this.toggleSeason} href="#">
+                                    <i className="fa fa-fw fa-users"></i>Divisions<span className="fa arrow"></span></a>
+                                <ul className={"nav nav-second-level collapse " + (this.state.toggleSeason ? "in" : "")}>
+                                    {seasonNav}
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="charts.html"><i className="fa fa-fw fa-bar-chart-o"></i>Stats</a>
+                            </li>
                         </ul>
-                        <form className="navbar-form navbar-right">
-
-                            <input type="text" className="form-control" placeholder="Search..."/>
-                        </form>
                     </div>
+                </nav>
+                <div id="page-wrapper">
+                    {this.props.children}
                 </div>
-            </nav>
-                {this.props.children}
+
             </div>
         )
     }
 });
-/*
-<li className="dropdown">
-    <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span className="caret"></span></a>
-    <ul className="dropdown-menu">
-        <li><a href="#">Reset Password</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li role="separator" className="divider"></li>
-        <li className="dropdown-header">Nav header</li>
-        <li><a href="#">Separated link</a></li>
-        <li><a href="#">One more separated link</a></li>
-    </ul>
-</li>
-   */
 module.exports = NavApp;

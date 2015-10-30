@@ -11,6 +11,9 @@ var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 
 var SeasonLeaders = React.createClass({
     mixins: [UserContextMixin],
+    getDefaultProps: function() {
+        return {limit: 100}
+    },
     getInitialState: function() {
         return {
             update: Date.now(),
@@ -37,11 +40,15 @@ var SeasonLeaders = React.createClass({
     },
     getRows : function(data) {
         var rows = []  ;
-        var cnt=1;
+        var cnt=0;
         data.forEach(function(d) {
+            cnt++;
+            if (cnt > this.props.limit ) {
+              return;
+            }
             rows.push(
                     <tr key={d.user.id}>
-                        <td>{cnt++}</td>
+                        <td>{cnt}</td>
                         <td><UserLink user={d.user} season={this.props.params.seasonId}/></td>
                         <td><TeamLink onClick={this.props.onClick(d.team)} team={d.team}/></td>
                         <td>{d.wins}</td>
@@ -56,16 +63,15 @@ var SeasonLeaders = React.createClass({
     },
     render: function() {
         var stats = this.state.stats;
-        if (this.state.loading) {
-            return (<LoadingApp /> )
-        }
+        if (this.state.stats == length)
+            return null;
         return (
                 <div className="table-responsive">
                     <table className="table table-hover table-bordered table-condensed table-striped table-responsive">
                         <thead>
-                    <tr>
+                        <tr>
                         <th>#</th>
-                        <th>Leaders</th>
+                        <th></th>
                         <th>Team</th>
                         <th>W</th>
                         <th>L</th>
