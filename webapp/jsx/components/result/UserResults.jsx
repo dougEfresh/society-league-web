@@ -59,6 +59,7 @@ var UserResults = React.createClass({
                                stats={this.state.stats}
                                season={this.state.season}
                                results={this.state.results}
+                               onUserClick={this.props.onUserClick}
                     />
                 </div>
         );
@@ -74,7 +75,7 @@ var SeasonResults =  React.createClass({
         if (this.props.season.challenge) {
             return <ResultChallenge stats={this.props.stats} season={this.props.season} results={this.props.results} limit={this.props.limit} />
         } else if (this.props.season.nine) {
-            return <ResultNine stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />
+            return <ResultNine onUserClick={this.props.onUserClick} stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />
         } else if (this.props.season.scramble) {
             return <ResultScramble stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />;
         }
@@ -201,7 +202,8 @@ var ResultNine = React.createClass({
                 </td>
                 <td>{r.win ? 'W' : 'L'}</td>
                 <td>{r.teamMemberRacks + ' - ' + r.opponentRacks}</td>
-                <td><UserLink user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
+                <td>{Handicap.race(r.teamMemberHandicap,r.opponentHandicap)}</td>
+                <td><UserLink onClick={this.props.onUserClick(r.opponent)} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                  <td>{Handicap.formatHandicap(r.opponentHandicap)}</td>
                 <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
@@ -222,6 +224,7 @@ var ResultNine = React.createClass({
                          <th>Date</th>
                          <th>W/L</th>
                          <th>S</th>
+                         <th>Race</th>
                          <th>Op.</th>
                          <th>Op. HC</th>
                          <th>HC</th>

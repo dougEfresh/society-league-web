@@ -100,7 +100,7 @@ function getHandicap(user,seasonId) {
 var now = moment();
 function formatDateTime(dt) {
     var m = moment(dt);
-    return m.format('ddd MMM Do');
+    return m.format('MMM Do');
 }
 
 function sendSomeData(options) {

@@ -54,13 +54,16 @@ var UserLink = React.createClass({
             </a>
             )
         }
+        if (this.props.onClick) {
+            return (
+                <a href='#' onClick={this.props.onClick} >{name} </a>
+            );
+        }
         return (
-            <a href='#/app/display/' >{name} </a>
+            <a  href='#/app/display/' >{name} </a>
         );
         /*
-        return (
-         <a href='#' onClick={this.props.onClick} >{name} </a>
-        );
+
         */
     }
 });

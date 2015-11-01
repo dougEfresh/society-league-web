@@ -123,7 +123,7 @@ var raceChart = {
     'DPLUS': '1/7',
     'C': '0/7',
     'CPLUS': '0/7',
-    'B': '0/7',
+    'B': '2/7',
     'BPLUS': '0/7',
     'A': '0/7',
     'A+': '0/7',
@@ -185,7 +185,14 @@ var raceChart = {
 };
 
 var race = function(hc1,hc2) {
-    return raceChart[hc1][hc2];
+    var r = raceChart[hc1][hc2];
+    if (r == undefined || r == null)
+        return "";
+
+    if (r.indexOf('0/') == 0)
+     return 'E';
+
+    return r;
 };
 
 

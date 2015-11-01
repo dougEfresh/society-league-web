@@ -254,15 +254,15 @@ var HomeApp = React.createClass({
                         </div>
                     </div>
                 </div>
-
+                <div className="row">
+                    {seasonLeaders}
+                </div>
        </div>
         );
     }
 });
 
-/* <div className="row">
- {seasonLeaders}
- </div>
+/*
   <div id="home-app" className="container ss-home-app">
                 <h4>Upcoming Matches</h4>
  <div className="row">

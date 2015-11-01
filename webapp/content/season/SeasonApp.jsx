@@ -1,134 +1,132 @@
 var React = require('react/addons');
 var Router = require('react-router')
-    , History = Router.History
-    , Route = Router.Route
+    , RouteHandler = Router.RouteHandler
     , Link = Router.Link;
-
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
+var UserLink = require('../../../webapp/jsx/components/links/UserLink.jsx');
+var TeamLink = require('../../../webapp/jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
+var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
+var UserResults = require('../../jsx/components/result/UserResults.jsx');
+var Handicap = require('../../lib/Handicap');
+var SeasonLeaders = require('./SeasonLeaders.jsx');
 
 var SeasonApp = React.createClass({
-    mixins: [UserContextMixin,History],
-    getInitialState: function () {
+    mixins: [UserContextMixin],
+    getDefaultProps: function() {
+        return {limit: 100}
+    },
+    getInitialState: function() {
         return {
-            update: Date.now(),
-            seasons: []
+            season: null,
+            selectedUser: null,
+            toggleLeaders: true
         }
     },
-    componentWillMount: function () {
+    getSeasonData: function(seasonId) {
+        var cb = function (d) {
+                this.setState({season: d});
+            }.bind(this);
+            Util.getSomeData({
+                url: '/api/season/' + seasonId,
+                callback: cb,
+                module: 'SeasonApp',
+                router: this.props.history
+            })
     },
-    componentWillUnmount: function () {
+    getUserData: function(userId) {
+        if (userId)
+          Util.getSomeData({
+                url: '/api/stat/user/' + userId +'/' + this.props.params.seasonId,
+                callback: function(d) {this.setState({selectedUser : d})}.bind(this),
+                module: 'SeasonApp',
+                router: this.props.history
+          })
     },
     componentDidMount: function () {
-        this.getData();
+        this.getSeasonData(this.props.params.seasonId);
+        this.getUserData(this.props.params.userId);
     },
-    componentWillReceiveProps: function() {
-        var now = Date.now();
-        if (now - this.state.update > 1000*60) {
-            this.getData();
+    componentWillReceiveProps: function(n) {
+        if (n.params.seasonId != this.props.params.seasonId) {
+            this.getSeasonData(n.params.seasonId);
+        }
+        if (n.params.userId != undefined && n.params.userId != this.props.params.userId) {
+            this.getUserData(n.params.userId);
+        }
+        if (n.params.userId == undefined) {
+            this.setState({selectedUser: null, toggleLeaders: true});
         }
     },
-    getData: function() {
-        Util.getSomeData(
-            {url: '/api/season/active',
-                callback: function(d) {this.setState({seasons: d}); }.bind(this),
-                module: 'SeasonApp',
-                router: this.props.router
-            });
-    },
-    onChange: function (e) {
+    toggleHeading: function(e) {
         e.preventDefault();
-        if (this.props.location.pathname.indexOf('/standings') >=0 ) {
-            this.history.pushState(null,'/app/season/' + e.target.value +'/standings');
-            return;
-        }
-
-        if (this.props.location.pathname.indexOf('/leaders') >=0 ) {
-            this.history.pushState(null,'/app/season/' +  e.target.value +'/leaders');
-            return;
-        }
-
-        if (this.props.location.pathname.indexOf('/results') >=0 )  {
-            this.history.pushState(null,'/app/season/' +  e.target.value +'/results');
-            return;
-        }
-        this.history.pushState(null,'/app/season/' +  e.target.value +'/results');
+        this.setState({toggleLeaders: !this.state.toggleLeaders});
+    },
+    changeUser: function(u) {
+        return function(e){
+            e.preventDefault();
+            this.state.toggleLeaders = false;
+            this.props.history.pushState(null,'/app/season/' + this.props.params.seasonId + '/leaders/' + u.id)
+        }.bind(this)
     },
     render: function() {
-        if (this.state.seasons.length == 0)
+        if (this.state.season == null) {
             return null;
-
-        var display = 'inline';
-        var seasons = [];
-        var season = {};
-        if (this.getUser().admin) {
-            seasons = this.state.seasons;
-             this.state.seasons.forEach(function (s) {
-                 if (s.id == this.props.params.seasonId) {
-                    season = s;
-                }
-             }.bind(this));
-        } else {
-            this.state.seasons.forEach(function (s) {
-                this.getUser().handicapSeasons.forEach(function(hs){
-                    if (s.id == hs.season.id) {
-                        seasons.push(s);
-                    }
-                }.bind(this));
-                if (s.id == this.props.params.seasonId) {
-                    season = s;
-                }
-            }.bind(this))
         }
-
-        var leaders =
-            (<Link to={'/app/season/' + this.props.params.seasonId + '/leaders' }>
-            <button className={this.props.location.pathname.indexOf('leaders') >0 ? 'btn btn-success' : 'btn btn-default'} >
-                <span className="fa  fa-list-ol"></span><span className="main-item">Leaders</span>
-            </button>
-        </Link>);
-
-        if (season.division != undefined && season.division.indexOf('CHALLENGE')>=0) {
-            leaders = null;
-        }
-
-        var header = (
-                <div className="btn-group bot-margin">
-                    <div id={display == 'none' ? 'season-standings-link-hidden' : 'season-standings-link'}
-                         style={{display:display}}>
-                        <Link to={'/app/season/' + this.props.params.seasonId + '/standings' }>
-                            <button className={this.props.location.pathname.indexOf('standings') > 0 ? 'btn btn-success' : 'btn btn-default'}>
-                            <span className="fa fa-trophy"></span><span className="main-item">Standings</span>
-                            </button>
-                        </Link>
-                    </div>
-                    <Link to={'/app/season/' + this.props.params.seasonId+ '/results' }>
-                        <button className={this.props.location.pathname.indexOf('/results') > 0 ? 'btn btn-success' : 'btn btn-default'} >
-                            <span className="fa  fa-history"></span><span className="main-item">Matches</span>
-                        </button>
-                    </Link>
-                    {leaders}
-                </div>
-        );
-
-        var options = [];
-        seasons = seasons.sort(function(a,b){
-            return b.startDate.localeCompare(a.startDate);
-        });
-        seasons.forEach(function(s) {
-            options.push(<option key={s.id} value={s.id}>{s.displayName}</option>);
-        });
-        if (this.props.params.seasonId == undefined) {
-            setTimeout(function(){
-                this.history.pushState(null,'/app/season/' +  seasons[0].id + '/standings');
-            }.bind(this),250);
-            return null;
+        var userHeader = null;
+        if (this.state.selectedUser != null) {
+            userHeader = this.state.selectedUser.user.firstName + "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
         }
         return (
-            <h3>leaders</h3>
+            <div id="season-leaders">
+                <div className="row">
+                <div className="col-xs-12 col-md-6">
+                    <div className="panel panel-default panel-leaders">
+                        <a onClick={this.toggleHeading} href='#'>
+                            <div className="panel-heading" role="tab" id="headingOne">
+                                <div className="row panel-title">
+                                    <div className="col-xs-11 col-md-11">
+                                        {this.state.season.shortName  +' Leaders'}
+                                    </div>
+                                    <div className="col-xs-1 col-md-1">
+                                        <span className={"fa fa-caret-" + (this.state.toggleLeaders ? "down" : "left")}></span>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                                <div className={"panel-body" + (this.state.toggleLeaders ? "" : " hide")} >
+                                    <SeasonLeaders onUserClick={this.changeUser} params={this.props.params}/>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            <div className="row">
+                <div className="col-xs-12 col-md-6">
+                    <div className={"panel panel-default panel-results" + (this.state.selectedUser != null ? "" : " hide")} >
+                        <a onClick={this.toggleHeading} href='#'>
+                            <div className="panel-heading" role="tab" id="headingOne">
+                                <div className="row panel-title">
+                                    <div className="col-xs-11 col-md-11">
+                                        {userHeader}
+                                    </div>
+                                    <div className="col-xs-1 col-md-1">
+                                        <span className={"fa fa-caret-" + (this.state.selectedUser != null ? "down" : "left")}></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <div className="panel-body">
+                            <UserResults onUserClick={this.changeUser} user={this.state.selectedUser != null ? this.state.selectedUser.user : null} season={this.state.season} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
         );
     }
 });
 
 module.exports = SeasonApp;
+
+
 
