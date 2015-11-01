@@ -98,14 +98,10 @@ var SeasonLeaders = React.createClass({
         if (this.state.stats.length == 0) {
              return null;
         }
-        var userHeader = null;
-        if (this.state.selectedUser != null) {
-            userHeader = this.state.selectedUser.user.firstName + "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
-        }
-        return (
 
+        return (
             <div className="table-responsive">
-                <table className="table table-hover table-bordered table-condensed table-striped table-responsive">
+                <table className="table table-bordered table-condensed table-striped table-responsive">
                     <thead>
                     <tr>
                         <th>#</th>

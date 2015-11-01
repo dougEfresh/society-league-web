@@ -1,14 +1,15 @@
 table > tbody > tr.active, .table-striped > tbody > tr.active {
-    background-color: darkred;
+    /*background-color: darkred;*/
 }
 .table>tbody>tr.active>td, .table>tbody>tr.active>td >a ,.table>tbody>tr.active:hover {
-    background-color: darkred;
+    /*background-color: darkred;
     color: whitesmoke;
+    */
 }
 
 .table {
     margin-bottom: 0px;
 }
 .table-hover>tbody>tr:hover {
-    background-color: #C4CCCE
+    /*background-color: #C4CCCE*/
 }

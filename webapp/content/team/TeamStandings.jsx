@@ -97,7 +97,7 @@ var TeamStandings = React.createClass({
         }.bind(this));
         return (
             <div className="table-responsive">
-                <table className="table table-hover table-bordered table-condensed table-striped table-grid table-responsive" >
+                <table className="table table-bordered table-condensed table-striped table-grid table-responsive" >
                 <thead>
                 {this.getHeader()}
                 <tbody>

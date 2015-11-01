@@ -35,7 +35,36 @@ var DisplayApp = React.createClass({
          }
      },
     componentDidMount: function () {
-         this.getData();
+        if (this.props.params.seasonId) {
+            this.getSeasonData(this.props.params.seasonId);
+        }
+
+        if (this.props.params.teamId) {
+            this.getTeamData(this.props.params.teamId);
+        }
+
+        if (this.props.params.userId) {
+            this.getUserData(this.props.params.userId);
+        }
+    },
+    getSeasonData: function(seasonId) {
+        Util.getSomeData({
+            url: '/api/season/' + seasonId,
+            callback: function(d) {this.setState({activeSeason: d})}.bind(this)
+        });
+    },
+    getTeamData: function(teamId) {
+        Util.getSomeData({
+            url: '/api/team/' + teamId,
+            callback: function(d) {this.setState({activeTeam: d})}.bind(this)
+        });
+    },
+    getUserData: function(userId) {
+         if (userId)
+             Util.getSomeData({
+                 url: '/api/user/' + userId,
+                 callback: function(d) {this.setState({activeUser: d})}.bind(this)
+             });
     },
     getData: function() {
         var userCb = function(d) {
@@ -80,27 +109,16 @@ var DisplayApp = React.createClass({
         );
     },
     componentWillReceiveProps: function (n) {
-        var team = this.state.activeTeam;
-        var season = this.state.activeSeason;
-        var user = this.state.activeUser;
-        this.state.teams.forEach(function(t){
-            if (n.params.teamId != undefined && n.params.teamId == t.id){
-                team = t;
-            }
-            if (n.params.seasonId != undefined && n.params.seasonId == t.season.id){
-                season = t.season;
-            }
-        });
-        if (n.params.userId != undefined) {
-            this.state.users.forEach(function (u) {
-                if (u.id == n.params.userId) {
-                    user = u;
-                }
-            });
-        } else {
-            user = null;
+        if (n.params.seasonId != this.props.params.seasonId) {
+            this.getSeasonData(n.params.seasonId);
         }
-        this.setState({activeTeam: team , activeSeason: season, activeUser: user});
+
+        if (this.props.params.teamId != n.params.teamId) {
+            this.getTeamData(n.params.teamId);
+        }
+        if (this.props.params.userId != n.params.userId) {
+            this.getUserData(n.params.userId);
+        }
     },
     changeTeam: function(t) {
         return function(e) {
@@ -125,8 +143,14 @@ var DisplayApp = React.createClass({
                 this.state.toggleTeam = false;
                 this.state.toggleUser = true;
             }
-            this.props.history.pushState(null,'/app/display/' + this.state.activeSeason.id + '/' + this.state.activeTeam.id + '/' + u.id);
-            console.log('Setting user to ' + u.name);
+            Util.getSomeData({
+                url: '/api/team/user/' + u.id + '/' + this.props.params.seasonId,
+                callback: function(d) {
+                    console.log('Going to use ' + d.name + ' for ' + u.name);
+                    this.props.history.pushState(null,'/app/display/' + this.props.params.seasonId + '/' + d.id + '/' + u.id)
+                }.bind(this),
+                module: 'ChangeUser'
+            });
         }.bind(this);
     },
     toggleUser: function(e) {
@@ -146,60 +170,61 @@ var DisplayApp = React.createClass({
                 <div id="team-app">
                     <div className="row">
                         <div className="col-xs-12 col-md-6">
-                            <div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                <div className="panel panel-default panel-team">
-                                    <div className="panel-heading" role="tab" id="headingOne">
-                                        <h4 className="panel-title panel-standings">
-                                                Standings
-                                            <a href="#" onClick={this.toggleSeason} >
-                                                <span className={"fa arrow" + (this.state.toggleSeason ? " active" : "")}></span>
-                                            </a>
-                                        </h4>
-
-                                    </div>
-                                    <div id="collapseOne" className={"panel-collapse " + (this.state.toggleSeason ? "show" : "collapse") } role="tabpanel" aria-labelledby="headingOne">
-                                        <div className="panel-body">
-                                            <SeasonStandings onClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} season={this.state.activeSeason} />
+                            <div className="panel panel-default panel-standings">
+                                <a onClick={this.toggleSeason} href="#">
+                                <div className="panel-heading">
+                                    <div className="row panel-title">
+                                        <div className="col-xs-11 col-md-11">
+                                            Standings
+                                        </div>
+                                        <div className="col-xs-1 col-md-1">
+                                            <span className={"fa fa-caret-" + (this.state.toggleSeason ? "down" : "left")}></span>
                                         </div>
                                     </div>
+                                </div>
+                                </a>
+                                <div className="panel-body">
+                                    <SeasonStandings onClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} season={this.state.activeSeason} />
                                 </div>
                             </div>
                         </div>
                         <div className="col-xs-12 col-md-6">
-                            <div  className={"panel panel-default panel-results " + (this.state.activeTeam == null ? "hide" : "")}>
-                                <div className="panel-heading" role="tab" id="headingTwo">
-                                    <h4 className="panel-title panel-members">
-                                        {this.state.activeTeam == null ? "Choose a team" : this.state.activeTeam.name}
-                                        <a href="#" onClick={this.toggleTeam} >
-                                            <span className={"fa arrow" + (this.state.toggleTeam ? " active" : "")}></span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div gid="collapseTwo" className={"panel-collapse " + (this.state.toggleTeam  ? "show" : "collapse") } role="tabpanel" aria-labelledby="headingTwo">
-                                    <div className="panel-body">
-                                        <TeamStandings onClick={this.changeUser} activeUser={this.state.activeUser} noteam={true} team={this.state.activeTeam} />
+                            <div className={"panel panel-default panel-members " + (this.state.activeTeam == null ? "hide" : "")}>
+                                <a onClick={this.toggleTeam} href="#">
+                                    <div className="panel-heading">
+                                        <div className="row panel-title">
+                                            <div className="col-xs-11 col-md-11">
+                                                {this.state.activeTeam == null ? "Choose a team" : this.state.activeTeam.name}
+                                            </div>
+                                            <div className="col-xs-1 col-md-1">
+                                                <span className={"fa fa-caret-" + (this.state.toggleSeason ? "down" : "left")}></span>
+                                            </div>
+                                        </div>
                                     </div>
-
+                                </a>
+                                <div className="panel-body">
+                                    <TeamStandings onClick={this.changeUser} activeUser={this.state.activeUser} noteam={true} team={this.state.activeTeam} />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="row" >
                         <div className="col-xs-12 col-md-6">
-                            <div className={"panel panel-default panel-results " + (this.state.activeUser == null ? "hide" : "")}>
-                                <div className="panel-heading" role="tab" id="headingThree">
-                                    <h4 className="panel-title panel-user">
-                                            {this.state.activeUser == null  ? "Select a user" : 'Results for: ' + this.state.activeUser.firstName}
-                                        <a href="#" onClick={this.toggleUser} >
-                                            <span className={"fa arrow" + (this.state.toggleUser ? " active" : "")}></span>
-                                        </a>
-                                    </h4>
-
-                                </div>
-                                <div id="collapseThree" className={"panel-collapse " + (this.state.toggleUser ? "show" : "collapse") } role="tabpanel" aria-labelledby="headingThree">
-                                    <div className="panel-body">
-                                        <UserResults user={this.state.activeUser} season={this.state.activeSeason} />
+                            <div className={"panel panel-default panel-user-results " + (this.state.activeUser == null ? "hide" : "")}>
+                                <a href="#" onClick={this.toggleUser} >
+                                <div className="panel-heading" >
+                                    <div className="row panel-title">
+                                        <div className="col-xs-11 col-md-11">
+                                            {this.state.activeUser == null  ? "Select a user" : this.state.activeUser.firstName}
+                                        </div>
+                                        <div className="col-xs-1 col-md-1">
+                                            <span className={"fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
+                                        </div>
                                     </div>
+                                </div>
+                                </a>
+                                <div className="panel-body">
+                                        <UserResults onUserClick={this.changeUser} user={this.state.activeUser} season={this.state.activeSeason} />
                                 </div>
                             </div>
                         </div>
