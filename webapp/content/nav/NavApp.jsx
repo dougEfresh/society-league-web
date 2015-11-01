@@ -145,45 +145,13 @@ var NavApp = React.createClass({
         if (this.getUser().id == "0") {
             return null;
         }
-        var homeCls = this.props.location.pathname.indexOf("/app/home") > 0 ? "active" : "not-active";
-        var teamCls = this.props.location.pathname.indexOf("/app/display") > 0 ? "active" : "not-active";
-
-        var topGunNav = null;
-        var teamNav =  [];
-        this.state.teams.forEach(function(t) {
-            if (t.challenge)
-                return;
-            var s = t.season;
-            var standingsClass = this.props.location.pathname.indexOf('display/') > 0 ? 'selected ' : "not-selected";
-            var scheduleClass = this.props.location.pathname.indexOf('schedule/') > 0 ? 'selected ' : "not-selected";
-            var leaderClass = this.props.location.pathname.indexOf('leader') > 0 ? 'selected ' : "not-selected";
-            var toggle = t.toggle == undefined ? this.props.params.seasonId == t.season.id : t.toggle;
-            teamNav.push(
-                <li className={toggle ? "active dropdown" : "dropdown"} key={s.id}>
-                    <a onClick={this.changeTeam(t)} href="#">{t.name}<span className="fa arrow"></span></a>
-                    <ul className={"nav nav-third-level collapse" + (toggle ? " selected in" : "")} aria-expanded="true">
-                    <li className={standingsClass}>
-                        <a onClick={this.goToStandings(t)} href="#">Standings</a>
-                    </li>
-                    <li className={scheduleClass}>
-                        <a onClick={this.goToSchedule(s)} href="#">Schedule</a>
-                    </li>
-                    <li className={leaderClass} >
-                        <a onClick={this.goToLeader(s)} href="#">Division Leaders</a>
-                    </li>
-                    </ul>
-                </li>
-            );
-        }.bind(this));
-
         var profilePic = <i className="fa fa-user profile"></i>;
         if (this.getUser().profile) {
             profilePic = <img className="profile" src={this.getUser().userProfile.imageUrl + '?width=20&height=20'}> </img>
         }
-
         return (
             <div id="wrapper">
-                <nav className="navbar navbar-inverse navbar-static-top" role="navigation" style={{marginBottom: 0}}>
+                <nav className="navbar navbar-inverse navbar-static-top" style={{marginBottom: 0}}>
                     <div className="navbar-header">
                         <button type="button" className="navbar-toggle" onClick={this.sideOpenClose}>
                             <span className="sr-only">Toggle navigation</span>
@@ -213,21 +181,9 @@ var NavApp = React.createClass({
                             </ul>
                         </li>
                     </ul>
-                    <div className={"navbar-default sidebar-nav navbar-collapse sidebar " + (this.state.toggleSide  ? " in " : " collapse") } role="navigation">
+                    <div className={"navbar-default sidebar-nav navbar-collapse sidebar " + (this.state.toggleSide  ? " in " : " collapse") }>
                         <ul className="nav" id="side-menu">
-                            <li className="sidebar-search">
-                                <div className="input-group custom-search-form">
-                                    <input type="text" className="form-control" placeholder="Search..."/>
-                                    <span className="input-group-btn">
-                                        <button className="btn btn-default" type="button">
-                                            <i className="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </li>
-                            <li className={homeCls}>
-                                <a onClick={this.goHome}  href="#"><i className="fa fa-fw fa-home"></i>Home</a>
-                            </li>
+                            <HomeNav    params={this.props.params} history={this.props.history} location={this.props.location} />
                             <TeamNav    params={this.props.params} history={this.props.history} />
                             <TopGunNav  params={this.props.params} history={this.props.history} />
                         </ul>
@@ -241,4 +197,16 @@ var NavApp = React.createClass({
     }
 });
 //   <StatNav />
+/* <li className="sidebar-search">
+                                <div className="input-group custom-search-form">
+                                    <input type="text" className="form-control" placeholder="Search..."/>
+                                    <span className="input-group-btn">
+                                        <button className="btn btn-default" type="button">
+                                            <i className="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </li>h
+
+ */
 module.exports = NavApp;

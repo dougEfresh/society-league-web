@@ -52,3 +52,7 @@
     padding-right: 0px;
     margin-right: 0px;
 }
+
+.panel-closed {
+    background-color: #CDA3A3;
+}

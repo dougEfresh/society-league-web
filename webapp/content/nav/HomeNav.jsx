@@ -9,33 +9,11 @@ var HomeNav = React.createClass({
         location: React.PropTypes.object
     },
     render: function() {
-        var active=null;
-        if (this.context.location.pathname.indexOf('app/home') >= 0) {
-            active="active";
-        }
+        var homeCls = this.props.location.pathname.indexOf("/app/home") > 0 ? "active" : "not-active";
         return (
-            <li id="home-nav" role="presentation" className={'dropdown ' + active}>
-               <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                   <span className="glyphicon glyphicon-home"></span>
-                   <span className="main-item">{' ' + this.getUser().name} </span>
-                   <span className="caret"></span>
-               </a>
-                <ul className="dropdown-menu" role="menu">
-                    <li className="teamNavLink" role="presentation">
-                        <Link className='navName' to='/app/home'>
-                            <span className="glyphicon glyphicon-home"></span>Home
-                        </Link>
-                    </li>
-
-                    <li className="teamNavLink" role="presentation">
-                        <Link to='reset' query={{changePassword: true}}>
-                            <span className="glyphicon glyphicon-copyright-mark"></span>Change Password</Link>
-                    </li>
-                    <li className="teamNavLink" role="presentation">
-                        <Link to='/logout'>Log out</Link>
-                    </li>
-                </ul>
-            </li>
+              <li className={homeCls}>
+                  <a onClick={this.goHome}  href="#"><i className="fa fa-fw fa-home"></i>Home</a>
+              </li>
         );
     }
 });

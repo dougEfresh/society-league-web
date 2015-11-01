@@ -63,3 +63,7 @@ li.selected > a {
 ul.selected, ul.selected > li > a {
     color: whitesmoke;
 }
+
+.side-caret {
+    float: right;
+}

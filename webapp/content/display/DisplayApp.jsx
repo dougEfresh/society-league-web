@@ -172,7 +172,7 @@ var DisplayApp = React.createClass({
                         <div className="col-xs-12 col-md-6">
                             <div className="panel panel-default panel-standings">
                                 <a onClick={this.toggleSeason} href="#">
-                                <div className="panel-heading">
+                                    <div className={"panel-heading" + (this.state.toggleSeason ? "" : " panel-closed")}>
                                     <div className="row panel-title">
                                         <div className="col-xs-10 col-md-11 p-title">
                                             Standings
@@ -183,7 +183,7 @@ var DisplayApp = React.createClass({
                                     </div>
                                 </div>
                                 </a>
-                                <div className="panel-body">
+                                <div className={"panel-body" + (this.state.toggleSeason ? "" : " hide")}>
                                     <SeasonStandings onClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} season={this.state.activeSeason} />
                                 </div>
                             </div>
@@ -191,18 +191,18 @@ var DisplayApp = React.createClass({
                         <div className="col-xs-12 col-md-6">
                             <div className={"panel panel-default panel-members " + (this.state.activeTeam == null ? "hide" : "")}>
                                 <a onClick={this.toggleTeam} href="#">
-                                    <div className="panel-heading">
+                                    <div className={"panel-heading" + (this.state.toggleTeam ? "" : " panel-closed")}>
                                         <div className="row panel-title">
                                             <div className="col-xs-10 col-md-11 p-title">
                                                 {this.state.activeTeam == null ? "Choose a team" : this.state.activeTeam.name}
                                             </div>
                                             <div className="col-xs-2 col-md-1 caret-title ">
-                                                <span className={"fa fa-caret-" + (this.state.toggleSeason ? "down" : "left")}></span>
+                                                <span className={"fa fa-caret-" + (this.state.toggleTeam ? "down" : "left")}></span>
                                             </div>
                                         </div>
                                     </div>
                                 </a>
-                                <div className="panel-body">
+                                <div className={"panel-body" + (this.state.toggleTeam ? "" : " hide")}>
                                     <TeamStandings onClick={this.changeUser} activeUser={this.state.activeUser} noteam={true} team={this.state.activeTeam} />
                                 </div>
                             </div>
@@ -212,7 +212,8 @@ var DisplayApp = React.createClass({
                         <div className="col-xs-12 col-md-6">
                             <div className={"panel panel-default panel-user-results " + (this.state.activeUser == null ? "hide" : "")}>
                                 <a href="#" onClick={this.toggleUser} >
-                                <div className="panel-heading" >
+                                    <div className={"panel-heading" + (this.state.toggleUser ? "" : " panel-closed")}>
+
                                     <div className="row panel-title">
                                         <div className="col-xs-10 col-md-11 p-title">
                                             {this.state.activeUser == null  ? "Select a user" : this.state.activeUser.firstName}

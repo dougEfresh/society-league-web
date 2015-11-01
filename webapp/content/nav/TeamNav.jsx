@@ -79,7 +79,10 @@ var TeamNav = React.createClass({
             var toggle = t.toggle == undefined ? this.props.params.seasonId == t.season.id : t.toggle;
             teamNav.push(
                 <li className={toggle ? "active dropdown" : "dropdown"} key={s.id}>
-                    <a onClick={this.goToTeam(t)} href="#">{t.name}<span className="fa arrow"></span></a>
+                    <a onClick={this.goToTeam(t)} href="#">
+                        {t.name}
+                        <span className={"fa fa-caret-" + (toggle ? "down side-caret" : "left side-caret")}></span>
+                    </a>
                     <ul className={"nav nav-third-level collapse" + (toggle ? " selected in" : "")} aria-expanded="true">
                     <li className={standingsClass}>
                         <a onClick={this.goToStandings(t)} href="#">Standings</a>
@@ -97,7 +100,10 @@ var TeamNav = React.createClass({
 
         return(
             <li className={this.state.toggleTeam ? "selected dropdown " + teamCls : teamCls + " dropdown"}>
-                <a onClick={this.toggleTeam} href="#"><i className="fa fa-fw fa-users"></i>My Teams<span className="fa arrow"></span></a>
+                <a onClick={this.toggleTeam} href="#">
+                    <i className="fa fa-fw fa-users"></i>My Teams
+                    <span className={"fa fa-caret-" + (this.state.toggleTeam ? "down side-caret" : "left side-caret")} ></span>
+                </a>
                 <ul className={"nav nav-second-level collapse " + (this.state.toggleTeam ? " selected in"  : "")}>
                     {teamNav}
                 </ul>
