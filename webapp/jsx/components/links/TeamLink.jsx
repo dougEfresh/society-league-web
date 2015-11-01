@@ -27,11 +27,14 @@ var TeamLink = React.createClass({
             return <UserLink user={this.props.team.challengeUser} season={this.props.team.season.id} />;
         }
 
+        if (this.props.onClick)
         return (
             <a onClick={this.props.onClick} className="teamLink" href='#'>
                 {this.props.team.name}
             </a>
         );
+
+        return (<a href={'#/app/display/' + this.props.team.season.id + '/' + this.props.team.id}>{this.props.team.name}</a>);
     }
 });
 

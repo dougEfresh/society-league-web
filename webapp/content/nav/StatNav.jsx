@@ -11,16 +11,23 @@ var StatNav = React.createClass({
     },
     render: function() {
         var active = "";
-        if (this.context.location.pathname.indexOf("stat") >=0) {
+        if (this.context.location.pathname.indexOf("stat") >=0 ) {
             active = "active";
         }
         return (
-            <li id="stat-nav" className={"main-item dropdown " + active} >
-                <Link className='scoutNav' to={'/app/scout/' + this.getUser().id +'/stats'}>
-                    <span className="fa fa-bar-chart"/>
-                    <span className="main-item">Stats</span>&nbsp;
-                </Link>
-            </li>
+        <li className="hide selected">
+            <a  href="#"><i className="fa fa-fw fa-bar-chart-o"></i>Stats
+                <span className="fa arrow"></span>
+            </a>
+            <ul className={"nav nav-second-level collapse"}>
+                <li>
+                    <a href="#">Current</a>
+                </li>
+                <li>
+                    <a href="#">Historic</a>
+                </li>
+            </ul>
+        </li>
         );
     }
 });

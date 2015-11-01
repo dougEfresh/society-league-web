@@ -13,63 +13,95 @@ var TeamNav = React.createClass({
     },
     getInitialState: function () {
         return {
-            update: Date.now(),
-            data: []
+            toggleTeam: false,
+            teams: []
         }
-    },
-    componentWillMount: function () {
-    },
-    componentWillUnmount: function () {
     },
     componentDidMount: function () {
         this.getData();
     },
     getData: function() {
-        Util.getSomeData({url: '/api/team/get/' + this.getUser().id + '/current',
-            callback: function(d){
-            this.setState({data: d, update: Date.now()});
-            }.bind(this),
-                module: 'TeamNav',
-                router: this.props.router}
-        );
+        Util.getSomeData({
+            url: '/api/team/get/user',
+            callback: function(d){ d.forEach(function(t) {t.active=true} ); this.setState({teams: d})}.bind(this),
+            module: 'NavApp',
+            router: this.props.history
+        });
     },
     componentWillReceiveProps: function(nextProps) {
-        var now = Date.now();
-        if (now - this.state.update > 1000*60*2)
-            this.getData();
+        //this.getData();
+    },
+    toggleTeam: function(e){
+        e.preventDefault();
+        this.setState({toggleTeam: !this.state.toggleTeam});
+    },
+    goToSchedule: function(s){
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/schedule/' + s.id);
+        }.bind(this)
+    },
+    goToLeader: function(s){
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/season/' + s.id + '/leaders');
+        }.bind(this)
+    },
+    goToStandings: function(t) {
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
+        }.bind(this)
+    },
+    goToTeam: function(t) {
+        return function(e) {
+            e.preventDefault();
+            t.toggle = t.toggle == undefined ? true : !t.toggle;
+            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
+        }.bind(this);
     },
     render: function() {
-        var teams = [];
-        var user = this.getUser();
-        this.state.data.forEach(function(t) {
-            if (t.challenge) {
+        var teamNav =  [];
+        if (this.state.teams.length == 0) {
+        //    return null;
+        }
+        var teamCls = this.context.location.pathname.indexOf("/app/display") > 0 ? "active" : "not-active";
+        this.state.teams.forEach(function(t) {
+            if (t.challenge)
                 return;
-            }
-            teams.push(
-                <li key={t.name} className="teamNavLink" role="presentation">
-                    <Link to={'/app/team/' + t.id + '/standings'} >{t.name}</Link>
+            var s = t.season;
+            var standingsClass = this.context.location.pathname.indexOf('display/') > 0 ? 'selected ' : "not-selected";
+            var scheduleClass = this.context.location.pathname.indexOf('schedule/') > 0 ? 'selected ' : "not-selected";
+            var leaderClass = this.context.location.pathname.indexOf('leader') > 0 ? 'selected ' : "not-selected";
+            var toggle = t.toggle == undefined ? this.props.params.seasonId == t.season.id : t.toggle;
+            teamNav.push(
+                <li className={toggle ? "active dropdown" : "dropdown"} key={s.id}>
+                    <a onClick={this.goToTeam(t)} href="#">{t.name}<span className="fa arrow"></span></a>
+                    <ul className={"nav nav-third-level collapse" + (toggle ? " selected in" : "")} aria-expanded="true">
+                    <li className={standingsClass}>
+                        <a onClick={this.goToStandings(t)} href="#">Standings</a>
+                    </li>
+                    <li className={scheduleClass}>
+                        <a onClick={this.goToSchedule(s)} href="#">Schedule</a>
+                    </li>
+                    <li className={leaderClass} >
+                        <a onClick={this.goToLeader(s)} href="#">Division Leaders</a>
+                    </li>
+                    </ul>
                 </li>
             );
         }.bind(this));
 
-        var clName = "dropdown";
-        if (this.context.location.pathname.indexOf('app/team/') >= 0) {
-            clName =  clName + " active";
-        }
-        if (teams.length == 0) {
-            return null;
-        }
-        return (
-              <li id="team-nav" role="presentation" className={clName} >
-                  <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                      <i className="fa fa-users"></i>&nbsp;
-                      <span className="main-item">Teams</span>&nbsp;
-                      <span className="caret"></span>
-                  </a>
-                  <ul className="dropdown-menu" role="menu">
-                      {teams}
-                  </ul>
-              </li>
+        return(
+            <li className={this.state.toggleTeam ? "selected dropdown " + teamCls : teamCls + " dropdown"}>
+                <a onClick={this.toggleTeam} href="#"><i className="fa fa-fw fa-users"></i>My Teams<span className="fa arrow"></span></a>
+                <ul className={"nav nav-second-level collapse " + (this.state.toggleTeam ? " selected in"  : "")}>
+                    {teamNav}
+                </ul>
+            </li>
         );
 
     }

@@ -32,7 +32,7 @@ var UserLink = React.createClass({
             }.bind(this));
         }
         if (hc.length > 0) {
-            name += ' (' + Handicap.formatHandicap(hc)+ ')';
+            //name += ' (' + Handicap.formatHandicap(hc)+ ')';
         }
         var user = this.props.user;
 
@@ -55,8 +55,13 @@ var UserLink = React.createClass({
             )
         }
         return (
-             <a href='#' onClick={this.props.onClick} >{name} </a>
+            <a href='#/app/display/' >{name} </a>
         );
+        /*
+        return (
+         <a href='#' onClick={this.props.onClick} >{name} </a>
+        );
+        */
     }
 });
 
