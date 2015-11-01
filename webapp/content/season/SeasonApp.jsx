@@ -125,22 +125,7 @@ var SeasonApp = React.createClass({
             return null;
         }
         return (
-            <div>
-                <div id={'season-app'} className="panel panel-default">
-                    <div className="panel-heading">
-                        <select
-                            ref='season'
-                            onChange={this.onChange}
-                            className="form-control"
-                            value={this.props.params.seasonId}
-                            type={'select'}>
-                        {options}
-                    </select>
-                    {header}
-                </div>
-            </div>
-                {this.props.children}
-            </div>
+            <h3>leaders</h3>
         );
     }
 });

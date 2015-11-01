@@ -20,12 +20,9 @@ var ChallengeApp = React.createClass({
              slots: [],
              dates: [],
              challengers: [],
-             refresh : false
+             refresh : false,
+             challenges: []
         }
-    },
-    componentWillMount: function() {
-    },
-    componentWillUnmount: function() {
     },
     componentDidMount: function() {
         var dateFunc = function(d){
@@ -53,7 +50,13 @@ var ChallengeApp = React.createClass({
                 router: this.props.history
             }
         );
-
+         Util.getSomeData({
+                url: '/api/challenge/user/' + this.getUser().id,
+                callback: function(d) {this.setState({challenges: d})}.bind(this),
+                module: 'ChallengeApp',
+                router: this.props.history
+            }
+        );
     },
     challenge: function(e) {
         e.preventDefault();
@@ -126,7 +129,7 @@ var ChallengeApp = React.createClass({
         return (
             <div>
                 <div className="panel panel-primary">
-                <div className="panel-heading" >  <span className={"glyphicon glyphicon-plus"}></span>New Request</div>
+                <div className="panel-heading" > <span className={"glyphicon glyphicon-plus"}></span>New Request</div>
                 <div className="panel-body" >
                     <div className="page-elements">
                         <form id="request-app"  >
@@ -143,16 +146,14 @@ var ChallengeApp = React.createClass({
                 </div>
 
                 </div>
-                <UpcomingChallenges refresh={refresh}/>
-                <div>
-                    <h3>Leaders </h3>
-                    <SeasonStandings params={{seasonId: season.id}} />
-                </div>
+                <UpcomingChallenges data={this.state.challenges} refresh={refresh}/>
+                <SeasonStandings onClick={function(){}} season={season} />
             </div>
+
         );
     }
 });
-
+//
 var ChallengeRequestDate = React.createClass({
     getOptions: function(){
         var dates =  this.props.dates;

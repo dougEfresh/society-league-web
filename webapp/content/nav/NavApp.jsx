@@ -24,6 +24,7 @@ var NavApp = React.createClass({
             toggleTeam: false,
             toggleSeason: false,
             toggleUser: false,
+            toggleStats: false,
             teams: [],
             toggleTeamActive: {},
             seasons: [],
@@ -67,15 +68,25 @@ var NavApp = React.createClass({
     },
     changeTeam: function(t) {
         return function(e) {
+            e.preventDefault();
+            t.toggle = t.toggle == undefined ? true : !t.toggle;
+            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
+        }.bind(this);
+
+        /*
+         return function(e) {
             this.setState({toggleSide: false});
             e.preventDefault();
+            t.toggle = t.toggle == undefined ? true : !t.toggle;
             if (!this.state.mobile)
-                this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id);
+         this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id);
             else
                 this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id);
             //this.setState({activeTeam: t, activeUser: null, activeSeason: t.season, show: 'standings'});
             console.log('Going  team to ' + t.name);
         }.bind(this);
+        */
+
     },
     changeSeason: function(s) {
         return function(e) {
@@ -113,6 +124,38 @@ var NavApp = React.createClass({
         e.preventDefault();
         this.setState({toggleSide: !this.state.toggleSide});
     },
+    goToSchedule: function(s){
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/schedule/' + s.id);
+        }.bind(this)
+    },
+    goToLeader: function(s){
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/season/' + s.id + '/leaders');
+        }.bind(this)
+    },
+    goToChallenge : function(s) {
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/challenge');
+        }.bind(this)
+    },
+    goToStandings: function(t) {
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
+        }.bind(this)
+    },
+    toggleStats: function(e) {
+        e.preventDefault();
+        this.props.history.pushState(null,'/app/stats/current');
+    },
     render: function () {
         if (this.getUser().id == "0") {
             return null;
@@ -121,46 +164,55 @@ var NavApp = React.createClass({
         if (this.props.location.pathname.indexOf('/app/home') > 0) {
 
         }
-        var challengeNav = null;
-        //if (this.getUser().challenge) {
-        challengeNav = <li className={'notActive dropdown'}>
-            <a href="#/app/challenge">Top Gun</a>
-        </li>;
-        //}
+        var topGunNav = null;
+        if (this.getUser().challenge) {
+            var s = null;
+            this.getUser().handicapSeasons.forEach(function(hs) {
+                if (hs.season.challenge) {
+                    s = hs.season;
+                }
+            });
+            topGunNav = <li className={'not-active dropdown'}>
+                  <a onClick={this.toggleDivision(s)} href="#">Top Gun<span className="fa arrow"></span></a>
+                    <ul className={"nav nav-third-level collapse" + (s.toggle ? " selected in" : "")} aria-expanded="true">
+                    <li>
+                        <a onClick={this.goToChallenge(s)} href="#">Challenge</a>
+                    </li>
+                        <li>
+                            <a onClick={this.goToSchedule(s)} href="#">Schedule</a>
+                        </li>
+                    <li className='selected'>
+                        <a onClick={this.changeSeason(s)}href="#">Standings</a>
+                    </li>
+                    </ul>
+            </li>;
+        }
 
         var teamNav =  [];
         this.state.teams.forEach(function(t) {
-            var cls = t.active ? "active" : "notactive";
-            teamNav.push(
-                <li className={cls} key={t.id}>
-                    <a onClick={this.changeTeam(t)} href="#">{t.name}</a>
-                </li>);
-
-        }.bind(this));
-
-        var seasonNav =  [];
-        this.getUser().handicapSeasons.forEach(function(s) {
-            if (!s.season.active) {
+            if (t.challenge)
                 return;
-            }
-            seasonNav.push(
-                <li className="" key={s.season.id}>
-                    <a onClick={this.toggleDivision(s)} href="#">{s.season.displayName}<span className="fa arrow"></span></a>
-                    <ul className={"nav nav-third-level collapse" + (s.toggle ? " in" : "")} aria-expanded="true">
-                    <li>
-                        <a href="#">Schedule</a>
+            var s = t.season;
+            var standingsClass = this.props.location.pathname.indexOf('display/') > 0 ? 'selected ' : "not-selected";
+            var scheduleClass = this.props.location.pathname.indexOf('schedule/') > 0 ? 'selected ' : "not-selected";
+            var leaderClass = this.props.location.pathname.indexOf('leader') > 0 ? 'selected ' : "not-selected";
+            var toggle = t.toggle == undefined ? this.props.params.seasonId == t.season.id : t.toggle;
+            teamNav.push(
+                <li key={s.id}>
+                    <a onClick={this.changeTeam(t)} href="#">{t.name}<span className="fa arrow"></span></a>
+                    <ul className={"nav nav-third-level collapse" + (toggle ? " selected in" : "")} aria-expanded="true">
+                    <li className={standingsClass}>
+                        <a onClick={this.goToStandings(t)} href="#">Standings</a>
                     </li>
-                    <li>
-                        <a href="#">Standings</a>
+                    <li className={scheduleClass}>
+                        <a onClick={this.goToSchedule(s)} href="#">Schedule</a>
                     </li>
-                    <li>
-                        <a href="#">Leaders</a>
+                    <li className={leaderClass} >
+                        <a onClick={this.goToLeader(s)} href="#">Division Leaders</a>
                     </li>
-                </ul>
+                    </ul>
                 </li>
             );
-            //
-
         }.bind(this));
 
         var profilePic = <i className="fa fa-user profile"></i>;
@@ -187,14 +239,14 @@ var NavApp = React.createClass({
                                 </b></a>
                             <ul className="dropdown-menu">
                                 <li>
-                                    <a href="#"><i className="fa fa-fw fa-user"></i> Profile</a>
+                                    <a href="#"><i className="fa fa-fw fa-user"></i>Profile</a>
                                 </li>
                                 <li>
-                                    <a href="#"><i className="fa fa-fw fa-gear"></i> Settings</a>
+                                    <a href="#"><i className="fa fa-fw fa-gear"></i>Settings</a>
                                 </li>
                                 <li className="divider"></li>
                                 <li>
-                                    <a href="#"><i className="fa fa-fw fa-power-off"></i> Log Out</a>
+                                    <a href="#"><i className="fa fa-fw fa-power-off"></i>Log Out</a>
                                 </li>
                             </ul>
                         </li>
@@ -212,23 +264,17 @@ var NavApp = React.createClass({
                                 </div>
                             </li>
                             <li >
-                                <a onClick={this.goHome}  href="#"><i className="fa fa-fw fa-home"></i> Home</a>
+                                <a onClick={this.goHome}  href="#"><i className="fa fa-fw fa-home"></i>Home</a>
                             </li>
-                            <li className={this.state.toggleTeam ? "active" : "notactive"}>
-                                <a onClick={this.toggleTeam} href="#"><i className="fa fa-fw fa-users"></i> My Teams<span className="fa arrow"></span></a>
-                                <ul className={"nav nav-second-level collapse " + (this.state.toggleTeam ? " in"  : "")}>
+                            <li className={this.state.toggleTeam ? "selected" : ""}>
+                                <a onClick={this.toggleTeam} href="#"><i className="fa fa-fw fa-users"></i>My Teams<span className="fa arrow"></span></a>
+                                <ul className={"nav nav-second-level collapse " + (this.state.toggleTeam ? " selected in"  : "")}>
                                     {teamNav}
                                 </ul>
                             </li>
-                            <li className={this.state.toggleSeason ? "active" : "notactive"}>
-                                <a onClick={this.toggleSeason} href="#">
-                                    <i className="fa fa-fw fa-users"></i>Divisions<span className="fa arrow"></span></a>
-                                <ul className={"nav nav-second-level collapse " + (this.state.toggleSeason ? "in" : "")}>
-                                    {seasonNav}
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="charts.html"><i className="fa fa-fw fa-bar-chart-o"></i>Stats</a>
+                            {topGunNav}
+                            <li className={this.state.toggleStats ? "selected" : "not-selected"}>
+                                <a onClick={this.toggleStats} href="charts.html"><i className="fa fa-fw fa-bar-chart-o"></i>Stats</a>
                             </li>
                         </ul>
                     </div>
@@ -236,7 +282,6 @@ var NavApp = React.createClass({
                 <div id="page-wrapper">
                     {this.props.children}
                 </div>
-
             </div>
         )
     }

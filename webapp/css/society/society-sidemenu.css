@@ -24,10 +24,10 @@
 .sidebar .fa.arrow:before {
     content: "\f104";
 }
-.sidebar .active >a {
+.sidebar .active >a,  li.selected >a {
     color: whitesmoke;
 }
-.sidebar .active>a>.fa.arrow:before {
+.sidebar .active>a>.fa.arrow:before , .sidebar .selected>a>.fa.arrow:before {
     content: "\f107";
 }
 
@@ -47,11 +47,19 @@
 .side-nav li a:hover, .side-nav li a:focus {
     background-color: #080808;
 }
-#side-menu > li.active,#side-menu > li.active > a  {
+#side-menu > li.active,#side-menu > li.active > a,#side-menu > li.selected > a  {
 /*    background-color: #999; */
     color: whitesmoke;
 }
 
 #side-menu > li > a {
     color: #9CA2A2;
+}
+
+li.selected > a {
+    color: whitesmoke;
+}
+
+ul.selected, ul.selected > li > a {
+    color: whitesmoke;
 }

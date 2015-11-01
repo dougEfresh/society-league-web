@@ -81,47 +81,23 @@ var routes = (
             <Route path="challenge/:challengeId/cancel" component={ChallengeCancelApp} />
             <Route name="challenge" path="challenge" component={ChallengeApp} >
             </Route>
-            <Route path="scout/:statsId"  component={StatApp}>
-                <Route path="stats" component={StatDisplay} />
-                <Route path=":seasonId/history" component={StatHistory} />
-            </Route>
+
+            <Route path="stats/current/:statsId"  component={StatApp}/>
+            <Route path="stats/history/:statsId"  component={StatApp}/>
 
             <Route path="display/:seasonId/:teamId/:userId" component={DisplayApp} > </Route>
             <Route path="display/:seasonId/:teamId" component={DisplayApp} ></Route>
             <Route path="display/:seasonId" component={DisplayApp} ></Route>
 
+            <Route path="team/:seasonId/:teamId/:userId" component={DisplayApp} > </Route>
+            <Route path="team/:seasonId/:teamId" component={DisplayApp} ></Route>
+            <Route path="team/:seasonId" component={DisplayApp} ></Route>
+
+            <Route path="season/:seasonId" component={SeasonApp} ></Route>
+            <Route path="season/:seasonId/leaders" component={SeasonLeaders} ></Route>
+
             <Route path="schedule/:seasonId" component={ScheduleApp} ></Route>
         </Route>
     </Route>
 );
-/*
- <Route path="season" component={SeasonApp} >
- <Route path=":seasonId/leaders"  component={SeasonLeaders} />
- <Route path=":seasonId/standings"  component={SeasonStandings} />
- <Route path=":seasonId/results"  component={SeasonWeeklyMatches} />
- <Route path=":seasonId/teamresults/:matchId" component={SeasonMatchResultsOnDay} />
- </Route>
- */
-
 React.render((<Router>{routes}</Router>), document.getElementById('content'));
-/*
-
- <Route name="createUser" path="create/user" component={CreateUser} />
- <Route name="createUserSuccess" path="create/user/status" component={CreateUserSuccess} />
- <Route name="challenges" path="challenges" component={ChallengesApp} />
- <Route name="challengeUsers" path="challenges/user" component={ChallengesUsers} />
- <Route name="challengeAdminResults" path="challenges/admin/results" component={ChallengeAdminResults} />
- </Route>
-
-
-
- <Route name="challengeMain" path="main"  component={ChallengeMain} />
- <Route name="challengeSignUp" path="signup"  component={ChallengeSignUp} />
- <Route name="challengeConfirm" path="confirm"  component={ChallengeConfirmApp} />
- <Route name='challengeCancel' path="cancel"  component={ChallengeCancelApp} />
- <Route name={Status.REQUEST.toLowerCase()} path={Status.REQUEST.toLowerCase()} component={ChallengeRequestApp}/>
- <Route name={Status.PENDING.toLowerCase()} path={Status.PENDING.toLowerCase()} component={ChallengePendingApp}/>
- <Route name={Status.ACCEPTED.toLowerCase()} path={Status.ACCEPTED.toLowerCase()} component={ChallengeAcceptedApp}/>
- <Route name={Status.SENT.toLowerCase()} path={Status.SENT.toLowerCase()} component={ChallengeSentApp}/>
- </Route>
- */

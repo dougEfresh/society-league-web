@@ -145,7 +145,7 @@ var DisplayApp = React.createClass({
         return (
                 <div id="team-app">
                     <div className="row">
-                        <div className="col-xs-12 col-md-4">
+                        <div className="col-xs-12 col-md-6">
                             <div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <div className="panel panel-default panel-team">
                                     <div className="panel-heading" role="tab" id="headingOne">
@@ -165,7 +165,7 @@ var DisplayApp = React.createClass({
                                 </div>
                             </div>
                         </div>
-                        <div className="col-xs-12 col-md-4">
+                        <div className="col-xs-12 col-md-6">
                             <div  className={"panel panel-default panel-results " + (this.state.activeTeam == null ? "hide" : "")}>
                                 <div className="panel-heading" role="tab" id="headingTwo">
                                     <h4 className="panel-title panel-members">
@@ -183,7 +183,9 @@ var DisplayApp = React.createClass({
                                 </div>
                             </div>
                         </div>
-                        <div className="col-xs-12 col-md-4">
+                    </div>
+                    <div className="row" >
+                        <div className="col-xs-12 col-md-6">
                             <div className={"panel panel-default panel-results " + (this.state.activeUser == null ? "hide" : "")}>
                                 <div className="panel-heading" role="tab" id="headingThree">
                                     <h4 className="panel-title panel-user">

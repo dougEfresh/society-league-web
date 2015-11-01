@@ -33,7 +33,7 @@
     "browserify": "11.1.0",
     "react-vdom": "^0.5.0",
     "reactify": "1.1.1",
-    "watchify": "3.4.0",
+    "watchify": "3.6.0",
     "uglify-js": "2.4.24",
     "json-proxy": "0.3.1",
     "morgan": "1.5.2",
