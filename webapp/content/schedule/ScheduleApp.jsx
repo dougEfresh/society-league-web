@@ -76,7 +76,7 @@ var ScheduleApp = React.createClass({
         return (
             <div>
                 <div className="row" >
-                {this.getMatches('pending')}
+                    <PendingMatches matches={this.state.pending} />
                 </div>
                 <div className="row" >
                     {this.getMatches('upcoming')}
@@ -89,6 +89,37 @@ var ScheduleApp = React.createClass({
     }
 });
 
+
+var PendingMatches = React.createClass({
+    getPending: function() {
+        var rows = [];
+        Object.keys(this.props.matches).forEach(function(md) {
+            this.props.matches[md].forEach(function(m) {
+                rows.push(<li key={m.id} className="list-group-item">
+                    <span className="badge" >{Util.formatDateTime(md)}</span>
+                    <TeamLink team={m.home} />
+                    <span> vs. </span>
+                    <TeamLink team={m.away} />
+                </li>)
+            });
+        }.bind(this));
+        return rows;
+    },
+    render: function() {
+        if (this.props.matches == null)
+            return null;
+        return (
+            <div className="col-xs-12 col-md-4">
+                <ul className="list-group">
+                    <li href="#" className="list-group-item pending-matches-title">
+                        Pending Matches
+                    </li>
+                    {this.getPending()}
+                </ul>
+            </div>
+        );
+    }
+});
 var TeamMatches = React.createClass({
     mixins: [UserContextMixin],
     getHeader: function(season) {

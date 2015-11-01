@@ -88,7 +88,7 @@ var TeamNav = React.createClass({
                         <a onClick={this.goToStandings(t)} href="#">Standings</a>
                     </li>
                     <li className={scheduleClass}>
-                        <a onClick={this.goToSchedule(s)} href="#">Schedule</a>
+                        <a onClick={this.goToSchedule(s)} href="#">Schedule & Results</a>
                     </li>
                     <li className={leaderClass} >
                         <a onClick={this.goToLeader(s)} href="#">Division Leaders</a>

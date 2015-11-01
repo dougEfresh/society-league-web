@@ -33,8 +33,11 @@ var TeamLink = React.createClass({
                 {this.props.team.name}
             </a>
         );
+        var name = this.props.team.name + ' (#' + this.props.team.rank + ')';
+        if (this.props.noRank != undefined)
+            name = this.props.team.name;
 
-        return (<a href={'#/app/display/' + this.props.team.season.id + '/' + this.props.team.id}>{this.props.team.name}</a>);
+        return (<a href={'#/app/display/' + this.props.team.season.id + '/' + this.props.team.id}>{name}</a>);
     }
 });
 
