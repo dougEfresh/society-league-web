@@ -85,10 +85,10 @@ var SeasonApp = React.createClass({
                         <a onClick={this.toggleHeading} href='#'>
                             <div className="panel-heading">
                                 <div className="row panel-title">
-                                    <div className="col-xs-11 col-md-11">
+                                    <div className="col-xs-10 col-md-11 p-title">
                                         {this.state.season.shortName  +' Leaders'}
                                     </div>
-                                    <div className="col-xs-1 col-md-1">
+                                    <div className="col-xs-2 col-md-1 caret-title">
                                         <span className={"fa fa-caret-" + (this.state.toggleLeaders ? "down" : "left")}></span>
                                     </div>
                                 </div>
@@ -106,10 +106,10 @@ var SeasonApp = React.createClass({
                         <a onClick={this.toggleHeading} href='#'>
                             <div className="panel-heading" role="tab" id="headingOne">
                                 <div className="row panel-title">
-                                    <div className="col-xs-11 col-md-11">
+                                    <div className="col-xs-10 col-md-11 p-title">
                                         {userHeader}
                                     </div>
-                                    <div className="col-xs-1 col-md-1">
+                                    <div className="col-xs-2 col-md-1 caret-title">
                                         <span className={"fa fa-caret-" + (this.state.selectedUser != null ? "down" : "left")}></span>
                                     </div>
                                 </div>

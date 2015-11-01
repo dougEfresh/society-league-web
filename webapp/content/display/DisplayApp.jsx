@@ -174,10 +174,10 @@ var DisplayApp = React.createClass({
                                 <a onClick={this.toggleSeason} href="#">
                                 <div className="panel-heading">
                                     <div className="row panel-title">
-                                        <div className="col-xs-11 col-md-11">
+                                        <div className="col-xs-10 col-md-11 p-title">
                                             Standings
                                         </div>
-                                        <div className="col-xs-1 col-md-1">
+                                        <div className="col-xs-2 col-md-1 caret-title">
                                             <span className={"fa fa-caret-" + (this.state.toggleSeason ? "down" : "left")}></span>
                                         </div>
                                     </div>
@@ -193,10 +193,10 @@ var DisplayApp = React.createClass({
                                 <a onClick={this.toggleTeam} href="#">
                                     <div className="panel-heading">
                                         <div className="row panel-title">
-                                            <div className="col-xs-11 col-md-11">
+                                            <div className="col-xs-10 col-md-11 p-title">
                                                 {this.state.activeTeam == null ? "Choose a team" : this.state.activeTeam.name}
                                             </div>
-                                            <div className="col-xs-1 col-md-1">
+                                            <div className="col-xs-2 col-md-1 caret-title ">
                                                 <span className={"fa fa-caret-" + (this.state.toggleSeason ? "down" : "left")}></span>
                                             </div>
                                         </div>
@@ -214,10 +214,10 @@ var DisplayApp = React.createClass({
                                 <a href="#" onClick={this.toggleUser} >
                                 <div className="panel-heading" >
                                     <div className="row panel-title">
-                                        <div className="col-xs-11 col-md-11">
+                                        <div className="col-xs-10 col-md-11 p-title">
                                             {this.state.activeUser == null  ? "Select a user" : this.state.activeUser.firstName}
                                         </div>
-                                        <div className="col-xs-1 col-md-1">
+                                        <div className="col-xs-2 col-md-1 caret-title ">
                                             <span className={"fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
                                         </div>
                                     </div>
