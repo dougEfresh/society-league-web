@@ -17,18 +17,25 @@ var UserResults = React.createClass({
              season: this.props.season
         }
     },
-    componentWillMount: function() { },
-    componentWillUnmount: function() { },
     componentDidMount: function() { this.getData();  },
     componentWillReceiveProps: function(nextProps) {
         if (nextProps.user == undefined || nextProps.season == undefined) {
             this.setState({user:null});
             return;
         }
+        if (this.state.user == undefined || this.state.season == undefined || this.state.season == null || this.state.user == null) {
+            this.state.user = nextProps.user;
+            this.state.season = nextProps.season;
+            this.getData();
+            return;
+        }
+        if (this.state.user.id != nextProps.user.id  || this.state.season.id != nextProps.season.id ){
+            this.state.user = nextProps.user;
+            this.state.season = nextProps.season;
+            this.getData();
+            return;
+        }
 
-        this.state.user = nextProps.user;
-        this.state.season = nextProps.season;
-        this.getData();
     },
     getData: function() {
         if (this.state.user == null || this.state.user == undefined || this.state.season == null || this.state.season == undefined) {

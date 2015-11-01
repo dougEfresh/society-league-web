@@ -8,6 +8,10 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
 
+var nineBallColumns = [
+
+]
+
 var SeasonStandings = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {

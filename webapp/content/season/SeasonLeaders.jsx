@@ -26,13 +26,13 @@ var  nineMobileColumns = [
 
 var  nineColumns = [
     { name: 'index', title: '#', width: 40 },
-    { name: 'name', flex: 1, render: userRender , width: 100},
-    { name: 'handicap', title: 'HC', flex: 1, render: function(v) {return Handicap.formatHandicap(v)}},
-    { name: 'wins',  title: 'W', flex: 1, type: 'number' },
-    { name: 'loses', title: 'L', flex: 1 , type: 'number'},
-    { name: 'racksWon' ,title: 'RW', flex: 1, type: 'number' },
-    { name: 'racksLost', title: 'RL', flex: 1 ,type: 'number'},
-    { name: 'team', flex: 1 , render: teamRender }
+    { name: 'name', flex: 1, render: userRender},
+    { name: 'handicap', width: 50, title: 'HC', flex: 1, render: function(v) {return Handicap.formatHandicap(v)}},
+    { name: 'wins',  width: 40, title: 'W', flex: 1, type: 'number' },
+    { name: 'loses', width: 40, title: 'L', flex: 1 , type: 'number'},
+    { name: 'racksWon' , width: 40, title: 'RW', flex: 1, type: 'number' },
+    { name: 'racksLost', width: 40,title: 'RL', flex: 1 ,type: 'number'},
+    { name: 'team', flex: 1 , render: teamRender },
 ];
 var sorty  = require('sorty');
 var SORT_INFO = [ { name: 'index', dir: 'asc'}];
@@ -124,8 +124,9 @@ var SeasonLeaders = React.createClass({
 			/>);
         }
         return (
+            <div id="season-leaders">
             <div className="row">
-                <div className="col-xs-12 col-md-4">
+                <div className="col-xs-12 col-md-6">
                     <div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div className="panel panel-default panel-leaders">
                             <div className="panel-heading" role="tab" id="headingOne">
@@ -144,8 +145,7 @@ var SeasonLeaders = React.createClass({
                                         columns={nineColumns}
                                         onSelectionChange={this.onSelectionChange}
                                         selected={this.state.selectedUser == null ? null : this.state.selectedUser.id}
-
-                                        //style={{height: 700}}
+                                        style={{height: 500}}
                                         //onFilter={this.handleFilter}
                                         //liveFilter={true}
                                         //sortInfo={SORT_INFO}
@@ -159,6 +159,8 @@ var SeasonLeaders = React.createClass({
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="row">
                 <div className="col-xs-12 col-md-4">
                     <div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div className="panel panel-default panel-results">
@@ -178,6 +180,7 @@ var SeasonLeaders = React.createClass({
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         );
     }
