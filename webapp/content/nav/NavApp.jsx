@@ -160,11 +160,11 @@ var NavApp = React.createClass({
         if (this.getUser().id == "0") {
             return null;
         }
-        var active = 'home';
-        if (this.props.location.pathname.indexOf('/app/home') > 0) {
+        var homeCls = this.props.location.pathname.indexOf("/app/home") > 0 ? "active" : "not-active";
+        var teamCls = this.props.location.pathname.indexOf("/app/display") > 0 ? "active" : "not-active";
 
-        }
         var topGunNav = null;
+
         if (this.getUser().challenge) {
             var s = null;
             this.getUser().handicapSeasons.forEach(function(hs) {
@@ -172,9 +172,11 @@ var NavApp = React.createClass({
                     s = hs.season;
                 }
             });
-            topGunNav = <li className={'not-active dropdown'}>
+            var topGunCls = s.toggle ? "active": "not-active" ; //this.props.location.pathname.indexOf("challenge") > 0 || this.props.params.seasonId == s.id ? "active" : "not-active";
+            topGunNav =
+                <li className={topGunCls + ' dropdown'}>
                   <a onClick={this.toggleDivision(s)} href="#">Top Gun<span className="fa arrow"></span></a>
-                    <ul className={"nav nav-third-level collapse" + (s.toggle ? " selected in" : "")} aria-expanded="true">
+                    <ul className={"nav nav-second-level collapse" + (s.toggle ? " selected in" : "")} aria-expanded="true">
                     <li>
                         <a onClick={this.goToChallenge(s)} href="#">Challenge</a>
                     </li>
@@ -198,7 +200,7 @@ var NavApp = React.createClass({
             var leaderClass = this.props.location.pathname.indexOf('leader') > 0 ? 'selected ' : "not-selected";
             var toggle = t.toggle == undefined ? this.props.params.seasonId == t.season.id : t.toggle;
             teamNav.push(
-                <li key={s.id}>
+                <li className={toggle ? "active dropdown" : "dropdown"} key={s.id}>
                     <a onClick={this.changeTeam(t)} href="#">{t.name}<span className="fa arrow"></span></a>
                     <ul className={"nav nav-third-level collapse" + (toggle ? " selected in" : "")} aria-expanded="true">
                     <li className={standingsClass}>
@@ -219,6 +221,7 @@ var NavApp = React.createClass({
         if (this.getUser().profile) {
             profilePic = <img className="profile" src={this.getUser().userProfile.imageUrl + '?width=20&height=20'}> </img>
         }
+
         return (
             <div id="wrapper">
                 <nav className="navbar navbar-inverse navbar-static-top" role="navigation" style={{marginBottom: 0}}>
@@ -263,18 +266,28 @@ var NavApp = React.createClass({
                                     </span>
                                 </div>
                             </li>
-                            <li >
+                            <li className={homeCls}>
                                 <a onClick={this.goHome}  href="#"><i className="fa fa-fw fa-home"></i>Home</a>
                             </li>
-                            <li className={this.state.toggleTeam ? "selected" : ""}>
+                            <li className={this.state.toggleTeam ? "selected dropdown " + teamCls : teamCls + " dropdown"}>
                                 <a onClick={this.toggleTeam} href="#"><i className="fa fa-fw fa-users"></i>My Teams<span className="fa arrow"></span></a>
                                 <ul className={"nav nav-second-level collapse " + (this.state.toggleTeam ? " selected in"  : "")}>
                                     {teamNav}
                                 </ul>
                             </li>
                             {topGunNav}
-                            <li className={this.state.toggleStats ? "selected" : "not-selected"}>
-                                <a onClick={this.toggleStats} href="charts.html"><i className="fa fa-fw fa-bar-chart-o"></i>Stats</a>
+                            <li className={this.state.toggleStats ? "hide selected" : " hide not-selected"}>
+                                <a onClick={this.toggleStats} href="#"><i className="fa fa-fw fa-bar-chart-o"></i>Stats
+                                    <span className="fa arrow"></span>
+                                </a>
+                                <ul className={"nav nav-second-level collapse " + (this.state.toggleTeam ? " selected in"  : "")}>
+                                    <li>
+                                        <a href="#">Current</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Historic</a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </div>

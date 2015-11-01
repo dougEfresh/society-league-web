@@ -16,16 +16,6 @@
    padding: 0px;
 }
 
-.sidebar .fa.arrow:before {
-    content: "\f104";
-}
-.sidebar .active >a {
-    color: whitesmoke;
-}
-.sidebar .active>a>.fa.arrow:before {
-    content: "\f107";
-}
-
 .panel-heading > .panel-title > a > span.fa.arrow.active:before {
     content: "\f107";
 }
@@ -42,7 +32,6 @@
 .panel-standings {
 
 }
-
 
 .panel-members {
 

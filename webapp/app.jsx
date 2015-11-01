@@ -79,8 +79,7 @@ var routes = (
             <Route path="admin/teams" component={TeamAdminApp} />
 
             <Route path="challenge/:challengeId/cancel" component={ChallengeCancelApp} />
-            <Route name="challenge" path="challenge" component={ChallengeApp} >
-            </Route>
+            <Route name="challenge" path="challenge" component={ChallengeApp} />
 
             <Route path="stats/current/:statsId"  component={StatApp}/>
             <Route path="stats/history/:statsId"  component={StatApp}/>
