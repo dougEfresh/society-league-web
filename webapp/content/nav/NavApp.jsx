@@ -228,7 +228,8 @@ var NavApp = React.createClass({
                             <li className={homeCls}>
                                 <a onClick={this.goHome}  href="#"><i className="fa fa-fw fa-home"></i>Home</a>
                             </li>
-                            <TeamNav params={this.props.params} history={this.props.history}/>
+                            <TeamNav    params={this.props.params} history={this.props.history} />
+                            <TopGunNav  params={this.props.params} history={this.props.history} />
                         </ul>
                     </div>
                 </nav>
@@ -239,5 +240,5 @@ var NavApp = React.createClass({
         )
     }
 });
-//  <TopGunNav /> <StatNav />
+//   <StatNav />
 module.exports = NavApp;

@@ -12,30 +12,35 @@ var TopGunNav = React.createClass({
     contextTypes: {
         location: React.PropTypes.object
     },
-    getInitialState: function () {
+    getInitialState: function() {
         return {
-            update: Date.now(),
-            data: []
+            toggle: false
         }
     },
-    componentWillMount: function () {
+    goToSchedule: function(s){
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/schedule/' + s.id);
+        }.bind(this)
     },
-    componentWillUnmount: function () {
+    goToStandings: function(t) {
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
+        }.bind(this)
     },
-    componentDidMount: function () {
-        this.getData();
+    goToChallenge : function(s) {
+        return function(e){
+            this.setState({toggleSide: false});
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/challenge');
+        }.bind(this)
     },
-    getData: function() {
-        Util.getSomeData({url: '/api/team/get/' + this.getUser().id + '/current',
-            callback: function(d){
-            this.setState({data: d, update: Date.now()});
-            }.bind(this),
-                module: 'TeamNav',
-                router: this.props.router}
-        );
-    },
-    componentWillReceiveProps: function(nextProps) {
-        this.getData();
+    toggleDivision: function(e){
+        e.preventDefault();
+        this.setState({toggle: !this.state.toggle});
     },
     render: function() {
         if (!this.getUser().challenge) {
@@ -47,19 +52,19 @@ var TopGunNav = React.createClass({
                 s = hs.season;
             }
         });
-        var topGunCls = "not-active" ; //this.props.location.pathname.indexOf("challenge") > 0 || this.props.params.seasonId == s.id ? "active" : "not-active";
+        var topGunCls = this.state.toggle ? "active" : "not-active" ; //this.props.location.pathname.indexOf("challenge") > 0 || this.props.params.seasonId == s.id ? "active" : "not-active";
         return(
             <li className={topGunCls + ' dropdown'}>
-                <a onClick={this.toggleDivision(s)} href="#">Top Gun<span className="fa arrow"></span></a>
-                <ul className={"nav nav-second-level collapse" + (s.toggle ? " selected in" : "")} aria-expanded="true">
+                <a onClick={this.toggleDivision} href="#">Top Gun<span className="fa arrow"></span></a>
+                <ul className={"nav nav-second-level collapse" + (this.state.toggle ? " selected in" : "")} aria-expanded="true">
                     <li>
                         <a onClick={this.goToChallenge(s)} href="#">Challenge</a>
                     </li>
                     <li>
                         <a onClick={this.goToSchedule(s)} href="#">Schedule</a>
                     </li>
-                    <li className='selected'>
-                        <a onClick={this.changeSeason(s)}href="#">Standings</a>
+                    <li>
+                        <a onClick={this.goToStandings(s)}href="#">Standings</a>
                     </li>
                 </ul>
             </li>
