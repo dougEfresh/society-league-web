@@ -108,8 +108,7 @@ var HomeApp = React.createClass({
     changeUser: function(u) {
         return function(e) {
             e.preventDefault();
-            this.setState({activeUser: u});
-            console.log('Setting user to ' + u.name);
+            this.pushState(null,'/app/display')
         }.bind(this);
     },
     changeTeam: function(t) {
@@ -205,17 +204,17 @@ var HomeApp = React.createClass({
         var seasonLeaders = [];
         this.getUser().handicapSeasons.forEach(function(hs){
             var s = hs.season;
-            if (!s.active) {
+            if (!s.active || s.challenge) {
                 return;
             }
             seasonLeaders.push(
                 <div key={s.id} className="col-xs-12 col-md-4">
                     <div className="panel panel-default panel-leaders">
                         <div className="panel-heading">
-                            <i className="fa fa-sitemap"></i> {'Top Players ' + s.displayName.substr(8,15)}
+                            <i className="fa fa-sitemap"></i> {'Top Players ' + s.shortName}
                         </div>
                         <div className="panel-body">
-                            <SeasonLeaders  onClick={this.changeTeam} params={{seasonId: s.id}} limit={5} />
+                            <SeasonLeaders onUserClick={this.changeTeam} params={{seasonId: s.id}} limit={5} />
                         </div>
                     </div>
                 </div>
@@ -227,21 +226,7 @@ var HomeApp = React.createClass({
                 <div className="welcome" align="center">
                     <p>Society Billiards League Home Page</p>
                 </div>
-
                 <div className="headerHome">Welcome Doug</div>
-                <div className="headerHome">My Teams</div>
-                <div className="plain_text">
-                    You can also manage your account settings by clicking on the <b>'My Teams'</b> link in the left panel to change
-                    your personal data including your email address, name, phone number, and home address.
-                </div>
-
-                <div className="headerHome">Stats</div>
-                <div className="plain_text">
-                    To get a quick look at every season you've played in, the <b>'Stats'</b> section contains <b>'My History'</b> &amp; <b>'My Opponents'</b>
-                    which breaks down your history by individual seasons and a complete history of every opponent you've ever played. In my opponents, you will
-                    be able to sort by opponent or zero in on all matches played bettween you and that opponent, their team.
-                </div>
-
                 <div className="row">
                     <div className="col-xs-12 col-md-3">
                         <div className="panel panel-default panel-upcoming">
@@ -254,15 +239,25 @@ var HomeApp = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div className="row">
-                    {seasonLeaders}
-                </div>
        </div>
         );
     }
 });
 
 /*
+div className="headerHome">My Teams</div>
+                <div className="plain_text">
+                    You can also manage your account settings by clicking on the <b>'My Teams'</b> link in the left panel to change
+                    your personal data including your email address, name, phone number, and home address.
+                </div>
+
+                <div className="headerHome">Stats</div>
+                <div className="plain_text">
+                    To get a quick look at every season you've played in, the <b>'Stats'</b> section contains <b>'My History'</b> &amp; <b>'My Opponents'</b>
+                    which breaks down your history by individual seasons and a complete history of every opponent you've ever played. In my opponents, you will
+                    be able to sort by opponent or zero in on all matches played bettween you and that opponent, their team.
+                </div>
+
   <div id="home-app" className="container ss-home-app">
                 <h4>Upcoming Matches</h4>
  <div className="row">

@@ -190,7 +190,7 @@ var race = function(hc1,hc2) {
     if (raceChart[hc1] == undefined)
         return "";
 
-        
+
     var r = raceChart[hc1][hc2];
     if (r == undefined || r == null)
         return "";

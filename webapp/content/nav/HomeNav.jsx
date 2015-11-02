@@ -8,6 +8,12 @@ var HomeNav = React.createClass({
     contextTypes: {
         location: React.PropTypes.object
     },
+
+    goHome: function(s){
+        e.preventDefault();
+        this.props.toggleSide(e);
+        this.props.history.pushState(null,'/app/home/');
+    },
     render: function() {
         var homeCls = this.props.location.pathname.indexOf("/app/home") > 0 ? "active" : "not-active";
         return (
