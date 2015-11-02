@@ -57,18 +57,6 @@ var ScheduleApp = React.createClass({
     componentWillReceiveProps: function (n) {
         this.getData(n.params.seasonId);
     },
-    getMatches: function(type){
-        if (this.state[type] == null) {
-            return null;
-        }
-        var rows = [];
-        for (var md in this.state[type]) {
-            rows.push(
-                <TeamMatches key={md + '-' + type} type={type} date={md} teamMatches={this.state[type][md]} />
-            )
-        }
-        return rows;
-    },
     render: function() {
         if (this.state.upcoming == null && this.state.played == null && this.state.pending == null) {
             return (<LoadingApp /> )
@@ -76,12 +64,7 @@ var ScheduleApp = React.createClass({
         return (
             <div>
                 <PendingMatches matches={this.state.pending} />
-                <div className="row" >
-                    {this.getMatches('upcoming')}
-                </div>
-                <div className="row" >
-                    {this.getMatches('played')}
-                </div>
+                <UpcomingMatches matches={this.state.upcoming} />
             </div>
         );
     }
@@ -89,37 +72,137 @@ var ScheduleApp = React.createClass({
 
 
 var PendingMatches = React.createClass({
+    getInitialState: function() {
+        return {
+            toggle: true
+        }
+    },
     getPending: function() {
         var rows = [];
+        if (!this.state.toggle) {
+            return null;
+        }
         Object.keys(this.props.matches).forEach(function(md) {
-            this.props.matches[md].forEach(function(m) {
-                rows.push(<li key={m.id} className="list-group-item">
-                    <span className="badge" >{Util.formatDateTime(md)}</span>
-                    <TeamLink team={m.home} />
-                    <span> vs. </span>
-                    <TeamLink team={m.away} />
-                </li>)
-            });
+            rows.push(<UpcomingWeeklyMatch key={md} date={md} matches={this.props.matches[md]}/>);
         }.bind(this));
         return rows;
     },
     render: function() {
         if (this.props.matches == null)
             return null;
+        var toggleHeading = function(e) {e.preventDefault() ;this.setState({toggle: !this.state.toggle})}.bind(this);
         return (
-            <div className="row" >
-            <div className="col-xs-12 col-md-4">
-                <ul className="list-group">
-                    <li href="#" className="list-group-item pending-matches-title">
-                        <span className="fa fa-exclamation-triangle"></span><span> Pending Matches</span>
-                    </li>
-                    {this.getPending()}
-                </ul>
-            </div>
+        <div className="panel panel-default panel-schedule">
+                <a onClick={toggleHeading} href='#'>
+                    <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
+                        <div className="row panel-title">
+                            <div className="col-xs-10 col-md-11 p-title">
+                                <span className="fa fa-exclamation-triangle pending-schedule-warning" ></span> <span> Pending</span>
+                            </div>
+                            <div className="col-xs-2 col-md-1 caret-title">
+                                <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div className={"panel-body panel-schedule-body" + (this.state.toggle ? "" : " hide")} >
+                    <div className="row schedule-row">
+                        {this.getPending()}
+                    </div>
+                </div>
             </div>
         );
     }
 });
+
+var UpcomingWeeklyMatch = React.createClass({
+    renderMatches: function() {
+        var rows = [];
+        this.props.matches.forEach(function(m) {
+            rows.push(
+                <tr key={m.id}>
+                    <td className="schedule-home">
+                        <TeamLink team={m.home}/>
+                    </td>
+                    <td className="schedule-vs">
+                        <span className="vs"> Vs. </span>
+                    </td>
+                    <td className="schedule-away">
+                        <TeamLink team={m.away}/>
+                    </td>
+                </tr>
+            )}.bind(this));
+        return rows;
+    },
+    render: function() {
+        return (
+            <div className="col-xs-12 col-md-4">
+          <div className="panel panel-default panel-schedule-week">
+              <div className="panel-heading panel-schedule-week-title">
+                  {Util.formatDateTime(this.props.date)}
+              </div>
+              <div className={"panel-body"} >
+                  <div className="table-responsive">
+                      <table className="table schedule-table schedule-table-upcoming" >
+                          <thead></thead>
+                          <tbody>
+                          {this.renderMatches()}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+            </div>
+        );
+    }
+});
+
+var UpcomingMatches = React.createClass({
+    getInitialState: function() {
+        return {
+            toggle: true
+          }
+    },
+    getUpcoming: function() {
+        var rows = [];
+        Object.keys(this.props.matches).forEach(function(md) {
+            rows.push(<UpcomingWeeklyMatch key={md} date={md} matches={this.props.matches[md]} />);
+        }.bind(this));
+        return (
+            rows
+        );
+    },
+    render: function() {
+        var toggleHeading = function(e) {e.preventDefault(); this.setState({toggle: !this.state.toggle})}.bind(this);
+        if (this.props.matches == null) {
+            return null;
+        }
+        return (
+            <div className="panel panel-default panel-schedule">
+                <a onClick={toggleHeading} href='#'>
+                    <div className={"panel-heading panel" +(this.state.toggle ? "" : " panel-closed")}>
+                        <div className="row panel-title">
+                            <div className="col-xs-10 col-md-11 p-title">
+                              Upcoming Matches
+                            </div>
+                            <div className="col-xs-2 col-md-1 caret-title">
+                                <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div className={"panel-body panel-schedule-body" + (this.state.toggle ? "" : " hide")} >
+                    <div className="row schedule-row">
+                        {this.getUpcoming()}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+});
+
+
+
 var TeamMatches = React.createClass({
     mixins: [UserContextMixin],
     getHeader: function(season) {

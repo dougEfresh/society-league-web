@@ -56,3 +56,20 @@
 .panel-closed {
     background-color: #CDA3A3;
 }
+
+.panel-schedule {
+    max-width: 1000px;
+    /*margin-top: 10px;
+    margin-bottom: 5px;
+    */
+}
+
+.schedule-row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.panel-schedule-body {
+    padding: 15px;
+}
+

@@ -19,3 +19,14 @@ tr {
     height: 40px;
     line-height: 40px;
 }
+
+.schedule-table tr > td , .schedule-table tr {
+     border: none;
+}
+
+.schedule-table tbody tr {
+    min-height: 25px;
+    height: 25px;
+    line-height: 25px;
+
+}

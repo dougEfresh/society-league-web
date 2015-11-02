@@ -67,3 +67,7 @@ ul.selected, ul.selected > li > a {
 .side-caret {
     float: right;
 }
+
+#page-wrapper {
+    font-size: 11px;
+}

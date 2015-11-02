@@ -97,8 +97,8 @@ var SeasonApp = React.createClass({
                                 <div className={"panel-body" + (this.state.toggleLeaders ? "" : " hide")} >
                                     <SeasonLeaders onUserClick={this.changeUser} params={this.props.params}/>
                                 </div>
-                            </div>
-                        </div>
+                    </div>
+                </div>
                 </div>
             <div className="row">
                 <div className="col-xs-12 col-md-6">
