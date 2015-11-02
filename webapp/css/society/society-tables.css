@@ -20,8 +20,9 @@ tr {
     line-height: 40px;
 }
 
-.schedule-table tr > td , .schedule-table tr {
-     border: none;
+.schedule-table tr > td , .schedule-table tr, .schedule-table tbody >tr > td  {
+    border: none;
+    border-top: none;
 }
 
 .schedule-table tbody tr {
