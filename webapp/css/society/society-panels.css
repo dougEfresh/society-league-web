@@ -69,16 +69,15 @@
     margin-left: 0px;
 }
 
-.panel-schedule-body {
+.panel-schedule-body, .panel-results-body {
     padding: 15px;
 }
-
 
 .panel-schedule-week {
 
 }
 
-.panel-schedule-week-title {
+.panel-schedule-week-title, .panel-results-week-title {
     line-height: .25;
     padding-left: 5px;
 }

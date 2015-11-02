@@ -25,9 +25,28 @@ tr {
     border-top: none;
 }
 
-.schedule-table tbody tr {
+.schedule-table tbody tr, .results-table tbody tr {
     min-height: 25px;
     height: 25px;
     line-height: 25px;
+}
 
+.results-table {
+    border-collapse: collapse;
+}
+
+.schedule-home {
+    max-width: 100px;
+    width: 100px;
+}
+.schedule-vs , td.racks{
+    width: 40px;
+}
+.schedule-away, .results-winner, .results-loser {
+    max-width: 100px;
+    width: 100px;
+}
+
+table tbody tr td.results-loser {
+    border: 1px solid black;
 }

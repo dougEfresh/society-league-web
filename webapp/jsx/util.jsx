@@ -205,11 +205,12 @@ function postSomeData(options) {
 }
 
 function defaultErrorHandler(router,xhr) {
-    if (!router)
-        return;
     if (window.location.hash.indexOf("/error") >= 0)
         return;
-    router.pushState(null, '/error', {err: xhr.responseText});
+    if (router)
+        router.pushState(null, '/error', {err: xhr.responseText});
+    else
+        window.location = '#/login';
 }
 
 
