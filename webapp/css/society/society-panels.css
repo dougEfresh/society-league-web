@@ -57,7 +57,7 @@
     background-color: #CDA3A3;
 }
 
-.panel-schedule {
+.panel-schedule , .panel-results {
     max-width: 1000px;
     /*margin-top: 10px;
     margin-bottom: 5px;

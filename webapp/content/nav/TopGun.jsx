@@ -46,7 +46,7 @@ var TopGunNav = React.createClass({
         this.setState({toggle: !this.state.toggle});
     },
     render: function() {
-        if (!this.getUser().challenge) {
+        if (true) {
             return null;
         }
         var s = null;

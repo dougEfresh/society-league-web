@@ -67,6 +67,16 @@ var TeamNav = React.createClass({
             this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
         }.bind(this);
     },
+    expandTeam: function(t) {
+        return function(e) {
+            //this.props.toggleSide(e);
+            e.preventDefault();
+            t.toggle = t.toggle == undefined ? true : !t.toggle;
+            //this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
+            this.setState({});
+        }.bind(this);
+    },
+
     render: function() {
         var teamNav =  [];
         if (this.state.teams.length == 0) {
@@ -83,7 +93,7 @@ var TeamNav = React.createClass({
             var toggle = t.toggle == undefined ? this.props.params.seasonId == t.season.id : t.toggle;
             teamNav.push(
                 <li className={toggle ? "active dropdown" : "dropdown"} key={s.id}>
-                    <a onClick={this.goToTeam(t)} href="#">
+                    <a onClick={this.expandTeam(t)} href="#">
                         {t.name}
                         <span className={"fa fa-caret-" + (toggle ? "down side-caret" : "left side-caret")}></span>
                     </a>

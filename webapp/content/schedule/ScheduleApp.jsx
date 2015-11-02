@@ -65,6 +65,7 @@ var ScheduleApp = React.createClass({
             <div>
                 <PendingMatches matches={this.state.pending} />
                 <UpcomingMatches matches={this.state.upcoming} />
+                <MatchResults matches={this.state.played} />
             </div>
         );
     }
@@ -200,6 +201,127 @@ var UpcomingMatches = React.createClass({
         );
     }
 });
+
+
+var TeamResults = React.createClass({
+    renderMatches: function() {
+        var rows = [];
+        this.props.matches.forEach(function(m) {
+            rows.push(
+                <tr key={m.id}>
+                    <td>{m.winner.name}</td>
+                    <td>{m.winnerSetWins}</td>
+                    <td>{m.winnerRacks}</td>
+                    <td>{m.loser.name}</td>
+                    <td>{m.loserSetWins}</td>
+                    <td>{m.loserRacks}</td>
+                </tr>)
+        }.bind(this));
+        return rows;
+    },
+    getHeader: function() {
+        var season = this.props.matches[0].home.season;
+        if (season.challenge) {
+            return (
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Racks</th>
+                </tr>
+            )
+        }
+        if (season.nine) {
+                return (
+                    <tr>
+                        <th>Winner</th>
+                        <th>SW</th>
+                        <th>R</th>
+                        <th></th>
+                        <th>SL</th>
+                        <th>R</th>
+                    </tr>
+                )
+        }
+          return (
+                <tr>
+                    <th>Winner</th>
+                    <th>R</th>
+                    <th></th>
+                    <th>R</th>
+                </tr>
+            )
+    },
+    render: function() {
+        if (this.props.matches.length == 0) {
+            return 0;
+        }
+        return (
+        <div className="col-xs-12 col-md-4">
+          <div className="panel panel-default panel-results-week">
+              <div className="panel-heading panel-results-week-title">
+                  {Util.formatDateTime(this.props.date)}
+              </div>
+              <div className={"panel-body"} >
+                  <div className="table-responsive">
+                      <table className="table results-table results-table-upcoming" >
+                          <thead>{this.getHeader()}</thead>
+                          <tbody>
+                          {this.renderMatches()}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+            </div>
+        );
+    }
+});
+
+var MatchResults = React.createClass({
+    getInitialState: function() {
+        return {
+            toggle: true
+          }
+    },
+    getUpcoming: function() {
+        var rows = [];
+        Object.keys(this.props.matches).forEach(function(md) {
+            rows.push(<TeamResults key={md} date={md} matches={this.props.matches[md]} />);
+        }.bind(this));
+        return (
+            rows
+        );
+    },
+    render: function() {
+        var toggleHeading = function(e) {e.preventDefault(); this.setState({toggle: !this.state.toggle})}.bind(this);
+        if (this.props.matches == null) {
+            return null;
+        }
+        return (
+            <div className="panel panel-default panel-results">
+                <a onClick={toggleHeading} href='#'>
+                    <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
+                        <div className="row panel-title">
+                            <div className="col-xs-10 col-md-11 p-title">
+                              Results
+                            </div>
+                            <div className="col-xs-2 col-md-1 caret-title">
+                                <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div className={"panel-body panel-match-body" + (this.state.toggle ? "" : " hide")} >
+                    <div className="row match-row">
+                        {this.getUpcoming()}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+});
+
 
 
 
