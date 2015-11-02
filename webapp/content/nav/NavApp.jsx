@@ -21,13 +21,6 @@ var NavApp = React.createClass({
         var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         return {
             user: DataStore.getUser(),
-            toggleTeam: false,
-            toggleSeason: false,
-            toggleUser: false,
-            toggleStats: false,
-            teams: [],
-            toggleTeamActive: {},
-            seasons: [],
             mobile : width < 768,
             toggleSide : width > 768
         }
@@ -66,80 +59,14 @@ var NavApp = React.createClass({
             user: DataStore.getUser()
         });
     },
-    changeTeam: function(t) {
-        return function(e) {
-            e.preventDefault();
-            t.toggle = t.toggle == undefined ? true : !t.toggle;
-            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
-        }.bind(this);
-    },
-    changeSeason: function(s) {
-        return function(e) {
-            this.setState({toggleSide: false});
-            e.preventDefault();
-            this.props.history.pushState(null,'/app/display/' + s.id);
-            console.log('Going  season to ' + s.displayName);
-        }.bind(this);
-    },
-    toggleTeam: function(e){
-        e.preventDefault();
-        this.setState({toggleTeam: !this.state.toggleTeam});
-    },
-    toggleSeason: function(e){
-        e.preventDefault();
-        this.setState({toggleSeason: !this.state.toggleSeason});
-    },
-    toggleDivision: function(s){
-        return function(e) {
-            e.preventDefault();
-            s.toggle = s.toggle == undefined ? true : !s.toggle;
-            this.setState({toggleSeason: this.state.toggleSeason});
-        }.bind(this)
-    },
-    goHome: function(e) {
-        e.preventDefault();
-        this.closeSide(e);
-        this.props.history.pushState(null,'/app/home');
-    },
     closeSide: function(e) {
         e.preventDefault();
+        console.log('closing side');
         this.setState({toggleSide: false});
     },
     sideOpenClose: function(e) {
         e.preventDefault();
         this.setState({toggleSide: !this.state.toggleSide});
-    },
-    goToSchedule: function(s){
-        return function(e){
-            this.setState({toggleSide: false});
-            e.preventDefault();
-            this.props.history.pushState(null,'/app/schedule/' + s.id);
-        }.bind(this)
-    },
-    goToLeader: function(s){
-        return function(e){
-            this.setState({toggleSide: false});
-            e.preventDefault();
-            this.props.history.pushState(null,'/app/season/' + s.id + '/leaders');
-        }.bind(this)
-    },
-    goToChallenge : function(s) {
-        return function(e){
-            this.setState({toggleSide: false});
-            e.preventDefault();
-            this.props.history.pushState(null,'/app/challenge');
-        }.bind(this)
-    },
-    goToStandings: function(t) {
-        return function(e){
-            this.setState({toggleSide: false});
-            e.preventDefault();
-            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
-        }.bind(this)
-    },
-    toggleStats: function(e) {
-        e.preventDefault();
-        this.props.history.pushState(null,'/app/stats/current');
     },
     render: function () {
         if (this.getUser().id == "0") {
@@ -183,9 +110,9 @@ var NavApp = React.createClass({
                     </ul>
                     <div className={"navbar-default sidebar-nav navbar-collapse sidebar " + (this.state.toggleSide  ? " in " : " collapse") }>
                         <ul className="nav" id="side-menu">
-                            <HomeNav    params={this.props.params} history={this.props.history} location={this.props.location} />
-                            <TeamNav    params={this.props.params} history={this.props.history} />
-                            <TopGunNav  params={this.props.params} history={this.props.history} />
+                            <HomeNav    toggleSide={this.closeSide} params={this.props.params} history={this.props.history} location={this.props.location} />
+                            <TeamNav    toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
+                            <TopGunNav  toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
                         </ul>
                     </div>
                 </nav>

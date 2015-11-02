@@ -75,9 +75,7 @@ var ScheduleApp = React.createClass({
         }
         return (
             <div>
-                <div className="row" >
-                    <PendingMatches matches={this.state.pending} />
-                </div>
+                <PendingMatches matches={this.state.pending} />
                 <div className="row" >
                     {this.getMatches('upcoming')}
                 </div>
@@ -109,13 +107,15 @@ var PendingMatches = React.createClass({
         if (this.props.matches == null)
             return null;
         return (
+            <div className="row" >
             <div className="col-xs-12 col-md-4">
                 <ul className="list-group">
                     <li href="#" className="list-group-item pending-matches-title">
-                        Pending Matches
+                        <span className="fa fa-exclamation-triangle"></span><span> Pending Matches</span>
                     </li>
                     {this.getPending()}
                 </ul>
+            </div>
             </div>
         );
     }

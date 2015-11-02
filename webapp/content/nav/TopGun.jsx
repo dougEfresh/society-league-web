@@ -19,6 +19,7 @@ var TopGunNav = React.createClass({
     },
     goToSchedule: function(s){
         return function(e){
+            this.props.toggleSide(e);
             this.setState({toggleSide: false});
             e.preventDefault();
             this.props.history.pushState(null,'/app/schedule/' + s.id);
@@ -26,6 +27,7 @@ var TopGunNav = React.createClass({
     },
     goToStandings: function(t) {
         return function(e){
+            this.props.toggleSide(e);
             this.setState({toggleSide: false});
             e.preventDefault();
             this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
@@ -33,6 +35,7 @@ var TopGunNav = React.createClass({
     },
     goToChallenge : function(s) {
         return function(e){
+            this.props.toggleSide(e);
             this.setState({toggleSide: false});
             e.preventDefault();
             this.props.history.pushState(null,'/app/challenge');

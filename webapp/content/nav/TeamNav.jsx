@@ -39,11 +39,13 @@ var TeamNav = React.createClass({
         return function(e){
             this.setState({toggleSide: false});
             e.preventDefault();
+            this.props.toggleSide(e);
             this.props.history.pushState(null,'/app/schedule/' + s.id);
         }.bind(this)
     },
     goToLeader: function(s){
         return function(e){
+            this.props.toggleSide(e);
             this.setState({toggleSide: false});
             e.preventDefault();
             this.props.history.pushState(null,'/app/season/' + s.id + '/leaders');
@@ -51,6 +53,7 @@ var TeamNav = React.createClass({
     },
     goToStandings: function(t) {
         return function(e){
+            this.props.toggleSide(e);
             this.setState({toggleSide: false});
             e.preventDefault();
             this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
@@ -58,6 +61,7 @@ var TeamNav = React.createClass({
     },
     goToTeam: function(t) {
         return function(e) {
+            this.props.toggleSide(e);
             e.preventDefault();
             t.toggle = t.toggle == undefined ? true : !t.toggle;
             this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
@@ -88,7 +92,7 @@ var TeamNav = React.createClass({
                         <a onClick={this.goToStandings(t)} href="#">Standings</a>
                     </li>
                     <li className={scheduleClass}>
-                        <a onClick={this.goToSchedule(s)} href="#">Schedule & Results</a>
+                        <a onClick={this.goToSchedule(s)} href="#">{'Schedule & Results'}</a>
                     </li>
                     <li className={leaderClass} >
                         <a onClick={this.goToLeader(s)} href="#">Division Leaders</a>

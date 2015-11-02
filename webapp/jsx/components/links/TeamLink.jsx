@@ -23,17 +23,23 @@ var TeamLink = React.createClass({
             return null;
         }
         //Challenge users should point to UserLink
-        if (this.props.team.challengeUser != undefined & this.props.team.challengeUser != null ) {
+        if (this.props.team.challengeUser != undefined && this.props.team.challengeUser != null ) {
             return <UserLink user={this.props.team.challengeUser} season={this.props.team.season.id} />;
         }
 
+        /*
         if (this.props.onClick)
         return (
             <a onClick={this.props.onClick} className="teamLink" href='#'>
                 {this.props.team.name}
             </a>
         );
-        var name = this.props.team.name + ' (#' + this.props.team.rank + ')';
+        */
+        var name = this.props.team.name;
+        if (this.props.team.rank < 4) {
+            name = <div style={{display: 'inline'}}><span>{this.props.team.name}</span><span className={'badge rank-' + this.props.team.rank}>{this.props.team.rank}</span></div>
+        }
+
         if (this.props.noRank != undefined)
             name = this.props.team.name;
 
