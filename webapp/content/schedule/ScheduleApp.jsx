@@ -64,8 +64,8 @@ var ScheduleApp = React.createClass({
         return (
             <div>
                 <PendingMatches matches={this.state.pending} />
-                <UpcomingMatches matches={this.state.upcoming} />
                 <MatchResults matches={this.state.played} />
+                <UpcomingMatches matches={this.state.upcoming} />
             </div>
         );
     }
@@ -206,15 +206,25 @@ var TeamResults = React.createClass({
     renderMatches: function() {
         var rows = [];
         this.props.matches.forEach(function(m) {
-            rows.push(
-                <tr key={m.id}>
-                    <td className="result-winner"><TeamLink team={m.winner}/></td>
-                    <td className="racks">{m.winnerSetWins}</td>
-                    <td className="racks">{m.winnerRacks}</td>
-                    <td className="result-loser" ><TeamLink team={m.loser}/></td>
-                    <td className="racks" >{m.loserSetWins}</td>
-                    <td className="racks">{m.loserRacks}</td>
-                </tr>)
+            if (m.winner.season.nine) {
+                rows.push(
+                    <tr key={m.id}>
+                        <td className="result-winner"><TeamLink team={m.winner}/></td>
+                        <td className="racks">{m.winnerSetWins}</td>
+                        <td className="racks">{m.winnerRacks}</td>
+                        <td className="result-loser"><TeamLink team={m.loser}/></td>
+                        <td className="racks">{m.loserSetWins}</td>
+                        <td className="racks">{m.loserRacks}</td>
+                    </tr>)
+            } else {
+                 rows.push(
+                    <tr key={m.id}>
+                        <td className="result-winner"><TeamLink team={m.winner}/></td>
+                        <td className="racks">{m.winnerRacks}</td>
+                        <td className="result-loser"><TeamLink team={m.loser}/></td>
+                        <td className="racks">{m.loserRacks}</td>
+                    </tr>)
+            }
         }.bind(this));
         return rows;
     },
@@ -256,7 +266,7 @@ var TeamResults = React.createClass({
             return 0;
         }
         return (
-        <div className="col-xs-12 col-md-4">
+        <div className="col-xs-12 col-md-6">
           <div className="panel panel-default panel-results-week">
               <div className="panel-heading panel-results-week-title">
                   {Util.formatDateTime(this.props.date)}

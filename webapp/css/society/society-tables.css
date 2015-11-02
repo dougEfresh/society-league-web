@@ -43,6 +43,9 @@ tr {
 .schedule-vs , td.racks{
     width: 40px;
 }
+ td.racks{
+     width: 44px;
+ }
 .schedule-away, .results-winner, .results-loser {
     max-width: 100px;
     width: 100px;

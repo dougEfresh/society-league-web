@@ -90,20 +90,20 @@ var TeamStandings = React.createClass({
                 rows.push(
                     <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
                         <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
-                        <td>{Handicap.formatHandicap(u.handicap)}</td>
-                        <td>{u.wins}</td>
-                        <td>{u.loses}</td>
-                        <td>{u.racksWon}</td>
-                        <td>{u.racksLost}</td>
-                        <td>{u.winPct.toFixed(3)}</td>
+                        <td className="racks">{Handicap.formatHandicap(u.handicap)}</td>
+                        <td className="racks">{u.wins}</td>
+                        <td className="racks">{u.loses}</td>
+                        <td className="racks">{u.racksWon}</td>
+                        <td className="racks"> {u.racksLost}</td>
+                        <td >{u.winPct.toFixed(3)}</td>
                     </tr>);
             } else {
                  rows.push(
                     <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
                         <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
-                        <td>{Handicap.formatHandicap(u.handicap)}</td>
-                        <td>{u.wins}</td>
-                        <td>{u.loses}</td>
+                        <td className="racks">{Handicap.formatHandicap(u.handicap)}</td>
+                        <td className="racks">{u.wins}</td>
+                        <td className="racks">{u.loses}</td>
                         <td>{u.winPct.toFixed(3)}</td>
                     </tr>);
             }

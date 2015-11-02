@@ -67,8 +67,8 @@ var SeasonStandings = React.createClass({
                     <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
-                        <td>{s.wins}</td>
-                        <td>{s.loses}</td>
+                        <td className="racks">{s.wins}</td>
+                        <td className="racks"> {s.loses}</td>
                         <td>{s.points.toFixed(3)}</td>
                         <td>{s.racksWon}</td>
                         <td>{s.racksLost}</td>
@@ -83,12 +83,12 @@ var SeasonStandings = React.createClass({
                     <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
-                        <td>{s.wins}</td>
-                        <td>{s.loses}</td>
-                        <td>{s.setWins}</td>
-                        <td>{s.setLoses}</td>
-                        <td>{s.racksWon}</td>
-                        <td>{s.racksLost}</td>
+                        <td className="racks" >{s.wins}</td>
+                        <td className="racks" >{s.loses}</td>
+                        <td className="racks">{s.setWins}</td>
+                        <td className="racks" >{s.setLoses}</td>
+                        <td className="racks" >{s.racksWon}</td>
+                        <td className="racks">{s.racksLost}</td>
                         <td>{s.rackPct.toFixed(3)}</td>
                     </tr>)
             }.bind(this));
@@ -100,10 +100,10 @@ var SeasonStandings = React.createClass({
                     <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
-                        <td>{s.wins}</td>
-                        <td>{s.loses}</td>
-                        <td>{s.racksWon}</td>
-                        <td>{s.racksLost}</td>
+                        <td className="racks">{s.wins}</td>
+                        <td className="racks"  >{s.loses}</td>
+                        <td className="racks" >{s.racksWon}</td>
+                        <td className="racks" >{s.racksLost}</td>
                         <td>{s.rackPct.toFixed(3)}</td>
                     </tr>)
             }.bind(this));
