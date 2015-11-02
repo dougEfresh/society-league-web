@@ -110,10 +110,14 @@ var DisplayApp = React.createClass({
     },
     componentWillReceiveProps: function (n) {
         if (n.params.seasonId != this.props.params.seasonId) {
+            this.state.activeTeam = null;
+            this.state.activeUser = null;
             this.getSeasonData(n.params.seasonId);
         }
 
         if (this.props.params.teamId != n.params.teamId) {
+            this.state.activeUser = null;
+            this.state.activeTeam = null;
             this.getTeamData(n.params.teamId);
         }
         if (this.props.params.userId != n.params.userId) {
@@ -166,6 +170,8 @@ var DisplayApp = React.createClass({
         this.setState({toggleSeason: !this.state.toggleSeason});
     },
     render: function () {
+        if (this.state.activeSeason == null)
+            return null;
         return (
                 <div id="team-app">
                     <div className="row">
@@ -175,7 +181,7 @@ var DisplayApp = React.createClass({
                                     <div className={"panel-heading" + (this.state.toggleSeason ? "" : " panel-closed")}>
                                     <div className="row panel-title">
                                         <div className="col-xs-10 col-md-11 p-title">
-                                            Standings
+                                            {this.state.activeSeason.shortName + ' Standings'}
                                         </div>
                                         <div className="col-xs-2 col-md-1 caret-title">
                                             <span className={"fa fa-caret-" + (this.state.toggleSeason ? "down" : "left")}></span>

@@ -88,7 +88,7 @@ var TeamStandings = React.createClass({
             i++;
             if (u.season.nine) {
                 rows.push(
-                    <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
+                    <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "selected" : "" } key={i}>
                         <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
                         <td className="racks">{Handicap.formatHandicap(u.handicap)}</td>
                         <td className="racks">{u.wins}</td>
@@ -99,7 +99,7 @@ var TeamStandings = React.createClass({
                     </tr>);
             } else {
                  rows.push(
-                    <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
+                    <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "selected" : "" } key={i}>
                         <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
                         <td className="racks">{Handicap.formatHandicap(u.handicap)}</td>
                         <td className="racks">{u.wins}</td>

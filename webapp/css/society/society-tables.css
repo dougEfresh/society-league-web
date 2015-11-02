@@ -51,6 +51,22 @@ tr {
     width: 100px;
 }
 
+.table-condensed >tbody >tr >td  {
+    padding-top: 10px;
+    padding-right: 0px;
+    padding-bottom:00px;
+    padding-left: 5px;
+}
+
 table tbody tr td.results-loser {
     border: 1px solid black;
+}
+
+tr.selected, tr.selected > td  {
+      background-color: #CDA3A3;
+}
+
+tr.selected > td > a, tr.selected > td > span, tr.selected td {
+    font-weight: bold;
+    color: black;
 }

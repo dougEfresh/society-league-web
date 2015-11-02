@@ -88,6 +88,7 @@ var routes = (
             <Route path="display/:seasonId/:teamId" component={DisplayApp} ></Route>
             <Route path="display/:seasonId" component={DisplayApp} ></Route>
 
+
             <Route path="team/:seasonId/:teamId/:userId" component={DisplayApp} > </Route>
             <Route path="team/:seasonId/:teamId" component={DisplayApp} ></Route>
             <Route path="team/:seasonId" component={DisplayApp} ></Route>

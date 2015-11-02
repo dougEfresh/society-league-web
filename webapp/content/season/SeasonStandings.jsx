@@ -64,7 +64,7 @@ var SeasonStandings = React.createClass({
                     return;
 
                 rows.push(
-                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
+                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td className="racks">{s.wins}</td>
@@ -80,7 +80,7 @@ var SeasonStandings = React.createClass({
                    if (this.props.limit && rows.length >= this.props.limit)
                        return;
                 rows.push(
-                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
+                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td className="racks" >{s.wins}</td>
@@ -97,7 +97,7 @@ var SeasonStandings = React.createClass({
                 if (this.props.limit && rows.length >= this.props.limit)
                     return;
                 rows.push(
-                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "active" : "none"} key={s.team.id}>
+                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
                         <td>{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td className="racks">{s.wins}</td>
