@@ -22,7 +22,8 @@ var NavApp = React.createClass({
         return {
             user: DataStore.getUser(),
             mobile : width < 768,
-            toggleSide : width > 768
+            toggleSide : width > 768,
+            toggleProfile : false
         }
     },
     componentDidMount: function () {
@@ -68,6 +69,20 @@ var NavApp = React.createClass({
         e.preventDefault();
         this.setState({toggleSide: !this.state.toggleSide});
     },
+    toggleProfile: function(e){
+        e.preventDefault();
+        this.setState({toggleProfile: !this.state.toggleProfile});
+    },
+    goToProfile : function(e){
+        e.preventDefault();
+        this.state.toggleProfile = false;
+        this.props.history.pushState(null,'/app/profile');
+    },
+    goToLogin : function(e){
+        e.preventDefault();
+        this.state.toggleProfile = false;
+        this.props.history.pushState(null,'/login');
+    },
     render: function () {
         if (this.getUser().id == "0") {
             return null;
@@ -89,21 +104,18 @@ var NavApp = React.createClass({
                         <a className="navbar-brand logo" href="http://www.societybilliards.com"></a>
                     </div>
                     <ul id="top-menu" className="nav navbar-top-links navbar-right">
-                        <li className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+                        <li className={"dropdown" + (this.state.toggleProfile ? " open" : "")}>
+                            <a onClick={this.toggleProfile} href="#" className="dropdown-toggle" >
                                 {profilePic}
-                                {this.getUser().firstName} <b className="caret">
-                                </b></a>
-                            <ul className="dropdown-menu">
+                                <b className="caret"></b>
+                            </a>
+                            <ul className="profile-menu dropdown-menu">
                                 <li>
-                                    <a href="#"><i className="fa fa-fw fa-user"></i>Profile</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i className="fa fa-fw fa-gear"></i>Settings</a>
+                                    <a onClick={this.goToProfile} href="#"><i className="fa fa-fw fa-gear"></i> Profile</a>
                                 </li>
                                 <li className="divider"></li>
                                 <li>
-                                    <a href="#"><i className="fa fa-fw fa-power-off"></i>Log Out</a>
+                                    <a onClick={this.goToLogin} href="#"><i className="fa fa-fw fa-power-off"></i> Log Out</a>
                                 </li>
                             </ul>
                         </li>

@@ -65,14 +65,14 @@ var SeasonStandings = React.createClass({
 
                 rows.push(
                     <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
-                        <td>{rows.length+1}</td>
+                        <td className="rank" >{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td className="racks">{s.wins}</td>
                         <td className="racks"> {s.loses}</td>
                         <td>{s.points.toFixed(3)}</td>
                         <td>{s.racksWon}</td>
                         <td>{s.racksLost}</td>
-                        <td>{s.rackPct.toFixed(3)}</td>
+                        <td className="pct"  >{s.rackPct.toFixed(3)}</td>
                     </tr>)
             }.bind(this));
         } else if (this.state.seasonStats[0].season.nine) {
@@ -81,7 +81,7 @@ var SeasonStandings = React.createClass({
                        return;
                 rows.push(
                     <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
-                        <td>{rows.length+1}</td>
+                        <td className="rank" >{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td className="racks" >{s.wins}</td>
                         <td className="racks" >{s.loses}</td>
@@ -89,7 +89,7 @@ var SeasonStandings = React.createClass({
                         <td className="racks" >{s.setLoses}</td>
                         <td className="racks" >{s.racksWon}</td>
                         <td className="racks">{s.racksLost}</td>
-                        <td>{s.rackPct.toFixed(3)}</td>
+                        <td className="pct" >{s.rackPct.toFixed(3)}</td>
                     </tr>)
             }.bind(this));
         } else {
@@ -98,19 +98,19 @@ var SeasonStandings = React.createClass({
                     return;
                 rows.push(
                     <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
-                        <td>{rows.length+1}</td>
+                        <td className="rank" >{rows.length+1}</td>
                         <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
                         <td className="racks">{s.wins}</td>
                         <td className="racks"  >{s.loses}</td>
                         <td className="racks" >{s.racksWon}</td>
                         <td className="racks" >{s.racksLost}</td>
-                        <td>{s.rackPct.toFixed(3)}</td>
+                        <td className="pct"  >{s.rackPct.toFixed(3)}</td>
                     </tr>)
             }.bind(this));
         }
 
         var header = (<tr>
-            <th>#</th>
+            <th className="rank">#</th>
             <th>{this.props.notitle ? 'Team' :  this.state.seasonStats[0].season.displayName}</th>
             <th>W</th>
             <th>L</th>
@@ -135,7 +135,7 @@ var SeasonStandings = React.createClass({
             );
         } else if (!this.state.seasonStats[0].season.nine) {
             header = ( <tr>
-                    <th>#</th>
+                    <th className="rank">#</th>
                     <th>{this.props.notitle ? null  : this.state.seasonStats[0].season.displayName}</th>
                     <th>W</th>
                     <th>L</th>

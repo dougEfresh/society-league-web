@@ -4,7 +4,7 @@ var Router = require('react-router')
     ,Link = Router.Link;
 var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var Handicap = require('../../../lib/Handicap');
-
+var mobile = (window.innerWidth > 0) ? window.innerWidth < 768: screen.width < 768;
 var UserLink = React.createClass({
     mixins: [UserContextMixin],
     getDefaultProps: function(){
@@ -21,6 +21,9 @@ var UserLink = React.createClass({
         }
         var hc = "";
         var name = this.props.user.name;
+        if (mobile){
+            name = this.props.user.firstName + " " + this.props.user.lastName.substr(0,1) + ".";
+        }
         //TODO speed up
         if (this.props.handicap != undefined) {
             hc = this.props.handicap;
@@ -35,7 +38,7 @@ var UserLink = React.createClass({
             //name += ' (' + Handicap.formatHandicap(hc)+ ')';
         }
         var user = this.props.user;
-
+        var img = null;
         if (user.profile) {
             var query = '?';
             if (this.props.height)
@@ -47,24 +50,18 @@ var UserLink = React.createClass({
             if (query = '?') {
                 query += 'height=25&width=25'
             }
-            return (
-            <a href='#' onClick={this.props.onClick} >
-                <img className="img-responsive img-thumbnail " src={user.userProfile.imageUrl + query}> </img>
-                {name}
-            </a>
-            )
+            //<img className="img-responsive " src={user.userProfile.imageUrl + query}> </img>
+            img = <img className="profile-pic" src={'https://graph.facebook.com/v2.3/10206313577893040/picture?height=25&width=25'}> </img>;
         }
+
         if (this.props.onClick) {
             return (
-                <a href='#' onClick={this.props.onClick} >{name} </a>
+                <a href='#' onClick={this.props.onClick}>{img}<span>{name}</span></a>
             );
         }
         return (
-            <a  href='#/app/display/' >{name} </a>
+            <a  href='#/app/display/'>{img}<span>{name}</span></a>
         );
-        /*
-
-        */
     }
 });
 

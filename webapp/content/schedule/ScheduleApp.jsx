@@ -235,7 +235,7 @@ var TeamResults = React.createClass({
                 <tr>
                     <th></th>
                     <th></th>
-                    <th></th>
+                    <th><i className="fa fa-thumbs-down fa-1x loser"/></th>
                     <th>Racks</th>
                 </tr>
             )
@@ -246,7 +246,7 @@ var TeamResults = React.createClass({
                         <th>Winner</th>
                         <th>SW</th>
                         <th>R</th>
-                        <th></th>
+                        <th><i className="fa fa-thumbs-down fa-1x  loser"/></th>
                         <th>SL</th>
                         <th>R</th>
                     </tr>
@@ -256,7 +256,7 @@ var TeamResults = React.createClass({
                 <tr>
                     <th>Winner</th>
                     <th>R</th>
-                    <th></th>
+                    <th><i className="fa fa-thumbs-down fa-1x loser"/></th>
                     <th>R</th>
                 </tr>
             )

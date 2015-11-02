@@ -73,6 +73,7 @@ var routes = (
             <Route path="home" component={HomeApp}/>
             <Route path="account" component={HomeApp}/>
             <Route path="user"  component={UserApp}/>
+            <Route path="profile"  component={UserApp}/>
 
             <Route path="admin/users" component={UserAdminApp} />
             <Route path="admin/seasons" component={SeasonAdminApp} />
@@ -87,7 +88,6 @@ var routes = (
             <Route path="display/:seasonId/:teamId/:userId" component={DisplayApp} > </Route>
             <Route path="display/:seasonId/:teamId" component={DisplayApp} ></Route>
             <Route path="display/:seasonId" component={DisplayApp} ></Route>
-
 
             <Route path="team/:seasonId/:teamId/:userId" component={DisplayApp} > </Route>
             <Route path="team/:seasonId/:teamId" component={DisplayApp} ></Route>

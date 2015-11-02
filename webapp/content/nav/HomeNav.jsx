@@ -8,8 +8,7 @@ var HomeNav = React.createClass({
     contextTypes: {
         location: React.PropTypes.object
     },
-
-    goHome: function(s){
+    goHome: function(e){
         e.preventDefault();
         this.props.toggleSide(e);
         this.props.history.pushState(null,'/app/home/');

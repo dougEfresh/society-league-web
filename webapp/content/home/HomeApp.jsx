@@ -136,6 +136,14 @@ var HomeApp = React.createClass({
             e.preventDefault();
             this.setState({show: type,activeSeason: s})}.bind(this);
     },
+    goToLeaders: function(s) {
+        return function(u) {
+            return function (e) {
+                e.preventDefault();
+                window.location = '#/app/season/' + s.id + '/leaders/' + u.id;
+            }.bind(this);
+        }
+    },
     render: function () {
         var user = this.state.user;
         var seasonStandings = [];
@@ -214,7 +222,7 @@ var HomeApp = React.createClass({
                             <i className="fa fa-sitemap"></i> {'Top Players ' + s.shortName}
                         </div>
                         <div className="panel-body">
-                            <SeasonLeaders onUserClick={this.changeTeam} params={{seasonId: s.id}} limit={5} />
+                            <SeasonLeaders onUserClick={this.goToLeaders(s)} params={{seasonId: s.id}} limit={5} />
                         </div>
                     </div>
                 </div>
@@ -238,6 +246,9 @@ var HomeApp = React.createClass({
                             </div>
                         </div>
                     </div>
+                </div>
+                  <div className="row">
+                    {seasonLeaders}
                 </div>
        </div>
         );

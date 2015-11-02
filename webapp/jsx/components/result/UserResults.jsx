@@ -112,7 +112,7 @@ var ResultScramble = React.createClass({
 
         return (
              <div className="table-responsive">
-                 <table className="table table-bordered table-striped table-condensed table-grid" >
+                 <table className="table table-users table-bordered table-striped table-condensed table-grid" >
                      <thead>
                      <tr>
                          <th>W/L</th>
@@ -145,10 +145,10 @@ var ResultEight = React.createClass({
             rows.push(
                 <tr key={r.id}>
                 <td className="racks">{r.win ? 'W' : 'L'}</td>
-                    <td><UserLink type={'small'} user={r.opponent} /></td>
-                    <td>{Handicap.formatHandicap(r.opponentHandicap)}</td>
-                    <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
-                <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
+                    <td className="user"><UserLink type={'small'} user={r.opponent} /></td>
+                    <td className="handicap">{Handicap.formatHandicap(r.opponentHandicap)}</td>
+                    <td className="date"><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
+                <td clasName="handicap">{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
 
                 </tr>);
         }
@@ -162,7 +162,7 @@ var ResultEight = React.createClass({
 
         return (
              <div className="table-responsive">
-                 <table className="table table-bordered table-striped table-condensed table-grid" >
+                 <table className="table table-users table-bordered table-striped table-condensed table-grid" >
                      <thead>
                      <tr>
                          <th>W/L</th>
@@ -218,7 +218,7 @@ var ResultNine = React.createClass({
         }
         return (
              <div className="table-responsive">
-                 <table className="table tabled-bordered table-striped  table-condensed table-grid" >
+                 <table className="table table-users tabled-bordered table-striped  table-condensed table-grid" >
                      <thead>
                      <tr>
                          <th>Date</th>
@@ -274,7 +274,7 @@ var ResultChallenge = React.createClass({
         }
         return (
              <div className="table-responsive">
-                 <table className="table table-bordered table-condensed table-striped  table-grid" >
+                 <table className="table table-users table-bordered table-condensed table-striped table-grid" >
                      <thead>
                      <tr>
                          <th>Date</th>

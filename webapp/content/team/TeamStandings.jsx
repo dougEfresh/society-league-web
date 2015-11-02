@@ -95,7 +95,7 @@ var TeamStandings = React.createClass({
                         <td className="racks">{u.loses}</td>
                         <td className="racks">{u.racksWon}</td>
                         <td className="racks"> {u.racksLost}</td>
-                        <td >{u.winPct.toFixed(3)}</td>
+                        <td className="pct" >{u.winPct.toFixed(3)}</td>
                     </tr>);
             } else {
                  rows.push(
@@ -104,13 +104,13 @@ var TeamStandings = React.createClass({
                         <td className="racks">{Handicap.formatHandicap(u.handicap)}</td>
                         <td className="racks">{u.wins}</td>
                         <td className="racks">{u.loses}</td>
-                        <td>{u.winPct.toFixed(3)}</td>
+                        <td className="pct"  >{u.winPct.toFixed(3)}</td>
                     </tr>);
             }
         }.bind(this));
         return (
             <div className="table-responsive">
-                <table className="table table-bordered table-condensed table-striped table-grid table-responsive" >
+                <table className="table table-users table-bordered table-condensed table-striped table-grid table-responsive" >
                 <thead>
                 {this.getHeader()}
                 <tbody>

@@ -1,0 +1,8 @@
+.profile-pic {
+    background-size: 100%;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    padding-right: 5px;
+   padding-bottom: 5px;
+}
