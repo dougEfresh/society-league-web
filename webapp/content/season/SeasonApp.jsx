@@ -75,7 +75,7 @@ var SeasonApp = React.createClass({
         }
         var userHeader = null;
         if (this.state.selectedUser != null) {
-            userHeader = this.state.selectedUser.user.firstName + "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
+            userHeader = this.state.selectedUser.user.firstName ; //+ "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
         }
         return (
             <div id="season-leaders">

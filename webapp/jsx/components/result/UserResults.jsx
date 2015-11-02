@@ -112,7 +112,7 @@ var ResultScramble = React.createClass({
 
         return (
              <div className="table-responsive">
-                 <table className="table tabled-bordered table-striped  table-condensed table-responsive" >
+                 <table className="table table-bordered table-striped table-condensed table-grid" >
                      <thead>
                      <tr>
                          <th>W/L</th>
@@ -162,7 +162,7 @@ var ResultEight = React.createClass({
 
         return (
              <div className="table-responsive">
-                 <table className="table tabled-bordered table-striped  table-condensed table-responsive" >
+                 <table className="table table-bordered table-striped table-condensed table-grid" >
                      <thead>
                      <tr>
                          <th>W/L</th>
@@ -218,7 +218,7 @@ var ResultNine = React.createClass({
         }
         return (
              <div className="table-responsive">
-                 <table className="table table-bordered table-striped table-condensed table-responsive" >
+                 <table className="table tabled-bordered table-striped  table-condensed table-responsive" >
                      <thead>
                      <tr>
                          <th>Date</th>
@@ -274,7 +274,7 @@ var ResultChallenge = React.createClass({
         }
         return (
              <div className="table-responsive">
-                 <table className="table tabled-bordered table-striped  table-condensed table-responsive" >
+                 <table className="table table-bordered table-condensed table-striped table-grid" >
                      <thead>
                      <tr>
                          <th>Date</th>

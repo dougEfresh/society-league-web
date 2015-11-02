@@ -59,14 +59,6 @@ var TeamNav = React.createClass({
             this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
         }.bind(this)
     },
-    goToTeam: function(t) {
-        return function(e) {
-            this.props.toggleSide(e);
-            e.preventDefault();
-            t.toggle = t.toggle == undefined ? true : !t.toggle;
-            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
-        }.bind(this);
-    },
     expandTeam: function(t) {
         return function(e) {
             //this.props.toggleSide(e);
@@ -115,7 +107,7 @@ var TeamNav = React.createClass({
         return(
             <li className={this.state.toggleTeam ? "selected dropdown " + teamCls : teamCls + " dropdown"}>
                 <a onClick={this.toggleTeam} href="#">
-                    <i className="fa fa-fw fa-users"></i>My Teams
+                    <i className="fa fa-fw fa-users"></i> My Teams
                     <span className={"fa fa-caret-" + (this.state.toggleTeam ? "down side-caret" : "left side-caret")} ></span>
                 </a>
                 <ul className={"nav nav-second-level collapse " + (this.state.toggleTeam ? " selected in"  : "")}>

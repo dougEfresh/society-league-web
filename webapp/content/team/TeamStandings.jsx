@@ -3,6 +3,7 @@ var Router = require('react-router');
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var Util = require('../../jsx/util.jsx');
+var Handicap = require('../../lib/Handicap');
 
 var TeamStandings = React.createClass({
     mixins: [UserContextMixin],
@@ -20,10 +21,18 @@ var TeamStandings = React.createClass({
                 module: 'TeamStandings',
                 router: this.props.history
             });
-
+        var cb = function(d) {
+            this.state.statTeamMembers = [];
+            d.forEach(function(s) {
+                if (s.user != undefined && s.user.real) {
+                    this.state.statTeamMembers.push(s);
+                }
+            }.bind(this));
+            this.setState({});
+        }.bind(this);
         Util.getSomeData(
             { url: '/api/stat/team/' + id + '/members',
-                callback: function(d){this.setState({statTeamMembers: d})}.bind(this),
+                callback: cb,
                 module: 'TeamStandings',
                 router: this.props.history}
         );
@@ -46,6 +55,7 @@ var TeamStandings = React.createClass({
         if (this.state.statTeam.team  && this.state.statTeam.team.nine) {
             return ( <tr>
                 <th></th>
+                <th>HC</th>
                 <th>W</th>
                 <th>L</th>
                 <th>RW</th>
@@ -56,6 +66,7 @@ var TeamStandings = React.createClass({
         return (
             <tr>
                 <th>Name</th>
+                <th>HC</th>
                 <th>W</th>
                 <th>L</th>
                 <th>PCT</th>
@@ -79,6 +90,7 @@ var TeamStandings = React.createClass({
                 rows.push(
                     <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
                         <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
+                        <td>{Handicap.formatHandicap(u.handicap)}</td>
                         <td>{u.wins}</td>
                         <td>{u.loses}</td>
                         <td>{u.racksWon}</td>
@@ -89,6 +101,7 @@ var TeamStandings = React.createClass({
                  rows.push(
                     <tr onClick={this.props.onClick(u.user)} className={activeUser.id == u.user.id ? "active" : "none" } key={i}>
                         <td><UserLink onClick={this.props.onClick(u.user)} user={u.user} season={u.season.id}/></td>
+                        <td>{Handicap.formatHandicap(u.handicap)}</td>
                         <td>{u.wins}</td>
                         <td>{u.loses}</td>
                         <td>{u.winPct.toFixed(3)}</td>

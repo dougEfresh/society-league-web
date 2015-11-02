@@ -190,7 +190,7 @@ var race = function(hc1,hc2) {
         return "";
 
     if (r.indexOf('0/') == 0)
-     return 'E';
+     return r.substr(2,1);
 
     return r;
 };

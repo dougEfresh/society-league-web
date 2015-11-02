@@ -25,6 +25,7 @@ tr {
     border-top: none;
 }
 
+/*.table-season-standings tbody tr ,*/
 .schedule-table tbody tr, .results-table tbody tr {
     min-height: 25px;
     height: 25px;

@@ -8,10 +8,6 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
 
-var nineBallColumns = [
-
-]
-
 var SeasonStandings = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
@@ -25,7 +21,7 @@ var SeasonStandings = React.createClass({
                 {
                     url: '/api/stat/season/' + id,
                     callback: function (d) {
-                        this.setState({seasonStats: d, loading: false})
+                        this.setState({seasonStats: d,loading: false})
                     }.bind(this),
                     module: 'SeasonStandings',
                     router: this.props.history
@@ -151,7 +147,7 @@ var SeasonStandings = React.createClass({
         }
         return (
             <div className="table-responsive">
-                <table className="table table-bordered table-condensed table-striped table-responsive" >
+                <table className="table table-season-standings table-bordered table-condensed table-striped table-responsive" >
                     <thead>
                     {header}
                 <tbody>

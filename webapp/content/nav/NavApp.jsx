@@ -113,6 +113,7 @@ var NavApp = React.createClass({
                             <HomeNav    toggleSide={this.closeSide} params={this.props.params} history={this.props.history} location={this.props.location} />
                             <TeamNav    toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
                             <TopGunNav  toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
+                            <AdminNav   toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
                         </ul>
                     </div>
                 </nav>
