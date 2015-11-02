@@ -74,7 +74,7 @@ var ScheduleApp = React.createClass({
 var PendingMatches = React.createClass({
     getInitialState: function() {
         return {
-            toggle: true
+            toggle: false
         }
     },
     getPending: function() {
@@ -180,7 +180,7 @@ var UpcomingMatches = React.createClass({
         return (
             <div className="panel panel-default panel-schedule">
                 <a onClick={toggleHeading} href='#'>
-                    <div className={"panel-heading panel" +(this.state.toggle ? "" : " panel-closed")}>
+                    <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-11 p-title">
                               Upcoming Matches

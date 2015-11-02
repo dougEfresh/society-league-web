@@ -49,7 +49,7 @@ var UserLink = React.createClass({
             }
             return (
             <a href='#' onClick={this.props.onClick} >
-                <img src={user.userProfile.imageUrl + query}> </img>
+                <img className="img-responsive img-thumbnail " src={user.userProfile.imageUrl + query}> </img>
                 {name}
             </a>
             )
