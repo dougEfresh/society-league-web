@@ -222,7 +222,8 @@ var HomeApp = React.createClass({
                 return;
             }
             seasonLeaders.push(
-                <div key={s.id} className="col-xs-12 col-md-4">
+	    <div className="row" key={s.id} >
+                <div className="col-xs-12 col-md-8">
                     <div className="panel panel-default panel-leaders">
                         <div className="panel-heading">
                             <i className="fa fa-sitemap"></i>
@@ -233,6 +234,7 @@ var HomeApp = React.createClass({
                         </div>
                     </div>
                 </div>
+		</div>		
             )
         }.bind(this));
 
@@ -241,7 +243,7 @@ var HomeApp = React.createClass({
                 <div className="welcome" align="center">
                     <h3>Society Billiards Leagues</h3>
                 </div>
-                <div className="welcome-name"><h4><p>Welcome Doug</p></h4></div>
+                <div className="welcome-name"><h4><p>{'Welcome ' + this.getUser().firstName} </p></h4></div>
                 <div className="row">
                     <div className="col-xs-12 col-md-3">
                         <div className="panel panel-default panel-upcoming">
@@ -254,9 +256,7 @@ var HomeApp = React.createClass({
                         </div>
                     </div>
                 </div>
-                  <div className="row">
-                    {seasonLeaders}
-                </div>
+		 {seasonLeaders}
        </div>
         );
     }
