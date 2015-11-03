@@ -9,6 +9,7 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var moment = require('moment');
 var Handicap = require('../../lib/Handicap');
+var Modal = require('react-modal');
 
 var teamOptions = [];
 var options=[];
@@ -174,7 +175,7 @@ var UpcomingWeeklyMatch = React.createClass({
 var UpcomingMatches = React.createClass({
     getInitialState: function() {
         return {
-            toggle: true
+            toggle: false
           }
     },
     getUpcoming: function() {
@@ -187,14 +188,14 @@ var UpcomingMatches = React.createClass({
         );
     },
     componentWillReceiveProps: function(n) {
-        if (n.params.matchId != undefined) {
-            this.setState({toggle: false});
-        }
+        //if (n.params.matchId != undefined) {
+          //  this.setState({toggle: false});
+        //}
     },
     componentDidMount: function() {
-        if (this.props.params.matchId != undefined) {
-            this.setState({toggle: false});
-        }
+        //if (this.props.params.matchId != undefined) {
+          //  this.setState({toggle: false});
+        //}
     },
     render: function() {
         var toggleHeading = function(e) {e.preventDefault(); this.setState({toggle: !this.state.toggle})}.bind(this);
@@ -335,12 +336,12 @@ var MatchResults = React.createClass({
     toggleHeading: function(e) {e.preventDefault(); this.setState({toggle: !this.state.toggle})},
     componentWillReceiveProps: function(n) {
         if (n.params.matchId != undefined) {
-            this.setState({toggle: false});
+            //this.setState({toggle: false});
         }
     },
     componentDidMount: function() {
         if (this.props.params.matchId != undefined) {
-            this.setState({toggle: false});
+            //this.setState({toggle: false});
         }
     },
     render: function() {
@@ -372,13 +373,26 @@ var MatchResults = React.createClass({
     }
 });
 
-
+var  customStyles = {
+  content : {
+      /*
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+    */
+      backgroundColor   : 'rgba(0, 0, 0, 0.75)'
+  }
+};
 
 var PlayerResults = React.createClass({
     getInitialState: function() {
         return {
             results : [],
-            toggle: false
+            toggle: false,
+            modalIsOpen: true
         }
     },
     getData: function(id){
@@ -393,7 +407,7 @@ var PlayerResults = React.createClass({
     },
     componentWillReceiveProps: function(n) {
         if (n.matchId == undefined){
-            this.setState({results: []});
+            this.setState({results: [], modalIsOpen: false});
         }
         if (n.matchId != this.props.matchId) {
             this.getData(n.matchId);
@@ -442,7 +456,7 @@ var PlayerResults = React.createClass({
                     <span>{m.teamMatch.loser.name}</span>
                     <span className="badge loser-team-racks-badge racks-badge">{'R:' +  m.teamMatch.loserRacks}</span>
                 </th>
-             <th>HC</th>
+             <th className="racks hc">HC</th>
 
             </tr>)
 
@@ -450,12 +464,12 @@ var PlayerResults = React.createClass({
     getRows: function() {
         var rows = [];
         var s = this.state.results[0].teamMatch.home.season;
-
+        var cnt = 0;
         if (s.nine && !s.challenge) {
             this.state.results.forEach(function (m) {
                 var wl = m.winnerTeamRacks > m.loserTeamRacks ? 'W' : 'L';
                 rows.push(
-                    <tr key={m.id}>
+                    <tr key={cnt++}>
                         <td className="racks match-number">{m.matchNumber}</td>
                         <td className="winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
                         </td>
@@ -468,6 +482,7 @@ var PlayerResults = React.createClass({
                     </tr>
                 )
             });
+            return rows;
         }
         if (s.challenge)
             return rows;
@@ -478,7 +493,7 @@ var PlayerResults = React.createClass({
         this.state.results.forEach(function (m) {
             var wl = m.winnerTeamRacks > m.loserTeamRacks ? 'W' : 'L';
                 rows.push(
-                    <tr key={m.id}>
+                    <tr key={cnt++}>
                         <td className="racks match-number">{m.matchNumber}</td>
                         <td className="winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
                         </td>
@@ -492,31 +507,71 @@ var PlayerResults = React.createClass({
 
         return rows;
     },
+    openModal: function() {
+        this.setState({modalIsOpen: true});
+  },
+
+  closeModal: function() {
+      this.props.history.pushState(null,'/app/schedule/' + this.state.results[0].season.id);
+      this.setState({modalIsOpen: false});
+  },
+    handleClose: function( ) {
+
+    },
+
     render: function() {
         if (this.state.results.length == 0) {
             return null;
         }
         var m = this.state.results[0];
         var toggleHeading = function(e){e.preventDefault(); this.setState({toggle: !this.state.toggle})}.bind(this);
-        return (<div className="panel panel-default panel-results">
-                <a onClick={toggleHeading} href='#'>
-                    <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
-                        <div className="row panel-title">
-                            <div className="col-xs-10 col-md-11 p-title">
-                                <span className="fa winner-badge"></span>
-                                <span> {m.teamMatch.winner.name}</span>
-                                <span> Vs. </span>
-                                <span>{m.teamMatch.loser.name}</span>
-                            </div>
-                            <div className="col-xs-2 col-md-1 caret-title">
-                                <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <div className={"panel-body panel-results-body" + (this.state.toggle ? "" : " hide")} >
-                    <div className="row match-row">
-                        <div className="table-responsive">
+        this.state.modalIsOpen = true;
+        var defaultStyles = {
+            overlay : {
+                position        : 'fixed',
+                top             : 0,
+                left            : 0,
+                right           : 0,
+                bottom          : 0,
+                backgroundColor : 'rgba(0, 0, 0, 0.75)'
+            },
+            content : {
+                position                : 'absolute',
+                top                     : '40px',
+                left                    : '0px',
+                right                   : '0px',
+                bottom                  : '0px',
+                border                  : '1px solid #ccc',
+                background              : '#DDD',
+                overflow                : 'auto',
+                WebkitOverflowScrolling : 'touch',
+                borderRadius            : '4px',
+                outline                 : 'none',
+                padding                 : '0px'
+
+            }
+        };
+        return (
+            <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.handleClose}
+                    className="Modal__Bootstrap modal-dialog"
+                    style={defaultStyles}
+                >
+                  <div className="modal-content">
+                      <div className="modal-header">
+                          <div className="p-title">
+                              <span className="fa winner-badge"></span>
+                              <span> {m.teamMatch.winner.name}</span>
+                              <span> Vs.</span>
+                              <span>{m.teamMatch.loser.name}</span>
+                              <div style={{float: 'right'}}>
+                                  <button  type="button" className="btn btn-primary btn-modal" onClick={this.closeModal}>X</button>
+                              </div>
+                          </div>
+                      </div>
+                      <div className="modal-body">
+                          <div className="table-responsive">
                             <table className="table table-users table-grid table-bordered table-condensed table-striped" >
                                 <thead>
                                 {this.getHeader(m)}
@@ -525,10 +580,14 @@ var PlayerResults = React.createClass({
                                 {this.getRows()}
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-        </div>)
+                          </div>
+                      </div>
+                      <div className="modal-footer">
+                          <button type="button" className="btn btn-primary" onClick={this.closeModal}>X</button>
+                      </div>
+                  </div>
+            </Modal>
+        )
     }
 });
 
