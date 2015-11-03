@@ -113,7 +113,7 @@ var SeasonLeaders = React.createClass({
                         <th className="racks">L</th>
                         <th className={!s.nine && !s.challenge ? "hide" : "racks"}>RW</th>
                         <th className={!s.nine && !s.challenge ? "hide" : "racks"}>RL</th>
-                        <th>%</th>
+                        <th className="racks pct">%</th>
                         <th className={s.challenge ? "hide" : ""}>Team</th>
                     </tr>
                     </thead>

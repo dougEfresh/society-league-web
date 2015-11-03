@@ -115,11 +115,11 @@ var ResultScramble = React.createClass({
                  <table className={ Util.tableCls + " table-users"} >
                      <thead>
                      <tr>
-                         <th>W/L</th>
+                         <th className="racks">W/L</th>
                          <th>Opponent</th>
                          <th>Opponent</th>
                          <th>Date</th>
-                         <th>HC</th>
+                         <th className="racks hc">HC</th>
                      </tr>
                 </thead>
                 <tbody>
@@ -165,10 +165,10 @@ var ResultEight = React.createClass({
                      <thead>
                      <tr>
                          <th>Date</th>
-                         <th>W/L</th>
+                         <th className="racks">W/L</th>
                          <th>Op.</th>
                          <th>Op. HC</th>
-                         <th>HC</th>
+                         <th className="racks hc">HC</th>
                      </tr>
                 </thead>
                 <tbody>
@@ -226,7 +226,7 @@ var ResultNine = React.createClass({
                          <th className="race" >Race</th>
                          <th>Op.</th>
                          <th>Op. HC</th>
-                         <th>HC</th>
+                         <th className="ranks hc">HC</th>
                      </tr>
                 </thead>
                 <tbody>
@@ -278,15 +278,15 @@ var ResultChallenge = React.createClass({
                  <table className="table table-users table-bordered table-striped table-condensed" >
                      <thead>
                      <tr>
-                         <th>Date</th>
+                         <th className="date">Date</th>
                          <th>W/L</th>
-                         <th>P</th>
+                         <th className="racks points">P</th>
                          <th>Avg P</th>
-                         <th>#</th>
+                         <th className="racks rank">#</th>
                          <th>Formula</th>
                          <th>Score</th>
                          <th>Opponent</th>
-                         <th>HC</th>
+                         <th className="racks hc">HC</th>
                      </tr>
                 </thead>
                 <tbody>

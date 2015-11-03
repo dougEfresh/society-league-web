@@ -60,7 +60,7 @@ var TeamStandings = React.createClass({
                 <th className="racks" >L</th>
                 <th className="racks" >RW</th>
                 <th className="racks" >RL</th>
-                <th>Pct</th>
+                <th className="racks pct" >Pct</th>
                 </tr>);
         }
         return (

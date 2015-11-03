@@ -50,22 +50,31 @@ var UserLink = React.createClass({
             if (query = '?') {
                 query += 'height=25&width=25'
             }
-            //<img className="img-responsive " src={user.userProfile.imageUrl + query}> </img>
-            img = <img className="profile-pic" src={'https://graph.facebook.com/v2.3/10206313577893040/picture?height=25&width=25'}> </img>;
+            img = <img className="img-responsive " src={user.userProfile.imageUrl + '?height=25&width=25'}> </img>
+            //
         }
-
+        img = <img className="profile-pic" src={'https://graph.facebook.com/v2.3/10206313577893040/picture?height=25&width=25'}> </img>;
         if (this.props.onClick) {
             return (
-                <a href='#' onClick={this.props.onClick}>{img}<span>{name}</span></a>
+                <div className="user-profile">{img}<a href='#' onClick={this.props.onClick}><span>{name}</span></a></div>
             );
         }
         if (this.props.season) {
             return (
-                <a href={'#/app/season/' + this.props.season.id + '/leaders/' + this.props.user.id}>{img}<span>{name}</span></a>
+                <div className="user-profile">{img}
+                    <a href={'#/app/season/' + this.props.season.id + '/leaders/' + this.props.user.id}>
+                        <span>{name}</span>
+                    </a>
+                </div>
             );
         }
         return (
-            <a  href='#/app/season/'>{img}<span>{name}</span></a>
+             <div className="user-profile">{img}
+                 <a  href='#/app/season/'>
+                 <span>{name}</span>
+                 </a>
+             </div>
+
         );
     }
 });

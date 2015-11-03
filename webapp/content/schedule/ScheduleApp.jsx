@@ -24,7 +24,8 @@ var ScheduleApp = React.createClass({
             upcoming: null,
             played: null,
             pending: null,
-            teams: []
+            teams: [],
+            season: null
         }
     },
     getData: function(id) {
@@ -52,6 +53,14 @@ var ScheduleApp = React.createClass({
             module: 'SeasonWeeklyResults',
             router: this.props.history
         });
+            Util.getSomeData({
+            url: '/api/season/' + this.props.params.seasonId,
+            callback: function (d) {
+                this.setState({season: d});
+            }.bind(this),
+            module: 'SeasonWeeklyResults',
+            router: this.props.history
+        });
     },
     componentDidMount: function () {
         this.getData(this.props.params.seasonId);
@@ -63,9 +72,10 @@ var ScheduleApp = React.createClass({
         if (this.state.upcoming == null && this.state.played == null && this.state.pending == null) {
             return (<LoadingApp /> )
         }
+
         return (
             <div>
-                <MatchResults  params={this.props.params} history={this.props.history} matches={this.state.played} />
+                <MatchResults  season={this.state.season} params={this.props.params} history={this.props.history} matches={this.state.played} />
                 <PlayerResults history={this.props.history} matchId={this.props.params.matchId} />
                 <UpcomingMatches params={this.props.params} matches={this.state.upcoming} />
                 <PendingMatches matches={this.state.pending} />
@@ -344,7 +354,7 @@ var MatchResults = React.createClass({
                     <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-11 p-title">
-                              <span className="fa fa-trophy"></span><span> Results</span>
+                              <span className="fa fa-trophy"></span><span> Results<span> {this.props.season.shortName}</span></span>
                             </div>
                             <div className="col-xs-2 col-md-1 caret-title">
                                 <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
@@ -372,6 +382,7 @@ var PlayerResults = React.createClass({
         }
     },
     getData: function(id){
+        if (id)
          Util.getSomeData(
              {
                  url: '/api/playerresult/teammatch/' + id, callback: function (d) {
@@ -381,6 +392,9 @@ var PlayerResults = React.createClass({
              });
     },
     componentWillReceiveProps: function(n) {
+        if (n.matchId == undefined){
+            this.setState({results: []});
+        }
         if (n.matchId != this.props.matchId) {
             this.getData(n.matchId);
         }
@@ -443,11 +457,11 @@ var PlayerResults = React.createClass({
                 rows.push(
                     <tr key={m.id}>
                         <td className="racks match-number">{m.matchNumber}</td>
-                        <td className="user winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
+                        <td className="winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
                         </td>
                         <td className="racks hc winner-hc">{Handicap.formatHandicap(m.winnerTeamHandicap)}</td>
                         <td className={"racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
-                        <td className="user loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
+                        <td className="loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
                         <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
                         <td className="score">{m.winnerTeamRacks + '-' + m.loserTeamRacks}</td>
                         <td className="racks race">{Handicap.race(m.winnerTeamHandicap, m.loserTeamHandicap)}</td>
@@ -466,11 +480,11 @@ var PlayerResults = React.createClass({
                 rows.push(
                     <tr key={m.id}>
                         <td className="racks match-number">{m.matchNumber}</td>
-                        <td className="user winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
+                        <td className="winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
                         </td>
                         <td className="racks hc winner-hc">{Handicap.formatHandicap(m.winnerTeamHandicap)}</td>
                         <td className={"racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
-                        <td className="user loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
+                        <td className="loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
                         <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
                     </tr>
                 )

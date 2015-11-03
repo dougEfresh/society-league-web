@@ -40,6 +40,7 @@ var TeamNav = React.createClass({
             this.setState({toggleSide: false});
             e.preventDefault();
             this.props.toggleSide(e);
+            console.log('Changing to ' + '/app/schedule/' + s.id)
             this.props.history.pushState(null,'/app/schedule/' + s.id);
         }.bind(this)
     },

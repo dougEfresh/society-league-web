@@ -120,3 +120,26 @@ ul.nav {
     margin-left: 5px;
     border-radius: 1px
 }
+
+#login-app {
+
+}
+
+
+.well {
+	float: none;
+	margin: 140px auto 0px auto;
+	color: #fff;
+	background-image: -webkit-linear-gradient(top, rgba(70,0,0, .9) 0%, rgba(0,0,0, .9) 100%);
+	background-image: -o-linear-gradient(top, rgba(70,0,0, .9) 0%, rgba(0,0,0, .9) 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(70,0,0, .9)), to(rgba(0,0,0, .9)));
+	background-image: linear-gradient(to bottom, rgba(70,0,0, .9) 0%, rgba(0,0,0, .9) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#460000', endColorstr='#6666666', GradientType=0);
+	background-repeat: repeat-x;
+	background-color: transparent;
+	border: 3px solid #240000;
+	border-radius: 8px;
+	-webkit-box-shadow: 0px 10px 35px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 10px 35px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 10px 35px 0px rgba(0,0,0,0.75);
+}

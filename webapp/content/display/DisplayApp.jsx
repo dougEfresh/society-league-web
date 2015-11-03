@@ -28,9 +28,9 @@ var DisplayApp = React.createClass({
              activeUser: null,
              activeTeam: null,
              activeSeason: null,
-             toggleTeam: true,
+             toggleTeam:  this.props.params.teamId != undefined,
              toggleSeason: true,
-             toggleUser: true,
+             toggleUser: this.props.params.userId != undefined,
              mobile : width < 768
          }
      },
@@ -45,8 +45,6 @@ var DisplayApp = React.createClass({
 
         if (this.props.params.userId) {
             this.getUserData(this.props.params.userId);
-        } else {
-            this.setState({toggleUser: false})
         }
     },
     getSeasonData: function(seasonId) {
@@ -102,13 +100,15 @@ var DisplayApp = React.createClass({
                 router: this.props.history
             }
         );
-        Util.getSomeData({
-                url: '/api/user/active',
-                callback: userCb,
-                module: 'UserApp',
-                router: this.props.history
-            }
-        );
+        if (this.props.params.userId) {
+            Util.getSomeData({
+                    url: '/api/user/active',
+                    callback: userCb,
+                    module: 'UserApp',
+                    router: this.props.history
+                }
+            );
+        }
     },
     componentWillReceiveProps: function (n) {
         if (n.params.seasonId != this.props.params.seasonId) {
