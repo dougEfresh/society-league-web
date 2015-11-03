@@ -84,7 +84,7 @@ var SeasonApp = React.createClass({
         return (
             <div id="season-leaders">
                 <div className="row">
-                <div className="col-xs-12 col-md-6">
+                <div className="col-xs-12 col-md-8">
                     <div className="panel panel-default panel-leaders">
                         <a onClick={this.toggleHeading} href='#'>
                             <div className={"panel-heading" +(this.state.toggleLeaders ? "" : " panel-closed")}>
@@ -105,7 +105,7 @@ var SeasonApp = React.createClass({
                 </div>
                 </div>
             <div className="row">
-                <div className="col-xs-12 col-md-6">
+                <div className="col-xs-12 col-md-8">
                     <div className={"panel panel-default panel-results" + (this.state.selectedUser != null ? "" : " hide")} >
                         <a onClick={this.toggleHeading} href='#'>
                             <div className="panel-heading" role="tab" id="headingOne">

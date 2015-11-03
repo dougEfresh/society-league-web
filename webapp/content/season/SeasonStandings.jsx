@@ -110,14 +110,14 @@ var SeasonStandings = React.createClass({
         }
 
         var header = (<tr>
-            <th className="rank">#</th>
+            <th className="racks rank">#</th>
             <th>{this.props.notitle ? 'Team' :  this.state.seasonStats[0].season.displayName}</th>
-            <th>W</th>
-            <th>L</th>
-            <th>SW</th>
-            <th>SL</th>
-            <th>RW</th>
-            <th>RL</th>
+            <th className="racks" >W</th>
+            <th className="racks"  >L</th>
+            <th className="racks" >SW</th>
+            <th className="racks"  >SL</th>
+            <th className="racks" >RW</th>
+            <th className="racks"  >RL</th>
             <th>Pct</th>
         </tr>);
         if (this.state.seasonStats[0].season.challenge) {

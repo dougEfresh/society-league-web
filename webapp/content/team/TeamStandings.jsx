@@ -55,20 +55,20 @@ var TeamStandings = React.createClass({
         if (this.state.statTeam.team  && this.state.statTeam.team.nine) {
             return ( <tr>
                 <th></th>
-                <th>HC</th>
-                <th>W</th>
-                <th>L</th>
-                <th>RW</th>
-                <th>RL</th>
+                <th className="hc" >HC</th>
+                <th className="racks">W</th>
+                <th className="racks" >L</th>
+                <th className="racks" >RW</th>
+                <th className="racks" >RL</th>
                 <th>Pct</th>
                 </tr>);
         }
         return (
             <tr>
-                <th>Name</th>
-                <th>HC</th>
-                <th>W</th>
-                <th>L</th>
+                <th></th>
+                <th className="hc" >HC</th>
+                <th className="racks">W</th>
+                <th className="racks" >L</th>
                 <th>PCT</th>
             </tr>);
     },
