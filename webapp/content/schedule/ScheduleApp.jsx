@@ -537,7 +537,7 @@ var PlayerResults = React.createClass({
             },
             content : {
                 position                : 'absolute',
-                top                     : '40px',
+                top                     : '50px',
                 left                    : '0px',
                 right                   : '0px',
                 bottom                  : '0px',
