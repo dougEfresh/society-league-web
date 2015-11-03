@@ -148,7 +148,7 @@ ul.nav {
 }
 
 #login-app > .well {
-    width: 600px;
+    max-width: 600px;
 }
 
 .well {

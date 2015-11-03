@@ -49,7 +49,7 @@ var LoginApp = React.createClass({
         }
         return (
             <div id="login-app" className="container fluid container-fluid wrap">
-            <div className="login-container well col-lg-5 col-md-5 col-sm-6">
+            <div className="login-container well col-md-5 col-sm-6">
                 <form name="fb_signin" id="fb_signin" action="/signin/facebook" method="POST">
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="row">

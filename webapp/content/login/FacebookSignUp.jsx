@@ -42,25 +42,29 @@ var LoginApp = React.createClass({
         }
 
         return (
-            <div id="login-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
-                <form name="fb_signin" id="fb_signin" action="/api/signup" method="POST">
-                        <h2 className="form-signin-heading">Please Provide Registered Email</h2>
-                        <div className="form-field form-group">
-                            <div  className="form-group">
-                                <input ref='email' id="email" type="input" name="email" placeholder="enter email" className="form-control"/>
-                                <input type="hidden" value="true" name="springRememberMe" />
-                                <input type="hidden" name="scope" value="public_profile,email,user_friends"></input>
+            <div id="login-app">
+                <div className="container fluid container-fluid wrap">
+                    <div className="login-container well col-lg-5 col-md-5 col-sm-6">
+                        <form name="fb_signin" id="fb_signin" action="/api/signup" method="POST">
+                            <h2 className="form-signin-heading">Please Provide Registered Email</h2>
+                            <div className="form-field form-group">
+                                <div  className="form-group">
+                                    <input ref='email' id="email" type="input" name="email" placeholder="enter email" className="form-control"/>
+                                    <input type="hidden" value="true" name="springRememberMe" />
+                                    <input type="hidden" name="scope" value="public_profile,email,user_friends"></input>
+                                </div>
+                                {errorMsg}
                             </div>
-                            {errorMsg}
-                        </div>
-                        <div className="row">
-                            <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
-                                 <button onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive" type="submit">
-                                     Submit
-                                 </button>
+                            <div className="row">
+                                <div className="btn-group col-md-6 col-sm-12 col-xs-12 login-options">
+                                    <button onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive" type="submit">
+                                        Submit
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                </form>
+                        </form>
+                    </div>
+                </div>
             </div>
         );
     }
