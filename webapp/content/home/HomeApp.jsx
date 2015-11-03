@@ -114,7 +114,7 @@ var HomeApp = React.createClass({
     changeTeam: function(t) {
         return function(e) {
             e.preventDefault();
-            this.props.history.pushState(null,'/app/team/' + t.id);
+            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id);
             //this.setState({activeTeam: t, activeUser: null, activeSeason: t.season, show: 'standings'});
             console.log('Going  team to ' + t.name);
         }.bind(this);
