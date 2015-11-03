@@ -64,7 +64,7 @@ var raceChart = {
         'B': '3/8',
         'BPLUS': '4/9',
         'A': '5/10',
-        'A+': '6/10',
+        'APLUS': '6/10',
         'OPEN': '7/11',
         'OPENPLUS': '7/10',
         'PRO': '8/10'
@@ -77,7 +77,7 @@ var raceChart = {
     'B': '2/7',
     'BPLUS': '3/8',
     'A': '4/9',
-    'A+': '5/10',
+    'APLUS': '5/10',
     'OPEN': '6/11',
     'OPENPLUS': '7/11',
     'PRO': '8/11'
@@ -90,7 +90,7 @@ var raceChart = {
     'B': '1/7',
     'BPLUS': '2/7',
     'A': '3/8',
-    'A+': '4/9',
+    'APLUS': '4/9',
     'OPEN': '5/10',
     'OPENPLUS': '6/11',
     'PRO': '6/10'
@@ -103,7 +103,7 @@ var raceChart = {
     'B': '0/7',
     'BPLUS': '1/7',
     'A': '2/7',
-    'A+': '3/8',
+    'APLUS': '3/8',
     'OPEN': '4/9',
     'OPENPLUS': '5/10',
     'PRO': '6/11'
@@ -116,7 +116,7 @@ var raceChart = {
     'B': '1/7',
     'BPLUS': '0/7',
     'A': '2/8',
-    'A+': '3/8',
+    'APLUS': '3/8',
     'OPEN': '4/9',
     'OPENPLUS': '5/10',
     'PRO': '0/7'
@@ -129,7 +129,7 @@ var raceChart = {
     'B': '2/7',
     'BPLUS': '0/7',
     'A': '0/7',
-    'A+': '0/7',
+    'APLUS': '0/7',
     'OPEN': '0/7',
     'OPENPLUS': '0/7',
     'PRO': '0/7'
@@ -141,7 +141,7 @@ var raceChart = {
     'B': '0,7',
     'BPLUS': '0,7',
     'A': '0,7',
-    'A+': '0,7',
+    'APLUS': '0,7',
     'OPEN': '0,7',
     'OPENPLUS': '0,7',
     'PRO': '0,7'
@@ -154,7 +154,7 @@ var raceChart = {
     'B': '0/7',
     'BPLUS': '0/7',
     'A': '0/7',
-    'A+': '0/7',
+    'APLUS': '0/7',
     'OPEN': '0/7',
     'OPENPLUS': '0/7',
     'PRO': '0/7'
@@ -167,7 +167,7 @@ var raceChart = {
     'B': '0/7',
     'BPLUS': '0/7',
     'A': '0/7',
-    'A+': '0/7',
+    'APLUS': '0/7',
     'OPEN': '0/7',
     'OPENPLUS': '0/7',
     'PRO': '0/7'
@@ -180,7 +180,7 @@ var raceChart = {
     'B': '0/7',
     'BPLUS': '0/7',
     'A': '0/7',
-    'A+': '0/7',
+    'APLUS': '0/7',
     'OPEN': '0/7',
     'OPENPLUS': '0/7',
     'PRO': '0/7'
