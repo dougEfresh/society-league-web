@@ -50,7 +50,8 @@ var LoginApp = React.createClass({
             errorMsg = <div className="form-group alert alert-danger" role="alert">Session Expired. Please login again.</div>;
         }
         return (
-            <div onKeyDown={this.handleSubmit} id="login-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
+            <div id="login-app">
+            <div onKeyDown={this.handleSubmit} className="login-container well col-lg-5 col-md-5 col-sm-6">
 
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="form-field form-group">
@@ -64,12 +65,12 @@ var LoginApp = React.createClass({
                             {errorMsg}
                         </div>
                         <div className="row">
-                            <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
+                            <div className="btn-group col-lg-6 col-md-7 col-xs-6 login-options">
                                 <button onKeyDown={this.handleSubmit} id="submit" type="button"   onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive">
                                     <b>Login</b>
                                 </button>
                             </div>
-                            <div className="col-lg-6 col-md-5 col-sm-12 col-xs-12">
+                            <div className="col-lg-6 col-md-5 col-xs-6">
                                 <Link to='reset'>
                                     <button type="button" className="btn btn-sm btn-default btn-responsive pull-right">
                                         <b>Forgot Password?</b>
@@ -77,7 +78,7 @@ var LoginApp = React.createClass({
                                 </Link>
                             </div>
                         </div>
-
+            </div>
             </div>
         /**
          *
