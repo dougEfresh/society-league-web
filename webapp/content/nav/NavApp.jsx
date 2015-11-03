@@ -102,8 +102,25 @@ var NavApp = React.createClass({
                             <span className="icon-bar"></span>
                         </button>
                         <a className="navbar-brand logo" href="http://www.societybilliards.com"></a>
+                        <ul id="top-menu-mobile" className={"nav navbar-top-links navbar-right top-nav " + (this.state.mobile ? "" : "hide")}>
+                        <li className={"dropdown" + (this.state.toggleProfile ? " open" : "")}>
+                            <a onClick={this.toggleProfile} href="#" className="dropdown-toggle" >
+                                {profilePic}
+                                <b className="caret"></b>
+                            </a>
+                            <ul className="profile-menu dropdown-menu">
+                                <li>
+                                    <a onClick={this.goToProfile} href="#"><i className="fa fa-fw fa-gear"></i> Profile</a>
+                                </li>
+                                <li className="divider"></li>
+                                <li>
+                                    <a onClick={this.goToLogin} href="#"><i className="fa fa-fw fa-power-off"></i> Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                     </div>
-                    <ul id="top-menu" className="nav navbar-top-links navbar-right">
+                    <ul id="top-menu" className={"nav navbar-top-links navbar-right " + (this.state.mobile ? " hide" : "") } >
                         <li className={"dropdown" + (this.state.toggleProfile ? " open" : "")}>
                             <a onClick={this.toggleProfile} href="#" className="dropdown-toggle" >
                                 {profilePic}

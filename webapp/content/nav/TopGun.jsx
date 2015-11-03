@@ -58,7 +58,7 @@ var TopGunNav = React.createClass({
         var topGunCls = this.state.toggle ? "active" : "not-active" ; //this.props.location.pathname.indexOf("challenge") > 0 || this.props.params.seasonId == s.id ? "active" : "not-active";
         return(
             <li className={topGunCls + ' dropdown'}>
-                <a onClick={this.toggleDivision} href="#">Top Gun
+                <a onClick={this.toggleDivision} href="#"><i className="fa fa-trophy" ></i> Top Gun
                     <span className={"fa fa-caret-" + (this.state.toggle ? "down side-caret" : "left side-caret")} ></span>
                 </a>
                 <ul className={"nav nav-second-level collapse" + (this.state.toggle ? " selected in" : "")} aria-expanded="true">

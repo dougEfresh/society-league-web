@@ -233,7 +233,7 @@ var HomeApp = React.createClass({
         return (
             <div id='home-app'>
                 <div className="welcome" align="center">
-                    <h3>Society Billiards League Home Page</h3>
+                    <h3>Society Billiards Leagues</h3>
                 </div>
                 <div className="welcome-name"><h4><p>Welcome Doug</p></h4></div>
                 <div className="row">

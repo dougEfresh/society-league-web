@@ -28,9 +28,9 @@ var DisplayApp = React.createClass({
              activeUser: null,
              activeTeam: null,
              activeSeason: null,
-             toggleTeam: toggle,
+             toggleTeam: true,
              toggleSeason: true,
-             toggleUser: toggle,
+             toggleUser: true,
              mobile : width < 768
          }
      },
@@ -45,6 +45,8 @@ var DisplayApp = React.createClass({
 
         if (this.props.params.userId) {
             this.getUserData(this.props.params.userId);
+        } else {
+            this.setState({toggleUser: false})
         }
     },
     getSeasonData: function(seasonId) {
@@ -63,7 +65,7 @@ var DisplayApp = React.createClass({
          if (userId)
              Util.getSomeData({
                  url: '/api/user/' + userId,
-                 callback: function(d) {this.setState({activeUser: d})}.bind(this)
+                 callback: function(d) {this.setState({activeUser: d, toggleUser: true})}.bind(this)
              });
     },
     getData: function() {
@@ -122,6 +124,8 @@ var DisplayApp = React.createClass({
         }
         if (this.props.params.userId != n.params.userId) {
             this.getUserData(n.params.userId);
+        } {
+            this.state.toggleUser = false;
         }
     },
     changeTeam: function(t) {
@@ -215,12 +219,12 @@ var DisplayApp = React.createClass({
                         </div>
                     </div>
                     <div className="row" >
-                        <div className="col-xs-12 col-md-6">
-                            <div className={"panel panel-default panel-user-results " + (this.state.activeUser == null ? "hide" : "")}>
+                        <div className={"col-xs-12 col-md-6 " + (this.state.toggleUser ? "" : "hide")} >
+                            <div className={"panel panel-default panel-user-results "}>
                                 <a href="#" onClick={this.toggleUser} >
                                     <div className={"panel-heading" + (this.state.toggleUser ? "" : " panel-closed")}>
 
-                                    <div className="row panel-title">
+                                    <div className={"row panel-title " + (this.state.activeUser == null ? " hide" : "")}>
                                         <div className="col-xs-10 col-md-11 p-title">
                                             {this.state.activeUser == null  ? "Select a user" : this.state.activeUser.firstName}
                                         </div>
@@ -231,7 +235,7 @@ var DisplayApp = React.createClass({
                                 </div>
                                 </a>
                                 <div className="panel-body">
-                                        <UserResults onUserClick={this.changeUser} user={this.state.activeUser} season={this.state.activeSeason} />
+                                    <UserResults onUserClick={this.changeUser} user={this.state.activeUser} season={this.state.activeSeason} />
                                 </div>
                             </div>
                         </div>
