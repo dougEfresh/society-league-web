@@ -78,6 +78,7 @@ var ResetApp = React.createClass({
         );
     },
     render: function () {
+        /*
         var q = this.getQuery();
         if (q.passwordReset != undefined) {
             return this.renderSentReset();
@@ -85,12 +86,14 @@ var ResetApp = React.createClass({
         if (q.token != undefined) {
             return this.renderReset();
         }
-        var title = q.changePassword == undefined ? 'Reset Password' : 'Change Password';
+         var title = q.changePassword == undefined ? 'Reset Password' : 'Change Password';
         if (q.register != undefined) {
             title = "Register";
         }
+        */
+        var title =  'Reset Password';
         return (
-            <div id="reset-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
+            <div id="reset-app" className="login-container well col-md-5 col-xs-12">
                 <form id='reset' className="login-form form-signin">
                     <h2 className="form-signin-heading">{title}</h2>
                     <div className="form-field form-group">
