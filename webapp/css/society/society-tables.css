@@ -65,7 +65,7 @@ tr.selected, tr.selected > td  {
       background-color: #CDA3A3;
 }
 
-tr.selected > td > a, tr.selected > td > span, tr.selected td {
+tr.selected > td > a, tr.selected > td > span, tr.selected td, tr.selected td div.team-link a, tr.selected td div.user-profile a {
     font-weight: bold;
     color: black;
 }
