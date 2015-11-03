@@ -69,6 +69,12 @@ var SeasonApp = React.createClass({
             this.props.history.pushState(null,'/app/season/' + this.props.params.seasonId + '/leaders/' + u.id)
         }.bind(this)
     },
+    goToTeamDisplay: function(t) {
+        return function(e){
+            e.preventDefault();
+            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id)
+        }.bind(this)
+    },
     render: function() {
         if (this.state.season == null) {
             return null;
@@ -84,7 +90,7 @@ var SeasonApp = React.createClass({
         return (
             <div id="season-leaders">
                 <div className="row">
-                <div className="col-xs-12 col-md-8">
+                <div className="col-xs-12 col-md-9">
                     <div className="panel panel-default panel-leaders">
                         <a onClick={this.toggleHeading} href='#'>
                             <div className={"panel-heading" +(this.state.toggleLeaders ? "" : " panel-closed")}>
@@ -98,14 +104,14 @@ var SeasonApp = React.createClass({
                                 </div>
                             </div>
                             </a>
-                                <div className={"panel-body" + (this.state.toggleLeaders ? "" : " hide")} >
-                                    <SeasonLeaders onUserClick={this.changeUser} params={this.props.params}/>
-                                </div>
+                        <div className={"panel-body" + (this.state.toggleLeaders ? "" : " hide")} >
+                            <SeasonLeaders onTeamClick={this.goToTeamDisplay} onUserClick={this.changeUser} params={this.props.params}/>
+                        </div>
                     </div>
                 </div>
                 </div>
             <div className="row">
-                <div className="col-xs-12 col-md-8">
+                <div className="col-xs-12 col-md-9">
                     <div className={"panel panel-default panel-results" + (this.state.selectedUser != null ? "" : " hide")} >
                         <a onClick={this.toggleHeading} href='#'>
                             <div className="panel-heading" role="tab" id="headingOne">

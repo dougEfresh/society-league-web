@@ -65,10 +65,10 @@ var ScheduleApp = React.createClass({
         }
         return (
             <div>
-                <PendingMatches matches={this.state.pending} />
                 <MatchResults  params={this.props.params} history={this.props.history} matches={this.state.played} />
                 <PlayerResults history={this.props.history} matchId={this.props.params.matchId} />
                 <UpcomingMatches params={this.props.params} matches={this.state.upcoming} />
+                <PendingMatches matches={this.state.pending} />
             </div>
         );
     }
@@ -266,7 +266,7 @@ var TeamResults = React.createClass({
                         <th><span className="badge rack-header">SW</span></th>
                         <th><span className="badge rack-header">R</span></th>
                         <th></th>
-                        <th><span className="badge rack-header">SL</span></th>
+                        <th><span className="badge rack-header">SW</span></th>
                         <th><span className="badge rack-header">R</span></th>
                     </tr>
                 )

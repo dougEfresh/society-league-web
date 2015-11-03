@@ -6,7 +6,7 @@ var UserContextMixin = require('../../mixins/UserContextMixin.jsx');
 var UserLink = require('./UserLink.jsx');
 
 var TeamLink = React.createClass({
-    mixins: [UserContextMixin,Router.State],
+    mixins: [UserContextMixin,Router.History],
     propTypes: {
         team: ReactPropTypes.object.isRequired
     },
@@ -42,10 +42,10 @@ var TeamLink = React.createClass({
 
         //if (this.props.noRank != undefined)
             name = this.props.team.name;
-        if (this.props.onClick) {
+        if (this.props.onClick != null && this.props.onClick != undefined) {
             return (<a onClick={this.props.onClick} href='#'>{name}</a>);
         }
-        return (<a href={'#/app/display/' + this.props.team.season.id + '/' + this.props.team.id}>{name}</a>);
+        return (<Link to={'/app/display/' + this.props.team.season.id + '/' + this.props.team.id}>{name}</Link>);
     }
 });
 

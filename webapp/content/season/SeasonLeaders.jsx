@@ -78,7 +78,7 @@ var SeasonLeaders = React.createClass({
                         <td className={!s.nine && !s.challenge ? "hide" : " racks"}>{d.racksWon}</td>
                         <td className={!s.nine && !s.challenge ? "hide" : " racks "} >{d.racksLost}</td>
                         <td className="pct win-pct" >{d.winPct.toFixed(3)}</td>
-                        <td className={s.challenge ? "hide" : ""} ><TeamLink team={d.team}/></td>
+                        <td className={s.challenge ? "hide" : ""} ><TeamLink onClick={this.props.onTeamClick(d.team)} team={d.team}/></td>
                     </tr>
                 );
         }.bind(this));
