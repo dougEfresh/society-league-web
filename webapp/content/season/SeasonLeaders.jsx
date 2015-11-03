@@ -62,6 +62,7 @@ var SeasonLeaders = React.createClass({
     getRows : function(data) {
         var rows = []  ;
         var cnt=0;
+        var s = data[0].season;
         data.forEach(function(d) {
             cnt++;
             if (cnt > this.props.limit) {
@@ -69,14 +70,15 @@ var SeasonLeaders = React.createClass({
             }
             rows.push(
                     <tr onClick={this.selectUser(d)} key={d.user.id}>
-                        <td>{d.rank}</td>
-                        <td><UserLink onClick={this.props.onUserClick(d)} user={d.user} season={this.props.params.seasonId}/></td>
-                        <td>{d.wins}</td>
-                        <td>{d.loses}</td>
-                        <td>{d.racksWon}</td>
-                        <td>{d.racksLost}</td>
-                        <td>{d.winPct.toFixed(3)}</td>
-                        <td><TeamLink team={d.team}/></td>
+                        <td className="racks rank">{d.rank == undefined || s.challenge ? cnt : d.rank}</td>
+                        <td className="user"><UserLink onClick={this.props.onUserClick(d)} user={d.user} season={this.props.params.seasonId}/></td>
+                        <td className={s.challenge ? "points" : "hide"} >{d.points != null ? d.points.toFixed(3) : 0}</td>
+                        <td className="racks wins">{d.wins}</td>
+                        <td className="racks loses">{d.loses}</td>
+                        <td className={!s.nine && !s.challenge ? "hide" : " racks"}>{d.racksWon}</td>
+                        <td className={!s.nine && !s.challenge ? "hide" : " racks "} >{d.racksLost}</td>
+                        <td className="pct win-pct" >{d.winPct.toFixed(3)}</td>
+                        <td className={s.challenge ? "hide" : ""} ><TeamLink team={d.team}/></td>
                     </tr>
                 );
         }.bind(this));
@@ -98,7 +100,7 @@ var SeasonLeaders = React.createClass({
         if (this.state.stats.length == 0) {
              return null;
         }
-
+        var s = this.state.stats[0].season;
         return (
             <div className="table-responsive">
                 <table className={Util.tableCls + " table-users"}>
@@ -106,12 +108,13 @@ var SeasonLeaders = React.createClass({
                     <tr>
                         <th>#</th>
                         <th></th>
+                        <th className={s.challenge ? "" : "hide"} >P</th>
                         <th>W</th>
                         <th>L</th>
-                        <th>RW</th>
-                        <th>RL</th>
+                        <th className={!s.nine && !s.challenge ? "hide" : " "}>RW</th>
+                        <th className={!s.nine && !s.challenge ? "hide" : " "}>RL</th>
                         <th>%</th>
-                        <th>Team</th>
+                        <th className={s.challenge ? "hide" : ""}>Team</th>
                     </tr>
                     </thead>
                     <tbody>

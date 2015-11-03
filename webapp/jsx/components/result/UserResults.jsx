@@ -253,14 +253,14 @@ var ResultChallenge = React.createClass({
             }
             rows.push(<tr key={r.id}>
                 <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
-                <td className="racks" >{r.win ? 'W' : 'L'}</td>
-                <td>{r.matchPoints ? r.matchPoints.points : '0'}</td>
-                <td>{r.matchPoints ? r.matchPoints.weightedAvg.toFixed(3) : '0'}</td>
-                <td>{r.matchPoints ? r.matchPoints.matchNum : '0'}</td>
-                <td>{r.matchPoints ? r.matchPoints.calculation  : ''}</td>
-                <td>{r.teamMemberRacks + ' - ' + r.opponentRacks}</td>
-                <td><UserLink type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
-                <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
+                <td className={"racks " + (r.win ? "win" : "lost") }  >{r.win ? 'W' : 'L'}</td>
+                <td className="points">{r.matchPoints ? r.matchPoints.points : '0'}</td>
+                <td className="points">{r.matchPoints ? r.matchPoints.weightedAvg.toFixed(3) : '0'}</td>
+                <td className="racks">{r.matchPoints ? r.matchPoints.matchNum : '0'}</td>
+                <td className="formula">{r.matchPoints ? r.matchPoints.calculation  : ''}</td>
+                <td className="score">{r.teamMemberRacks + '-' + r.opponentRacks}</td>
+                <td className="user"><UserLink type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
+                <td className="hc">{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
         var statDisplay = (<div>
@@ -279,9 +279,9 @@ var ResultChallenge = React.createClass({
                          <th>Date</th>
                          <th>W/L</th>
                          <th>P</th>
-                         <th>Avg Points</th>
-                         <th>Match #</th>
-                         <th>Formula  | (Points*(10-MatchNum))/10</th>
+                         <th>Avg P</th>
+                         <th>#</th>
+                         <th></th>
                          <th>Score</th>
                          <th>Opponent</th>
                          <th>HC</th>

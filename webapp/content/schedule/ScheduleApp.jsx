@@ -263,10 +263,10 @@ var TeamResults = React.createClass({
                 return (
                     <tr>
                         <th><span className="fa fa-check winner-badge"></span> Winner</th>
-                        <th>SW</th>
+                        <th><span className="badge rack-header">SW</span></th>
                         <th><span className="badge rack-header">R</span></th>
                         <th></th>
-                        <th>SL</th>
+                        <th><span className="badge rack-header">SL</span></th>
                         <th><span className="badge rack-header">R</span></th>
                     </tr>
                 )
@@ -305,6 +305,7 @@ var TeamResults = React.createClass({
         );
     }
 });
+
 
 var MatchResults = React.createClass({
     getInitialState: function() {
@@ -362,6 +363,7 @@ var MatchResults = React.createClass({
 });
 
 
+
 var PlayerResults = React.createClass({
     getInitialState: function() {
         return {
@@ -394,16 +396,17 @@ var PlayerResults = React.createClass({
                 <th className="racks match-number">#</th>
                 <th className="user">
                     <span>{m.teamMatch.winner.name}</span>
-                    <span className="badge winner-team-racks-badge">{'R:' +  m.teamMatch.winnerRacks}</span>
+                    <span className="badge winner-team-racks-badge racks-badge ">{'R:' +  m.teamMatch.winnerRacks}</span>
                 </th>
                 <th className="racks hc winner-hc">HC</th>
                 <th className="racks win-lost">W/L</th>
                 <th className="user opponent">
                     <span>{m.teamMatch.loser.name}</span>
-                    <span className="badge loser-team-racks-badge">{'R:' +  m.teamMatch.loserRacks}</span>
+                    <span className="badge loser-team-racks-badge racks-badge ">{'R:' +  m.teamMatch.loserRacks}</span>
                 </th>
                 <th className="racks hc loser-hc">HC</th>
                 <th className="score">S</th>
+                <th className="score">Race</th>
             </tr>)
         }
         if (s.challenge) {
@@ -417,15 +420,16 @@ var PlayerResults = React.createClass({
                 <th className="racks match-number">#</th>
                 <th className="user">
                     <span>{m.teamMatch.winner.name}</span>
-                    <span className="badge winner-team-racks-badge">{'R:' +  m.teamMatch.winnerRacks}</span>
+                    <span className="badge winner-team-racks-badge racks-badge">{'R:' +  m.teamMatch.winnerRacks}</span>
                 </th>
                 <th className="racks hc winner-hc">HC</th>
                 <th className="racks win-lost">W/L</th>
                 <th className="user opponent">
                     <span>{m.teamMatch.loser.name}</span>
-                    <span className="badge loser-team-racks-badge">{'R:' +  m.teamMatch.loserRacks}</span>
+                    <span className="badge loser-team-racks-badge racks-badge">{'R:' +  m.teamMatch.loserRacks}</span>
                 </th>
              <th>HC</th>
+
             </tr>)
 
     },
@@ -445,7 +449,8 @@ var PlayerResults = React.createClass({
                         <td className={"racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
                         <td className="user loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
                         <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
-                        <td className="racks score">{Handicap.race(m.winnerTeamHandicap, m.loserTeamHandicap)}</td>
+                        <td className="score">{m.winnerTeamRacks + '-' + m.loserTeamRacks}</td>
+                        <td className="racks race">{Handicap.race(m.winnerTeamHandicap, m.loserTeamHandicap)}</td>
                     </tr>
                 )
             });
@@ -484,7 +489,7 @@ var PlayerResults = React.createClass({
                     <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-11 p-title">
-                                <span className="fa fa-check winner-badge"></span>
+                                <span className="fa winner-badge"></span>
                                 <span> {m.teamMatch.winner.name}</span>
                                 <span> Vs. </span>
                                 <span>{m.teamMatch.loser.name}</span>

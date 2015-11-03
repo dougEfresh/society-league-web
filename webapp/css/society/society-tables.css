@@ -96,3 +96,7 @@ tr.selected > td > a, tr.selected > td > span, tr.selected td {
 .rack-header {
     border-radius: 1px;
 }
+
+.points {
+    width: 55px;
+}

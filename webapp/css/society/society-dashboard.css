@@ -114,3 +114,9 @@ ul.nav {
     color: darkgreen;
     background-color: whitesmoke;
 }
+
+.racks-badge {
+    /*background-color: darkgreen;*/
+    margin-left: 5px;
+    border-radius: 1px
+}

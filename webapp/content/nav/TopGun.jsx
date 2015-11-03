@@ -25,12 +25,12 @@ var TopGunNav = React.createClass({
             this.props.history.pushState(null,'/app/schedule/' + s.id);
         }.bind(this)
     },
-    goToStandings: function(t) {
+    goToStandings: function(s) {
         return function(e){
             this.props.toggleSide(e);
             this.setState({toggleSide: false});
             e.preventDefault();
-            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
+            this.props.history.pushState(null,'/app/season/' + s.id + '/leaders');
         }.bind(this)
     },
     goToChallenge : function(s) {
@@ -65,10 +65,10 @@ var TopGunNav = React.createClass({
                     <li className={this.getUser().admin ? "challenge-nav" : "hide"} >
                         <a onClick={this.goToChallenge(s)} href="#">Challenge</a>
                     </li>
-                    <li>
+                    <li className="hide">
                         <a onClick={this.goToSchedule(s)} href="#">Schedule</a>
                     </li>
-                    <li>
+                    <li >
                         <a onClick={this.goToStandings(s)}href="#">Standings</a>
                     </li>
                 </ul>

@@ -75,7 +75,11 @@ var SeasonApp = React.createClass({
         }
         var userHeader = null;
         if (this.state.selectedUser != null) {
-            userHeader = this.state.selectedUser.user.firstName ; //+ "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
+            if (this.state.season.challenge) {
+                userHeader = this.state.selectedUser.user.firstName + " " + "  (Points*(10-MatchNum))/10" //+ "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
+            } else {
+                userHeader = this.state.selectedUser.user.firstName; //+ "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
+            }
         }
         return (
             <div id="season-leaders">
