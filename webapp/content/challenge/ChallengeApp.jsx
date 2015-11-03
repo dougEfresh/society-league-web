@@ -24,6 +24,17 @@ var ChallengeApp = React.createClass({
              challenges: []
         }
     },
+    componentWillReceiveProps: function(n){
+        if (this.state.refresh) {
+            Util.getSomeData({
+                url: '/api/challenge/user/' + this.getUser().id,
+                callback: function(d) {this.setState({challenges: d})}.bind(this),
+                module: 'ChallengeApp',
+                router: this.props.history
+            }
+        );
+        }
+    },
     componentDidMount: function() {
         var dateFunc = function(d){
             var dates = {};
@@ -107,7 +118,7 @@ var ChallengeApp = React.createClass({
         if (this.state.slots.length == 0) {
             return null;
         }
-        className = "btn btn-success btn-lg";
+        var className = "btn btn-success";
         var submit = (
             <button type="button" onClick={this.challenge} className={className}>
                 <span className="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Challenge!
@@ -128,13 +139,15 @@ var ChallengeApp = React.createClass({
         });
         return (
             <div>
-                <div className="panel panel-primary">
-                <div className="panel-heading" > <span className={"glyphicon glyphicon-plus"}></span>New Request</div>
-                <div className="panel-body" >
-                    <div className="page-elements">
-                        <form id="request-app"  >
-                            <div>
-                                <ChallengeRequestDate query={this.props.location.query}
+                <div className="row">
+                    <div className="col-xs-12 col-md-6" >
+                        <div className="panel panel-primary panel-challenge">
+                            <div className="panel-heading panel-challenge-heading" > <span className={"glyphicon glyphicon-plus"}></span> New Request</div>
+                            <div className="panel-body panel-challenge-body" >
+                                <div className="page-elements challenge-form">
+                                    <form id="request-app" >
+                                        <div>
+                                            <ChallengeRequestDate query={this.props.location.query}
                                                       history={this.props.history}
                                                       dates={this.state.dates} />
                                 <ChallengeRequestOpponent query={this.props.location.query} history={this.props.history} />
@@ -143,13 +156,16 @@ var ChallengeApp = React.createClass({
                         </form>
                     </div>
                     {submit}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                </div>
-                <UpcomingChallenges data={this.state.challenges} refresh={refresh}/>
-                <SeasonStandings onClick={function(){}} season={season} />
+            <div className="row" >
+                 <div className="col-xs-12 col-md-11" >
+                     <UpcomingChallenges data={this.state.challenges} refresh={refresh}/>
+                 </div>
             </div>
-
+            </div>
         );
     }
 });

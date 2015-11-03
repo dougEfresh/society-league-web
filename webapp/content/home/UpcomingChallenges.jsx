@@ -39,7 +39,8 @@ var UpcomingChallenges = React.createClass({
         var sentChallenges = null;
 
         if (challenges.length > 0) {
-            upComingChallenges = ( <div id={'accepted-challenges'} className="panel panel-default">
+            upComingChallenges = (
+                <div id={'accepted-challenges'} className="panel panel-default">
                   <div className="panel-heading" >Upcoming Challenges</div>
                   <div className="panel-body" >
                       <ul className="list-group home-upcoming-challenges">
@@ -50,7 +51,8 @@ var UpcomingChallenges = React.createClass({
         }
 
         if (pending.length > 0) {
-            pendingChallenges = ( <div id={'pending-challenges'} className="panel panel-warning">
+            pendingChallenges = (
+                <div id={'pending-challenges'} className="panel panel-warning">
                 <div className="panel-heading" >Pending Challenges</div>
                 <div className="panel-body" >
                     <ul className="list-group home-upcoming-challenges">
@@ -61,7 +63,8 @@ var UpcomingChallenges = React.createClass({
 
         }
         if (sent.length > 0) {
-            sentChallenges = ( <div id={'sent-challenges'} className="panel panel-success">
+            sentChallenges = (
+                <div id={'sent-challenges'} className="panel panel-success">
                 <div className="panel-heading" >Sent Challenges</div>
                 <div className="panel-body" >
                     <ul className="list-group home-upcoming-challenges">

@@ -40,6 +40,10 @@ table > tbody > tr.active, .table-striped > tbody > tr.active {
 .schedule-vs , td.racks{
     width: 40px;
 }
+
+.racks, .rank , .hc , .score , .race {
+    text-align: center;
+}
 td.pct {
      width: 50px;
 }

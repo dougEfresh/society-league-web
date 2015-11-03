@@ -106,13 +106,13 @@ var SeasonLeaders = React.createClass({
                 <table className={Util.tableCls + " table-users"}>
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th className="racks">#</th>
                         <th></th>
                         <th className={s.challenge ? "" : "hide"} >P</th>
-                        <th>W</th>
-                        <th>L</th>
-                        <th className={!s.nine && !s.challenge ? "hide" : " "}>RW</th>
-                        <th className={!s.nine && !s.challenge ? "hide" : " "}>RL</th>
+                        <th className="racks" >W</th>
+                        <th className="racks">L</th>
+                        <th className={!s.nine && !s.challenge ? "hide" : "racks"}>RW</th>
+                        <th className={!s.nine && !s.challenge ? "hide" : "racks"}>RL</th>
                         <th>%</th>
                         <th className={s.challenge ? "hide" : ""}>Team</th>
                     </tr>

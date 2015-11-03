@@ -85,7 +85,7 @@ var ChallengeSentApp =  React.createClass({
         var deny = (
             <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
                 <button className="btn btn-sm"  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} >
-                    <span className="fa fa-thumbs-down"></span>Decline Challenge
+                    <span className="fa fa-thumbs-down"></span>Decline
                 </button>
             </Link>
         );

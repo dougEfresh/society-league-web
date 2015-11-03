@@ -73,13 +73,13 @@ var SeasonResults =  React.createClass({
     },
     render: function() {
         if (this.props.season.challenge) {
-            return <ResultChallenge stats={this.props.stats} season={this.props.season} results={this.props.results} limit={this.props.limit} />
+            return <ResultChallenge onUserClick={this.props.onUserClick} stats={this.props.stats} season={this.props.season} results={this.props.results} limit={this.props.limit} />
         } else if (this.props.season.nine) {
             return <ResultNine onUserClick={this.props.onUserClick} stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />
         } else if (this.props.season.scramble) {
-            return <ResultScramble stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />;
+            return <ResultScramble onUserClick={this.props.onUserClick} stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />;
         }
-        return <ResultEight stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />;
+        return <ResultEight onUserClick={this.props.onUserClick} stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />;
     }
 });
 
@@ -96,7 +96,7 @@ var ResultScramble = React.createClass({
             rows.push(
                 <tr key={r.id}>
                     <td className={"racks win-lost " + (r.win ? "win" : "lost")}>{r.win ? 'W' : 'L'}</td>
-                    <td className="user"><UserLink type={'small'} user={r.opponent}  /></td>
+                    <td className="user"><UserLink onClick={this.props.onUserClick(r.opponent)} type={'small'} user={r.opponent}  /></td>
                     <td className="user" ><UserLink type={'small'} user={r.opponentPartner}  /></td>
                     <td className="date"><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                     <td className="hc" >{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
@@ -146,7 +146,7 @@ var ResultEight = React.createClass({
                 <tr key={r.id}>
                     <td className="date"><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                     <td className={"racks win-lost " + (r.win ? "win" : "lost")}>{r.win ? 'W' : 'L'}</td>
-                    <td className="user"><UserLink type={'small'} user={r.opponent} /></td>
+                    <td className="user"><UserLink onClick={this.props.onUserClick(r.opponent)} season={r.teamMatch.home.season} type={'small'} user={r.opponent} /></td>
                     <td className="hc op-hc">{Handicap.formatHandicap(r.opponentHandicap)}</td>
                     <td className="hc">{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
@@ -259,7 +259,7 @@ var ResultChallenge = React.createClass({
                 <td className="racks">{r.matchPoints ? r.matchPoints.matchNum : '0'}</td>
                 <td className="formula">{r.matchPoints ? r.matchPoints.calculation  : ''}</td>
                 <td className="score">{r.teamMemberRacks + '-' + r.opponentRacks}</td>
-                <td className="user"><UserLink type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
+                <td className="user"><UserLink onClick={this.props.onUserClick(r.opponent)} season={r.season} type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                 <td className="hc">{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
