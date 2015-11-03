@@ -89,7 +89,7 @@ var NavApp = React.createClass({
         }
         var profilePic = <i className="fa fa-user profile"></i>;
         if (this.getUser().profile) {
-            profilePic = <img className="profile" src={this.getUser().userProfile.imageUrl + '?width=20&height=20'}> </img>
+            profilePic = <img className="profile" src={this.getUser().userProfile.imageUrl + '?width=25&height=25'}> </img>
         }
         return (
             <div id="wrapper">
