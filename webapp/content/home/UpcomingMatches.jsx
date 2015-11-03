@@ -58,7 +58,7 @@ var UpcomingMatches = React.createClass({
 
         return (
                 <div className="table-responsive">
-                    <table className="table table-condensed table-striped table-bordered table-responsive">
+                    <table className={Util.tableCls + " table-upcoming"}>
                         <tbody>{rows}</tbody>
                     </table>
                 </div>

@@ -95,11 +95,11 @@ var ResultScramble = React.createClass({
             var r = this.props.results[i];
             rows.push(
                 <tr key={r.id}>
-                    <td>{r.win ? 'W' : 'L'}</td>
-                    <td><UserLink type={'small'} user={r.opponent}  /></td>
-                    <td><UserLink type={'small'} user={r.opponentPartner}  /></td>
-                    <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
-                    <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
+                    <td className={"racks win-lost " + (r.win ? "win" : "lost")}>{r.win ? 'W' : 'L'}</td>
+                    <td className="user"><UserLink type={'small'} user={r.opponent}  /></td>
+                    <td className="user" ><UserLink type={'small'} user={r.opponentPartner}  /></td>
+                    <td className="date"><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
+                    <td className="hc" >{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
            var statDisplay = (<div>
@@ -112,7 +112,7 @@ var ResultScramble = React.createClass({
 
         return (
              <div className="table-responsive">
-                 <table className="table table-users table-bordered table-striped table-condensed table-grid" >
+                 <table className={ Util.tableCls + " table-users"} >
                      <thead>
                      <tr>
                          <th>W/L</th>
@@ -144,12 +144,11 @@ var ResultEight = React.createClass({
             var r = this.props.results[i];
             rows.push(
                 <tr key={r.id}>
-                <td className="racks">{r.win ? 'W' : 'L'}</td>
-                    <td className="user"><UserLink type={'small'} user={r.opponent} /></td>
-                    <td className="handicap">{Handicap.formatHandicap(r.opponentHandicap)}</td>
                     <td className="date"><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
-                <td clasName="handicap">{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
-
+                    <td className={"racks win-lost " + (r.win ? "win" : "lost")}>{r.win ? 'W' : 'L'}</td>
+                    <td className="user"><UserLink type={'small'} user={r.opponent} /></td>
+                    <td className="hc op-hc">{Handicap.formatHandicap(r.opponentHandicap)}</td>
+                    <td className="hc">{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
            var statDisplay = (<div>
@@ -162,13 +161,13 @@ var ResultEight = React.createClass({
 
         return (
              <div className="table-responsive">
-                 <table className="table table-users table-bordered table-striped table-condensed table-grid" >
+                 <table className={ Util.tableCls + " table-users"} >
                      <thead>
                      <tr>
+                         <th>Date</th>
                          <th>W/L</th>
                          <th>Op.</th>
                          <th>Op. HC</th>
-                         <th>Date</th>
                          <th>HC</th>
                      </tr>
                 </thead>
@@ -197,15 +196,15 @@ var ResultNine = React.createClass({
                 lnk = <span>{Util.formatDateTime(r.teamMatch.matchDate)}</span>
             }
             rows.push(<tr key={r.id}>
-                <td>
+                <td className="date">
                     {lnk}
                 </td>
-                <td className="racks" >{r.win ? 'W' : 'L'}</td>
-                <td>{r.teamMemberRacks + '-' + r.opponentRacks}</td>
-                <td>{Handicap.race(r.teamMemberHandicap,r.opponentHandicap)}</td>
-                <td><UserLink onClick={this.props.onUserClick(r.opponent)} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
-                 <td>{Handicap.formatHandicap(r.opponentHandicap)}</td>
-                <td>{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
+                <td className={"racks win-lost " + (r.win ? "win" : "lost")} >{r.win ? 'W' : 'L'}</td>
+                <td className="score">{r.teamMemberRacks + '-' + r.opponentRacks}</td>
+                <td className="race" >{Handicap.race(r.teamMemberHandicap,r.opponentHandicap)}</td>
+                <td className="user"><UserLink onClick={this.props.onUserClick(r.opponent)} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
+                <td className="hc op-hc">{Handicap.formatHandicap(r.opponentHandicap)}</td>
+                <td className="hc" >{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
 
@@ -218,13 +217,13 @@ var ResultNine = React.createClass({
         }
         return (
              <div className="table-responsive">
-                 <table className="table table-users tabled-bordered table-striped  table-condensed table-grid" >
+                 <table className={ Util.tableCls + " table-users"} >
                      <thead>
                      <tr>
                          <th>Date</th>
-                         <th>W/L</th>
-                         <th>S</th>
-                         <th>Race</th>
+                         <th className="racks">W/L</th>
+                         <th className="score">S</th>
+                         <th className="race" >Race</th>
                          <th>Op.</th>
                          <th>Op. HC</th>
                          <th>HC</th>
@@ -274,7 +273,7 @@ var ResultChallenge = React.createClass({
         }
         return (
              <div className="table-responsive">
-                 <table className="table table-users table-bordered table-condensed table-striped table-grid" >
+                 <table className="table table-users table-bordered table-striped table-condensed" >
                      <thead>
                      <tr>
                          <th>Date</th>

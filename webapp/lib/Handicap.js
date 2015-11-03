@@ -1,4 +1,7 @@
 var formatHandicap = function(hc) {
+    if (hc == undefined || hc == null)
+    return "";
+
     switch(hc) {
         case 'TWO':
             return '2';

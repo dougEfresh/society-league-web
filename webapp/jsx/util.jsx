@@ -222,5 +222,6 @@ module.exports = {
     getHandicap: getHandicap,
     formatDateTime: formatDateTime,
     getSomeData: getSomeData,
-    postSomeData: postSomeData
+    postSomeData: postSomeData,
+    tableCls: 'table table-bordered table-condensed table-striped table-grid'
 };

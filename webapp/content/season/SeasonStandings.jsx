@@ -147,7 +147,7 @@ var SeasonStandings = React.createClass({
         }
         return (
             <div className="table-responsive">
-                <table className="table table-season-standings table-bordered table-condensed table-striped table-responsive" >
+                <table className={ Util.tableCls + " table-season-standings"} >
                     <thead>
                     {header}
                 <tbody>

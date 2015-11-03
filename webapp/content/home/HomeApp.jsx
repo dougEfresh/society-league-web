@@ -232,9 +232,9 @@ var HomeApp = React.createClass({
         return (
             <div id='home-app'>
                 <div className="welcome" align="center">
-                    <p>Society Billiards League Home Page</p>
+                    <h3>Society Billiards League Home Page</h3>
                 </div>
-                <div className="headerHome">Welcome Doug</div>
+                <div className="welcome-name"><h4><p>Welcome Doug</p></h4></div>
                 <div className="row">
                     <div className="col-xs-12 col-md-3">
                         <div className="panel panel-default panel-upcoming">

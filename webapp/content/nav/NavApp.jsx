@@ -132,6 +132,9 @@ var NavApp = React.createClass({
                 <div id="page-wrapper">
                     {this.props.children}
                 </div>
+                <div id="footer">
+                    
+                </div>
             </div>
         )
     }

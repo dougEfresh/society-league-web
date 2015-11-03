@@ -5,10 +5,10 @@
  */
 
 body {
-    background-color: #dfdfdf;
+    background-color: black;
 }
 #content {
-    background-color: #dfdfdf;
+    background-color: black;
 }
 #wrapper {
     width: 100%;
@@ -99,3 +99,18 @@ ul.nav {
     padding-bottom: 3px;
 }
 
+
+.winner-team-racks-badge, .loser-team-racks-badge {
+    margin-left: 5px;
+}
+
+.winner-team-racks-badge {
+    background-color: darkgreen;
+}
+
+.winner-badge {
+    /*background-color: darkgreen;*/
+    font-size: 1em;
+    color: darkgreen;
+    background-color: whitesmoke;
+}

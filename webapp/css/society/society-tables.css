@@ -15,18 +15,18 @@ table > tbody > tr.active, .table-striped > tbody > tr.active {
 }
 @media (min-width: 996px) {
 
-.table-users tr, tr {
+.table-users tr, .table-season-standings tr {
     min-height: 44px;
     height: 44px;
     line-height: 44px;
 }
+
 .table >tbody >tr >td  {
     padding-top: 10px;
     padding-right: 0px;
     padding-bottom:00px;
     padding-left: 5px;
 }
-
 }
 
 .schedule-table tr > td , .schedule-table tr, .schedule-table tbody >tr > td  {
@@ -41,12 +41,9 @@ table > tbody > tr.active, .table-striped > tbody > tr.active {
 .schedule-vs , td.racks{
     width: 40px;
 }
- td.racks{
-     width: 44px;
- }
- td.pct {
+td.pct {
      width: 50px;
- }
+}
 .schedule-away, .results-winner, .results-loser {
     max-width: 100px;
     width: 100px;
@@ -63,4 +60,39 @@ tr.selected, tr.selected > td  {
 tr.selected > td > a, tr.selected > td > span, tr.selected td {
     font-weight: bold;
     color: black;
+}
+
+.hc {
+    width: 50px;
+}
+.op-hc {
+    width: 60px;
+}
+.score {
+    width: 55px;
+}
+
+.race {
+    width: 55px;
+}
+
+.date {
+    width: 70px;
+}
+
+.rank {
+    width: 50px;
+}
+
+.table-upcoming {
+    min-height: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+.win {
+    background-color: lightblue;
+}
+
+.rack-header {
+    border-radius: 1px;
 }

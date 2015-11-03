@@ -59,8 +59,13 @@ var UserLink = React.createClass({
                 <a href='#' onClick={this.props.onClick}>{img}<span>{name}</span></a>
             );
         }
+        if (this.props.season) {
+            return (
+                <a href={'#/app/season/' + this.props.season.id + '/leaders/' + this.props.user.id}>{img}<span>{name}</span></a>
+            );
+        }
         return (
-            <a  href='#/app/display/'>{img}<span>{name}</span></a>
+            <a  href='#/app/season/'>{img}<span>{name}</span></a>
         );
     }
 });

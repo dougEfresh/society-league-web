@@ -38,7 +38,7 @@ var SeasonApp = React.createClass({
         if (userId)
           Util.getSomeData({
                 url: '/api/stat/user/' + userId +'/' + this.props.params.seasonId,
-                callback: function(d) {this.setState({selectedUser : d})}.bind(this),
+                callback: function(d) {this.setState({selectedUser : d, toggleLeaders: false})}.bind(this),
                 module: 'SeasonApp',
                 router: this.props.history
           })

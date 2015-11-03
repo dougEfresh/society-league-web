@@ -1,12 +1,14 @@
 var React = require('react/addons');
 var Util = require('../../jsx/util.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
+var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var Router = require('react-router')
     , Route = Router.Route
     , Link = Router.Link;
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var moment = require('moment');
+var Handicap = require('../../lib/Handicap');
 
 var teamOptions = [];
 var options=[];
@@ -64,8 +66,9 @@ var ScheduleApp = React.createClass({
         return (
             <div>
                 <PendingMatches matches={this.state.pending} />
-                <MatchResults matches={this.state.played} />
-                <UpcomingMatches matches={this.state.upcoming} />
+                <MatchResults  params={this.props.params} history={this.props.history} matches={this.state.played} />
+                <PlayerResults history={this.props.history} matchId={this.props.params.matchId} />
+                <UpcomingMatches params={this.props.params} matches={this.state.upcoming} />
             </div>
         );
     }
@@ -173,6 +176,16 @@ var UpcomingMatches = React.createClass({
             rows
         );
     },
+    componentWillReceiveProps: function(n) {
+        if (n.params.matchId != undefined) {
+            this.setState({toggle: false});
+        }
+    },
+    componentDidMount: function() {
+        if (this.props.params.matchId != undefined) {
+            this.setState({toggle: false});
+        }
+    },
     render: function() {
         var toggleHeading = function(e) {e.preventDefault(); this.setState({toggle: !this.state.toggle})}.bind(this);
         if (this.props.matches == null) {
@@ -203,25 +216,31 @@ var UpcomingMatches = React.createClass({
 });
 
 var TeamResults = React.createClass({
+    showResults: function(m) {
+        return function(e) {
+            e.preventDefault();
+            this.props.history.pushState(null, '/app/schedule/' + this.props.matches[0].home.season.id + '/' + m.id);
+        }.bind(this);
+    },
     renderMatches: function() {
         var rows = [];
         this.props.matches.forEach(function(m) {
             if (m.winner.season.nine) {
                 rows.push(
                     <tr key={m.id}>
-                        <td className="result-winner"><TeamLink team={m.winner}/></td>
+                        <td className="result-winner"><TeamLink onClick={this.showResults(m)} team={m.winner}/></td>
                         <td className="racks">{m.winnerSetWins}</td>
                         <td className="racks">{m.winnerRacks}</td>
-                        <td className="result-loser"><TeamLink team={m.loser}/></td>
+                        <td className="result-loser"><TeamLink onClick={this.showResults(m)}  team={m.loser}/></td>
                         <td className="racks">{m.loserSetWins}</td>
                         <td className="racks">{m.loserRacks}</td>
                     </tr>)
             } else {
                  rows.push(
                     <tr key={m.id}>
-                        <td className="result-winner"><TeamLink team={m.winner}/></td>
+                        <td className="result-winner"><TeamLink onClick={this.showResults(m)}  team={m.winner}/></td>
                         <td className="racks">{m.winnerRacks}</td>
-                        <td className="result-loser"><TeamLink team={m.loser}/></td>
+                        <td className="result-loser"><TeamLink onClick={this.showResults(m)}  team={m.loser}/></td>
                         <td className="racks">{m.loserRacks}</td>
                     </tr>)
             }
@@ -235,7 +254,7 @@ var TeamResults = React.createClass({
                 <tr>
                     <th></th>
                     <th></th>
-                    <th><i className="fa fa-thumbs-down fa-1x loser"/></th>
+                    <th></th>
                     <th>Racks</th>
                 </tr>
             )
@@ -243,21 +262,21 @@ var TeamResults = React.createClass({
         if (season.nine) {
                 return (
                     <tr>
-                        <th>Winner</th>
+                        <th><span className="fa fa-check winner-badge"></span> Winner</th>
                         <th>SW</th>
-                        <th>R</th>
-                        <th><i className="fa fa-thumbs-down fa-1x  loser"/></th>
+                        <th><span className="badge rack-header">R</span></th>
+                        <th></th>
                         <th>SL</th>
-                        <th>R</th>
+                        <th><span className="badge rack-header">R</span></th>
                     </tr>
                 )
         }
           return (
                 <tr>
-                    <th>Winner</th>
-                    <th>R</th>
-                    <th><i className="fa fa-thumbs-down fa-1x loser"/></th>
-                    <th>R</th>
+                    <th><span className="fa fa-check winner-badge"></span> Winner</th>
+                    <th><span className="badge rack-header">R</span></th>
+                    <th></th>
+                    <th><span className="badge rack-header">R</span></th>
                 </tr>
             )
     },
@@ -296,24 +315,35 @@ var MatchResults = React.createClass({
     getUpcoming: function() {
         var rows = [];
         Object.keys(this.props.matches).forEach(function(md) {
-            rows.push(<TeamResults key={md} date={md} matches={this.props.matches[md]} />);
+            rows.push(<TeamResults toggleHeading={this.toggleHeading}history={this.props.history} key={md} date={md} matches={this.props.matches[md]} />);
         }.bind(this));
         return (
             rows
         );
     },
+    toggleHeading: function(e) {e.preventDefault(); this.setState({toggle: !this.state.toggle})},
+    componentWillReceiveProps: function(n) {
+        if (n.params.matchId != undefined) {
+            this.setState({toggle: false});
+        }
+    },
+    componentDidMount: function() {
+        if (this.props.params.matchId != undefined) {
+            this.setState({toggle: false});
+        }
+    },
     render: function() {
-        var toggleHeading = function(e) {e.preventDefault(); this.setState({toggle: !this.state.toggle})}.bind(this);
+
         if (this.props.matches == null) {
             return null;
         }
         return (
             <div className="panel panel-default panel-results">
-                <a onClick={toggleHeading} href='#'>
+                <a onClick={this.toggleHeading} href='#'>
                     <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-11 p-title">
-                              Results
+                              <span className="fa fa-trophy"></span><span> Results</span>
                             </div>
                             <div className="col-xs-2 col-md-1 caret-title">
                                 <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
@@ -328,6 +358,158 @@ var MatchResults = React.createClass({
                 </div>
             </div>
         );
+    }
+});
+
+
+var PlayerResults = React.createClass({
+    getInitialState: function() {
+        return {
+            results : [],
+            toggle: false
+        }
+    },
+    getData: function(id){
+         Util.getSomeData(
+             {
+                 url: '/api/playerresult/teammatch/' + id, callback: function (d) {
+                 this.setState({results: d, toggle: true})
+             }.bind(this),
+                 module: 'SeasonMatchResultsOnDay'
+             });
+    },
+    componentWillReceiveProps: function(n) {
+        if (n.matchId != this.props.matchId) {
+            this.getData(n.matchId);
+        }
+    },
+    componentDidMount: function() {
+        if (this.props.matchId != undefined)
+            this.getData(this.props.matchId);
+    },
+    getHeader: function(m) {
+        var s = m.teamMatch.home.season;
+        if (s.nine) {
+            return (<tr>
+                <th className="racks match-number">#</th>
+                <th className="user">
+                    <span>{m.teamMatch.winner.name}</span>
+                    <span className="badge winner-team-racks-badge">{'R:' +  m.teamMatch.winnerRacks}</span>
+                </th>
+                <th className="racks hc winner-hc">HC</th>
+                <th className="racks win-lost">W/L</th>
+                <th className="user opponent">
+                    <span>{m.teamMatch.loser.name}</span>
+                    <span className="badge loser-team-racks-badge">{'R:' +  m.teamMatch.loserRacks}</span>
+                </th>
+                <th className="racks hc loser-hc">HC</th>
+                <th className="score">S</th>
+            </tr>)
+        }
+        if (s.challenge) {
+            return null;
+        }
+
+        if (s.scramble) {
+            return null;
+        }
+         return (<tr>
+                <th className="racks match-number">#</th>
+                <th className="user">
+                    <span>{m.teamMatch.winner.name}</span>
+                    <span className="badge winner-team-racks-badge">{'R:' +  m.teamMatch.winnerRacks}</span>
+                </th>
+                <th className="racks hc winner-hc">HC</th>
+                <th className="racks win-lost">W/L</th>
+                <th className="user opponent">
+                    <span>{m.teamMatch.loser.name}</span>
+                    <span className="badge loser-team-racks-badge">{'R:' +  m.teamMatch.loserRacks}</span>
+                </th>
+             <th>HC</th>
+            </tr>)
+
+    },
+    getRows: function() {
+        var rows = [];
+        var s = this.state.results[0].teamMatch.home.season;
+
+        if (s.nine && !s.challenge) {
+            this.state.results.forEach(function (m) {
+                var wl = m.winnerTeamRacks > m.loserTeamRacks ? 'W' : 'L';
+                rows.push(
+                    <tr key={m.id}>
+                        <td className="racks match-number">{m.matchNumber}</td>
+                        <td className="user winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
+                        </td>
+                        <td className="racks hc winner-hc">{Handicap.formatHandicap(m.winnerTeamHandicap)}</td>
+                        <td className={"racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
+                        <td className="user loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
+                        <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
+                        <td className="racks score">{Handicap.race(m.winnerTeamHandicap, m.loserTeamHandicap)}</td>
+                    </tr>
+                )
+            });
+        }
+        if (s.challenge)
+            return rows;
+
+        if (s.scramble)
+            return rows;
+
+        this.state.results.forEach(function (m) {
+            var wl = m.winnerTeamRacks > m.loserTeamRacks ? 'W' : 'L';
+                rows.push(
+                    <tr key={m.id}>
+                        <td className="racks match-number">{m.matchNumber}</td>
+                        <td className="user winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
+                        </td>
+                        <td className="racks hc winner-hc">{Handicap.formatHandicap(m.winnerTeamHandicap)}</td>
+                        <td className={"racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
+                        <td className="user loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
+                        <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
+                    </tr>
+                )
+            });
+
+        return rows;
+    },
+    render: function() {
+        if (this.state.results.length == 0) {
+            return null;
+        }
+        var m = this.state.results[0];
+        var toggleHeading = function(e){e.preventDefault(); this.setState({toggle: !this.state.toggle})}.bind(this);
+        return (<div className="panel panel-default panel-results">
+                <a onClick={toggleHeading} href='#'>
+                    <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
+                        <div className="row panel-title">
+                            <div className="col-xs-10 col-md-11 p-title">
+                                <span className="fa fa-check winner-badge"></span>
+                                <span> {m.teamMatch.winner.name}</span>
+                                <span> Vs. </span>
+                                <span>{m.teamMatch.loser.name}</span>
+                            </div>
+                            <div className="col-xs-2 col-md-1 caret-title">
+                                <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div className={"panel-body panel-results-body" + (this.state.toggle ? "" : " hide")} >
+                    <div className="row match-row">
+                        <div className="table-responsive">
+                            <table className="table table-users table-grid table-bordered table-condensed table-striped" >
+                                <thead>
+                                {this.getHeader(m)}
+                                </thead>
+                                <tbody>
+                                {this.getRows()}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </div>)
     }
 });
 

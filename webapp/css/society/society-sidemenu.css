@@ -9,7 +9,7 @@
     padding: 15px;
 }
 
-#side-menu li a:focus , #side-menu li a:hover, #top-menu li a:hover , #top-menu li a:focus {
+#side-menu li a:focus , #side-menu li a:hover {
     background-color: rgba(37, 37, 37, 0.84);
 }
 
