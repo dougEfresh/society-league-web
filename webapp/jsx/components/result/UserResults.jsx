@@ -98,7 +98,7 @@ var ResultScramble = React.createClass({
                     <td className={"racks win-lost " + (r.win ? "win" : "lost")}>{r.win ? 'W' : 'L'}</td>
                     <td className="user"><UserLink onClick={this.props.onUserClick(r.opponent)} type={'small'} user={r.opponent}  /></td>
                     <td className="user" ><UserLink type={'small'} user={r.opponentPartner}  /></td>
-                    <td className="date"><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
+                    <td className="date"><Link to={'/app/schedule/'  + r.season.id  + '/' + r.teamMatch.id}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                     <td className="hc" >{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }
@@ -144,7 +144,7 @@ var ResultEight = React.createClass({
             var r = this.props.results[i];
             rows.push(
                 <tr key={r.id}>
-                    <td className="date"><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
+                    <td className="date"><Link to={'/app/schedule/'  + r.season.id  + '/' + r.teamMatch.id}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                     <td className={"racks win-lost " + (r.win ? "win" : "lost")}>{r.win ? 'W' : 'L'}</td>
                     <td className="user"><UserLink onClick={this.props.onUserClick(r.opponent)} season={r.teamMatch.home.season} type={'small'} user={r.opponent} /></td>
                     <td className="hc op-hc">{Handicap.formatHandicap(r.opponentHandicap)}</td>
@@ -190,7 +190,7 @@ var ResultNine = React.createClass({
         var limit = this.props.limit == null ? this.props.results.length : this.props.limit;
         for (var i = 0; i< limit && i< this.props.results.length; i++ ) {
             var r = this.props.results[i];
-            var lnk =  <Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link>;
+            var lnk = <Link to={'/app/schedule/'  + r.season.id  + '/' + r.teamMatch.id}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link>;
 
             if (!r.season.active) {
                 lnk = <span>{Util.formatDateTime(r.teamMatch.matchDate)}</span>
@@ -253,7 +253,7 @@ var ResultChallenge = React.createClass({
             }
             rows.push(<tr key={r.id}>
                 <td className="date" >
-                    <Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link>
+                   <Link to={'/app/schedule/'  + r.season.id  + '/' + r.teamMatch.id}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link>;
                 </td>
                 <td className={"racks " + (r.win ? "win" : "lost") }  >{r.win ? 'W' : 'L'}</td>
                 <td className="points">{r.matchPoints ? r.matchPoints.points : '0'}</td>
