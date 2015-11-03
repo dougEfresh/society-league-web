@@ -252,7 +252,7 @@ var ResultChallenge = React.createClass({
                 continue;
             }
             rows.push(<tr key={r.id}>
-                <td><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
+                <td className="date" ><Link to={'/app/season/'  + r.season.id  + '/teamresults/' + r.teamMatch.id }>{Util.formatDateTime(r.teamMatch.matchDate)}</Link></td>
                 <td className={"racks " + (r.win ? "win" : "lost") }  >{r.win ? 'W' : 'L'}</td>
                 <td className="points">{r.matchPoints ? r.matchPoints.points : '0'}</td>
                 <td className="points">{r.matchPoints ? r.matchPoints.weightedAvg.toFixed(3) : '0'}</td>
@@ -281,7 +281,7 @@ var ResultChallenge = React.createClass({
                          <th>P</th>
                          <th>Avg P</th>
                          <th>#</th>
-                         <th></th>
+                         <th>Formula</th>
                          <th>Score</th>
                          <th>Opponent</th>
                          <th>HC</th>

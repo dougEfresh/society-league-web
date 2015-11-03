@@ -101,7 +101,7 @@ var PendingMatches = React.createClass({
                     <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-11 p-title">
-                                <span className="fa fa-exclamation-triangle pending-schedule-warning" ></span> <span> Pending</span>
+                                <span className="fa fa-exclamation-triangle pending-schedule-warning" ></span> <span> Pending Matches</span>
                             </div>
                             <div className="col-xs-2 col-md-1 caret-title">
                                 <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>

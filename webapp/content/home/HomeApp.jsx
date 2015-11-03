@@ -212,14 +212,15 @@ var HomeApp = React.createClass({
         var seasonLeaders = [];
         this.getUser().handicapSeasons.forEach(function(hs){
             var s = hs.season;
-            if (!s.active || s.challenge) {
+            if (!s.active) {
                 return;
             }
             seasonLeaders.push(
                 <div key={s.id} className="col-xs-12 col-md-4">
                     <div className="panel panel-default panel-leaders">
                         <div className="panel-heading">
-                            <i className="fa fa-sitemap"></i> {'Top Players ' + s.shortName}
+                            <i className="fa fa-sitemap"></i>
+                            <span> Top Players</span> <span style={{float: 'right'}} >{s.shortName}</span>
                         </div>
                         <div className="panel-body">
                             <SeasonLeaders onUserClick={this.goToLeaders(s)} params={{seasonId: s.id}} limit={5} />

@@ -35,7 +35,6 @@ table > tbody > tr.active, .table-striped > tbody > tr.active {
 }
 
 .schedule-home {
-    max-width: 100px;
     width: 100px;
 }
 .schedule-vs , td.racks{
@@ -45,7 +44,6 @@ td.pct {
      width: 50px;
 }
 .schedule-away, .results-winner, .results-loser {
-    max-width: 100px;
     width: 100px;
 }
 
@@ -99,4 +97,8 @@ tr.selected > td > a, tr.selected > td > span, tr.selected td {
 
 .points {
     width: 55px;
+}
+
+.formula {
+    width: 100px;
 }
