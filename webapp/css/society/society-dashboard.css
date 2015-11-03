@@ -147,6 +147,9 @@ ul.nav {
     min-height: 1000px
 }
 
+#login-app > .well {
+    width: 600px;
+}
 
 .well {
 	float: none;
