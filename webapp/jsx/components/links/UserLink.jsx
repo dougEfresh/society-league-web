@@ -51,9 +51,8 @@ var UserLink = React.createClass({
                 query += 'height=25&width=25'
             }
             img = <img className="img-responsive " src={user.userProfile.imageUrl + '?height=25&width=25'}> </img>
-            //
         }
-        img = <img className="profile-pic" src={'https://graph.facebook.com/v2.3/10206313577893040/picture?height=25&width=25'}> </img>;
+        //img = <img className="profile-pic" src={'https://graph.facebook.com/v2.3/10206313577893040/picture?height=25&width=25'}> </img>;
         if (this.props.onClick) {
             return (
                 <div className="user-profile">{img}<a href='#' onClick={this.props.onClick}><span>{name}</span></a></div>
