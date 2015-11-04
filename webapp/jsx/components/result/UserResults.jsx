@@ -188,10 +188,14 @@ var ResultNine = React.createClass({
     render: function() {
         var rows = [];
         var limit = this.props.limit == null ? this.props.results.length : this.props.limit;
+
         for (var i = 0; i< limit && i< this.props.results.length; i++ ) {
             var r = this.props.results[i];
             var lnk = <Link to={'/app/schedule/'  + r.season.id  + '/' + r.teamMatch.id}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link>;
-
+            var scoreDiff = r.teamMemberRacks - r.opponentRacks;
+            if (scoreDiff == -1){
+                scoreDiff = 1;
+            }
             if (!r.season.active) {
                 lnk = <span>{Util.formatDateTime(r.teamMatch.matchDate)}</span>
             }
@@ -200,7 +204,7 @@ var ResultNine = React.createClass({
                     {lnk}
                 </td>
                 <td className={"racks win-lost " + (r.win ? "win" : "lost")} >{r.win ? 'W' : 'L'}</td>
-                <td className="score">{r.teamMemberRacks + '-' + r.opponentRacks}</td>
+                <td className={"score" + (scoreDiff == 1 ? " hill" : "")} >{r.teamMemberRacks + '-' + r.opponentRacks}</td>
                 <td className="race" >{Handicap.race(r.teamMemberHandicap,r.opponentHandicap)}</td>
                 <td className="user"><UserLink onClick={this.props.onUserClick(r.opponent)} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                 <td className="hc op-hc">{Handicap.formatHandicap(r.opponentHandicap)}</td>
@@ -251,6 +255,10 @@ var ResultChallenge = React.createClass({
             if (r == undefined) {
                 continue;
             }
+            var scoreDiff = r.teamMemberRacks - r.opponentRacks;
+            if (scoreDiff == -1){
+                scoreDiff = 1;
+            }
             rows.push(<tr key={r.id}>
                 <td className="date" >
                    <Link to={'/app/schedule/'  + r.season.id  + '/' + r.teamMatch.id}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link>;
@@ -260,8 +268,8 @@ var ResultChallenge = React.createClass({
                 <td className="points">{r.matchPoints ? r.matchPoints.weightedAvg.toFixed(3) : '0'}</td>
                 <td className="racks">{r.matchPoints ? r.matchPoints.matchNum : '0'}</td>
                 <td className="formula">{r.matchPoints ? r.matchPoints.calculation  : ''}</td>
-                <td className="score">{r.teamMemberRacks + '-' + r.opponentRacks}</td>
-                <td className="user"><UserLink onClick={this.props.onUserClick(r.opponent)} season={r.season} type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
+                <td className={"score" + (scoreDiff  == 1 ? " hill" : "")} >{r.teamMemberRacks + '-' + r.opponentRacks}</td>
+                <td className={"user"}><UserLink onClick={this.props.onUserClick(r.opponent)} season={r.season} type={'small'} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} /></td>
                 <td className="hc">{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
                 </tr>);
         }

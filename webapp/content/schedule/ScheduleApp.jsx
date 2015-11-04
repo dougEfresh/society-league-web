@@ -26,7 +26,8 @@ var ScheduleApp = React.createClass({
             played: null,
             pending: null,
             teams: [],
-            season: null
+            season: null,
+            team: null
         }
     },
     getData: function(id) {
@@ -55,9 +56,9 @@ var ScheduleApp = React.createClass({
             router: this.props.history
         });
             Util.getSomeData({
-            url: '/api/season/' + this.props.params.seasonId,
+            url: '/api/team/user/' +  this.getUser().id + '/' +this.props.params.seasonId,
             callback: function (d) {
-                this.setState({season: d});
+                this.setState({team: d});
             }.bind(this),
             module: 'SeasonWeeklyResults',
             router: this.props.history
@@ -70,15 +71,15 @@ var ScheduleApp = React.createClass({
         this.getData(n.params.seasonId);
     },
     render: function() {
-        if (this.state.upcoming == null && this.state.played == null && this.state.pending == null) {
+        if (this.state.season == null && this.state.upcoming == null && this.state.played == null && this.state.pending == null) {
             return (<LoadingApp /> )
         }
 
         return (
             <div>
-                <MatchResults  season={this.state.season} params={this.props.params} history={this.props.history} matches={this.state.played} />
+                <MatchResults  team={this.state.team} params={this.props.params} history={this.props.history} matches={this.state.played} />
                 <PlayerResults history={this.props.history} matchId={this.props.params.matchId} />
-                <UpcomingMatches params={this.props.params} matches={this.state.upcoming} />
+                <UpcomingMatches team={this.state.team} params={this.props.params} matches={this.state.upcoming} />
                 <PendingMatches matches={this.state.pending} />
             </div>
         );
@@ -235,14 +236,15 @@ var TeamResults = React.createClass({
     },
     renderMatches: function() {
         var rows = [];
+        var tId = this.props.team != undefined ? this.props.team.id : "0";
         this.props.matches.forEach(function(m) {
             if (m.winner.season.nine) {
                 rows.push(
                     <tr key={m.id}>
-                        <td className="result-winner"><TeamLink onClick={this.showResults(m)} team={m.winner}/></td>
+                        <td className={"result-winner" + (tId == m.winner.id ? " team-active" : "")} ><TeamLink onClick={this.showResults(m)} team={m.winner}/></td>
                         <td className="racks">{m.winnerSetWins}</td>
                         <td className="racks">{m.winnerRacks}</td>
-                        <td className="result-loser"><TeamLink onClick={this.showResults(m)}  team={m.loser}/></td>
+                        <td className={"result-loser" + (tId == m.loser.id ? " team-active" : "")}><TeamLink onClick={this.showResults(m)}  team={m.loser}/></td>
                         <td className="racks">{m.loserSetWins}</td>
                         <td className="racks">{m.loserRacks}</td>
                     </tr>)
@@ -327,7 +329,7 @@ var MatchResults = React.createClass({
     getUpcoming: function() {
         var rows = [];
         Object.keys(this.props.matches).forEach(function(md) {
-            rows.push(<TeamResults toggleHeading={this.toggleHeading}history={this.props.history} key={md} date={md} matches={this.props.matches[md]} />);
+            rows.push(<TeamResults team={this.props.team} toggleHeading={this.toggleHeading}history={this.props.history} key={md} date={md} matches={this.props.matches[md]} />);
         }.bind(this));
         return (
             rows
@@ -345,17 +347,17 @@ var MatchResults = React.createClass({
         }
     },
     render: function() {
-
         if (this.props.matches == null) {
             return null;
         }
+        var season = this.props.matches[Object.keys(this.props.matches)[0]][0].season;
         return (
             <div className="panel panel-default panel-results">
                 <a onClick={this.toggleHeading} href='#'>
                     <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-11 p-title">
-                              <span className="fa fa-trophy"></span><span> Results<span> {this.props.season.shortName}</span></span>
+                              <span className="fa fa-trophy"></span><span> Results<span> {season.shortName}</span></span>
                             </div>
                             <div className="col-xs-2 col-md-1 caret-title">
                                 <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
@@ -372,20 +374,6 @@ var MatchResults = React.createClass({
         );
     }
 });
-
-var  customStyles = {
-  content : {
-      /*
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-    */
-      backgroundColor   : 'rgba(0, 0, 0, 0.75)'
-  }
-};
 
 var PlayerResults = React.createClass({
     getInitialState: function() {
@@ -582,7 +570,7 @@ var PlayerResults = React.createClass({
                             </table>
                           </div>
                       </div>
-                      <div className="modal-footer">
+                      <div className={"modal-footer " + m.teamMatch.winner.season.nine ? " hide": ""}>
                           <button type="button" className="btn btn-primary" onClick={this.closeModal}>X</button>
                       </div>
                   </div>

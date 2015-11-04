@@ -235,3 +235,16 @@ ul.nav {
 .modal-footer {
     padding: 5px;
 }
+
+.hill {
+    background-color: #CDA3A3;
+}
+
+.team-active {
+    background-color: lightblue;
+    color: black;
+}
+
+.team-active > div > a {
+    color: black;
+}
