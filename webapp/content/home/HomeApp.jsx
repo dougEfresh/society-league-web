@@ -262,34 +262,4 @@ var HomeApp = React.createClass({
     }
 });
 
-/*
-div className="headerHome">My Teams</div>
-                <div className="plain_text">
-                    You can also manage your account settings by clicking on the <b>'My Teams'</b> link in the left panel to change
-                    your personal data including your email address, name, phone number, and home address.
-                </div>
-
-                <div className="headerHome">Stats</div>
-                <div className="plain_text">
-                    To get a quick look at every season you've played in, the <b>'Stats'</b> section contains <b>'My History'</b> &amp; <b>'My Opponents'</b>
-                    which breaks down your history by individual seasons and a complete history of every opponent you've ever played. In my opponents, you will
-                    be able to sort by opponent or zero in on all matches played bettween you and that opponent, their team.
-                </div>
-
-  <div id="home-app" className="container ss-home-app">
-                <h4>Upcoming Matches</h4>
- <div className="row">
- <div className="col-xs-12  col-md-12">
- <UpcomingChallenges  onClick={this.changeTeam} data={this.state.challenges}/>
- </div>
- </div>
-                <div className="row">
-                    <UpcomingMatches onClick={this.changeTeam}/>
-                </div>
-                <ul className="nav nav-tabs">
-                    {seasonTabs}
-                </ul>
-                {display}
-            </div>
- */
 module.exports = HomeApp;
