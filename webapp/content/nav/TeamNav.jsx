@@ -57,7 +57,7 @@ var TeamNav = React.createClass({
             this.props.toggleSide(e);
             this.setState({toggleSide: false});
             e.preventDefault();
-            this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
+            this.props.history.pushState(null,'/app/team/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
         }.bind(this)
     },
     expandTeam: function(t) {
@@ -65,7 +65,6 @@ var TeamNav = React.createClass({
             //this.props.toggleSide(e);
             e.preventDefault();
             t.toggle = t.toggle == undefined ? true : !t.toggle;
-            //this.props.history.pushState(null,'/app/display/' + t.season.id + '/' + t.id + '/' + this.getUser().id );
             this.setState({});
         }.bind(this);
     },
@@ -75,7 +74,7 @@ var TeamNav = React.createClass({
         if (this.state.teams.length == 0) {
         //    return null;
         }
-        var teamCls = this.context.location.pathname.indexOf("/app/display") > 0 ? "active" : "not-active";
+        var teamCls = this.context.location.pathname.indexOf("/app/team") > 0 ? "active" : "not-active";
         this.state.teams.forEach(function(t) {
             if (t.challenge)
                 return;

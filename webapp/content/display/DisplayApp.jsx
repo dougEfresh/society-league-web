@@ -146,11 +146,15 @@ var DisplayApp = React.createClass({
     changeUser: function(u) {
         return function(e) {
             e.preventDefault();
+            if (u.id == this.props.params.userId) {
+                return;
+            }
             if (this.state.mobile) {
                 this.state.toggleSeason = false;
                 this.state.toggleTeam = false;
                 this.state.toggleUser = true;
             }
+
             Util.getSomeData({
                 url: '/api/team/user/' + u.id + '/' + this.props.params.seasonId,
                 callback: function(d) {

@@ -76,9 +76,8 @@ var ScheduleApp = React.createClass({
         }
 
         return (
-            <div>
+            <div id="schedule-app">
                 <MatchResults  team={this.state.team} params={this.props.params} history={this.props.history} matches={this.state.played} />
-                <PlayerResults history={this.props.history} matchId={this.props.params.matchId} />
                 <UpcomingMatches team={this.state.team} params={this.props.params} matches={this.state.upcoming} />
                 <PendingMatches matches={this.state.pending} />
             </div>
@@ -134,16 +133,17 @@ var PendingMatches = React.createClass({
 var UpcomingWeeklyMatch = React.createClass({
     renderMatches: function() {
         var rows = [];
+        var tId = this.props.team == undefined ? "0" : this.props.team.id;
         this.props.matches.forEach(function(m) {
             rows.push(
                 <tr key={m.id}>
-                    <td className="schedule-home">
+                    <td className={"schedule-home " + (tId == m.home.id ? " team-active" : "")}>
                         <TeamLink team={m.home}/>
                     </td>
                     <td className="schedule-vs">
                         <span className="vs"> Vs. </span>
                     </td>
-                    <td className="schedule-away">
+                    <td className={"schedule-away " + (tId == m.away.id ? " team-active" : "")}>
                         <TeamLink team={m.away}/>
                     </td>
                 </tr>
@@ -182,7 +182,7 @@ var UpcomingMatches = React.createClass({
     getUpcoming: function() {
         var rows = [];
         Object.keys(this.props.matches).forEach(function(md) {
-            rows.push(<UpcomingWeeklyMatch key={md} date={md} matches={this.props.matches[md]} />);
+            rows.push(<UpcomingWeeklyMatch team={this.props.team} key={md} date={md} matches={this.props.matches[md]} />);
         }.bind(this));
         return (
             rows
@@ -375,209 +375,7 @@ var MatchResults = React.createClass({
     }
 });
 
-var PlayerResults = React.createClass({
-    getInitialState: function() {
-        return {
-            results : [],
-            toggle: false,
-            modalIsOpen: true
-        }
-    },
-    getData: function(id){
-        if (id)
-         Util.getSomeData(
-             {
-                 url: '/api/playerresult/teammatch/' + id, callback: function (d) {
-                 this.setState({results: d, toggle: true})
-             }.bind(this),
-                 module: 'SeasonMatchResultsOnDay'
-             });
-    },
-    componentWillReceiveProps: function(n) {
-        if (n.matchId == undefined){
-            this.setState({results: [], modalIsOpen: false});
-        }
-        if (n.matchId != this.props.matchId) {
-            this.getData(n.matchId);
-        }
-    },
-    componentDidMount: function() {
-        if (this.props.matchId != undefined)
-            this.getData(this.props.matchId);
-    },
-    getHeader: function(m) {
-        var s = m.teamMatch.home.season;
-        if (s.nine) {
-            return (<tr>
-                <th className="racks match-number">#</th>
-                <th className="user">
-                    <span>{m.teamMatch.winner.name}</span>
-                    <span className="badge winner-team-racks-badge racks-badge ">{'R:' +  m.teamMatch.winnerRacks}</span>
-                </th>
-                <th className="racks hc winner-hc">HC</th>
-                <th className="racks win-lost">W/L</th>
-                <th className="user opponent">
-                    <span>{m.teamMatch.loser.name}</span>
-                    <span className="badge loser-team-racks-badge racks-badge ">{'R:' +  m.teamMatch.loserRacks}</span>
-                </th>
-                <th className="racks hc loser-hc">HC</th>
-                <th className="score">S</th>
-                <th className="score">Race</th>
-            </tr>)
-        }
-        if (s.challenge) {
-            return null;
-        }
 
-        if (s.scramble) {
-            return null;
-        }
-         return (<tr>
-                <th className="racks match-number">#</th>
-                <th className="user">
-                    <span>{m.teamMatch.winner.name}</span>
-                    <span className="badge winner-team-racks-badge racks-badge">{'R:' +  m.teamMatch.winnerRacks}</span>
-                </th>
-                <th className="racks hc winner-hc">HC</th>
-                <th className="racks win-lost">W/L</th>
-                <th className="user opponent">
-                    <span>{m.teamMatch.loser.name}</span>
-                    <span className="badge loser-team-racks-badge racks-badge">{'R:' +  m.teamMatch.loserRacks}</span>
-                </th>
-             <th className="racks hc">HC</th>
-
-            </tr>)
-
-    },
-    getRows: function() {
-        var rows = [];
-        var s = this.state.results[0].teamMatch.home.season;
-        var cnt = 0;
-        if (s.nine && !s.challenge) {
-            this.state.results.forEach(function (m) {
-                var wl = m.winnerTeamRacks > m.loserTeamRacks ? 'W' : 'L';
-                rows.push(
-                    <tr key={cnt++}>
-                        <td className="racks match-number">{m.matchNumber}</td>
-                        <td className="winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
-                        </td>
-                        <td className="racks hc winner-hc">{Handicap.formatHandicap(m.winnerTeamHandicap)}</td>
-                        <td className={"racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
-                        <td className="loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
-                        <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
-                        <td className="score">{m.winnerTeamRacks + '-' + m.loserTeamRacks}</td>
-                        <td className="racks race">{Handicap.race(m.winnerTeamHandicap, m.loserTeamHandicap)}</td>
-                    </tr>
-                )
-            });
-            return rows;
-        }
-        if (s.challenge)
-            return rows;
-
-        if (s.scramble)
-            return rows;
-
-        this.state.results.forEach(function (m) {
-            var wl = m.winnerTeamRacks > m.loserTeamRacks ? 'W' : 'L';
-                rows.push(
-                    <tr key={cnt++}>
-                        <td className="racks match-number">{m.matchNumber}</td>
-                        <td className="winner"><UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
-                        </td>
-                        <td className="racks hc winner-hc">{Handicap.formatHandicap(m.winnerTeamHandicap)}</td>
-                        <td className={"racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
-                        <td className="loser"><UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/></td>
-                        <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
-                    </tr>
-                )
-            });
-
-        return rows;
-    },
-    openModal: function() {
-        this.setState({modalIsOpen: true});
-  },
-
-  closeModal: function() {
-      this.props.history.pushState(null,'/app/schedule/' + this.state.results[0].season.id);
-      this.setState({modalIsOpen: false});
-  },
-    handleClose: function( ) {
-
-    },
-
-    render: function() {
-        if (this.state.results.length == 0) {
-            return null;
-        }
-        var m = this.state.results[0];
-        var toggleHeading = function(e){e.preventDefault(); this.setState({toggle: !this.state.toggle})}.bind(this);
-        this.state.modalIsOpen = true;
-        var defaultStyles = {
-            overlay : {
-                position        : 'fixed',
-                top             : 0,
-                left            : 0,
-                right           : 0,
-                bottom          : 0,
-                backgroundColor : 'rgba(0, 0, 0, 0.75)'
-            },
-            content : {
-                position                : 'absolute',
-                top                     : '50px',
-                left                    : '0px',
-                right                   : '0px',
-                bottom                  : '0px',
-                border                  : '1px solid #ccc',
-                background              : '#DDD',
-                overflow                : 'auto',
-                WebkitOverflowScrolling : 'touch',
-                borderRadius            : '4px',
-                outline                 : 'none',
-                padding                 : '0px'
-
-            }
-        };
-        return (
-            <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.handleClose}
-                    className="Modal__Bootstrap modal-dialog"
-                    style={defaultStyles}
-                >
-                  <div className="modal-content">
-                      <div className="modal-header">
-                          <div className="p-title">
-                              <span className="fa winner-badge"></span>
-                              <span> {m.teamMatch.winner.name}</span>
-                              <span> Vs.</span>
-                              <span>{m.teamMatch.loser.name}</span>
-                              <div style={{float: 'right'}}>
-                                  <button  type="button" className="btn btn-primary btn-modal" onClick={this.closeModal}>X</button>
-                              </div>
-                          </div>
-                      </div>
-                      <div className="modal-body">
-                          <div className="table-responsive">
-                            <table className="table table-users table-grid table-bordered table-condensed table-striped" >
-                                <thead>
-                                {this.getHeader(m)}
-                                </thead>
-                                <tbody>
-                                {this.getRows()}
-                                </tbody>
-                            </table>
-                          </div>
-                      </div>
-                      <div className={"modal-footer " + m.teamMatch.winner.season.nine ? " hide": ""}>
-                          <button type="button" className="btn btn-primary" onClick={this.closeModal}>X</button>
-                      </div>
-                  </div>
-            </Modal>
-        )
-    }
-});
 
 module.exports = ScheduleApp;
 

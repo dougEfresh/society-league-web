@@ -20,7 +20,7 @@ body {
 }
 
 #content div {
-    min-height: 100%
+    /*min-height: 100%*/
 }
 
 #wrapper {
@@ -247,4 +247,19 @@ ul.nav {
 
 .team-active > div > a {
     color: black;
+}
+
+.winner-check {
+    float: right;
+    padding-right: 5px;
+}
+
+.team-results-back {
+     display: none;
+ }
+
+@media (min-width: 768px) {
+    .team-results-back {
+        display: inline;
+    }
 }

@@ -39,6 +39,7 @@ var SeasonMatchResultsOnDay = require('./content/season/SeasonMatchResultsOnDay.
 var LoadingApp = require('./jsx/components/LoadingApp.jsx');
 var TeamChart = require('./content/team/TeamChart.jsx');
 var UserApp  = require('./content/user/UserApp.jsx');
+var TeamMatchResultsApp = require('./content/schedule/TeamMatchrResults.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -98,7 +99,7 @@ var routes = (
             <Route path="season/:seasonId/leaders/:userId" component={SeasonApp} ></Route>
 
             <Route path="schedule/:seasonId" component={ScheduleApp} ></Route>
-            <Route path="schedule/:seasonId/:matchId" component={ScheduleApp} ></Route>
+            <Route path="schedule/:seasonId/:matchId" component={TeamMatchResultsApp} ></Route>
         </Route>
     </Route>
 );
