@@ -7,6 +7,8 @@ var Router = require('react-router')
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
+var DataGridUtil = require('../../lib/DataGridUtil.jsx');
+var ReactDataGrid = require('react-datagrid');
 
 var SeasonStandings = React.createClass({
     mixins: [UserContextMixin],
@@ -48,6 +50,7 @@ var SeasonStandings = React.createClass({
     render: function() {
         if (this.state.seasonStats.length == 0)
             return null;
+        /*
         var rows = [];
         var activeTeam = this.props.activeTeam == undefined ? {id: 0} : this.props.activeTeam;
         if (this.state.seasonStats[0].season.challenge) {
@@ -145,17 +148,43 @@ var SeasonStandings = React.createClass({
                 </tr>
             );
         }
+         */
+        var columns = [
+            DataGridUtil.columns.teamRank,
+            window.isMobile ? DataGridUtil.columns.teamMobile: DataGridUtil.columns.team,
+            DataGridUtil.columns.wins,
+            DataGridUtil.columns.setWins,
+            DataGridUtil.columns.setLoses,
+            DataGridUtil.columns.racksWon,
+            DataGridUtil.columns.racksLost,
+            DataGridUtil.columns.rackPct
+        ];
+
         return (
-            <div className="table-responsive">
-                <table className={ Util.tableCls + " table-season-standings"} >
-                    <thead>
-                    {header}
-                <tbody>
-                {rows}
-                </tbody>
-                </thead>
-            </table>
-             </div>
+              <div className="table-responsive">
+                <ReactDataGrid
+                    idProperty='rank'
+                    dataSource={this.state.seasonStats}
+                    columns={columns}
+                    style={{height: ((this.state.seasonStats.length) * 50 < 500 ? (this.state.seasonStats.length ) * 50 : 500)}}
+                    rowHeight={40}
+                    showCellBorders={true}
+                    filterable={false}
+                    columnMinWidth={50}
+                    cellPadding={'5px 5px'}
+                    headerPadding={'5px 5px'}
+                    filterIconColor={'#6EB8F1'}
+                    menuIconColor={'#6EB8F1'}
+                    loadMaskOverHeader={false}
+                    cellEllipsis={false}
+                    liveFilter={false}
+                    styleAlternateRowsCls={'datagrid-alt-row'}
+                    menuIcon={false}
+                    filterIcon={false}
+                    scrollbarSize={(this.state.seasonStats.length) * 50 < 500 ? 0 : 20}
+                    //onColumnOrderChange={this.handleColumnOrderChange}
+                    />
+            </div>
         );
 
     }
