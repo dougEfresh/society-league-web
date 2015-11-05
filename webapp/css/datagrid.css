@@ -1122,7 +1122,8 @@ html.u-app body * {
   -webkit-align-items: stretch;
   align-items: stretch;
 }
-.react-datagrid.z-with-column-menu .z-column-header .z-show-filter,
+/*.react-datagrid.z-with-column-menu .z-column-header .z-show-filter,
+
 .react-datagrid.z-with-column-menu .z-column-header .z-show-menu {
   display: none;
   position: absolute;
@@ -1133,27 +1134,40 @@ html.u-app body * {
   height: 100%;
   border-left: 1px solid #a8a8a8;
 }
+*/
+/*
 .react-datagrid.z-with-column-menu .z-column-header .z-show-filter {
   right: 15px;
   background: #fff;
 }
-.react-datagrid.z-with-column-menu .z-column-header.z-filterable .z-show-filter.z-active,
+*/
+
+/*.react-datagrid.z-with-column-menu .z-column-header.z-filterable .z-show-filter.z-active,
 .react-datagrid.z-with-column-menu .z-column-header.z-filterable .z-show-filter:hover,
-.react-datagrid.z-with-column-menu .z-column-header .z-show-menu.z-active,
+*/
+/*.react-datagrid.z-with-column-menu .z-column-header .z-show-menu.z-active,
 .react-datagrid.z-with-column-menu .z-column-header .z-show-menu:hover {
   background: #fff;
 }
+*/
+
+/*
 .react-datagrid.z-with-column-menu .z-column-header.z-active .z-show-menu,
 .react-datagrid.z-with-column-menu .z-column-header.z-active.z-filterable .z-show-filter,
 .react-datagrid.z-with-column-menu .z-column-header.z-over .z-show-menu {
   display: block;
 }
+*/
+/*
 .react-datagrid.z-with-column-menu .z-column-header.z-over.z-filterable .z-show-filter {
   display: block;
 }
+*/
+/*
 .react-datagrid.z-with-column-menu .z-column-header.z-filtered {
   font-style: italic;
 }
+*/
 .react-datagrid .z-header-wrapper {
   -webkit-box-flex: 0 0 auto;
   -moz-box-flex: 0 0 auto;
