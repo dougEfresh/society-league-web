@@ -38,7 +38,7 @@ var UserLink = React.createClass({
             //name += ' (' + Handicap.formatHandicap(hc)+ ')';
         }
         var user = this.props.user;
-        var img = null;
+        var img = <span></span>;
         if (user.profile) {
             var query = '?';
             if (this.props.height)
@@ -53,6 +53,7 @@ var UserLink = React.createClass({
             img = <img className="profile-pic " src={user.userProfile.imageUrl + '?height=25&width=25'}> </img>
         }
         //img = <img className="profile-pic" src={'https://graph.facebook.com/v2.3/10206313577893040/picture?height=25&width=25'}> </img>;
+
         if (this.props.onClick) {
             return (
                 <div className="user-profile">{img}<a href='#' onClick={this.props.onClick}><span>{name}</span></a></div>
@@ -60,7 +61,8 @@ var UserLink = React.createClass({
         }
         if (this.props.season) {
             return (
-                <div className="user-profile">{img}
+                <div className="user-profile">
+                    {img}
                     <a href={'#/app/season/' + this.props.season.id + '/leaders/' + this.props.user.id}>
                         <span>{name}</span>
                     </a>
@@ -68,7 +70,8 @@ var UserLink = React.createClass({
             );
         }
         return (
-             <div className="user-profile">{img}
+             <div className="user-profile">
+                 {img}
                  <Link  to={'/app/scout/' + this.props.user.id}>
                  <span>{name}</span>
                  </Link>

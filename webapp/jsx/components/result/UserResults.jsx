@@ -7,9 +7,10 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route
     , Link = Router.Link;
-//var ReactDataGrid  = require('react-data-grid');
-var ReactDataGrid = require('react-data-grid/addons');
-var onUserClick = undefined;
+var ReactDataGrid = require('react-datagrid');
+var sorty = require('sorty');
+var DataGridUtil = require('../../../lib/DataGridUtil.jsx');
+
 var UserResults = React.createClass({
      getInitialState: function() {
          return {
@@ -37,7 +38,7 @@ var UserResults = React.createClass({
             this.getData();
             return;
         }
-        onUserClick = this.props.onUserClick;
+
     },
     getData: function() {
         if (this.state.user == null || this.state.user == undefined || this.state.season == null || this.state.season == undefined) {
@@ -183,78 +184,117 @@ var ResultEight = React.createClass({
     }
 });
 
+var SORT_INFO = [ { name: 'date', dir: '-1'}];
+function sort(arr){
+	return sorty(SORT_INFO, arr)
+}
 
-var UserFormatter = React.createClass({
-
-    render: function() {
-        return (<UserLink onClick={this.props.value.onUserClick} user={this.props.value} />);
-    }
-});
 
 var ResultNine = React.createClass({
     getDefaultProps: function() {
-        return {season : null, results: []};
+        return {season : null, results:[], originalRows: [] };
+    },
+    getInitialState: function() {
+        this.props.results.forEach(function(r) {
+            r.opponent.onUserClick = this.props.onUserClick(r.opponent);
+        }.bind(this));
+        return {
+            results: this.props.results,
+            originalRows: this.props.results
+        }
+    },
+    componentWillReceiveProps: function(n){
+        n.results.forEach(function(r) {
+            r.opponent.onUserClick = this.props.onUserClick(r.opponent);
+        }.bind(this));
+        this.setState({
+            results: n.results,
+            originalRows: n.results
+        });
+    },
+    handleSortChange: function(sortInfo) {
+        console.log(JSON.stringify(sortInfo));
+        SORT_INFO = sortInfo;
+        this.state.results = [].concat(this.state.results);
+        this.state.results = sorty(sortInfo,this.state.results);
+        this.setState({});
     },
     render: function() {
-        var rows = [];
-        var limit = this.props.limit == null ? this.props.results.length : this.props.limit;
-
-        for (var i = 0; i< limit && i< this.props.results.length; i++ ) {
-            var r = this.props.results[i];
-            var lnk = <Link to={'/app/schedule/'  + r.season.id  + '/' + r.teamMatch.id}>{Util.formatDateTime(r.teamMatch.matchDate)}</Link>;
-            if (!r.season.active) {
-                lnk = <span>{Util.formatDateTime(r.teamMatch.matchDate)}</span>
-            }
-            rows.push(<tr key={r.id}>
-                <td className="date">
-                    {lnk}
-                </td>
-                <td className={"racks win-lost " + (r.win ? "win" : "lost")} >{r.win ? 'W' : 'L'}</td>
-                <td className={"score" + (r.hill ? " hill" : "")} >{r.score}</td>
-                <td className="race" >{r.race}</td>
-                <td className="user">
-                    <UserLink onClick={this.props.onUserClick(r.opponent)} user={r.opponent} handicap={r.opponentHandicap} season={r.season.id} />
-                </td>
-                <td className="hc op-hc">{Handicap.formatHandicap(r.opponentHandicap)}</td>
-                <td className="hc" >{Handicap.formatHandicap(r.teamMemberHandicap)}</td>
-                </tr>);
-        }
-
-        var statDisplay = (<div>
-                <span className="label label-success">{'W:' + this.props.stats.wins} </span>
-                <span className="label label-danger">{'L:' + this.props.stats.loses} </span>
-            </div>);
-        if (this.props.stats.wins == undefined || this.props.stats.wins+this.props.stats.loses <= 0){
-            statDisplay = null;
-        }
-
+        var limit = this.props.limit == null ? this.state.results.length : this.props.limit;
         var columns = [
-            {key: 'date' , name: 'date', width: 85} ,
-            {key: 'result' , name: 'W/L' ,  width: 70} ,
-            {key: 'score', name: 'S', width: 70},
-            {key: 'race' , name: 'Race',  width: 65} ,
-            {key: 'opponent', name: 'Op.', formatter: UserFormatter},
-            {key: 'opponentHandicap', name: 'Op. HC' , width: 65 },
-            {key: 'teamMemberHandicap', name: 'HC' , width: 55}
+            DataGridUtil.columns.playerMatchDate,
+            DataGridUtil.columns.result,
+            DataGridUtil.columns.score,
+            DataGridUtil.columns.race,
+            window.isMobile ? DataGridUtil.columns.opponentMobile: DataGridUtil.columns.opponent,
+            //DataGridUtil.columns.opponentMobile,
+            DataGridUtil.columns.opponentHandicap,
+            DataGridUtil.columns.teamMemberHandicap
         ];
-        var rowGetter = function(i){
-            var d = this.props.results[i];
-            if (d.opponent != undefined) {
-                d.opponent.onUserClick = this.props.onUserClick(d.opponent);
-            }
-            return d;
-        }.bind(this);
+
+        if (this.state.results.length == 0) {
+                    return (
+            <div className="table-responsive">
+                <ReactDataGrid
+				idProperty='id'
+                loading={true}
+				dataSource={this.state.results}
+				columns={columns}
+				//style={{height: ((this.state.results.length + 1) * 50 < 500 ? (this.state.results.length + 1) * 50 : 500)}}
+                rowHeight={40}
+                showCellBorders={true}
+                sortInfo={SORT_INFO}
+				//sortInfo={SORT_INFO}
+				onSortChange={this.handleSortChange}
+				//onColumnOrderChange={this.handleColumnOrderChange}
+                    />
+            </div>);
+
+        }
 
         return (
             <div className="table-responsive">
+                <ReactDataGrid
+				idProperty='id'
+				dataSource={this.state.results}
+				columns={columns}
+				style={{height: ((this.state.results.length) * 50 < 500 ? (this.state.results.length ) * 50 : 500)}}
+                rowHeight={40}
+                showCellBorders={true}
+                filterable={false}
+                columnMinWidth={50}
+                cellPadding={'0px 0px'}
+                headerPadding={'0px 0px'}
+                filterIconColor={'#6EB8F1'}
+                menuIconColor={'#6EB8F1'}
+				sortInfo={SORT_INFO}
+				onSortChange={this.handleSortChange}
+                loadMaskOverHeader={false}
+                cellEllipsis={false} liveFilter={false}
+                styleAlternateRowsCls={'datagrid-alt-row'}
+                menuIcon={false}
+                filterIcon={false}
+                scrollbarSize={(this.state.results.length) * 50 < 500 ? 0 : 20}
+				//onColumnOrderChange={this.handleColumnOrderChange}
+			/>
+                </div>);
+
+        /*
+        return (
+         <div className="table-responsive">
             <ReactDataGrid
                 columns={columns}
+                enableCellSelect={false}
+                onGridSort={this.handleGridSort}
                 rowGetter={rowGetter}
-                rowsCount={this.props.results.length}
-                minHeight={this.props.results.length * 75}
+                rowHeight={40}
+                rowsCount={this.state.results.length}
+                minHeight={this.state.results.length * 35 > 500 ? 500 : this.props.results.length * 70}
+                height={this.state.results.length * 35 > 500 ? 500 : this.props.results.length * 70}
                 />
             </div>
         );
+        */
         /*
         return (
 

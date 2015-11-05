@@ -116,12 +116,6 @@ th.date {
     width: 100px;
 }
 
-.user-profile  {
-    text-align: left;
-    vertical-align: inherit;
-    float: left;
-    padding-left: 5px;
-}
 
 table > tbody > tr > td > div.team-link {
     text-align: left;

@@ -267,3 +267,18 @@ ul.nav {
 .btn-challenge {
     padding: 10px;
 }
+.react-datagrid .z-row.z-over, .react-datagrid .z-row. z-odd {
+    /*background: #d7e7ff;*/
+    background-color: #F5F7F8;
+}
+div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
+    background-color: #F5F7F8;
+}
+
+.z-show-menu {
+    display: none;
+}
+
+.z-header {
+    padding:0px; !important;
+}

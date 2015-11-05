@@ -30,6 +30,7 @@
             topOffset = 50;
             width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
             if (width < 768) {
+                window.isMobile  = true;
                 $('div.navbar-collapse').addClass('collapse');
                 $('.sidbar-nav').addClass('collapse');
                 //$('.sidbar-nav').addClass('in');
@@ -43,6 +44,8 @@
             if (height < 1) height = 1;
             if (height > topOffset) {
                 $("#page-wrapper").css("min-height", (height) + "px");
+            } else {
+                window.isMobile  = true;
             }
         });
 </script>
