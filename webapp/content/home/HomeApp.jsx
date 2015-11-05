@@ -119,18 +119,6 @@ var HomeApp = React.createClass({
             console.log('Going  team to ' + t.name);
         }.bind(this);
     },
-    changeSeason: function(s) {
-        return function(e) {
-            e.preventDefault();
-            var activeTeam = null;
-            this.state.userTeams.forEach(function(t){
-                if (t.season.id == s.id)
-                    activeTeam = t;
-            });
-            this.setState({activeSeason: s, activeTeam:  activeTeam, activeUser: this.getUser()});
-            console.log('Setting season to ' + s.displayName);
-        }.bind(this);
-    },
     show: function(type,s) {
         return function(e) {
             e.preventDefault();
@@ -160,7 +148,7 @@ var HomeApp = React.createClass({
 
         this.getUser().handicapSeasons.forEach(function (hs) {
             var s = hs.season;
-            if (!s.active || s.challenge)
+            if (!s.active)
                 return;
             seasons.push(s);
         }.bind(this));
@@ -247,10 +235,9 @@ var HomeApp = React.createClass({
                 <div className="row">
                     <div className="col-xs-12 col-md-3">
                         <div className="panel panel-default panel-upcoming">
-                        <div className="panel-heading">
-                            <i className="fa fa-bell fa-fw"></i> Upcoming Matches
+                        <div className={"panel-heading "  + (this.state.activeSeason.challenge ?" hide": "")}><i className="fa fa-bell fa-fw"></i> Upcoming Matches
                         </div>
-                            <div className="panel-body">
+                            <div className={"panel-body "  + (this.state.activeSeason.challenge ?" hide": "")}>
                                 <UpcomingMatches onClick={this.changeTeam} data={this.state.challenges}/>
                             </div>
                         </div>

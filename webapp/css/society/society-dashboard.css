@@ -263,3 +263,7 @@ ul.nav {
         display: inline;
     }
 }
+
+.btn-challenge {
+    padding: 10px;
+}

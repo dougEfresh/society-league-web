@@ -104,31 +104,18 @@ var ChallengePendingApp =  React.createClass({
         var deny = (
             <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
                 <button className="btn btn-sm"  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} >
-                    <span className="fa fa-thumbs-down"></span>Decline Challenge
-                </button>
+                    <span className="fa fa-thumbs-down"></span>Decline</button>
             </Link>
         );
         var m = moment(challenge.date);
 
         return (
-            <li className="list-group-item col-lg-12 col-xs-12">
-                <div className="col-lg-6 col-md-8 col-xs-12">
-                    <span id={'challenge-'+ challenge.id}>
-                        {m.format('ddd MMM Do ') + ' -  vs - ' }
-                        <UserLink user={opponent}/>
-                    </span>
-                </div>
-                <div className="col-lg-2 col-md-2 col-xs-12">
-                    {this.renderSelectOptions()}
-                </div>
-                <div className="col-lg-2 col-md-2 col-xs-12">
-                    {deny}
-                </div>
-                <div className="col-lg-2 col-md-2 col-xs-12">
-                    {accept}
-                </div>
-
-            </li>
+            <tr>
+                <td className="date">{m.format('MMM Do ')}</td>
+                    <td className="user" ><UserLink user={opponent}/></td>
+                    <td>{this.renderSelectOptions()}</td>
+                    <td><div className="challenge-deny">{deny}</div><div className="challenge-accept">{accept}</div></td>
+            </tr>
         );
     }
 });

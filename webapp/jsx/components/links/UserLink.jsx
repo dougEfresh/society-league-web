@@ -69,9 +69,9 @@ var UserLink = React.createClass({
         }
         return (
              <div className="user-profile">{img}
-                 <a  href='#/app/season/'>
+                 <Link  to={'/app/scout/' + this.props.user.id}>
                  <span>{name}</span>
-                 </a>
+                 </Link>
              </div>
 
         );

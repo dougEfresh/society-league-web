@@ -40,26 +40,42 @@ var UpcomingChallenges = React.createClass({
 
         if (challenges.length > 0) {
             upComingChallenges = (
-                <div id={'accepted-challenges'} className="panel panel-default">
-                  <div className="panel-heading" >Upcoming Challenges</div>
-                  <div className="panel-body" >
-                      <ul className="list-group home-upcoming-challenges">
-                          {challenges}
-                      </ul>
-                  </div>
-              </div>);
+                <div className="row">
+                    <div className="col-xs-12 col-md-6">
+                        <div id={'accepted-challenges'} className="panel panel-default">
+                            <div className="panel-heading" ><span>Upcoming</span></div>
+                            <div className="panel-body" >
+                                <table className={Util.tableCls + " table-challenge-upcoming"}>
+                                <thead></thead>
+                                <tbody>
+                                    {challenges}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            );
         }
 
         if (pending.length > 0) {
             pendingChallenges = (
-                <div id={'pending-challenges'} className="panel panel-warning">
-                <div className="panel-heading" >Pending Challenges</div>
-                <div className="panel-body" >
-                    <ul className="list-group home-upcoming-challenges">
-                        {pending}
-                    </ul>
+                <div className="row">
+                    <div className="col-xs-12 col-md-6">
+                        <div id={pending-challenges} className="panel panel-warning">
+                            <div className="panel-heading"><h4>Pending</h4></div>
+                            <div className="panel-body" >
+                                <table className={Util.tableCls + " table-challenge-upcoming"}>
+                                <thead></thead>
+                                <tbody>
+                                    {pending}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-            </div>);
+            );
 
         }
         if (sent.length > 0) {
@@ -76,9 +92,9 @@ var UpcomingChallenges = React.createClass({
 
         return (
             <div>
+                {sentChallenges}
                 {pendingChallenges}
                 {upComingChallenges}
-                {sentChallenges}
             </div>
         )
     }

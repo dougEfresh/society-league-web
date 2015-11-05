@@ -103,7 +103,9 @@ var TeamNav = React.createClass({
                 </li>
             );
         }.bind(this));
-
+        if (teamNav.length == 0){
+            return null;
+        }
         return(
             <li className={this.state.toggleTeam ? "selected dropdown " + teamCls : teamCls + " dropdown"}>
                 <a onClick={this.toggleTeam} href="#">

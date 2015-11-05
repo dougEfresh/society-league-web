@@ -74,7 +74,7 @@ var AdminNav = React.createClass({
             var standingsClass = this.context.location.pathname.indexOf('display/') > 0 ? 'selected ' : "not-selected";
             var scheduleClass = this.context.location.pathname.indexOf('schedule/') > 0 ? 'selected ' : "not-selected";
             var leaderClass = this.context.location.pathname.indexOf('leader') > 0 ? 'selected ' : "not-selected";
-            var toggle = s.toggle == undefined ? this.props.params.seasonId == s.id : s.toggle;
+            var toggle = s.toggle == undefined ? this.props.params.seasonId == s.id && this.context.location.pathname.indexOf('display/') > 0 : s.toggle;
             seasonNav.push(
                 <li className={toggle ? "active dropdown" : "dropdown"} key={s.id}>
                     <a onClick={this.expandSeason(s)} href="#">

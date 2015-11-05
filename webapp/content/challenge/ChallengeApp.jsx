@@ -118,19 +118,10 @@ var ChallengeApp = React.createClass({
         if (this.state.slots.length == 0) {
             return null;
         }
-        var className = "btn btn-success";
-        var submit = (
-            <button type="button" onClick={this.challenge} className={className}>
-                <span className="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Challenge!
-            </button>
-        );
-        if (!this.isValid()) {
-            submit = null;
-        }
         var refresh = this.state.refresh || this.props.location.query.refresh != undefined;
-
         if (this.state.refresh)
             this.state.refresh = false;
+
         var season;
         this.getUser().handicapSeasons.forEach(function(s){
             if (s.season.challenge) {
@@ -150,12 +141,16 @@ var ChallengeApp = React.createClass({
                                             <ChallengeRequestDate query={this.props.location.query}
                                                       history={this.props.history}
                                                       dates={this.state.dates} />
-                                <ChallengeRequestOpponent query={this.props.location.query} history={this.props.history} />
-                                <ChallengeRequestSlots query={this.props.location.query} history={this.props.history} />
-                            </div>
-                        </form>
-                    </div>
-                    {submit}
+                                            <ChallengeRequestOpponent query={this.props.location.query} history={this.props.history} />
+                                            <ChallengeRequestSlots query={this.props.location.query} history={this.props.history} />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div className={"btn-challenge" + (!this.isValid() ? " hide" : "") }>
+                                    <button type="button" onClick={this.challenge} className="btn btn-sm  btn-success">
+                                        <span className="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Challenge!
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -335,7 +330,7 @@ var ChallengeRequestSlots = React.createClass({
                 );
             }.bind(this));
           return (
-                <div className="btn-group select-time">
+                <div className="btn-group btn-group-xs select-time">
                     {buttons}
                 </div>
             );
@@ -366,10 +361,10 @@ var SlotButton = React.createClass({
              }
         }
         return (
-                <button className={selected ? 'btn btn-success' : 'btn btn-default'}
+                <button className={selected ? 'btn btn-xs btn-success' : 'btn btn-xs btn-default'}
                         onClick={this.onClick}>
                     <span className={selected ? 'fa fa-check' : 'fa fa-times'}></span>
-                    {this.props.slot.timeStamp.split('T')[1]}
+                    {this.props.slot.timeStamp.split('T')[1].substr(0,5)}
                 </button>
          );
     }

@@ -62,7 +62,7 @@ var TopGunNav = React.createClass({
                     <span className={"fa fa-caret-" + (this.state.toggle ? "down side-caret" : "left side-caret")} ></span>
                 </a>
                 <ul className={"nav nav-second-level collapse" + (this.state.toggle ? " selected in" : "")} aria-expanded="true">
-                    <li className={this.getUser().admin ? "challenge-nav" : "hide"} >
+                    <li className={"challenge-nav"} >
                         <a onClick={this.goToChallenge(s)} href="#">Challenge</a>
                     </li>
                     <li className="hide">
