@@ -7,7 +7,9 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route
     , Link = Router.Link;
-
+//var ReactDataGrid  = require('react-data-grid');
+var ReactDataGrid = require('react-data-grid/addons');
+var onUserClick = undefined;
 var UserResults = React.createClass({
      getInitialState: function() {
          return {
@@ -35,7 +37,7 @@ var UserResults = React.createClass({
             this.getData();
             return;
         }
-
+        onUserClick = this.props.onUserClick;
     },
     getData: function() {
         if (this.state.user == null || this.state.user == undefined || this.state.season == null || this.state.season == undefined) {
@@ -181,6 +183,14 @@ var ResultEight = React.createClass({
     }
 });
 
+
+var UserFormatter = React.createClass({
+
+    render: function() {
+        return (<UserLink onClick={this.props.value.onUserClick} user={this.props.value} />);
+    }
+});
+
 var ResultNine = React.createClass({
     getDefaultProps: function() {
         return {season : null, results: []};
@@ -217,8 +227,37 @@ var ResultNine = React.createClass({
         if (this.props.stats.wins == undefined || this.props.stats.wins+this.props.stats.loses <= 0){
             statDisplay = null;
         }
+
+        var columns = [
+            {key: 'date' , name: 'date', width: 85} ,
+            {key: 'result' , name: 'W/L' ,  width: 70} ,
+            {key: 'score', name: 'S', width: 70},
+            {key: 'race' , name: 'Race',  width: 65} ,
+            {key: 'opponent', name: 'Op.', formatter: UserFormatter},
+            {key: 'opponentHandicap', name: 'Op. HC' , width: 65 },
+            {key: 'teamMemberHandicap', name: 'HC' , width: 55}
+        ];
+        var rowGetter = function(i){
+            var d = this.props.results[i];
+            if (d.opponent != undefined) {
+                d.opponent.onUserClick = this.props.onUserClick(d.opponent);
+            }
+            return d;
+        }.bind(this);
+
         return (
-             <div className="table-responsive">
+            <div className="table-responsive">
+            <ReactDataGrid
+                columns={columns}
+                rowGetter={rowGetter}
+                rowsCount={this.props.results.length}
+                minHeight={this.props.results.length * 75}
+                />
+            </div>
+        );
+        /*
+        return (
+
                  <table className={ Util.tableCls + " table-users"} >
                      <thead>
                      <tr>
@@ -237,7 +276,7 @@ var ResultNine = React.createClass({
             </table>
              </div>
         );
-
+*/
     }
 });
 
