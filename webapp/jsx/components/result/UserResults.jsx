@@ -14,6 +14,9 @@ var ResultNine = require('./ResultNine.jsx');
 var ResultScramble = require('./ResultScramble.jsx');
 
 var UserResults = React.createClass({
+    getDefaultProps: function() {
+        loading: false
+    },
      getInitialState: function() {
          return {
              results: [],
@@ -78,8 +81,14 @@ var UserResults = React.createClass({
         //);
     },
     render: function() {
-        if (this.state.user == null || this.state.user == undefined || this.state.results.length == 0) {
-            return null;
+        if (this.state.animateClose || this.props.loading || this.state.user == null || this.state.user == undefined || this.state.results.length == 0) {
+            this.state.animateClose = false;
+            return (
+            <div style={{height: 200}} className="text-center loading">
+                <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                </div>
+            );
+
         }
         var cls = "";
         if (this.state.animateClose){

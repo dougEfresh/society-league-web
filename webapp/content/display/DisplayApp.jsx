@@ -32,7 +32,8 @@ var DisplayApp = React.createClass({
              toggleSeason: true,
              hideSeasonStandings: false,
              toggleUser: this.props.params.userId != undefined,
-             mobile : width < 768
+             mobile : width < 768,
+             showLoading : false
          }
      },
     componentDidMount: function () {
@@ -154,6 +155,7 @@ var DisplayApp = React.createClass({
                 this.state.toggleSeason = false;
                 this.state.toggleTeam = false;
                 this.state.toggleUser = true;
+                this.state.showLoading = true;
             }
                Util.getSomeData({
                 url: '/api/team/user/' + u.id + '/' + this.props.params.seasonId,
@@ -163,7 +165,9 @@ var DisplayApp = React.createClass({
                 }.bind(this),
                 module: 'ChangeUser'
             });
+            this.forceUpdate();
         }.bind(this);
+
     },
     toggleUser: function(e) {
         e.preventDefault();
@@ -194,6 +198,11 @@ var DisplayApp = React.createClass({
             ss = null;
         }
         */
+        var loading = this.state.showLoading;
+        if (this.state.showLoading ) {
+            this.state.showLoading = false;
+        }
+        console.log('loading ' + loading );
         return (
                 <div id="team-app">
                     <div className="row">
@@ -253,7 +262,7 @@ var DisplayApp = React.createClass({
                                 </div>
                                 </a>
                                 <div className="panel-body panel-animate ">
-                                    <UserResults onUserClick={this.changeUser} user={this.state.activeUser} season={this.state.activeSeason} />
+                                    <UserResults loading={loading} onUserClick={this.changeUser} user={this.state.activeUser} season={this.state.activeSeason} />
                                 </div>
                             </div>
                         </div>

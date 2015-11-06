@@ -69,8 +69,11 @@ table tbody tr td.results-loser {
     border: 1px solid black;
 }
 
+.table-striped>tbody>tr:nth-of-type(odd) .selected {
+    background-color: #CDA3A3;
+}
 tr.selected, tr.selected > td  {
-      background-color: #CDA3A3;
+    background-color: #CDA3A3;
 }
 
 tr.selected > td > a, tr.selected > td > span, tr.selected td, tr.selected td div.team-link a, tr.selected td div.user-profile a {
@@ -139,6 +142,9 @@ table > tbody > tr > td > div.team-link {
 
 .table-striped > tbody > tr:nth-child(2n) > td {
     background-color: #D7E7EC;
+}
+.table-striped > tbody > tr:nth-child(2n).selected > td {
+    background-color: #CDA3A3;
 }
 
 .table-striped > tbody > tr:nth-child(2n) > td.win {
