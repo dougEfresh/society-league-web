@@ -52,6 +52,10 @@ var UserResults = React.createClass({
             if (this.props.onUserClick) {
                 d.forEach(function(d) {
                     d.opponent.onClick = this.props.onUserClick(d.opponent);
+                    if (d.partner)
+                        d.partner.onClick = this.props.onUserClick(d.partner);
+                    if (d.opponentPartner)
+                        d.opponentPartner.onClick = this.props.onUserClick(d.opponentPartner);
                 }.bind(this));
             }
             this.setState({results: d});
