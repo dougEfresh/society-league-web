@@ -46,11 +46,20 @@ var UserResults = React.createClass({
     },
     getData: function() {
         if (this.state.user == null || this.state.user == undefined || this.state.season == null || this.state.season == undefined) {
-            return ;
+            return;
         }
+        var cb = function (d) {
+            if (this.props.onUserClick) {
+                d.forEach(function(d) {
+                    d.opponent.onClick = this.props.onUserClick(d.opponent);
+                }.bind(this));
+            }
+            this.setState({results: d});
+        }.bind(this);
+
         Util.getSomeData(
             { url:'/api/playerresult/user/' + this.state.user.id + '/' + this.state.season.id,
-                callback: function(d){this.setState({results: d});}.bind(this), module: 'UserResult'}
+                callback: cb , module: 'UserResult'}
         );
         Util.getSomeData({url: '/api/stat/user/' + this.state.user.id  + '/' + this.state.season.id,
             callback: function(d){this.setState({stats: d});}.bind(this), module: 'UserResult'}
@@ -59,11 +68,6 @@ var UserResults = React.createClass({
     render: function() {
         if (this.state.user == null || this.state.user == undefined || this.state.results.length == 0 || this.state.stats.length == 0) {
             return null;
-        }
-        if (this.props.onUserClick) {
-            this.state.results.forEach(function (r) {
-                r.opponent.onUserClick = this.props.onUserClick(r.opponent);
-            }.bind(this));
         }
         return (
             <div id="user-results">

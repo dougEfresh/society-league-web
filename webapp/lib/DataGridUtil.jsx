@@ -5,7 +5,7 @@ var sorty = require('sorty');
 
 
 var renderPlayer=function(v,data,cp) {
-    return <UserLink onClick={data.user.onClick} user={data.user} season={data.user} />
+    return <UserLink onClick={data.user.onClick} user={data.user} season={data.season} />
 };
 
 var renderOpponent=function(v,data,cp) {

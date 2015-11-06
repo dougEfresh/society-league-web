@@ -65,6 +65,7 @@ var SeasonApp = React.createClass({
     changeUser: function(u) {
         return function(e){
             e.preventDefault();
+            console.log('Changing to ' + u.name);
             this.state.toggleLeaders = false;
             this.props.history.pushState(null,'/app/season/' + this.props.params.seasonId + '/leaders/' + u.id)
         }.bind(this)

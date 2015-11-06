@@ -154,8 +154,7 @@ var DisplayApp = React.createClass({
                 this.state.toggleTeam = false;
                 this.state.toggleUser = true;
             }
-
-            Util.getSomeData({
+               Util.getSomeData({
                 url: '/api/team/user/' + u.id + '/' + this.props.params.seasonId,
                 callback: function(d) {
                     console.log('Going to use ' + d.name + ' for ' + u.name);
@@ -217,7 +216,7 @@ var DisplayApp = React.createClass({
                                     </div>
                                 </a>
                                 <div className={"panel-body" + (this.state.toggleTeam ? "" : " hide")}>
-                                    <TeamStandings onClick={this.changeUser} activeUser={this.state.activeUser} noteam={true} team={this.state.activeTeam} />
+                                    <TeamStandings onUserClick={this.changeUser} activeUser={this.state.activeUser} noteam={true} team={this.state.activeTeam} />
                                 </div>
                             </div>
                         </div>
