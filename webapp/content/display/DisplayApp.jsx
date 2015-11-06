@@ -244,7 +244,7 @@ var DisplayApp = React.createClass({
 
                                     <div className={"row panel-title " + (this.state.activeUser == null ? " hide" : "")}>
                                         <div className="col-xs-10 col-md-11 p-title">
-                                            {this.state.activeUser == null  ? "Select a user" : this.state.activeUser.firstName}
+                                            {this.state.activeUser == null  ? "Select a user" : this.state.activeUser.firstName + ' ' + this.state.activeUser.lastName.substr(0,1) +'.'}
                                         </div>
                                         <div className="col-xs-2 col-md-1 caret-title ">
                                             <span className={"fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
