@@ -9,7 +9,6 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var moment = require('moment');
 var Handicap = require('../../lib/Handicap');
-var Modal = require('react-modal');
 
 var teamOptions = [];
 var options=[];

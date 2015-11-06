@@ -15,16 +15,24 @@ table > tbody > tr.active, .table-striped > tbody > tr.active {
 }
 
 .table-users tr, .table-season-standings tr {
-    min-height: 44px;
-    height: 44px;
-    line-height: 44px;
+    min-height: 31px;
+    height: 31px;
+    line-height: 31px;
 }
 .table-users > tbody > tr  > td, .table-season-standings  > tbody > tr  > td {
-    padding: 0px;
+/*    padding: 0px;
     text-align: center;
     vertical-align: middle;
+    */
 }
 
+.table-grid > thead {
+  color: rgb(51, 51, 51);
+  border-left: 1px solid #a8a8a8;
+  /*background-color: #a8a8a8 ;*/
+    background: linear-gradient(to bottom, #fbfbfb 0%, #f8f8f8 13%, #f4f4f4 100%);
+
+}
 
 .table >tbody >tr >td  {
     /*
@@ -114,6 +122,11 @@ th.date {
 
 .formula {
     width: 100px;
+}
+
+.selected-user {
+    color: black;
+    font-weight: bold;
 }
 
 

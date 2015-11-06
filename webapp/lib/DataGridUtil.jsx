@@ -1,114 +1,75 @@
 var React = require('react/addons');
 var UserLink = require('../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../jsx/components/links/TeamLink.jsx');
-var sorty = require('sorty');
 
 
 var renderPlayer=function(v,data,cp) {
+    cp.className="user";
     return <UserLink onClick={data.user.onClick} user={data.user} season={data.season} />
 };
 
 var renderOpponent=function(v,data,cp) {
+    cp.className="user";
     return <UserLink onClick={data.opponent.onClick} user={data.opponent} season={data.season} />};
 var renderOpponentTeam=function(v,data,cp) {
+    cp.className="team";
     return <TeamLink onClick={data.opponentTeam.onClick} team={data.opponentTeam}  />};
 
 var renderTeam=function(v,data,cp) {
+    cp.className="team";
     return <TeamLink onClick={data.team.onClick} team={data.team}  />};
 
 
 var renderPartner=function(v,data,cp) {
+    cp.className="user";
     if (!data.partner) {
         return <span></span>
     }
     return <UserLink onClick={data.partner.onClick} user={data.partner} season={data.season} />
 };
-var renderOpponentPartner=function(v,data,cp) {
+var renderOpponentPartner= function(v,data,cp) {
+    cp.className="user";
     if (!data.opponentPartner) {
         return <span></span>
     }
     return <UserLink onClick={data.opponentPartner.onClick} user={data.opponentPartner} season={data.season} />
 };
 
-var opponentPartner = function() {
-    if (windo.isMobile) {
-        return {
-            name: 'opponentPartner', title: 'Op. Pr.', flex: 1, style: {minWidth: 100}, width: 100, filterable: false, render: renderOpponentPartner
-        }
-
-        return {
-            name: 'opponentPartner', title: 'Op. Pr.', flex: 1, style: {minWidth: 100},filterable: false, render: renderOpponentPartner
-        }
-
-    }
+var opponentPartner =
+{
+    name: 'opponentPartner', title: 'Op. Pr.', flex: 1, style: {minWidth: 100}, filterable: false, render: renderOpponentPartner
 };
 
-var opponent = function() {
-    if (window.isMobile)
-        return {
-            name: 'opponent', title: 'Opponent', flex: 1, style: {minWidth: 100}, width: 100, filterable: false,
-            render: renderOpponent
-        }
-
-    return {
+var opponent =
+    {
             name: 'opponent', title: 'Opponent', flex: 1, style: {minWidth: 100}, filterable: false,
             render: renderOpponent
-        }
 };
-var partner = function() {
-    if (window.isMobile)
-        return {
-            name: 'partner', title: 'Partner', flex: 1, style: {minWidth: 100}, width: 100, filterable: false,
-            render: renderPartner
-        }
+var partner =
+{
+    name: 'partner', title: 'Partner', flex: 1, style: {minWidth: 100}, filterable: false,
+    render: renderPartner
+}
 
-    return {
-            name: 'partner', title: 'Partner', flex: 1, style: {minWidth: 100}, filterable: false,
-            render: renderPartner
-        }
-};
-
-var opponentTeam = function() {
-    if (window.isMobile)
-        return {
-            name: 'opponentTeam', title: 'Op. Team', flex: 1, style: {minWidth: 100}, width: 100, filterable: false,
+var opponentTeam =
+{
+            name: 'opponentTeam', title: 'Op. Team', flex: 1, style: {minWidth: 100}, filterable: false,
             render: renderOpponentTeam
-        }
-
-    return  {
-        name: 'opponentTeam', title: 'Op. Team', flex: 1, style: {minWidth: 100},filterable: false,
-        render: renderOpponentTeam
-    }
 };
-var team = function() {
-    if (window.isMobile)
-        return {
-            name: 'team', title: 'Team', flex: 1, style: {minWidth: 100}, width: 100, filterable: false,
+var team =
+{
+            name: 'team', title: 'Team', flex: 1, style: {minWidth: 100},  filterable: false,
             render: renderTeam
-        }
-
-    return  {
-        name: 'team', title: 'Team', flex: 1, style: {minWidth: 100},filterable: false,
-        render: renderTeam
-    }
 };
 
-var player = function() {
-    if (window.isMobile)
-        return {
-            name: 'user', title: '', flex: 1, style: {minWidth: 100}, width: 100, filterable: false,
+var player =  {
+    name: '', title: '', flex: 1, style: {minWidth: 100}, filterable: false,
             render: renderPlayer
-        }
-
-    return {
-            name: 'user', title: '', flex: 1, style: {minWidth: 100}, filterable: false,
-            render: renderPlayer
-        }
 };
 
 var columns = {
     'playerMatchDate': {name: 'date', title: 'Date', width: 60, filterable: false},
-    'rank' : {name: 'rank' , title: '#', width: 50, filterable: false, render: function(v,d,cp) {return <span>{d.rank ? d.rank : "0"}</span>}},
+    'rank' : {name: 'rank' , title: '#', width: 40, filterable: false, render: function(v,d,cp) {return <span>{d.rank ? d.rank : "0"}</span>}},
     'result': {
         name: 'result', title: 'W/L', width: 45,  filterable: false, render: function (v, data, cp) {
             if (data.win) {
@@ -128,27 +89,22 @@ var columns = {
     },
     'race': {name: 'race', title: 'Race', width: 55,filterable: false},
     'teamRank': {name: 'rank', title: '#', width: 50,filterable: false, render: function(v,d) {return <span>{d.team.rank}</span>}},
-    'opponentMobile': {
-        name: 'opponent', title: 'Opponent', flex: 1, style: {minWidth: 100},
-        width: 100,
-        render: renderOpponent
-    },
     'opponent': opponent,
     'opponentTeam': opponentTeam,
     'team': team,
     'opponentHandicap': {name: 'opponentHandicap', title: 'Op. HC', width: 65, filterable: false},
     'opponentPartnerHandicap': {name: 'opponentPartnerHandicap', title: 'Op. Pr. HC', width: 65, filterable: false},
     'partnerHandicap': {name: 'partnerHandicap', title: 'Pr. HC', width: 65, filterable: false},
-    'handicap' : {name: 'handicap', title: 'HC', width: 50 ,filterable: false},
+    'handicap' : {name: 'handicap', title: 'HC', width: 45 ,filterable: false},
     'player' : player,
     'partner': partner,
     'opponentPartner': opponentPartner,
 
     'teamMemberHandicap': {name: 'teamMemberHandicap', title: 'HC', width: 45, filterable: false },
-    'wins': {name: 'wins', title: 'W', width: 50, filterable: false },
-    'loses': {name: 'loses', title: 'L', width: 50, filterable: false },
-    'racksWon': {name: 'racksWon', title: 'RW', width: 50, filterable: false },
-    'racksLost': {name: 'racksLost', title: 'RL', width: 50, filterable: false },
+    'wins': {name: 'wins', title: 'W', width: 40, filterable: false },
+    'loses': {name: 'loses', title: 'L', width: 40, filterable: false },
+    'racksWon': {name: 'racksWon', title: 'RW', width: 45, filterable: false },
+    'racksLost': {name: 'racksLost', title: 'RL', width: 40, filterable: false },
     'setWins': {name: 'setWins', title: 'SW', width: 50, filterable: false },
     'setLoses': {name: 'setLoses', title: 'SL', width: 50, filterable: false },
     'winPct': {name: 'winPct', title: 'PCT', width: 55, filterable: false , render: function(v,data){return (<span>{data.winPct.toFixed(3)}</span>); }},

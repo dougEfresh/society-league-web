@@ -5,7 +5,7 @@ var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var Util = require('../../jsx/util.jsx');
 var Handicap = require('../../lib/Handicap');
 var DataGridUtil = require('../../lib/DataGridUtil.jsx');
-var ReactDataGrid = require('react-datagrid');
+var DataGrid = require('../../lib/DataGrid.jsx');
 
 var TeamStandings = React.createClass({
     mixins: [UserContextMixin],
@@ -64,7 +64,7 @@ var TeamStandings = React.createClass({
 
         var columns = [
             DataGridUtil.columns.rank,
-            DataGridUtil.columns.player(),
+            DataGridUtil.columns.player,
             DataGridUtil.columns.handicap,
             DataGridUtil.columns.wins,
             DataGridUtil.columns.loses,
@@ -75,20 +75,26 @@ var TeamStandings = React.createClass({
         if (!s.nine) {
             columns = [
                 DataGridUtil.columns.rank,
-                DataGridUtil.columns.player(),
+                DataGridUtil.columns.player,
                 DataGridUtil.columns.handicap,
                 DataGridUtil.columns.wins,
                 DataGridUtil.columns.loses,
                 DataGridUtil.columns.winPct
             ];
         }
+
+         var rowStyle= function(d,cls,style) {
+            if (this.props.activeUser && d.user.id == this.props.activeUser.id) {
+                cls.className = "selected";
+            }
+        }.bind(this);
         return (
-            <div className="table-responsive">
-                <ReactDataGrid
+                <DataGrid
                     idProperty='rank'
                     dataSource={this.state.statTeamMembers}
                     columns={columns}
-                    style={{height: ((this.state.statTeamMembers.length) * 50 < 500 ? (this.state.statTeamMembers.length ) * 50 : 500)}}
+                    //style={{height: ((this.state.statTeamMembers.length) * 50 < 500 ? (this.state.statTeamMembers.length ) * 50 : 500)}}
+                    rowStyle={rowStyle}
                     rowHeight={40}
                     showCellBorders={true}
                     filterable={false}
@@ -106,7 +112,6 @@ var TeamStandings = React.createClass({
                     scrollbarSize={(this.state.statTeamMembers) * 50 < 500 ? 0 : 20}
                     //onColumnOrderChange={this.handleColumnOrderChange}
                     />
-            </div>
         );
     }
 });

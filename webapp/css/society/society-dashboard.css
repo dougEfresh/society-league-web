@@ -286,3 +286,35 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
 .cursor-pointer  {
     cursor: pointer;
 }
+
+.hidden {
+    display: none;
+}
+
+
+.visually-hidden {
+  opacity: 0;
+}
+
+
+@-webkit-keyframes fadeOut {
+    from { opacity: 1; }
+      to { opacity: 0; display: none; visibility: hidden;}
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+      to { opacity: 0; display: none; visibility: hidden;}
+}
+
+
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}

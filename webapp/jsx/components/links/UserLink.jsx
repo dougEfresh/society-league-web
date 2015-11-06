@@ -53,10 +53,8 @@ var UserLink = React.createClass({
             if (query = '?') {
                 query += 'height=25&width=25'
             }
-            img = <img className="profile-pic " src={user.userProfile.imageUrl + '?height=25&width=25'}> </img>
+            img = <img className="profile-pic " src={user.userProfile.imageUrl + '?height=15&width=15'}> </img>
         }
-        //img = <img className="profile-pic" src={'https://graph.facebook.com/v2.3/10206313577893040/picture?height=25&width=25'}> </img>;
-        img = <span></span>
         if (this.props.onClick) {
             return (
                 <div className="user-profile">{img}<a style={{cursor: 'pointer'}} onTouchStart={this.props.onClick} onClick={this.props.onClick}><span>{name}</span></a></div>

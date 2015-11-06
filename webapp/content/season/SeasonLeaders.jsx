@@ -10,7 +10,7 @@ var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var UserResults = require('../../jsx/components/result/UserResults.jsx');
 var Handicap = require('../../lib/Handicap');
 var DataGridUtil = require('../../lib/DataGridUtil.jsx');
-var ReactDataGrid = require('react-datagrid');
+var DataGrid = require('../../lib/DataGrid.jsx');
 
 var SeasonLeaders = React.createClass({
     mixins: [UserContextMixin],
@@ -57,21 +57,21 @@ var SeasonLeaders = React.createClass({
         if (this.state.stats.length == 0) {
              return null;
         }
-        console.log('XXXXXXXXXXXXXXXXXX');
+
         var s = this.state.stats[0].season;
         var columns = [
             DataGridUtil.columns.rank,
-            DataGridUtil.columns.player(),
+            DataGridUtil.columns.player,
             DataGridUtil.columns.handicap,
             DataGridUtil.columns.wins,
             DataGridUtil.columns.loses,
             DataGridUtil.columns.racksWon,
             DataGridUtil.columns.racksLost,
-            DataGridUtil.columns.team()
+            DataGridUtil.columns.team
         ];
         if (s.challenge) {
             columns = [DataGridUtil.columns.rank,
-            DataGridUtil.columns.player(),
+            DataGridUtil.columns.player,
             DataGridUtil.columns.handicap,
                 DataGridUtil.columns.points,
                 DataGridUtil.columns.wins,
@@ -82,13 +82,17 @@ var SeasonLeaders = React.createClass({
         }
         if (!s.nine) {
             columns = [DataGridUtil.columns.rank,
-            DataGridUtil.columns.player(),
+            DataGridUtil.columns.player,
             DataGridUtil.columns.handicap,
             DataGridUtil.columns.wins,
             DataGridUtil.columns.loses,
-            DataGridUtil.columns.team()];
+            DataGridUtil.columns.team];
         }
-        
+
+
+        return (<DataGrid limit={this.props.limit} dataSource={this.state.stats} columns={columns} cls="table-users" />);
+
+        /*
           return (
                 <ReactDataGrid
                     idProperty='rank'
@@ -98,21 +102,24 @@ var SeasonLeaders = React.createClass({
                     rowHeight={40}
                     showCellBorders={true}
                     filterable={false}
-                    columnMinWidth={50}
-                    cellPadding={'5px 5px'}
-                    headerPadding={'5px 5px'}
+                    columnMinWidth={40}
+                    ///cellPadding={'5px 5px'}
+                    //headerPadding={'5px 5px'}
                     filterIconColor={'#6EB8F1'}
                     menuIconColor={'#6EB8F1'}
-                    loadMaskOverHeader={false}
-                    cellEllipsis={false}
                     liveFilter={false}
                     styleAlternateRowsCls={'datagrid-alt-row'}
-                    menuIcon={false}
-                    filterIcon={false}
-                    scrollbarSize={(this.state.stats.length) * 60 < 500 ? 0 : 20}
+                    //scrollbarSize={(this.state.stats.length) * 60 < 500 ? 0 : 20}
+                    defaultPageSize={10}
+                    paginationToolbarProps={{
+				pageSizes: [
+					20
+				]
+			}}
                     //onColumnOrderChange={this.handleColumnOrderChange}
                     />
         );
+        */
     }
 });
 

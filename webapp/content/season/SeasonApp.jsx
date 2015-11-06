@@ -129,6 +129,7 @@ var SeasonApp = React.createClass({
                         <div className="panel-body">
                             <UserResults onUserClick={this.changeUser} user={this.state.selectedUser != null ? this.state.selectedUser.user : null} season={this.state.season} />
                         </div>
+
                     </div>
                 </div>
             </div>

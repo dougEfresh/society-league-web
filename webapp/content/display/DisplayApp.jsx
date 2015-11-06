@@ -30,6 +30,7 @@ var DisplayApp = React.createClass({
              activeSeason: null,
              toggleTeam:  this.props.params.teamId != undefined,
              toggleSeason: true,
+             hideSeasonStandings: false,
              toggleUser: this.props.params.userId != undefined,
              mobile : width < 768
          }
@@ -179,6 +180,20 @@ var DisplayApp = React.createClass({
     render: function () {
         if (this.state.activeSeason == null)
             return null;
+        var ss = <SeasonStandings onClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} season={this.state.activeSeason} />;
+        /*
+        if (!this.state.toggleSeason) {
+            setTimeout(function(e){
+                this.setState({hideSeasonStandings: true});
+            },2040)
+        } else {
+            this.state.hideSeasonStandings = false;
+        }
+
+        if (this.state.hideSeasonStandings){
+            ss = null;
+        }
+        */
         return (
                 <div id="team-app">
                     <div className="row">
@@ -196,8 +211,8 @@ var DisplayApp = React.createClass({
                                     </div>
                                 </div>
                                 </a>
-                                <div className={"panel-body" + (this.state.toggleSeason ? "" : " hide")}>
-                                    <SeasonStandings onClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} season={this.state.activeSeason} />
+                                <div className={"panel-body panel-animate" + (this.state.toggleSeason ? "" : " hide")}>
+                                    {ss}
                                 </div>
                             </div>
                         </div>
@@ -215,7 +230,7 @@ var DisplayApp = React.createClass({
                                         </div>
                                     </div>
                                 </a>
-                                <div className={"panel-body" + (this.state.toggleTeam ? "" : " hide")}>
+                                <div className={"panel-body panel-animate" + (this.state.toggleTeam ? "" : " hide")}>
                                     <TeamStandings onUserClick={this.changeUser} activeUser={this.state.activeUser} noteam={true} team={this.state.activeTeam} />
                                 </div>
                             </div>
@@ -237,7 +252,7 @@ var DisplayApp = React.createClass({
                                     </div>
                                 </div>
                                 </a>
-                                <div className="panel-body">
+                                <div className="panel-body panel-animate ">
                                     <UserResults onUserClick={this.changeUser} user={this.state.activeUser} season={this.state.activeSeason} />
                                 </div>
                             </div>

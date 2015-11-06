@@ -7,8 +7,7 @@ var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route
     , Link = Router.Link;
-var ReactDataGrid = require('react-datagrid');
-var sorty = require('sorty');
+var DataGrid = require('../../../lib/DataGrid.jsx');
 var DataGridUtil = require('../../../lib/DataGridUtil.jsx');
 
 var ResultChallenge = React.createClass({
@@ -35,30 +34,20 @@ var ResultChallenge = React.createClass({
             DataGridUtil.columns.weightedAvg,
             DataGridUtil.columns.matchNum,
             DataGridUtil.columns.calculation,
-            DataGridUtil.columns.opponent(),
+            DataGridUtil.columns.opponent,
             DataGridUtil.columns.opponentHandicap,
             DataGridUtil.columns.teamMemberHandicap
         ];
 
         if (this.state.results.length == 0) {
             return (
-                <div className="table-responsive">
-                    <ReactDataGrid
-                        idProperty='id'
-                        loading={true}
-                        dataSource={this.state.results}
-                        columns={columns}
-                        //style={{height: ((this.state.results.length + 1) * 50 < 500 ? (this.state.results.length + 1) * 50 : 500)}}
-                        rowHeight={40}
-                        showCellBorders={true}
-                        />
-                </div>);
+             null);
 
         }
 
         return (
-            <div className="table-responsive">
-                <ReactDataGrid
+
+                <DataGrid
                     idProperty='id'
                     dataSource={this.state.results}
                     columns={columns}
@@ -80,7 +69,7 @@ var ResultChallenge = React.createClass({
                     scrollbarSize={(this.state.results.length) * 50 < 500 ? 0 : 20}
                     //onColumnOrderChange={this.handleColumnOrderChange}
                     />
-            </div>);
+            );
 
     }
 });

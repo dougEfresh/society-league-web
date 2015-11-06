@@ -8,7 +8,7 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
 var DataGridUtil = require('../../lib/DataGridUtil.jsx');
-var ReactDataGrid = require('react-datagrid');
+var DataGrid = require('../../lib/DataGrid.jsx');
 
 var SeasonStandings = React.createClass({
     mixins: [UserContextMixin],
@@ -53,7 +53,7 @@ var SeasonStandings = React.createClass({
 
         var columns = [
             DataGridUtil.columns.teamRank,
-            DataGridUtil.columns.team(),
+            DataGridUtil.columns.team,
             DataGridUtil.columns.wins,
             DataGridUtil.columns.loses,
             DataGridUtil.columns.setWins,
@@ -65,7 +65,7 @@ var SeasonStandings = React.createClass({
         if (!this.state.seasonStats[0].season.nine){
             columns = [
                 DataGridUtil.columns.teamRank,
-                DataGridUtil.columns.team(),
+                DataGridUtil.columns.team,
                 DataGridUtil.columns.wins,
                 DataGridUtil.columns.loses,
             DataGridUtil.columns.racksWon,
@@ -73,14 +73,18 @@ var SeasonStandings = React.createClass({
                 DataGridUtil.columns.rackPct
             ];
         }
-
+        var rowStyle= function(d,cls,style) {
+            if (this.props.activeTeam && d.team.id == this.props.activeTeam.id) {
+                cls.className = "selected";
+            }
+        }.bind(this);
         return (
-              <div className="table-responsive">
-                <ReactDataGrid
+                <DataGrid
                     idProperty='rank'
                     dataSource={this.state.seasonStats}
                     columns={columns}
-                    style={{height: ((this.state.seasonStats.length) * 50 < 500 ? (this.state.seasonStats.length ) * 50 : 500)}}
+                    //style={{height: ((this.state.seasonStats.length) * 50 < 500 ? (this.state.seasonStats.length ) * 50 : 500)}}
+                    rowStyle={rowStyle}
                     rowHeight={40}
                     showCellBorders={true}
                     filterable={false}
@@ -96,9 +100,9 @@ var SeasonStandings = React.createClass({
                     menuIcon={false}
                     filterIcon={false}
                     scrollbarSize={(this.state.seasonStats.length) * 50 < 500 ? 0 : 20}
+
                     //onColumnOrderChange={this.handleColumnOrderChange}
                     />
-            </div>
         );
 
     }
