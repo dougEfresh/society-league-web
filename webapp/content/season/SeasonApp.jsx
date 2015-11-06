@@ -20,12 +20,15 @@ var SeasonApp = React.createClass({
         return {
             season: null,
             selectedUser: null,
-            toggleLeaders: true
+            toggleLeaders: true,
+            animateLeaderClosed: false,
+            animateUserClosed: false,
+            animateUserOpen: true
         }
     },
     getSeasonData: function(seasonId) {
         var cb = function (d) {
-                this.setState({season: d});
+            this.setState({season: d});
             }.bind(this);
             Util.getSomeData({
                 url: '/api/season/' + seasonId,
@@ -38,7 +41,7 @@ var SeasonApp = React.createClass({
         if (userId)
           Util.getSomeData({
                 url: '/api/stat/user/' + userId +'/' + this.props.params.seasonId,
-                callback: function(d) {this.setState({selectedUser : d, toggleLeaders: false})}.bind(this),
+                callback: function(d) {this.setState({selectedUser : d, toggleLeaders: false, animateUserClosed: false , animateUserOpen: true})}.bind(this),
                 module: 'SeasonApp',
                 router: this.props.history
           })
@@ -54,9 +57,6 @@ var SeasonApp = React.createClass({
         if (n.params.userId != undefined && n.params.userId != this.props.params.userId) {
             this.getUserData(n.params.userId);
         }
-        if (n.params.userId == undefined) {
-            this.setState({selectedUser: null, toggleLeaders: true});
-        }
     },
     toggleHeading: function(e) {
         e.preventDefault();
@@ -66,8 +66,11 @@ var SeasonApp = React.createClass({
         return function(e){
             e.preventDefault();
             console.log('Changing to ' + u.name);
+            //this.setState({animateUserClosed: true});
+            //setTimeout(function(){
             this.state.toggleLeaders = false;
             this.props.history.pushState(null,'/app/season/' + this.props.params.seasonId + '/leaders/' + u.id)
+            //}.bind(this),1800);
         }.bind(this)
     },
     goToTeamDisplay: function(t) {
@@ -83,18 +86,26 @@ var SeasonApp = React.createClass({
         var userHeader = null;
         if (this.state.selectedUser != null) {
             if (this.state.season.challenge) {
-                userHeader = this.state.selectedUser.user.firstName; // + " " + "  (Points*(10-MatchNum))/10" //+ "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
+                userHeader = this.state.selectedUser.user.firstName +  ' ' + this.state.selectedUser.user.lastName.substr(0,1) + '.';
             } else {
-                userHeader = this.state.selectedUser.user.firstName; //+ "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
+                userHeader = this.state.selectedUser.user.firstName +  ' '  + this.state.selectedUser.user.lastName.substr(0,1) + '.'; //+ "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
             }
         }
+        var animateLeaderClosed = this.state.animateLeaderClosed;
+        var animateUserClosed = this.state.animateUserClosed;
+        var animateUserOpen = this.state.animateUserOpen;
+
+        var panelBodyCls = "panel-body " + (this.state.toggleLeaders ? " " : " hide");
+        var panelHeadingCls = "panel-heading  " + (this.state.toggleLeaders ? " " : " panel-closed");
+        var panelUserCls = "panel-body ";
+
         return (
             <div id="season-leaders">
                 <div className="row">
                 <div className="col-xs-12 col-md-9">
                     <div className="panel panel-default panel-leaders">
                         <a onClick={this.toggleHeading} href='#'>
-                            <div className={"panel-heading" +(this.state.toggleLeaders ? "" : " panel-closed")}>
+                            <div className={panelHeadingCls}>
                                 <div className="row panel-title">
                                     <div className="col-xs-10 col-md-11 p-title">
                                         {this.state.season.shortName  +' Leaders'}
@@ -105,7 +116,7 @@ var SeasonApp = React.createClass({
                                 </div>
                             </div>
                             </a>
-                        <div className={"panel-body panel-animate" + (this.state.toggleLeaders ? "" : " hide")} >
+                        <div className={panelBodyCls} >
                             <SeasonLeaders onTeamClick={this.goToTeamDisplay} onUserClick={this.changeUser} params={this.props.params}/>
                         </div>
                     </div>
@@ -126,7 +137,7 @@ var SeasonApp = React.createClass({
                                 </div>
                             </div>
                         </a>
-                        <div className="panel-body panel-animate">
+                        <div className={"panel-body " + panelUserCls}>
                             <UserResults onUserClick={this.changeUser} user={this.state.selectedUser != null ? this.state.selectedUser.user : null} season={this.state.season} />
                         </div>
 

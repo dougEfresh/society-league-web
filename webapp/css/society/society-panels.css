@@ -54,7 +54,41 @@
 }
 
 .panel-closed {
-    background-color: #CDA3A3;
+    /*background-color: #CDA3A3;*/
+    opacity: .25;
+    transition:  opacity 1.3s linear;
+}
+
+.panel-heading-closed {
+    /*background-color: #CDA3A3;*/
+    opacity: .30;
+}
+
+.animate-close {
+    opacity: 0;
+    transition:  opacity 1.2s linear;
+}
+
+.animate-open {
+    opacity: 1;
+    transition:  opacity 1.2s linear;
+}
+.panel-heading-animate-closed {
+    /*background-color: #CDA3A3;*/
+    opacity: .30;
+    transition:  opacity 2s linear;
+}
+
+.panel-body-animate-open {
+    /*background-color: #CDA3A3;*/
+    opacity: 1;
+    transition:  opacity 1.5s linear;
+}
+
+.panel-body-animate-closed {
+    /*background-color: #CDA3A3;*/
+    opacity: 0;
+    transition:  opacity 1.5s linear;
 }
 
 .panel-schedule , .panel-results {
@@ -92,16 +126,16 @@
 
 .panel-animate {
      /*transition: all 2s linear;*/
-     -webkit-animation: fadeIn 2s;
-    animation: fadeIn 2.2s;
+     -webkit-animation: fadeIn 1.8s;
+    animation: fadeIn 1.8s;
 }
 
 .panel-animate-hide {
      /*transition: all 2s linear;*/
     /*-webkit-animation: fadeOut 2s;*/
     /*animation: fadeOut 2s;*/
-    visibility: hidden;
+    /*visibility: hidden;*/
     opacity: 0;
-    transition: visibility 0s 2.2s, opacity 2s linear;
+    transition:  opacity 1.8s linear;
 }
 

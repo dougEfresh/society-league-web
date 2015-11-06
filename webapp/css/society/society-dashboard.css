@@ -319,8 +319,6 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
       to { opacity: 1; }
 }
 
-
-
 .glyphicon-refresh-animate {
     -webkit-animation-name: rotateThis;
     -webkit-animation-duration: 1.5s;

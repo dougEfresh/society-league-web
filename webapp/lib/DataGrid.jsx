@@ -65,7 +65,6 @@ var DataGrid = React.createClass({
             );
         }
 
-
         return (
             <div className="table-responsive" >
                 <table className={"table table-bordered table-condensed table-striped table-grid "  + cls}>

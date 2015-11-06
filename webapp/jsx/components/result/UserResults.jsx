@@ -19,7 +19,9 @@ var UserResults = React.createClass({
              results: [],
              stats: [],
              user: this.props.user,
-             season: this.props.season
+             season: this.props.season,
+             animateClose: false,
+             animateOpen : true
         }
     },
     componentDidMount: function() { this.getData();  },
@@ -31,13 +33,20 @@ var UserResults = React.createClass({
         if (this.state.user == undefined || this.state.season == undefined || this.state.season == null || this.state.user == null) {
             this.state.user = nextProps.user;
             this.state.season = nextProps.season;
-            this.getData();
+            this.setState({animateClose: true});
+            setTimeout(function() {
+                this.getData();
+            }.bind(this),1399)
+
             return;
         }
         if (this.state.user.id != nextProps.user.id  || this.state.season.id != nextProps.season.id ){
             this.state.user = nextProps.user;
             this.state.season = nextProps.season;
-            this.getData();
+            this.setState({animateClose: true});
+            setTimeout(function() {
+                this.getData();
+            }.bind(this),1399);
             return;
         }
 
@@ -46,6 +55,7 @@ var UserResults = React.createClass({
         if (this.state.user == null || this.state.user == undefined || this.state.season == null || this.state.season == undefined) {
             return;
         }
+        this.state.results = [];
         var cb = function (d) {
             if (this.props.onUserClick) {
                 d.forEach(function(d) {
@@ -56,23 +66,34 @@ var UserResults = React.createClass({
                         d.opponentPartner.onClick = this.props.onUserClick(d.opponentPartner);
                 }.bind(this));
             }
-            this.setState({results: d});
+            this.setState({results: d, animateOpen: true});
         }.bind(this);
 
         Util.getSomeData(
             { url:'/api/playerresult/user/' + this.state.user.id + '/' + this.state.season.id,
                 callback: cb , module: 'UserResult'}
         );
-        Util.getSomeData({url: '/api/stat/user/' + this.state.user.id  + '/' + this.state.season.id,
-            callback: function(d){this.setState({stats: d});}.bind(this), module: 'UserResult'}
-        );
+        //Util.getSomeData({url: '/api/stat/user/' + this.state.user.id  + '/' + this.state.season.id,
+          //  callback: function(d){this.setState({stats: d});}.bind(this), module: 'UserResult'}
+        //);
     },
     render: function() {
-        if (this.state.user == null || this.state.user == undefined || this.state.results.length == 0 || this.state.stats.length == 0) {
+        if (this.state.user == null || this.state.user == undefined || this.state.results.length == 0) {
             return null;
         }
+        var cls = "";
+        if (this.state.animateClose){
+            this.state.animateClose = false;
+            cls += " animate-close";
+        }
+
+        if (this.state.animateOpen){
+            this.state.animateOpen = false;
+            cls += " animate-open";
+        }
+        console.log(cls);
         return (
-            <div id="user-results">
+            <div id="user-results" className={cls}>
                 <SeasonResults limit={this.props.limit}
                                stats={this.state.stats}
                                season={this.state.season}
