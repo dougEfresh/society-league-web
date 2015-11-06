@@ -282,3 +282,7 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
 .z-header {
     padding:0px; !important;
 }
+
+.cursor-pointer  {
+    cursor: pointer;
+}

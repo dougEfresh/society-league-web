@@ -12,5 +12,9 @@
     text-align: left;
     vertical-align: inherit;
     float: left;
-    /*padding: 5px;*/
+    cursor: pointer;
+}
+
+.z-content {
+    cursor: pointer;
 }

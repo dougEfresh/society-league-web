@@ -57,6 +57,7 @@ var SeasonLeaders = React.createClass({
         if (this.state.stats.length == 0) {
              return null;
         }
+        console.log('XXXXXXXXXXXXXXXXXX');
         var s = this.state.stats[0].season;
         var columns = [
             DataGridUtil.columns.rank,
@@ -87,13 +88,13 @@ var SeasonLeaders = React.createClass({
             DataGridUtil.columns.loses,
             DataGridUtil.columns.team()];
         }
+        
           return (
-              <div className="table-responsive">
                 <ReactDataGrid
                     idProperty='rank'
                     dataSource={this.state.stats}
                     columns={columns}
-                    style={{height: ((this.state.stats.length) * 50 < 500 ? (this.state.stats.length ) * 50 : 500)}}
+                    style={{height: ((this.state.stats.length) * 60 < 500 ? (this.state.stats.length ) * 60 : 400)}}
                     rowHeight={40}
                     showCellBorders={true}
                     filterable={false}
@@ -108,10 +109,9 @@ var SeasonLeaders = React.createClass({
                     styleAlternateRowsCls={'datagrid-alt-row'}
                     menuIcon={false}
                     filterIcon={false}
-                    scrollbarSize={(this.state.stats.length) * 50 < 500 ? 0 : 20}
+                    scrollbarSize={(this.state.stats.length) * 60 < 500 ? 0 : 20}
                     //onColumnOrderChange={this.handleColumnOrderChange}
                     />
-            </div>
         );
     }
 });
