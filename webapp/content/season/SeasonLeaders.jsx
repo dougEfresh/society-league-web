@@ -50,6 +50,7 @@ var SeasonLeaders = React.createClass({
     },
     componentWillReceiveProps: function(n) {
         if (n.params.seasonId != this.props.params.seasonId) {
+            this.setState({loading: true});
             this.getData(n.params.seasonId);
         }
     },
@@ -90,7 +91,7 @@ var SeasonLeaders = React.createClass({
         }
 
 
-        return (<DataGrid limit={this.props.limit} dataSource={this.state.stats} columns={columns} loading={true} cls="table-users" />);
+        return (<DataGrid limit={this.props.limit} dataSource={this.state.stats} columns={columns} loading={this.state.loading} cls="table-users" />);
 
         /*
           return (

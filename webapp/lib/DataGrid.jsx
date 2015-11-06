@@ -56,18 +56,15 @@ var DataGrid = React.createClass({
     render: function() {
 
         var cls = this.props.cls ? this.props.cls : "";
-        /*
+
         if (this.props.loading) {
-            var rows = [];
-            for(var i = 0; i<12 ; i++) {
-                rows[i] = <div key={i} className={"loadbar loadbar-" + (i+1)}></div>;
-            }
             return (
-                <div className="table-responsive" >
-                    <div className="loader">{rows}</div>
-            </div>);
+                <div style={{height: 200}} className="text-center loading">
+                    <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                </div>
+            );
         }
-        */
+
 
         return (
             <div className="table-responsive" >

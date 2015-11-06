@@ -318,3 +318,27 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
     from { opacity: 0; }
       to { opacity: 1; }
 }
+
+
+
+.glyphicon-refresh-animate {
+    -webkit-animation-name: rotateThis;
+    -webkit-animation-duration: 1.5s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    vertical-align: middle;
+    margin-top: 50px;
+
+}
+
+@-webkit-keyframes rotateThis {
+    from {
+        -webkit-transform: rotate( 0deg );
+    }
+    to  {
+        -webkit-transform: rotate( 360deg );
+    }
+}
+
+
+
