@@ -154,12 +154,9 @@ var ChallengeApp = React.createClass({
                             </div>
                         </div>
                     </div>
+
                 </div>
-            <div className="row" >
-                 <div className="col-xs-12 col-md-11" >
-                     <UpcomingChallenges data={this.state.challenges} refresh={refresh}/>
-                 </div>
-            </div>
+                <UpcomingChallenges data={this.state.challenges} refresh={refresh}/>
             </div>
         );
     }

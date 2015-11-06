@@ -114,7 +114,13 @@ var ChallengePendingApp =  React.createClass({
                 <td className="date">{m.format('MMM Do ')}</td>
                     <td className="user" ><UserLink user={opponent}/></td>
                     <td>{this.renderSelectOptions()}</td>
-                    <td><div className="challenge-deny">{deny}</div><div className="challenge-accept">{accept}</div></td>
+                    <td> <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
+                        <button type="button" className="btn btn-sm btn-danger btn-responsive">
+                            <span className="glyphicon glyphicon-remove"></span>
+                            <b>Decline</b>
+                        </button>
+                    </Link>
+                    </td>
             </tr>
         );
     }

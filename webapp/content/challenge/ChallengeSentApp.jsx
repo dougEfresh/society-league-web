@@ -90,23 +90,27 @@ var ChallengeSentApp =  React.createClass({
             </Link>
         );
         var m = moment(challenge.date);
+        var slots = [];
+        var sorted = this.props.challenge.slots.sort(function(a,b){
+           return a.timeStamp.localeCompare(b.timeStamp);
+        });
+        sorted.forEach(function (s) {
+            slots.push(<div style={{paddingRight: 5, display: 'inline'}} key={s.id} ><span className="label label-default" key={s.id} >{s.time} </span></div>);
+        }.bind(this));
 
         return (
-            <li className="list-group-item col-lg-12 col-xs-12">
-                <div className="col-lg-6 col-md-8 col-xs-12">
-                    <span id={'challenge-'+ challenge.id}>
-                        {m.format('ddd MMM Do ') + ' -  vs - ' }
-                        <UserLink user={opponent}/>
-                    </span>
-                </div>
-                  <div className="col-lg-2 col-md-2 col-xs-12">
-                    {this.renderSelectOptions()}
-                </div>
-                <div className="col-lg-2 col-md-2 col-xs-12">
-                    {deny}
-                </div>
-            </li>
-        );
+              <tr>
+    <td className="datetime">{slots}</td>
+    <td className="user"> <UserLink user={opponent} season={this.props.challenge.season} /> </td>
+    <td className="decline">
+        <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
+            <button type="button" className="btn btn-sm btn-danger btn-responsive">
+                <span className="glyphicon glyphicon-remove"></span>
+                <b>Decline</b>
+            </button>
+        </Link>
+    </td>
+  </tr>);
     }
 });
 

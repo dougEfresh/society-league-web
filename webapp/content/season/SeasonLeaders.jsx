@@ -90,7 +90,7 @@ var SeasonLeaders = React.createClass({
         }
 
 
-        return (<DataGrid limit={this.props.limit} dataSource={this.state.stats} columns={columns} cls="table-users" />);
+        return (<DataGrid limit={this.props.limit} dataSource={this.state.stats} columns={columns} loading={true} cls="table-users" />);
 
         /*
           return (

@@ -54,7 +54,21 @@ var DataGrid = React.createClass({
         return rows;
     },
     render: function() {
+
         var cls = this.props.cls ? this.props.cls : "";
+        /*
+        if (this.props.loading) {
+            var rows = [];
+            for(var i = 0; i<12 ; i++) {
+                rows[i] = <div key={i} className={"loadbar loadbar-" + (i+1)}></div>;
+            }
+            return (
+                <div className="table-responsive" >
+                    <div className="loader">{rows}</div>
+            </div>);
+        }
+        */
+
         return (
             <div className="table-responsive" >
                 <table className={"table table-bordered table-condensed table-striped table-grid "  + cls}>

@@ -45,7 +45,7 @@ var UpcomingChallenges = React.createClass({
                         <div id={'accepted-challenges'} className="panel panel-default">
                             <div className="panel-heading" ><span>Upcoming</span></div>
                             <div className="panel-body" >
-                                <table className={Util.tableCls + " table-challenge-upcoming"}>
+                                <table className={"table table-challenge table-challenge-upcoming"}>
                                 <thead></thead>
                                 <tbody>
                                     {challenges}
@@ -65,7 +65,7 @@ var UpcomingChallenges = React.createClass({
                         <div id={pending-challenges} className="panel panel-warning">
                             <div className="panel-heading"><h4>Pending</h4></div>
                             <div className="panel-body" >
-                                <table className={Util.tableCls + " table-challenge-upcoming"}>
+                                <table className={"table table-challenge table-challenge-pending"}>
                                 <thead></thead>
                                 <tbody>
                                     {pending}
@@ -80,14 +80,22 @@ var UpcomingChallenges = React.createClass({
         }
         if (sent.length > 0) {
             sentChallenges = (
-                <div id={'sent-challenges'} className="panel panel-success">
-                <div className="panel-heading" >Sent Challenges</div>
-                <div className="panel-body" >
-                    <ul className="list-group home-upcoming-challenges">
-                        {sent}
-                    </ul>
+                 <div className="row">
+                    <div className="col-xs-12 col-md-6">
+                        <div id={'sent-challenges'} className="panel panel-warning">
+                            <div className="panel-heading" ><span>Sent</span></div>
+                            <div className="panel-body" >
+                                <table className={"table table-challenge table-challenge-sent"}>
+                                <thead></thead>
+                                    <tbody>
+                                    {sent}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-            </div>);
+              );
         }
 
         return (
