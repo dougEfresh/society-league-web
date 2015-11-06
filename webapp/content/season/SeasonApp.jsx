@@ -105,7 +105,7 @@ var SeasonApp = React.createClass({
                                 </div>
                             </div>
                             </a>
-                        <div className={"panel-body" + (this.state.toggleLeaders ? "" : " hide")} >
+                        <div className={"panel-body panel-animate" + (this.state.toggleLeaders ? "" : " hide")} >
                             <SeasonLeaders onTeamClick={this.goToTeamDisplay} onUserClick={this.changeUser} params={this.props.params}/>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ var SeasonApp = React.createClass({
                                 </div>
                             </div>
                         </a>
-                        <div className="panel-body">
+                        <div className="panel-body panel-animate">
                             <UserResults onUserClick={this.changeUser} user={this.state.selectedUser != null ? this.state.selectedUser.user : null} season={this.state.season} />
                         </div>
 

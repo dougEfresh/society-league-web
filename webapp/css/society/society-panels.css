@@ -92,8 +92,8 @@
 
 .panel-animate {
      /*transition: all 2s linear;*/
-     -webkit-animation: fadeIn 1.9s;
-    animation: fadeIn 1.9s;
+     -webkit-animation: fadeIn 2s;
+    animation: fadeIn 2.2s;
 }
 
 .panel-animate-hide {
@@ -102,6 +102,6 @@
     /*animation: fadeOut 2s;*/
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s 1.8s, opacity 2s linear;
+    transition: visibility 0s 2.2s, opacity 2s linear;
 }
 

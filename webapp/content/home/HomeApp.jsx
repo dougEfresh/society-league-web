@@ -217,7 +217,7 @@ var HomeApp = React.createClass({
                             <i className="fa fa-sitemap"></i>
                             <span> Top Players</span> <span style={{float: 'right'}} >{s.shortName}</span>
                         </div>
-                        <div className="panel-body">
+                        <div className="panel-body panel-animate">
                             <SeasonLeaders onTeamClick={this.goToTeam} onUserClick={this.goToLeaders(s)} params={{seasonId: s.id}} limit={5} />
                         </div>
                     </div>
@@ -237,7 +237,7 @@ var HomeApp = React.createClass({
                         <div className="panel panel-default panel-upcoming">
                         <div className={"panel-heading "  + (this.state.activeSeason.challenge ?" hide": "")}><i className="fa fa-bell fa-fw"></i> Upcoming Matches
                         </div>
-                            <div className={"panel-body "  + (this.state.activeSeason.challenge ?" hide": "")}>
+                            <div className={"panel-body panel-animate"  + (this.state.activeSeason.challenge ?" hide": "")}>
                                 <UpcomingMatches onClick={this.changeTeam} data={this.state.challenges}/>
                             </div>
                         </div>
