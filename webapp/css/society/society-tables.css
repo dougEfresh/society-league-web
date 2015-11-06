@@ -166,6 +166,10 @@ table > tbody > tr > td > div.team-link {
   overflow: hidden;
 }
 
+.results-table-upcoming, .schedule-table-upcoming  {
+    background-color: whitesmoke;
+}
+
 .loader .loadbar {
   border-radius: 50px;
   box-shadow: 0 0 3px rgba(0,0,0,0.2);
