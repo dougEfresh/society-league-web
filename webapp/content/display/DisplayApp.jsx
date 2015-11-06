@@ -180,7 +180,7 @@ var DisplayApp = React.createClass({
     render: function () {
         if (this.state.activeSeason == null)
             return null;
-        var ss = <SeasonStandings onClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} season={this.state.activeSeason} />;
+        var ss = <SeasonStandings onTeamClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} season={this.state.activeSeason} />;
         /*
         if (!this.state.toggleSeason) {
             setTimeout(function(e){

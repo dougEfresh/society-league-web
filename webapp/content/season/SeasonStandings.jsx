@@ -19,12 +19,19 @@ var SeasonStandings = React.createClass({
          }
     },
     getData: function(id) {
+        var cb =  function (d) {
+                if (this.props.onTeamClick) {
+                    d.forEach(function(s) {
+                        s.team.onClick = this.props.onTeamClick(s.team);
+                    }.bind(this));
+                }
+                this.setState({seasonStats: d,loading: false})
+            }.bind(this);
+
         Util.getSomeData(
                 {
                     url: '/api/stat/season/' + id,
-                    callback: function (d) {
-                        this.setState({seasonStats: d,loading: false})
-                    }.bind(this),
+                    callback: cb,
                     module: 'SeasonStandings',
                     router: this.props.history
                 }
