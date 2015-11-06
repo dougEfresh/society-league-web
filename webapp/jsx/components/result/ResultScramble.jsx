@@ -30,14 +30,11 @@ var ResultScramble = React.createClass({
         var columns = [
             DataGridUtil.columns.playerMatchDate,
             DataGridUtil.columns.result,
-            window.isMobile ? DataGridUtil.columns.partnerMobile : DataGridUtil.columns.partner,
-            //DataGridUtil.columns.partnerHandicap,
-            window.isMobile ? DataGridUtil.columns.opponentMobile : DataGridUtil.columns.opponent,
-            //DataGridUtil.columns.opponentMobile,
+            DataGridUtil.columns.partner(),
+            DataGridUtil.columns.opponent(),
             DataGridUtil.columns.opponentHandicap,
-            window.isMobile ?  DataGridUtil.columns.opponentPartnerMobile :DataGridUtil.columns.opponentPartner,
-            //DataGridUtil.columns.opponentPartnerHandicap,
-            window.isMobile ?  DataGridUtil.columns.opponentTeamMobile : DataGridUtil.columns.opponentTeam,
+            DataGridUtil.columns.opponentPartner(),
+            DataGridUtil.columns.opponentTeam(),
             DataGridUtil.columns.teamMemberHandicap
         ];
 

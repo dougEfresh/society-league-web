@@ -29,10 +29,9 @@ var ResultEight = React.createClass({
         var columns = [
             DataGridUtil.columns.playerMatchDate,
             DataGridUtil.columns.result,
-            window.isMobile ? DataGridUtil.columns.opponentMobile : DataGridUtil.columns.opponent,
-            //DataGridUtil.columns.opponentMobile,
+            DataGridUtil.columns.opponent(),
             DataGridUtil.columns.opponentHandicap,
-            DataGridUtil.columns.opponentTeam,
+            DataGridUtil.columns.opponentTeam(),
             DataGridUtil.columns.teamMemberHandicap
         ];
 

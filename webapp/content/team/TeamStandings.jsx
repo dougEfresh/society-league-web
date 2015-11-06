@@ -4,6 +4,8 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var UserLink = require('../../jsx/components/links/UserLink.jsx');
 var Util = require('../../jsx/util.jsx');
 var Handicap = require('../../lib/Handicap');
+var DataGridUtil = require('../../lib/DataGridUtil.jsx');
+var ReactDataGrid = require('react-datagrid');
 
 var TeamStandings = React.createClass({
     mixins: [UserContextMixin],

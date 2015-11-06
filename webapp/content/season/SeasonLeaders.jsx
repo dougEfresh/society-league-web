@@ -9,6 +9,8 @@ var Util = require('../../jsx/util.jsx');
 var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var UserResults = require('../../jsx/components/result/UserResults.jsx');
 var Handicap = require('../../lib/Handicap');
+var DataGridUtil = require('../../lib/DataGridUtil.jsx');
+var ReactDataGrid = require('react-datagrid');
 
 var SeasonLeaders = React.createClass({
     mixins: [UserContextMixin],
@@ -29,9 +31,11 @@ var SeasonLeaders = React.createClass({
         var cb = function (d) {
             var ind = 1;
             d.forEach(function(s){
-                s.id = s.user.id;
-                s.index = ind++;
-            });
+                s.rank = ind++;
+                if (this.props.onUserClick) {
+                    s.user.onClick = this.props.onUserClick(s.user);
+                }
+            }.bind(this));
 
             this.setState({stats: d, season: d.length > 0 ? d[0].season : null, loading: false});
         }.bind(this);
@@ -49,78 +53,64 @@ var SeasonLeaders = React.createClass({
             this.getData(n.params.seasonId);
         }
     },
-    selectUser: function(s) {
-        return function(e) {
-            e.preventDefault();
-            this.setState({selectedUser: s , toggleLeaders: !this.state.toggleLeaders});
-        }.bind(this)
-    },
-    toggleHeading: function(e) {
-        e.preventDefault();
-        this.setState({toggleLeaders: !this.state.toggleLeaders});
-    },
-    getRows : function(data) {
-        var rows = []  ;
-        var cnt=0;
-        var s = data[0].season;
-        data.forEach(function(d) {
-            cnt++;
-            if (cnt > this.props.limit) {
-              return;
-            }
-            rows.push(
-                    <tr onClick={this.selectUser(d)} key={d.user.id}>
-                        <td className="racks rank">{d.rank == undefined || s.challenge ? cnt : d.rank}</td>
-                        <td className="user"><UserLink onClick={this.props.onUserClick(d)} user={d.user} season={this.props.params.seasonId}/></td>
-                        <td className={s.challenge ? "points" : "hide"} >{d.points != null ? d.points.toFixed(3) : 0}</td>
-                        <td className="racks wins">{d.wins}</td>
-                        <td className="racks loses">{d.loses}</td>
-                        <td className={!s.nine && !s.challenge ? "hide" : " racks"}>{d.racksWon}</td>
-                        <td className={!s.nine && !s.challenge ? "hide" : " racks "} >{d.racksLost}</td>
-                        <td className="pct win-pct" >{d.winPct.toFixed(3)}</td>
-                        <td className={s.challenge ? "hide" : ""} ><TeamLink onClick={this.props.onTeamClick(d.team)} team={d.team}/></td>
-                    </tr>
-                );
-        }.bind(this));
-        return rows;
-    },
-    changeUser: function(u) {
-        return function(e){
-            e.preventDefault();
-            var selected = null;
-            this.state.stats.forEach(function(s){
-                if (s.user.id == u.id) {
-                    selected = s;
-                }
-            });
-            this.setState({selectedUser: selected})
-        }.bind(this)
-    },
     render: function() {
         if (this.state.stats.length == 0) {
              return null;
         }
         var s = this.state.stats[0].season;
-        return (
-            <div className="table-responsive">
-                <table className={Util.tableCls + " table-users"}>
-                    <thead>
-                    <tr>
-                        <th className="racks">#</th>
-                        <th></th>
-                        <th className={s.challenge ? "" : "hide"} >P</th>
-                        <th className="racks" >W</th>
-                        <th className="racks">L</th>
-                        <th className={!s.nine && !s.challenge ? "hide" : "racks"}>RW</th>
-                        <th className={!s.nine && !s.challenge ? "hide" : "racks"}>RL</th>
-                        <th className="racks pct">%</th>
-                        <th className={s.challenge ? "hide" : ""}>Team</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.getRows(this.state.stats)}
-                    </tbody>
-                </table>
+        var columns = [
+            DataGridUtil.columns.rank,
+            DataGridUtil.columns.player(),
+            DataGridUtil.columns.handicap,
+            DataGridUtil.columns.wins,
+            DataGridUtil.columns.loses,
+            DataGridUtil.columns.racksWon,
+            DataGridUtil.columns.racksLost,
+            DataGridUtil.columns.team()
+        ];
+        if (s.challenge) {
+            columns = [DataGridUtil.columns.rank,
+            DataGridUtil.columns.player(),
+            DataGridUtil.columns.handicap,
+                DataGridUtil.columns.points,
+                DataGridUtil.columns.wins,
+            DataGridUtil.columns.loses,
+            DataGridUtil.columns.racksWon,
+            DataGridUtil.columns.racksLost
+                ]
+        }
+        if (!s.nine) {
+            columns = [DataGridUtil.columns.rank,
+            DataGridUtil.columns.player(),
+            DataGridUtil.columns.handicap,
+            DataGridUtil.columns.wins,
+            DataGridUtil.columns.loses,
+            DataGridUtil.columns.team()];
+        }
+          return (
+              <div className="table-responsive">
+                <ReactDataGrid
+                    idProperty='rank'
+                    dataSource={this.state.stats}
+                    columns={columns}
+                    style={{height: ((this.state.stats.length) * 50 < 500 ? (this.state.stats.length ) * 50 : 500)}}
+                    rowHeight={40}
+                    showCellBorders={true}
+                    filterable={false}
+                    columnMinWidth={50}
+                    cellPadding={'5px 5px'}
+                    headerPadding={'5px 5px'}
+                    filterIconColor={'#6EB8F1'}
+                    menuIconColor={'#6EB8F1'}
+                    loadMaskOverHeader={false}
+                    cellEllipsis={false}
+                    liveFilter={false}
+                    styleAlternateRowsCls={'datagrid-alt-row'}
+                    menuIcon={false}
+                    filterIcon={false}
+                    scrollbarSize={(this.state.stats.length) * 50 < 500 ? 0 : 20}
+                    //onColumnOrderChange={this.handleColumnOrderChange}
+                    />
             </div>
         );
     }

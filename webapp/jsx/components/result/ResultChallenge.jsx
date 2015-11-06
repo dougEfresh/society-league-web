@@ -35,8 +35,7 @@ var ResultChallenge = React.createClass({
             DataGridUtil.columns.weightedAvg,
             DataGridUtil.columns.matchNum,
             DataGridUtil.columns.calculation,
-            window.isMobile ? DataGridUtil.columns.opponentMobile : DataGridUtil.columns.opponent,
-            //DataGridUtil.columns.opponentMobile,
+            DataGridUtil.columns.opponent(),
             DataGridUtil.columns.opponentHandicap,
             DataGridUtil.columns.teamMemberHandicap
         ];

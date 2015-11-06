@@ -50,115 +50,29 @@ var SeasonStandings = React.createClass({
     render: function() {
         if (this.state.seasonStats.length == 0)
             return null;
-        /*
-        var rows = [];
-        var activeTeam = this.props.activeTeam == undefined ? {id: 0} : this.props.activeTeam;
-        if (this.state.seasonStats[0].season.challenge) {
-            var stats = this.state.seasonStats.sort(function(a,b){
-                if (b.points > a.points) {
-                    return 1;
-                } else {
-                    return -1;
-                }
 
-            });
-            stats.forEach(function (s) {
-                if (this.props.limit && rows.length >= this.props.limit)
-                    return;
-
-                rows.push(
-                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
-                        <td className="rank" >{rows.length+1}</td>
-                        <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
-                        <td className="racks">{s.wins}</td>
-                        <td className="racks"> {s.loses}</td>
-                        <td>{s.points.toFixed(3)}</td>
-                        <td>{s.racksWon}</td>
-                        <td>{s.racksLost}</td>
-                        <td className="pct"  >{s.rackPct.toFixed(3)}</td>
-                    </tr>)
-            }.bind(this));
-        } else if (this.state.seasonStats[0].season.nine) {
-               this.state.seasonStats.forEach(function (s) {
-                   if (this.props.limit && rows.length >= this.props.limit)
-                       return;
-                rows.push(
-                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
-                        <td className="rank" >{rows.length+1}</td>
-                        <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
-                        <td className="racks" >{s.wins}</td>
-                        <td className="racks" >{s.loses}</td>
-                        <td className="racks">{s.setWins}</td>
-                        <td className="racks" >{s.setLoses}</td>
-                        <td className="racks" >{s.racksWon}</td>
-                        <td className="racks">{s.racksLost}</td>
-                        <td className="pct" >{s.rackPct.toFixed(3)}</td>
-                    </tr>)
-            }.bind(this));
-        } else {
-            this.state.seasonStats.forEach(function (s) {
-                if (this.props.limit && rows.length >= this.props.limit)
-                    return;
-                rows.push(
-                    <tr onClick={this.props.onClick(s.team)} className={activeTeam.id == s.team.id  ? "selected" : "none"} key={s.team.id}>
-                        <td className="rank" >{rows.length+1}</td>
-                        <td><TeamLink onClick={this.props.onClick(s.team)} team={s.team} season={s.team.season}/></td>
-                        <td className="racks">{s.wins}</td>
-                        <td className="racks"  >{s.loses}</td>
-                        <td className="racks" >{s.racksWon}</td>
-                        <td className="racks" >{s.racksLost}</td>
-                        <td className="pct"  >{s.rackPct.toFixed(3)}</td>
-                    </tr>)
-            }.bind(this));
-        }
-
-        var header = (<tr>
-            <th className="racks rank">#</th>
-            <th>{this.props.notitle ? 'Team' :  this.state.seasonStats[0].season.displayName}</th>
-            <th className="racks" >W</th>
-            <th className="racks"  >L</th>
-            <th className="racks" >SW</th>
-            <th className="racks"  >SL</th>
-            <th className="racks" >RW</th>
-            <th className="racks"  >RL</th>
-            <th>Pct</th>
-        </tr>);
-        if (this.state.seasonStats[0].season.challenge) {
-            header = ( <tr>
-                    <th>#</th>
-            <th>{this.props.notitle ? 'Team' : 'Top Gun'}</th>
-            <th>W</th>
-            <th>L</th>
-                    <th>P</th>
-            <th>RW</th>
-            <th>RL</th>
-
-            <th>Pct</th>
-        </tr>
-            );
-        } else if (!this.state.seasonStats[0].season.nine) {
-            header = ( <tr>
-                    <th className="rank">#</th>
-                    <th>{this.props.notitle ? null  : this.state.seasonStats[0].season.displayName}</th>
-                    <th>W</th>
-                    <th>L</th>
-                    <th>RW</th>
-                    <th>RL</th>
-                    <th>Pct</th>
-                </tr>
-            );
-        }
-         */
         var columns = [
             DataGridUtil.columns.teamRank,
-            window.isMobile ? DataGridUtil.columns.teamMobile: DataGridUtil.columns.team,
+            DataGridUtil.columns.team(),
             DataGridUtil.columns.wins,
+            DataGridUtil.columns.loses,
             DataGridUtil.columns.setWins,
             DataGridUtil.columns.setLoses,
             DataGridUtil.columns.racksWon,
             DataGridUtil.columns.racksLost,
             DataGridUtil.columns.rackPct
         ];
+        if (!this.state.seasonStats[0].season.nine){
+            columns = [
+                DataGridUtil.columns.teamRank,
+                DataGridUtil.columns.team(),
+                DataGridUtil.columns.wins,
+                DataGridUtil.columns.loses,
+            DataGridUtil.columns.racksWon,
+            DataGridUtil.columns.racksLost,
+                DataGridUtil.columns.rackPct
+            ];
+        }
 
         return (
               <div className="table-responsive">
