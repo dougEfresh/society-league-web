@@ -130,7 +130,7 @@ var TeamMatchResults = React.createClass({
                         <td className={"hide racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
                         <td className={"loser-team-player " + (m.loserTeamRacks > m.winnerTeamRacks  ? 'win' : 'lost')}>
                             <UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/>
-                            <span className={"fa fa-check winner-check " + (m.loserTeamRacks > m.winerTeamRacks ? 'win' : 'hide')} ></span>
+                            <span className={"fa fa-check winner-check " + (wl == 'L' ? 'win' : 'hide')} ></span>
                         </td>
                         <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
                     </tr>
@@ -164,7 +164,7 @@ var TeamMatchResults = React.createClass({
                         </div>
                         <div className={"panel-body"} >
                             <div className="table-responsive">
-                                <table className="table table-users table-grid table-bordered table-condensed table-striped" >
+                                <table style={{backgroundColor: 'whitesmoke'}} className="table table-users table-grid table-bordered table-condensed" >
                                     <thead>
                                     {this.getHeader(m)}
                                     </thead>

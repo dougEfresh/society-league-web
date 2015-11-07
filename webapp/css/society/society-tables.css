@@ -112,7 +112,8 @@ th.date {
     line-height: 30px;
 }
 .win , .table-striped > tbody > tr:nth-child(2n) > td.win {
-    background-color: #dfe6c3;
+   background-color: rgba(246,244,187,0.5);
+    /*background-color: #dfe6c3;*/
 }
 
 .rack-header {
