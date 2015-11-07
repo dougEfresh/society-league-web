@@ -122,13 +122,13 @@ var TeamMatchResults = React.createClass({
                 rows.push(
                     <tr key={cnt++}>
                         <td className="racks match-number">{m.matchNumber}</td>
-                        <td className={"winner-team-player " + (m.winnerTeamRacks > m.loserTeamRacks ? 'win' : 'lost')}>
+                        <td className={"winner-team-player " + (m.winnerTeamRacks > m.loserTeamRacks ? 'win schedule-win' : 'lost')}>
                             <UserLink user={m.winnerTeamPlayer} season={m.teamMatch.season}/>
-                            <span className={"fa fa-check winner-check " + (m.winnerTeamRacks > m.loserTeamRacks ? 'win' : 'hide')} ></span>
+                            <span className={"fa fa-check winner-check " + (m.winnerTeamRacks > m.loserTeamRacks ? 'win ' : 'hide')} ></span>
                         </td>
                         <td className="racks hc winner-hc">{Handicap.formatHandicap(m.winnerTeamHandicap)}</td>
                         <td className={"hide racks win-lost " + (wl == 'W' ? 'win' : 'lost')}>{wl}</td>
-                        <td className={"loser-team-player " + (m.loserTeamRacks > m.winnerTeamRacks  ? 'win' : 'lost')}>
+                        <td className={"loser-team-player " + (m.loserTeamRacks > m.winnerTeamRacks  ? 'win schedule-win' : 'lost')}>
                             <UserLink user={m.loserTeamPlayer} season={m.teamMatch.season}/>
                             <span className={"fa fa-check winner-check " + (wl == 'L' ? 'win' : 'hide')} ></span>
                         </td>

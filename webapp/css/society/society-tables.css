@@ -313,3 +313,7 @@ table > tbody > tr > td > div.team-link {
   -ms-animation-delay: -10.0833s;
   animation-delay: -10.0833s;
 }
+
+ .win-result {
+     font-weight: bold;
+ }

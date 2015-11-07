@@ -73,7 +73,7 @@ var columns = {
     'result': {
         name: 'result', title: 'W/L', width: 45,  filterable: false, render: function (v, data, cp) {
             if (data.win) {
-                cp.className = cp.className + " win";
+                cp.className = cp.className + " win-result";
             }
             return <span>{data.result}</span>
         }

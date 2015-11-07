@@ -249,6 +249,9 @@ ul.nav {
     color: black;
 }
 
+.schedule-win > .user-profile > a {
+    color: black;
+}
 .winner-check {
     float: right;
     padding-right: 5px;
