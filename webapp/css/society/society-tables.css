@@ -142,7 +142,7 @@ table > tbody > tr > td > div.team-link {
 }
 
 .table-striped > tbody > tr:nth-child(2n) > td {
-    background-color: #D7E7EC;
+    background-color: #E6ECED;
 }
 .table-striped > tbody > tr:nth-child(2n).selected > td {
     background-color: #CDA3A3;
