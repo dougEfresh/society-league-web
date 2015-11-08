@@ -46,7 +46,7 @@ var DataGrid = React.createClass({
                 }
             }
             rows.push(
-                <th key={cnt++} style={{style}}>
+                <th key={cnt++} style={style}>
                     <a style={{color: 'black', cursor: 'pointer'}}
                        onClick={this.defaultSort(c)}>
                         {c.title}
