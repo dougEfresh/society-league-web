@@ -59,8 +59,7 @@ var UpcomingChallenges = React.createClass({
                 </div>
             );
         }
-
-        if (pending.length > 0) {
+     if (pending.length > 0) {
             pendingChallenges = (
                 <div className="row">
                     <div className="col-xs-12 col-md-6">

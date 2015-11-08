@@ -141,10 +141,17 @@ table > tbody > tr > td > div.team-link {
     padding-left: 5px;
 }
 
+table.table-striped> tbody > tr:nth-child(2n) > td.hill{
+    background-color: #CDA3A3;
+}
+
 .table-striped > tbody > tr:nth-child(2n) > td {
     background-color: #E6ECED;
 }
-.table-striped > tbody > tr:nth-child(2n).selected > td {
+.table-striped > tbody > tr:nth-child(2n) > td.hill {
+    background-color: #CDA3A3;
+}
+.table-striped > tbody > tr:nth-child(2n).selected > td,  {
     background-color: #CDA3A3;
 }
 
