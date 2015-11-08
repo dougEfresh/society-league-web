@@ -82,7 +82,7 @@ var UserDisplay = React.createClass({
                     <div className="col-xs-2 col-md-1 p-title">
                         <span className="float-right">{'L:' + this.state.stats.loses}</span>
                     </div>
-                    <div className="col-xs-2 col-md-1 caret-title">
+                    <div className="float-right col-xs-2 col-md-1 caret-title">
                         <span className={"float-right fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
                     </div>
             </div>

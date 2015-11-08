@@ -45,6 +45,7 @@ var ResultScramble = React.createClass({
 
         return (
                 <DataGrid
+                    defaultSortColumn={'date'}
                     sortFn={SortUtil.sortFn}
                     idProperty='matchNum'
                     dataSource={this.state.results}

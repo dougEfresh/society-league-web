@@ -48,6 +48,7 @@ var ResultChallenge = React.createClass({
         return (
 
                 <DataGrid
+                    defaultSortColumn={'date'}
                     sortFn={SortUtil.sortFn}
                     idProperty='id'
                     dataSource={this.state.results}

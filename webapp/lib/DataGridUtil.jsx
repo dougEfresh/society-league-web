@@ -73,7 +73,7 @@ var player =  {
 };
 
 var columns = {
-    'playerMatchDate': {name: 'date', title: 'Date', width: 60, filterable: false, sort: 'asc', number: false},
+    'playerMatchDate': {name: 'date', title: 'Date', width: 60, filterable: false, sort: 'dsc', number: false},
     'rank' : {name: 'rank' , title: '#', width: 40, filterable: false, number: true, sort: 'asc', render: function(v,d,cp) {return <span>{d.rank ? d.rank : "0"}</span>}},
     'result': {
         name: 'result', title: 'W/L', width: 45,  filterable: false, render: function (v, data, cp) {

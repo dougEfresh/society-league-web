@@ -65,7 +65,7 @@ var TopGunNav = React.createClass({
                     <li className={"challenge-nav"} >
                         <a onClick={this.goToChallenge(s)} href="#">Challenge</a>
                     </li>
-                    <li className="hide">
+                    <li className="">
                         <a onClick={this.goToSchedule(s)} href="#">Schedule</a>
                     </li>
                     <li >

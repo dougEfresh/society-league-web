@@ -45,6 +45,7 @@ var ResultNine = React.createClass({
 
         return (
                 <DataGrid
+                    defaultSortColumn={'date'}
                     sortFn={SortUtil.sortFn}
                     cls="table-users"
                     idProperty='id'
