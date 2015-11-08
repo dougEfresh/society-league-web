@@ -159,12 +159,15 @@ Database.prototype.processUser = function(user,userData) {
     }
 
     var points = 0;
-    userData.points.forEach(function(p) {
-        var mp = new MatchPoints(p.resultId,p.points,p.weightedAvg,p.matchNum,p.calculation);
-        user.addMatchPoints(mp);
-       points += p.weightedAvg;
-    });
+    if (userData.points != undefined) {
+        userData.points.forEach(function (p) {
+            var mp = new MatchPoints(p.resultId, p.points, p.weightedAvg, p.matchNum, p.calculation);
+            user.addMatchPoints(mp);
+            points += p.weightedAvg;
+        });
+    }
     user.setPoints(points);
+
     return user;
 };
 
