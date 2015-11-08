@@ -97,7 +97,7 @@ var ChallengeSentApp =  React.createClass({
         sorted.forEach(function (s) {
             slots.push(
                 <div style={{paddingRight: 5, display: 'inline'}} key={s.id} >
-                    <span className="label label-default" key={s.id} >{moment(s.timeStamp).format('hh:mm a')} </span>
+                    <span className="label label-default" key={s.id} >{moment(s.timeStamp).format('h:mm ')} </span>
             </div>);
         }.bind(this));
 
@@ -105,11 +105,10 @@ var ChallengeSentApp =  React.createClass({
               <tr>
     <td className="datetime">{slots}</td>
     <td className="user"> <UserLink user={opponent} season={this.props.challenge.season} /> </td>
-    <td className="decline">
+                  <td className="challenge-actions">
         <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
-            <button type="button" className="btn btn-sm btn-danger btn-responsive">
+            <button type="button" className="btn btn-sm btn-danger btn-responsive challenge-sent-decline-button">
                 <span className="glyphicon glyphicon-remove"></span>
-                <b className="decline">Decline</b>
             </button>
         </Link>
     </td>

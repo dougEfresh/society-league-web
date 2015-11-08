@@ -132,7 +132,7 @@ var ChallengeApp = React.createClass({
             <div>
                 <div className="row">
                     <div className="col-xs-12 col-md-6" >
-                        <div className="panel panel-primary panel-challenge">
+                        <div className="panel panel-primary">
                             <div className="panel-heading panel-challenge-heading" > <span className={"glyphicon glyphicon-plus"}></span> New Request</div>
                             <div className="panel-body panel-challenge-body" >
                                 <div className="page-elements challenge-form">
@@ -361,7 +361,7 @@ var SlotButton = React.createClass({
                 <button className={selected ? 'btn btn-xs btn-success' : 'btn btn-xs btn-default'}
                         onClick={this.onClick}>
                     <span className={selected ? 'fa fa-check' : 'fa fa-times'}></span>
-                    {this.props.slot.timeStamp.split('T')[1].substr(0,5)}
+                    {moment(this.props.slot.timeStamp).format(' h:mm')}
                 </button>
          );
     }

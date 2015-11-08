@@ -45,12 +45,14 @@ var UpcomingChallenges = React.createClass({
                         <div id={'accepted-challenges'} className="panel panel-default panel-challenge panel-challenge-upcoming">
                             <div className="panel-heading" ><span>Upcoming</span></div>
                             <div className="panel-body" >
+                                <div className="table-responsive">
                                 <table className={"table table-challenge table-challenge-upcoming"}>
                                 <thead></thead>
                                 <tbody>
                                     {challenges}
                                 </tbody>
                             </table>
+                                    </div>
                         </div>
                     </div>
                     </div>
@@ -64,16 +66,18 @@ var UpcomingChallenges = React.createClass({
                     <div className="col-xs-12 col-md-6">
                         <div id={pending-challenges} className="panel panel-default panel-challenge panel-challenge-pending">
                             <div className="panel-heading">
-                                <i className="fa fa-exclamation" ></i>
+                                <i className="fa fa-exclamation-triangle" ></i>
                                 <span> Pending</span>
                             </div>
                             <div className="panel-body" >
+                                <div className="table-responsive">
                                 <table className={"table table-challenge table-challenge-pending"}>
                                 <thead></thead>
                                 <tbody>
                                     {pending}
                                 </tbody>
                             </table>
+                                    </div>
                         </div>
                     </div>
                     </div>
@@ -88,12 +92,14 @@ var UpcomingChallenges = React.createClass({
                         <div id={'sent-challenges'} className="panel panel-default panel-challenge panel-challenge-sent">
                             <div className="panel-heading panel-heading" ><span>Sent</span></div>
                             <div className="panel-body" >
+                                <div className="table-responsive">
                                 <table className={"table table-challenge table-challenge-sent"}>
                                 <thead></thead>
                                     <tbody>
                                     {sent}
                                 </tbody>
                             </table>
+                                </div>
                         </div>
                     </div>
                     </div>

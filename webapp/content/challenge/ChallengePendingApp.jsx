@@ -48,14 +48,14 @@ var ChallengePendingApp =  React.createClass({
            return a.timeStamp.localeCompare(b.timeStamp);
         });
         sorted.forEach(function (s) {
-            slots.push(<option key={s.id} value={s.id}>{s.time}</option>);
+            slots.push(<option key={s.id} value={s.id}>{moment(s.timeStamp).format('h:mm')}</option>);
         }.bind(this));
         return (
              <form id="request-game">
-                  <div className="form-field form-group">
-                      <div className="form-group slot-time">
+                  <div className="form-field form-group challenge-form-time">
+                      <div className="form-group">
                           <select ref='slot' onChange={this.onSelectSlot}
-                                  className="form-control"
+                                  className="form-control challenge-form-time-select"
                                   value={this.state.challenge.acceptedSlot == undefined ? -1 : this.state.challenge.acceptedSlot.id }
                                   type={'select'}>
                               {slots}
@@ -96,10 +96,12 @@ var ChallengePendingApp =  React.createClass({
         if (opponent.id == this.getUser().id) {
             opponent = challenge.userChallenger;
         }
-        var accept = (<button className="btn btn-sm"  disabled={!this.valid()}
-                               onClick={this.accept} key={'accept'}
+        var accept = (
+            <button className="btn btn-sm btn-success accept-button"  disabled={!this.valid()}
+                    onClick={this.accept} key={'accept'}
                               bsStyle={!this.valid() ? 'primary' : 'success'} >
-            <span className="fa fa-thumbs-up"></span>Accept</button>);
+            <span className="glyphicon glyphicon-ok"></span>
+            </button>);
 
         var m = moment(challenge.date);
         return (
@@ -108,14 +110,15 @@ var ChallengePendingApp =  React.createClass({
                     <td className="user" >
                         <UserLink user={opponent}/>
                     </td>
-                    <td>{this.renderSelectOptions()}</td>
-                <td>{accept}</td>
-                    <td > <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
-                        <button type="button" className="btn btn-sm btn-danger btn-responsive">
+                    <td className="slot-options">{this.renderSelectOptions()}</td>
+
+                <td className="challenge-actions">
+                        {accept}
+                        <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
+                        <button type="button" className="btn btn-sm btn-danger btn-responsive challenge-decline">
                             <span className="glyphicon glyphicon-remove"></span>
-                            <b className="decline" >Decline</b>
                         </button>
-                    </Link>
+                        </Link>
                     </td>
             </tr>
         );
