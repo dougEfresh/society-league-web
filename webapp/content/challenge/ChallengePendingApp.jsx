@@ -101,23 +101,19 @@ var ChallengePendingApp =  React.createClass({
                               bsStyle={!this.valid() ? 'primary' : 'success'} >
             <span className="fa fa-thumbs-up"></span>Accept</button>);
 
-        var deny = (
-            <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
-                <button className="btn btn-sm"  onClick={this.cancel} key={'deny'}  bsStyle={'danger'} >
-                    <span className="fa fa-thumbs-down"></span>Decline</button>
-            </Link>
-        );
         var m = moment(challenge.date);
-
         return (
             <tr>
                 <td className="date">{m.format('MMM Do ')}</td>
-                    <td className="user" ><UserLink user={opponent}/></td>
+                    <td className="user" >
+                        <UserLink user={opponent}/>
+                    </td>
                     <td>{this.renderSelectOptions()}</td>
-                    <td> <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
+                <td>{accept}</td>
+                    <td > <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
                         <button type="button" className="btn btn-sm btn-danger btn-responsive">
                             <span className="glyphicon glyphicon-remove"></span>
-                            <b>Decline</b>
+                            <b className="decline" >Decline</b>
                         </button>
                     </Link>
                     </td>

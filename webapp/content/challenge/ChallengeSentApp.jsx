@@ -95,7 +95,10 @@ var ChallengeSentApp =  React.createClass({
            return a.timeStamp.localeCompare(b.timeStamp);
         });
         sorted.forEach(function (s) {
-            slots.push(<div style={{paddingRight: 5, display: 'inline'}} key={s.id} ><span className="label label-default" key={s.id} >{s.time} </span></div>);
+            slots.push(
+                <div style={{paddingRight: 5, display: 'inline'}} key={s.id} >
+                    <span className="label label-default" key={s.id} >{moment(s.timeStamp).format('hh:mm a')} </span>
+            </div>);
         }.bind(this));
 
         return (
@@ -106,7 +109,7 @@ var ChallengeSentApp =  React.createClass({
         <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
             <button type="button" className="btn btn-sm btn-danger btn-responsive">
                 <span className="glyphicon glyphicon-remove"></span>
-                <b>Decline</b>
+                <b className="decline">Decline</b>
             </button>
         </Link>
     </td>

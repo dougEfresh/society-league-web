@@ -30,16 +30,16 @@ var ChallengeAcceptedApp = React.createClass({
 
         return (
               <tr>
-                <td className="datetime"> {m.format('MMM Do h:mm a')}</td>
-                <td className="user"> <UserLink user={opponent} season={this.props.challenge.season} /> </td>
-                <td className="decline">
-                    <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
-                        <button type="button" className="btn btn-sm btn-danger btn-responsive">
-                            <span className="glyphicon glyphicon-remove"></span>
-                            <b>Decline</b>
-                        </button>
-                    </Link>
-                </td>
+                  <td className="datetime"> {m.format('MMM Do h:mm a')}</td>
+                  <td className="user"> <UserLink user={opponent} season={this.props.challenge.season} /> </td>
+                  <td className="decline-button">
+                      <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
+                          <button type="button" className="btn btn-sm btn-danger btn-responsive">
+                              <span className="glyphicon glyphicon-remove"></span>
+                              <b className="decline" >Decline</b>
+                          </button>
+                      </Link>
+                  </td>
               </tr>
         );
     }

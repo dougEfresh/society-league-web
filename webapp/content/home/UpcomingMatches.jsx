@@ -26,7 +26,6 @@ var UpcomingMatches = React.createClass({
         );
     },
     render: function() {
-        var user = this.getUser();
         var rows = [];
         var now = moment().subtract(1, 'days');
         if (this.state.data.length == 0) {
@@ -46,16 +45,19 @@ var UpcomingMatches = React.createClass({
                 return;
             }
             rows.push(
-                <tr onClick={this.props.onClick(m.opponentTeam)} key={m.id}>
-                    <td><span> {Util.formatDateTime(m.matchDate)}</span></td>
-                    <td><TeamLink onClick={this.props.onClick(m.opponentTeam)} team={m.opponentTeam}/></td>
+                <tr key={m.id}>
+                    <td>
+                        <span> {Util.formatDateTime(m.matchDate)}</span>
+                    </td>
+                    <td>
+                        <TeamLink team={m.opponentTeam}/>
+                    </td>
                 </tr>
             );
         }.bind(this));
         if (rows.length == 0) {
             return null;
         }
-
         return (
                 <div className="table-responsive">
                     <table className={Util.tableCls + " table-upcoming"}>

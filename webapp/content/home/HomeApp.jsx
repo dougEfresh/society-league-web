@@ -14,6 +14,8 @@ var SeasonMatches = require('../season/SeasonMatches.jsx');
 var SeasonLeaders = require('../season/SeasonLeaders.jsx');
 var TeamStandings = require('../team/TeamStandings.jsx');
 
+
+
 var HomeApp = React.createClass({
     mixins: [UserContextMixin],
      getInitialState: function() {
@@ -67,50 +69,6 @@ var HomeApp = React.createClass({
     componentWillReceiveProps: function () {
        //this.getData();
     },
-
-    processSeason: function(s) {
-        if (s.id != this.state.activeSeason.id) {
-            return null;
-        }
-        var team = null;
-        if (this.state.activeTeam != null) {
-            console.log('Using ' + this.state.activeTeam.name + ' as active team');
-            team = <TeamStandings onClick={this.changeUser} activeUser={this.state.activeUser} noteam={true} params={{teamId: this.state.activeTeam.id}} />
-        } else {
-            console.log('Finding team for ' + s.displayName);
-            this.state.userTeams.forEach(function (t) {
-                if (t.season.id != s.id)
-                    return;
-                team = <TeamStandings onClick={this.changeUser} activeUser={this.state.activeUser} noteam={true} params={{teamId: t.id}}/>
-                console.log('Setting team display to ' + t.name);
-            }.bind(this));
-        }
-        if (team == null){
-            return null;
-        }
-
-        var cls = "row season-active";
-        return (
-            <div className={cls} key={s.id}>
-                <div className={"col-xs-12 col-md-4"}>
-                    <SeasonStandings onClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} seasonId={s.id} />
-                </div>
-                <div className={"col-xs-12 col-md-4"}>
-                    {team}
-                </div>
-                <div className={"col-xs-12 col-md-4"}>
-                    <UserResults user={this.state.activeUser} season={s} />
-                </div>
-            </div>
-        );
-
-    },
-    changeUser: function(u) {
-        return function(e) {
-            e.preventDefault();
-            this.pushState(null,'/app/display')
-        }.bind(this);
-    },
     changeTeam: function(t) {
         return function(e) {
             e.preventDefault();
@@ -163,46 +121,7 @@ var HomeApp = React.createClass({
                     this.state.activeTeam = t;
             }.bind(this));
         }
-        var seasonTabs = [];
-        var cnt = 0;
-        seasons.forEach(function(s){
-            console.log('Processing ' + s.displayName);
-            var ss = this.processSeason(s);
-            cnt++;
-            seasonStandings.push(ss);
-            var displayName = s.displayName.substr(9,15);
-            if (s.challenge) {
-                displayName = 'Top Gun';
-            }
-            seasonTabs.push(
-                <li key={s.id} role="presentation" className={this.state.activeSeason.id == s.id ? "active dropdown" : "none dropdown"}>
-                <a className="dropdown-toggle"
-                   data-toggle="dropdown"
-                   href="#" role="button"
-                   aria-haspopup="true"
-                   aria-expanded="false"
-                   href="#">
-                    {displayName}<span className="caret"></span></a>
-                    <ul className="dropdown-menu">
-                        <li><a onClick={this.show('standings',s)} href='#'>Standings</a></li>
-                        <li><a onClick={this.show('schedule',s)} href='#'>Schedule</a></li>
-                        <li><a onClick={this.show('leaders',s)} href='#'>Leaders</a></li>
-                    </ul>
-                </li>
 
-            );
-        }.bind(this));
-        var display =  seasonStandings;
-        if (this.state.show == 'leaders') {
-            display = <div className="row">
-                <SeasonLeaders onClick={this.changeTeam} params={{seasonId: this.state.activeSeason.id}} />
-            </div>
-        }
-        if (this.state.show == 'schedule') {
-            display = <div className="row">
-                <SeasonMatches params={{seasonId: this.state.activeSeason.id}} />
-            </div>
-        }
         var seasonLeaders = [];
         this.getUser().handicapSeasons.forEach(function(hs){
             var s = hs.season;
@@ -235,16 +154,18 @@ var HomeApp = React.createClass({
                 <div className="row">
                     <div className="col-xs-12 col-md-3">
                         <div className="panel panel-default panel-upcoming">
-                        <div className={"panel-heading "  + (this.state.activeSeason.challenge ?" hide": "")}><i className="fa fa-bell fa-fw"></i> Upcoming Matches
-                        </div>
-                            <div className={"panel-body panel-animate"  + (this.state.activeSeason.challenge ?" hide": "")}>
-                                <UpcomingMatches onClick={this.changeTeam} data={this.state.challenges}/>
+                            <div className={"panel-heading"}>
+                                <i className="fa fa-bell fa-fw"></i> Upcoming Matches
+                            </div>
+                            <div className={"panel-body panel-animate"}>
+                                <UpcomingMatches  />
                             </div>
                         </div>
                     </div>
                 </div>
-		 {seasonLeaders}
-       </div>
+                    <UpcomingChallenges  data={this.state.challenges} />
+                {seasonLeaders}
+            </div>
         );
     }
 });
