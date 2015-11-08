@@ -9,7 +9,7 @@ var Router = require('react-router')
     , Link = Router.Link;
 var DataGrid = require('../../../lib/DataGrid.jsx');
 var DataGridUtil = require('../../../lib/DataGridUtil.jsx');
-
+var SortUtil = require('../../../lib/SortUtil');
 var ResultEight = React.createClass({
       getDefaultProps: function() {
         return {season : null, results:[] };
@@ -43,6 +43,7 @@ var ResultEight = React.createClass({
 
         return (
                 <DataGrid
+                    sortFn={SortUtil.sortFn}
                     idProperty='id'
                     dataSource={this.state.results}
                     columns={columns}

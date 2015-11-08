@@ -6,27 +6,62 @@ var DataGrid = React.createClass({
     getDefaultProps: function (){
         return {limit: 100};
     },
-    componentWillReceiveProps: function(){
-        this.forceUpdate();
+    getInitialState: function() {
+        return {dataSource : this.props.dataSource, sortColumn: this.props.defaultSortColumn}
+    },
+    componentWillReceiveProps: function(n){
+        this.setState({dataSource: n.dataSource});
+    },
+    defaultSort: function(c){
+        return function(e) {
+            e.preventDefault();
+            if (this.props.sortFn && c.sort != undefined) {
+                c.sort = c.sort == 'asc' ? 'dsc' :'asc';
+                this.props.sortFn(c, this.state.dataSource);
+                this.setState({sortColumn: c.name});
+            }
+        }.bind(this);
     },
     getHeader: function() {
         var rows = [];
         var cnt =0;
         this.props.columns.forEach(function(c) {
-            if (c.width != undefined)  {
-                rows.push(<th key={cnt++} style={{width: c.width}}>{c.title}</th>);
-            } else {
-                rows.push(<th key={cnt++}>{c.title}</th>);
+            var style={};
+            if (c.width != undefined) {
+                style.width = c.width;
             }
+            var sortIcon  = null;
+            if (c.name == this.state.sortColumn) {
+                if (c.sort != undefined && c.sort == 'asc') {
+                    if (!c.number)
+                        sortIcon = <span className="glyphicon  glyphicon-sort-by-alphabet"></span>
+                    else
+                        sortIcon = <span className="glyphicon  glyphicon-sort-by-order"></span>
+                }
+                if (c.sort != undefined && c.sort == 'dsc') {
+                     if (!c.number)
+                        sortIcon = <span className="glyphicon  glyphicon-sort-by-alphabet-alt"></span>
+                    else
+                        sortIcon = <span className="glyphicon  glyphicon-sort-by-order-alt"></span>
+                }
+            }
+            rows.push(
+                <th key={cnt++} style={{style}}>
+                    <a style={{color: 'black', cursor: 'pointer'}}
+                       onClick={this.defaultSort(c)}>
+                        {c.title}
+                        <div style={{display: 'inline'}} className="sort-icon">{sortIcon}</div>
+                    </a>
+                </th>);
         }.bind(this));
         return (<tr>{rows}</tr>);
     },
     getRows: function() {
         var rows = [];
-        for(var i = 0 ; i < this.props.dataSource.length && i < this.props.limit; i++) {
+        for(var i = 0 ; i < this.state.dataSource.length && i < this.props.limit; i++) {
             var td = [];
 
-            var d = this.props.dataSource[i];
+            var d = this.state.dataSource[i];
             this.props.columns.forEach(function(c) {
                 var style={};
                 if (c.width != undefined) {
@@ -54,7 +89,6 @@ var DataGrid = React.createClass({
         return rows;
     },
     render: function() {
-
         var cls = this.props.cls ? this.props.cls : "";
 
         if (this.props.loading) {

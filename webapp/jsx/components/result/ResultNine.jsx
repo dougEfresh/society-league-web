@@ -9,6 +9,7 @@ var Router = require('react-router')
     , Link = Router.Link;
 var DataGrid = require('../../../lib/DataGrid.jsx');
 var DataGridUtil = require('../../../lib/DataGridUtil.jsx');
+var SortUtil = require('../../../lib/SortUtil');
 
 var ResultNine = React.createClass({
     getDefaultProps: function() {
@@ -23,6 +24,9 @@ var ResultNine = React.createClass({
         this.setState({
             results: n.results
         });
+    },
+    handleSort: function(column,data) {
+
     },
     render: function() {
         var columns = [
@@ -41,6 +45,7 @@ var ResultNine = React.createClass({
 
         return (
                 <DataGrid
+                    sortFn={SortUtil.sortFn}
                     cls="table-users"
                     idProperty='id'
                     dataSource={this.state.results}

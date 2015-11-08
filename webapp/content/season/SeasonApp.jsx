@@ -29,7 +29,7 @@ var SeasonApp = React.createClass({
     },
     getSeasonData: function(seasonId) {
         var cb = function (d) {
-            this.setState({season: d});
+            this.setState({season: d, toggleLeaders: true, selectedUser: null});
             }.bind(this);
             Util.getSomeData({
                 url: '/api/season/' + seasonId,
@@ -84,21 +84,9 @@ var SeasonApp = React.createClass({
         if (this.state.season == null) {
             return null;
         }
-        var userHeader = null;
-        if (this.state.selectedUser != null) {
-            if (this.state.season.challenge) {
-                userHeader = this.state.selectedUser.user.firstName +  ' ' + this.state.selectedUser.user.lastName.substr(0,1) + '.';
-            } else {
-                userHeader = this.state.selectedUser.user.firstName +  ' '  + this.state.selectedUser.user.lastName.substr(0,1) + '.'; //+ "W:" + this.state.selectedUser.wins +  "L:" + this.state.selectedUser.loses;
-            }
-        }
-        var animateLeaderClosed = this.state.animateLeaderClosed;
-        var animateUserClosed = this.state.animateUserClosed;
-        var animateUserOpen = this.state.animateUserOpen;
 
         var panelBodyCls = "panel-body " + (this.state.toggleLeaders ? " panel-animate" : " hide");
         var panelHeadingCls = "panel-heading  " + (this.state.toggleLeaders ? " " : " panel-closed");
-
         return (
             <div id="season-leaders">
                 <div className="row">
@@ -108,7 +96,7 @@ var SeasonApp = React.createClass({
                             <div className={panelHeadingCls}>
                                 <div className="row panel-title">
                                     <div className="col-xs-10 col-md-11 p-title">
-                                        {this.state.season.shortName  +' Leaders'}
+                                        {this.state.season.active ? this.state.season.shortName  +' Leaders' : this.state.season.displayName}
                                     </div>
                                     <div className="col-xs-2 col-md-1 caret-title">
                                         <span className={"float-right fa fa-caret-" + (this.state.toggleLeaders ? "down" : "left")}></span>

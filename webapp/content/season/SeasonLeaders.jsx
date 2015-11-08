@@ -9,6 +9,7 @@ var Util = require('../../jsx/util.jsx');
 var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var UserResults = require('../../jsx/components/result/UserResults.jsx');
 var Handicap = require('../../lib/Handicap');
+var SortUtil = require('../../lib/SortUtil');
 var DataGridUtil = require('../../lib/DataGridUtil.jsx');
 var DataGrid = require('../../lib/DataGrid.jsx');
 
@@ -54,6 +55,9 @@ var SeasonLeaders = React.createClass({
             this.getData(n.params.seasonId);
         }
     },
+    handleSort: function(column,data) {
+
+    },
     render: function() {
         if (this.state.stats.length == 0) {
              return null;
@@ -72,13 +76,13 @@ var SeasonLeaders = React.createClass({
         ];
         if (s.challenge) {
             columns = [DataGridUtil.columns.rank,
-            DataGridUtil.columns.player,
-            DataGridUtil.columns.handicap,
+                DataGridUtil.columns.player,
+                DataGridUtil.columns.handicap,
                 DataGridUtil.columns.points,
                 DataGridUtil.columns.wins,
-            DataGridUtil.columns.loses,
-            DataGridUtil.columns.racksWon,
-            DataGridUtil.columns.racksLost
+                DataGridUtil.columns.loses,
+                DataGridUtil.columns.racksWon,
+                DataGridUtil.columns.racksLost
                 ]
         }
         if (!s.nine) {
@@ -92,7 +96,7 @@ var SeasonLeaders = React.createClass({
         }
 
 
-        return (<DataGrid limit={this.props.limit} dataSource={this.state.stats} columns={columns} loading={this.state.loading} cls="table-users" />);
+        return (<DataGrid defaultSortColumn={'rank'} sortFn={SortUtil.sortFn} limit={this.props.limit} dataSource={this.state.stats} columns={columns} loading={this.state.loading} cls="table-users" />);
 
         /*
           return (

@@ -13,6 +13,7 @@ var StatNav = require('./StatNav.jsx');
 var HomeApp = require('../home/HomeApp.jsx');
 var Util = require('../../jsx/util.jsx');
 var TopGunNav = require('./TopGun.jsx');
+var HistoryNav = require('./HistoryNav.jsx');
 
 var NavApp = React.createClass({
     mixins: [UserContextMixin, History],
@@ -143,6 +144,7 @@ var NavApp = React.createClass({
                             <TeamNav    toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
                             <TopGunNav  toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
                             <AdminNav   toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
+                            <HistoryNav   toggleSide={this.closeSide}  params={this.props.params} history={this.props.history} />
                         </ul>
                     </div>
                 </nav>

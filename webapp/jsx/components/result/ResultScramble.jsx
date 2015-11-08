@@ -9,7 +9,7 @@ var Router = require('react-router')
     , Link = Router.Link;
 var DataGrid = require('../../../lib/DataGrid.jsx');
 var DataGridUtil = require('../../../lib/DataGridUtil.jsx');
-
+var SortUtil = require('../../../lib/SortUtil');
 
 var ResultScramble = React.createClass({
     getDefaultProps: function() {
@@ -45,6 +45,7 @@ var ResultScramble = React.createClass({
 
         return (
                 <DataGrid
+                    sortFn={SortUtil.sortFn}
                     idProperty='matchNum'
                     dataSource={this.state.results}
                     columns={columns}

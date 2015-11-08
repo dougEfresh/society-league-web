@@ -42,6 +42,20 @@ var handicaps = [
         'PRO'
 ];
 
+var handicapOrder = [
+        'D',
+        'D+',
+        'C',
+        'C+',
+        'B',
+        'B+',
+        'A',
+        'A+',
+        'OPEN',
+        'OPEN+',
+        'P'
+].reverse();
+
 var raceChart = {
     D: {
         D: '0/7',
@@ -187,6 +201,8 @@ var raceChart = {
 }
 };
 
+
+
 var race = function(hc1,hc2) {
     if (hc1 == null || hc1 == undefined || hc2 == undefined || hc2 == null)
         return "";
@@ -205,4 +221,4 @@ var race = function(hc1,hc2) {
 };
 
 
-module.exports = {formatHandicap: formatHandicap, race: race, handicaps: handicaps};
+module.exports = {handicapOrder: handicapOrder ,formatHandicap: formatHandicap, race: race, handicaps: handicaps};
