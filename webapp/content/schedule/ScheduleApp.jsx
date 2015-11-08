@@ -156,7 +156,7 @@ var UpcomingWeeklyMatch = React.createClass({
               <div className="panel-heading panel-schedule-week-title">
                   {Util.formatDateTime(this.props.date)}
               </div>
-              <div className={"panel-body"} >
+              <div className={"panel-body panel-animate"} >
                   <div className="table-responsive">
                       <table className="table schedule-table schedule-table-upcoming" >
                           <thead></thead>
@@ -364,7 +364,7 @@ var MatchResults = React.createClass({
                         </div>
                     </div>
                 </a>
-                <div className={"panel-body panel-results-body" + (this.state.toggle ? "" : " hide")} >
+                <div className={"panel-body panel-animate panel-results-body" + (this.state.toggle ? "" : " hide")} >
                     <div className="row match-row">
                         {this.getUpcoming()}
                     </div>

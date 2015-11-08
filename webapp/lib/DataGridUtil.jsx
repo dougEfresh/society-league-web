@@ -63,8 +63,12 @@ var team =
 };
 
 var player =  {
-    name: '', title: '', flex: 1, style: {minWidth: 100}, filterable: false,
-            render: renderPlayer
+    name: '',
+    //title: <span className="glyphicon  glyphicon-sort-by-alphabet"> Player </span>, flex: 1,
+    title: <span className=""> Player </span>, flex: 1,
+    style: {minWidth: 100}, filterable: false,
+    render: renderPlayer,
+    sort: 'asc'
 };
 
 var columns = {

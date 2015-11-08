@@ -216,7 +216,7 @@ var DisplayApp = React.createClass({
                                             {this.state.activeSeason.shortName + ' Standings'}
                                         </div>
                                         <div className="col-xs-2 col-md-1 caret-title">
-                                            <span className={"fa fa-caret-" + (this.state.toggleSeason ? "down" : "left")}></span>
+                                            <span className={"float-right fa fa-caret-" + (this.state.toggleSeason ? "down" : "left")}></span>
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +235,7 @@ var DisplayApp = React.createClass({
                                                 {this.state.activeTeam == null ? "Choose a team" : this.state.activeTeam.name}
                                             </div>
                                             <div className="col-xs-2 col-md-1 caret-title ">
-                                                <span className={"fa fa-caret-" + (this.state.toggleTeam ? "down" : "left")}></span>
+                                                <span className={"float-right fa fa-caret-" + (this.state.toggleTeam ? "down" : "left")}></span>
                                             </div>
                                         </div>
                                     </div>

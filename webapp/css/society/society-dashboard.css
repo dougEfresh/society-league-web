@@ -341,5 +341,9 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
     }
 }
 
+.float-right {
+    float: right;
+}
+
 
 

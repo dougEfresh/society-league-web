@@ -56,6 +56,7 @@ function getSomeData(options) {
     //url, callback, unauthCallback, module
     //console.log('Someone is getting data ' + arguments.callee.caller.toString());
     console.log("["+ options.module + "] " + options.url);
+    var now = Date.now();
     $.ajax({
             url: options.url,
             dataType: 'json',
@@ -70,7 +71,7 @@ function getSomeData(options) {
                 }.bind(this)
             },
             success: function (d) {
-                options.callback(d);
+                options.callback(d,Date.now()-now);
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(options.url, status, err.toString());

@@ -10,6 +10,7 @@ var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var UserResults = require('../../jsx/components/result/UserResults.jsx');
 var Handicap = require('../../lib/Handicap');
 var SeasonLeaders = require('./SeasonLeaders.jsx');
+var UserDisplay = require('../display/UserDisplay.jsx');
 
 var SeasonApp = React.createClass({
     mixins: [UserContextMixin],
@@ -95,9 +96,8 @@ var SeasonApp = React.createClass({
         var animateUserClosed = this.state.animateUserClosed;
         var animateUserOpen = this.state.animateUserOpen;
 
-        var panelBodyCls = "panel-body " + (this.state.toggleLeaders ? " " : " hide");
+        var panelBodyCls = "panel-body " + (this.state.toggleLeaders ? " panel-animate" : " hide");
         var panelHeadingCls = "panel-heading  " + (this.state.toggleLeaders ? " " : " panel-closed");
-        var panelUserCls = "panel-body ";
 
         return (
             <div id="season-leaders">
@@ -111,7 +111,7 @@ var SeasonApp = React.createClass({
                                         {this.state.season.shortName  +' Leaders'}
                                     </div>
                                     <div className="col-xs-2 col-md-1 caret-title">
-                                        <span className={"fa fa-caret-" + (this.state.toggleLeaders ? "down" : "left")}></span>
+                                        <span className={"float-right fa fa-caret-" + (this.state.toggleLeaders ? "down" : "left")}></span>
                                     </div>
                                 </div>
                             </div>
@@ -122,29 +122,9 @@ var SeasonApp = React.createClass({
                     </div>
                 </div>
                 </div>
-            <div className="row">
-                <div className="col-xs-12 col-md-9">
-                    <div className={"panel panel-default panel-results" + (this.state.selectedUser != null ? "" : " hide")} >
-                        <a onClick={this.toggleHeading} href='#'>
-                            <div className="panel-heading" role="tab" id="headingOne">
-                                <div className="row panel-title">
-                                    <div className="col-xs-10 col-md-11 p-title">
-                                        {userHeader}
-                                    </div>
-                                    <div className="col-xs-2 col-md-1 caret-title">
-                                        <span className={"fa fa-caret-" + (this.state.selectedUser != null ? "down" : "left")}></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <div className={"panel-body " + panelUserCls}>
-                            <UserResults onUserClick={this.changeUser} user={this.state.selectedUser != null ? this.state.selectedUser.user : null} season={this.state.season} />
-                        </div>
+                <UserDisplay params={this.props.params} />
+            </div>
 
-                    </div>
-                </div>
-            </div>
-            </div>
         );
     }
 });

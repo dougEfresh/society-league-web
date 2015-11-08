@@ -12,29 +12,34 @@ var SeasonStandings = require('../season/SeasonStandings.jsx');
 var SeasonMatches = require('../season/SeasonMatches.jsx');
 var SeasonLeaders = require('../season/SeasonLeaders.jsx');
 var UserResults = require('../../jsx/components/result/UserResults.jsx');
-
+var Handicap = require('../../lib/Handicap');
 
 var UserDisplay = React.createClass({
     getInitialState: function() {
         return {
             hide: true,
             stats: null,
+            results: [],
             toggleUser : true,
             loading: false
         }
     },
     componentDidMount: function() {
         if (this.props.params.userId) {
-             this.setState({loading: true, hide: false});
+            this.setState({loading: true, hide: false});
             this.getData(this.props.params);
         }
     },
     getData: function(params) {
         if (params.userId) {
             Util.getSomeData({
-                    url: '/api/stat/user/' + params.userId + '/'+ params.seasonId,
-                    callback: function(d) {
-                        this.setState({stats: d, loading: false});
+                    url: '/api/playerresult/user/' + params.userId + '/'+ params.seasonId,
+                    callback: function(d,t) {
+                        if (t < 900) {
+                            setTimeout(function() {
+                                this.setState({stats: d.stats, results: d.results, loading: false});
+                            }.bind(this),800);
+                        }
                     }.bind(this),
                     module: 'UserDisplayStats'
                 }
@@ -42,14 +47,13 @@ var UserDisplay = React.createClass({
         }
     },
     componentWillReceiveProps :function(n) {
-        console.log(JSON.stringify(n.params));
         if (n.params.userId == undefined) {
             this.setState({hide: true});
             return;
         }
 
         if (this.props.params.userId == undefined || n.params.userId != this.props.params.userId) {
-            this.setState({loading: true, hide: false, stats: null});
+            this.setState({loading: true, hide: false, stats: null, results: []});
             this.getData(n.params);
         }
     },
@@ -61,23 +65,28 @@ var UserDisplay = React.createClass({
         if (this.state.hide) {
             return null;
         }
-        if (this.state.loading) {
-            return (
-                <div className="row" >
-                    <div className={"col-xs-12 col-md-6"} >
-                        <div className={"panel panel-default panel-user-results "}>
-                            <div className={"panel-heading"}>
-                                <span> Loading .... </span>
-                            </div>
-                            <div className="panel-body">
-                                <div style={{height: 200}} className="text-center loading">
-                                    <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
-                                </div>
-                            </div>
-                        </div>
+        var header = <div className="col-xs-10 col-md-11 p-title">Loading...</div>;
+        var body = <div style={{height: 200}} className="text-center loading">
+            <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+        </div>;
+
+        if (!this.state.loading) {
+            header =
+                <div>
+                    <div className="col-xs-5 col-md-9 p-title">
+                        {this.state.stats.user.shortName + ' (' + Handicap.formatHandicap(this.state.stats.handicap) + ')'}
                     </div>
-                </div>
-            )
+                    <div className="col-xs-2 col-md-1 p-title">
+                        <span className="float-right">{'W:' + this.state.stats.wins}</span>
+                    </div>
+                    <div className="col-xs-2 col-md-1 p-title">
+                        <span className="float-right">{'L:' + this.state.stats.loses}</span>
+                    </div>
+                    <div className="col-xs-2 col-md-1 caret-title">
+                        <span className={"float-right fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
+                    </div>
+            </div>
+            body = <UserResults onUserClick={this.changeUser} results={this.state.results} user={this.state.stats.user} season={this.state.stats.season} />
         }
         return (
             <div className={"row"} >
@@ -86,17 +95,12 @@ var UserDisplay = React.createClass({
                         <a href="#" onClick={this.toggleUser} >
                             <div className={"panel-heading" + (this.state.toggleUser ? "" : " panel-closed")}>
                                 <div className={"row panel-title"}>
-                                    <div className="col-xs-10 col-md-11 p-title">
-                                        User
-                                    </div>
-                                    <div className="col-xs-2 col-md-1 caret-title ">
-                                        <span className={"fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
-                                    </div>
+                                    {header}
                                 </div>
                             </div>
                         </a>
                         <div className={"panel-body panel-animate" + (this.state.toggleUser ? "": " hide")}>
-                            <UserResults onUserClick={this.changeUser} user={this.state.stats.user} season={this.state.stats.season} />
+                            {body}
                         </div>
                     </div>
                 </div>
