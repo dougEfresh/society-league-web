@@ -12,6 +12,7 @@ var SeasonStandings = require('../season/SeasonStandings.jsx');
 var SeasonMatches = require('../season/SeasonMatches.jsx');
 var SeasonLeaders = require('../season/SeasonLeaders.jsx');
 var UserResults = require('../../jsx/components/result/UserResults.jsx');
+var UserDisplay = require('./UserDisplay.jsx');
 
 var DisplayApp = React.createClass({
     mixins: [UserContextMixin,History],
@@ -245,28 +246,7 @@ var DisplayApp = React.createClass({
                             </div>
                         </div>
                     </div>
-                    <div className="row" >
-                        <div className={"col-xs-12 col-md-6 " + (this.state.toggleUser ? "" : "hide")} >
-                            <div className={"panel panel-default panel-user-results "}>
-                                <a href="#" onClick={this.toggleUser} >
-                                    <div className={"panel-heading" + (this.state.toggleUser ? "" : " panel-closed")}>
-
-                                    <div className={"row panel-title " + (this.state.activeUser == null ? " hide" : "")}>
-                                        <div className="col-xs-10 col-md-11 p-title">
-                                            {this.state.activeUser == null  ? "Select a user" : this.state.activeUser.firstName + ' ' + this.state.activeUser.lastName.substr(0,1) +'.'}
-                                        </div>
-                                        <div className="col-xs-2 col-md-1 caret-title ">
-                                            <span className={"fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                </a>
-                                <div className="panel-body panel-animate ">
-                                    <UserResults loading={loading} onUserClick={this.changeUser} user={this.state.activeUser} season={this.state.activeSeason} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <UserDisplay params={this.props.params} />
                 </div>
             );
     }

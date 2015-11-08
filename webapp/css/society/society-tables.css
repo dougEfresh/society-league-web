@@ -151,7 +151,7 @@ table.table-striped> tbody > tr:nth-child(2n) > td.hill{
 .table-striped > tbody > tr:nth-child(2n) > td.hill {
     background-color: #CDA3A3;
 }
-.table-striped > tbody > tr:nth-child(2n).selected > td,  {
+.table-striped > tbody > tr:nth-child(2n).selected > td  {
     background-color: #CDA3A3;
 }
 
