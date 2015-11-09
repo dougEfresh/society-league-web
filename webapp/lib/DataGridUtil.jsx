@@ -8,6 +8,16 @@ var renderPlayer=function(v,data,cp) {
     return <UserLink onClick={data.user.onClick} user={data.user} season={data.season} />
 };
 
+var renderWinner=function(v,data,cp) {
+    cp.className="user";
+    return <UserLink  user={data.winner} season={data.season} />
+};
+
+var renderLoser=function(v,data,cp) {
+    cp.className="user";
+    return <UserLink  user={data.loser} season={data.season} />
+};
+
 var renderOpponent=function(v,data,cp) {
     cp.className="user";
     return <UserLink onClick={data.opponent.onClick} user={data.opponent} season={data.season} />};
@@ -132,7 +142,9 @@ var columns = {
     },
     'calculation':  {name: 'calculation', title: ' ', width: 95, filterable: false ,
         render: function(v,data){return (<span>{data.matchPoints == undefined ? "" : data.matchPoints.calculation}</span>); }
-    }
+    },
+    'winner' : {name: 'winner', title: 'Victor', width: 100, style: {minWidth: 100}, filterable: false, render: renderWinner },
+    'loser' : {name: 'loser', title: 'Opponent', width: 100, style: {minWidth: 100}, filterable: false, render: renderLoser }
 
 };
 

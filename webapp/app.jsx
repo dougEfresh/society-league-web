@@ -13,6 +13,7 @@ var UserAdminApp = require('./content/admin/UserAdmin.jsx');
 var SeasonAdminApp = require('./content/admin/SeasonAdmin.jsx');
 var TeamAdminApp = require('./content/admin/SeasonAdmin.jsx');
 var ScheduleApp = require('./content/schedule/ScheduleApp.jsx');
+var ScheduleChallengeApp  = require('./content/schedule/ScheduleChallengeApp.jsx');
 
 var NavApp = require('./content/nav/NavApp.jsx');
 var ResetApp = require('./jsx/../content/ResetApp.jsx');
@@ -99,6 +100,7 @@ var routes = (
             <Route path="season/:seasonId/leaders/:userId" component={SeasonApp} ></Route>
 
             <Route path="schedule/:seasonId" component={ScheduleApp} ></Route>
+            <Route path="schedule/:seasonId/challenge" component={ScheduleChallengeApp} ></Route>
             <Route path="schedule/:seasonId/:matchId" component={TeamMatchResultsApp} ></Route>
         </Route>
     </Route>

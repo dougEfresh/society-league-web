@@ -22,7 +22,7 @@ var TopGunNav = React.createClass({
             this.props.toggleSide(e);
             this.setState({toggleSide: false});
             e.preventDefault();
-            this.props.history.pushState(null,'/app/schedule/' + s.id);
+            this.props.history.pushState(null,'/app/schedule/' + s.id + '/challenge');
         }.bind(this)
     },
     goToStandings: function(s) {

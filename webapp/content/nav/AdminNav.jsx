@@ -32,7 +32,10 @@ var AdminNav = React.createClass({
             this.setState({toggleSide: false});
             e.preventDefault();
             this.props.toggleSide(e);
-            this.props.history.pushState(null,'/app/schedule/' + s.id);
+            if (s.challenge)
+                this.props.history.pushState(null,'/app/schedule/' + s.id +'/challenge');
+            else
+                this.props.history.pushState(null,'/app/schedule/' + s.id);
         }.bind(this)
     },
     goToLeader: function(s){
@@ -69,7 +72,7 @@ var AdminNav = React.createClass({
         }
         var seasonNav = [];
          this.state.seasons.forEach(function(s) {
-            if (s.challenge || !s.active)
+            if (!s.active)
                 return;
             var standingsClass = this.context.location.pathname.indexOf('display/') > 0 ? 'selected ' : "not-selected";
             var scheduleClass = this.context.location.pathname.indexOf('schedule/') > 0 ? 'selected ' : "not-selected";
