@@ -81,6 +81,10 @@ MatchHelper.prototype.getPending = function() {
     return this.pending;
 };
 
+MatchHelper.prototype.getUpcoming = function() {
+    return this.upcoming;
+};
+
 MatchHelper.prototype.handleDelete = function(d) {
     console.log('Deleting '  + d.id);
 };

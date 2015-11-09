@@ -43,7 +43,7 @@ var UpcomingChallenges = React.createClass({
                 <div className="row">
                     <div className="col-xs-12 col-md-6">
                         <div id={'accepted-challenges'} className="panel panel-default panel-challenge panel-challenge-upcoming">
-                            <div className="panel-heading" ><span>Upcoming</span></div>
+                            <div className="panel-heading" ><span>Upcoming Challenges</span></div>
                             <div className="panel-body" >
                                 <div className="table-responsive">
                                 <table className={"table table-challenge table-challenge-upcoming"}>
@@ -66,7 +66,7 @@ var UpcomingChallenges = React.createClass({
                         <div id={pending-challenges} className="panel panel-default panel-challenge panel-challenge-pending">
                             <div className="panel-heading">
                                 <i className="fa fa-exclamation-triangle" ></i>
-                                <span> Pending</span>
+                                <span> Pending Challenges</span>
                             </div>
                             <div className="panel-body" >
                                 <div className="table-responsive">
@@ -89,7 +89,7 @@ var UpcomingChallenges = React.createClass({
                  <div className="row">
                     <div className="col-xs-12 col-md-6">
                         <div id={'sent-challenges'} className="panel panel-default panel-challenge panel-challenge-sent">
-                            <div className="panel-heading panel-heading" ><span>Sent</span></div>
+                            <div className="panel-heading panel-heading" ><span>Sent Challenges</span></div>
                             <div className="panel-body" >
                                 <div className="table-responsive">
                                 <table className={"table table-challenge table-challenge-sent"}>

@@ -39,11 +39,12 @@ var ScheduleApp = React.createClass({
     componentWillReceiveProps: function (n) {
     },
     render: function() {
-        //<MatchResults  params={this.props.params} matches={this.state.results} />
+        //
         //<PendingMatches params={this.props.params} />
         return (
             <div id="schedule-app">
                 <PendingMatches params={this.props.params} matchHelper={this.state.matchHelper} />
+                <MatchResults   params={this.props.params} matchHelper={this.state.matchHelper} />
             </div>
         );
     }
@@ -52,8 +53,11 @@ var ScheduleApp = React.createClass({
 var MatchResults = React.createClass({
     getMatches: function() {
         var rows = [];
-        Object.keys(this.props.matches).forEach(function(md) {
-            rows.push(<Results key={md} date={md} matches={this.props.matches[md]} />);
+        var matches = this.props.matchHelper.getUpcoming();
+        if (matches == null)
+            return rows;
+        Object.keys(matches).forEach(function(md) {
+            rows.push(<Results key={md} date={md} matches={matches[md]} />);
         }.bind(this));
         return (
             rows
@@ -61,28 +65,28 @@ var MatchResults = React.createClass({
     },
     toggleHeading: function(e) {e.preventDefault(); this.setState({toggle: !this.state.toggle})},
     componentWillReceiveProps: function(n) {
-        if (n.params.matchId != undefined) {
+        //if (n.params.matchId != undefined) {
             //this.setState({toggle: false});
-        }
+//        }
     },
     componentDidMount: function() {
-        if (this.props.params.matchId != undefined) {
+  //      if (this.props.params.matchId != undefined) {
             //this.setState({toggle: false});
-        }
+    //    }
     },
     render: function() {
-        if (this.props.matches == null) {
+        if (this.props.matchHelper == null) {
             return null;
         }
-        var season = this.props.matches[Object.keys(this.props.matches)[0]][0].season;
+
         return (
             <div className="row">
-                <div className="col-xs-12 col-md-6">
-            <div className="panel panel-default ">
+                <div className="col-xs-12 col-md-7">
+                    <div className="panel panel-default panel-challenge">
                     <div className={"panel-heading"}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-7 p-title">
-                              <span className="fa fa-trophy"></span><span>Results<span> {season.shortName}</span></span>
+                              <span className="fa fa-trophy"></span><span>Results<span></span></span>
                             </div>
                         </div>
                     </div>
@@ -124,8 +128,8 @@ var Results = React.createClass({
         }
         return (
             <div className="row" >
-                <div className="col-xs-12 col-md-7" >
-                    <div className="panel panel-default ">
+                <div className="col-xs-12 col-md-12" >
+                    <div className="panel panel-default">
                     <div className={"panel-heading"}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-7 p-title">
@@ -250,7 +254,7 @@ var PendingMatches = React.createClass({
        return (
            <div className="row" >
                <div className="col-xs-12 col-md-7" >
-                   <div className="panel panel-default ">
+                   <div className="panel panel-default panel-challenge ">
                     <div className={"panel-heading"}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-7 p-title">

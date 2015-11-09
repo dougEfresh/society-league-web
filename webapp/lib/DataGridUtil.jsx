@@ -277,9 +277,16 @@ var columns = {
     'awayRacksAdmin' : awayRacksAdmin,
     'deleteMatch' :  {name: 'matchDelete', title: '', width: 60, style: {minWidth: 60}, render: function(v,data) {
         if (data.onDelete)
-            return (<a href='#' onClick={data.onDelete(data)}><span>X</span></a>);
+            return (<button type="button" className="btn btn-sm btn-danger btn-responsive team-match-delete">
+                    <span className="glyphicon glyphicon-remove"></span>
+                </button>
+            );
+
         else
-            return (<a href='#'><span>X</span></a>);
+            return (<button type="button" className="btn btn-sm btn-danger btn-responsive team-match-delete">
+                    <span className="glyphicon glyphicon-remove"></span>
+                </button>
+            );
     } },
 
 };
