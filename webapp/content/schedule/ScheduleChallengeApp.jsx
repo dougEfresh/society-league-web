@@ -223,10 +223,10 @@ var Upcoming = React.createClass({
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-7 p-title">
                                 <i className="fa fa-calendar"></i><span> Upcoming</span><span> </span>
-                                <Link className={"team-match-add " +  hide}   to={"/app/schedule/add/" + this.props.params.seasonId} >
-                                <button type="button" className="btn btn-sm  btn-primary">
-                                    <span className={"glyphicon glyphicon-plus"}></span>
-                                </button>
+                                <Link className={"team-match-add " +  hide}   to={"/app/schedule/" + this.props.params.seasonId + '/add'} >
+                                    <button type="button" className="btn btn-sm  btn-primary">
+                                        <span className={"glyphicon glyphicon-plus"}></span>
+                                    </button>
                                 </Link>
                             </div>
                         </div>

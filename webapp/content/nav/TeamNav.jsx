@@ -90,15 +90,15 @@ var TeamNav = React.createClass({
                         <span className={"fa fa-caret-" + (toggle ? "down side-caret" : "left side-caret")}></span>
                     </a>
                     <ul className={"nav nav-third-level collapse" + (toggle ? " selected in" : "")} aria-expanded="true">
-                    <li className={standingsClass}>
-                        <a onClick={this.goToStandings(t)} href="#">Standings</a>
-                    </li>
-                    <li className={scheduleClass}>
-                        <a onClick={this.goToSchedule(s)} href="#">{'Schedule & Results'}</a>
-                    </li>
-                    <li className={leaderClass} >
-                        <a onClick={this.goToLeader(s)} href="#">Division Leaders</a>
-                    </li>
+                        <li className={standingsClass}>
+                            <a onClick={this.goToStandings(t)} href="#">Standings</a>
+                        </li>
+                        <li className={scheduleClass}>
+                            <a onClick={this.goToSchedule(s)} href="#">{'Schedule & Results'}</a>
+                        </li>
+                        <li className={leaderClass} >
+                            <a onClick={this.goToLeader(s)} href="#">Division Leaders</a>
+                        </li>
                     </ul>
                 </li>
             );

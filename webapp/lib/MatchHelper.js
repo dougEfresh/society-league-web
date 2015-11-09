@@ -11,6 +11,17 @@ function MatchHelper(component,seasonId) {
     this.played = null;
     this.teams = [];
     this.teamOptions = [];
+    Util.getSomeData({
+        url: '/api/team/season/' + this.seasonId,
+        callback: function (d) {
+            this.teams = d;
+            this.teams.forEach(function(t) {
+                this.teamOptions.push(<option key={t.id} value={t.id} >{t.name}</option>);
+            }.bind(this));
+        }.bind(this),
+        module: 'Teams'
+    });
+
 }
 
 MatchHelper.prototype.receiveMatches = function() {
@@ -43,16 +54,7 @@ MatchHelper.prototype.receiveMatches = function() {
         }.bind(this),
         module: 'Played'
     });
-    Util.getSomeData({
-        url: '/api/team/season/' + this.seasonId,
-        callback: function (d) {
-            this.teams = d;
-            this.teams.forEach(function(t) {
-                this.teamOptions.push(<option key={t.id} value={t.id} >{t.name}</option>);
-            }.bind(this));
-        }.bind(this),
-        module: 'Teams'
-    });
+
 };
 
 MatchHelper.prototype.processResults = function(data) {
@@ -87,6 +89,34 @@ MatchHelper.prototype.getUpcoming = function() {
 
 MatchHelper.prototype.getPlayed = function() {
     return this.played;
+};
+
+MatchHelper.prototype.getNew = function() {
+    var m = this.upcoming;
+    var matches = [];
+    if (m == null)
+        return [];
+    Object.keys(m).forEach(function(md) {
+        matches = matches.concat(m[md]);
+    });
+    return matches;
+};
+
+MatchHelper.prototype.createNew = function() {
+     Util.getSomeData({
+            url: '/api/teammatch/admin/add/' + this.seasonId,
+            callback: function(d) {
+                if (this.upcoming == null) {
+                    this.upcoming = {};
+                }
+                if (this.upcoming[d.matchDate] == undefined) {
+                    this.upcoming[d.matchDate] = [];
+                }
+                this.upcoming[d.matchDate].push(d);
+                this.component.forceUpdate();
+            }.bind(this),
+            module: 'TeamMatchAdd'
+        });
 };
 
 MatchHelper.prototype.handleDelete = function(d) {

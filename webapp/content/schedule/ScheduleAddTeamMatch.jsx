@@ -26,125 +26,83 @@ var ScheduleTeamMatchAdd = React.createClass({
     getInitialState: function() {
         return {
             loading: false,
-            teamMatch: null
+            matchHelper: new MatchHelper(this,this.props.params.seasonId)
         }
     },
     componentDidMount: function () {
-        Util.getSomeData({
-            url: '/api/teammatc/add/' + this.props.params.seasonId,
-            callback: function(d) {this.setState({teamMatch: d})}.bind(this),
-            module: 'TeamMatchAdd'
-        });
+        this.state.matchHelper.createNew();
     },
     componentDidUnmount: function() {
         console.log('Unmount');
+        delete this.state.matchHelper;
     },
     componentWillReceiveProps: function (n) {
+    },
+    addNew: function(e) {
+        e.preventDefault();
+        this.state.matchHelper.createNew();
     },
     render: function() {
         //<MatchResults  params={this.props.params} matches={this.state.results} />
         //<PendingMatches params={this.props.params} />
-        return (
-            <div id="schedule-app">
-                <PendingMatches params={this.props.params} matchHelper={this.state.matchHelper} />
-            </div>
-        );
-    }
-});
-var PendingMatches = React.createClass({
-    mixins: [UserContextMixin],
-    getInitialState: function() {
-        return {
-        }
-    },
-    handleUpdate: function(tm,type) {
-
-
-    },
-    handleDelete: function(d) {
-        util.getSomeData({
-            url: '/api/teammatch/admin/delete/' + d.id,
-            callback: function(data) {this.getData(d.season.id)}.bind(this),
-            module: 'DeleteTeamMatch'
-        });
-    },
-    handleAdd: function(e) {
-        e.preventDefault();
-    },
-
-    componentDidMount: function () {
-        //this.getData(this.props.params.seasonId);
-    },
-    componentWillReceiveProps: function (n) {
-        //this.getData(n.params.seasonId);
-    },
-    render: function() {
-        var columns = [
+        //<PendingMatches params={this.props.params} matchHelper={this.state.matchHelper} />
+          var columns = [
             DataGridUtil.columns.deleteMatch,
             DataGridUtil.columns.matchDate,
-            DataGridUtil.columns.matchTime,
-            DataGridUtil.columns.challenger,
+              DataGridUtil.columns.matchTime,
+              this.state.matchHelper.getTeamSelect('home'),
             DataGridUtil.columns.homeRacksAdmin,
             DataGridUtil.columns.challengeOpponent,
             DataGridUtil.columns.awayRacksAdmin,
             DataGridUtil.columns.race
         ];
-        if (!this.getUser().admin) {
-            columns = [
-            DataGridUtil.columns.matchDate,
-            DataGridUtil.columns.matchTime,
-            DataGridUtil.columns.challenger,
-            DataGridUtil.columns.challengeOpponent,
-            DataGridUtil.columns.race
-            ]
-        }
-        var pending = this.props.matchHelper.getPending();
-        if (pending.length == 0) {
-            return null;
-        }
-       return (
-           <div className="row" >
-               <div className="col-xs-12 col-md-7" >
-                   <div className="panel panel-default ">
-                    <div className={"panel-heading"}>
-                        <div className="row panel-title">
-                            <div className="col-xs-10 col-md-7 p-title">
-                                <span>Pending</span>
+        var matches = this.state.matchHelper.getNew();
+        return (
+            <div id="schedule-app">
+                <div className="row">
+                    <div className="col-xs-12 col-md-7">
+                        <div className="panel panel-default panel-challenge">
+                            <div className={"panel-heading"}>
+                                <div className="row panel-title">
+                                    <div className="col-xs-10 col-md-7 p-title">
+                                        <span>New Matches</span>
+                                    </div>
+                                    <div className="float-right col-xs-10 col-md-4 p-title">
+                                        <button onClick={this.addNew}type="button" className="btn btn-sm  btn-primary">
+                                            <span className={"glyphicon glyphicon-plus"}></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={"panel-body panel-animate panel-challenge-results panel-results-body"} >
+                                <DataGrid
+                                    dataSource={matches}
+                                    columns={columns}
+                                    style={{height: ((matches) * 50 < 500 ? (matches ) * 50 : 500)}}
+                                    rowHeight={40}
+                                    showCellBorders={true}
+                                    filterable={false}
+                                    columnMinWidth={50}
+                                    cellPadding={'5px 5px'}
+                                    headerPadding={'5px 5px'}
+                                    filterIconColor={'#6EB8F1'}
+                                    menuIconColor={'#6EB8F1'}
+                                    loadMaskOverHeader={false}
+                                    cellEllipsis={false}
+                                    liveFilter={false}
+                                    styleAlternateRowsCls={'datagrid-alt-row'}
+                                    menuIcon={false}
+                                    filterIcon={false}
+                                    scrollbarSize={(matches) * 50 < 500 ? 0 : 20}
+                                    //onColumnOrderChange={this.handleColumnOrderChange}
+                                    />
                             </div>
                         </div>
                     </div>
-                       <div className={"panel-body panel-animate panel-challenge-results panel-results-body"} >
-                           <DataGrid
-                        idProperty='id'
-                        dataSource={pending}
-                        columns={columns}
-                        style={{height: ((pending.length) * 50 < 500 ? (pending.length ) * 50 : 500)}}
-                        rowHeight={40}
-                        showCellBorders={true}
-                        filterable={false}
-                        columnMinWidth={50}
-                        cellPadding={'5px 5px'}
-                        headerPadding={'5px 5px'}
-                        filterIconColor={'#6EB8F1'}
-                        menuIconColor={'#6EB8F1'}
-                        loadMaskOverHeader={false}
-                        cellEllipsis={false}
-                        liveFilter={false}
-                        styleAlternateRowsCls={'datagrid-alt-row'}
-                        menuIcon={false}
-                        filterIcon={false}
-                        scrollbarSize={(pending.length) * 50 < 500 ? 0 : 20}
-                        //onColumnOrderChange={this.handleColumnOrderChange}
-                        />
                 </div>
-                   </div>
-               </div>
-           </div>);
-
+            </div>
+        );
     }
 });
-
-
-
 
 module.exports = ScheduleTeamMatchAdd;

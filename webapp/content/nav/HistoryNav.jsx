@@ -43,35 +43,85 @@ var HistoryNav = React.createClass({
         e.preventDefault();
         this.setState({toggleSeason: !this.state.toggleSeason});
     },
+    expandYear: function(year) {
+        return function(e) {
+            e.preventDefault();
+            this.state[year] = !this.state[year];
+            this.forceUpdate();
+        }.bind(this);
+    },
     render: function() {
         var teamNav =  [];
         var seasons = [];
-        if (false) {
-            this.state.season.forEach(function(s) {
+        var seasonByYear = {};
+        if (this.getUser().admin) {
+            var ss = this.state.season.sort(function(a,b) {
+               return b.startDate.localeCompare(a.startDate);
+            });
+            ss.forEach(function(s) {
                 if (!s.active && !s.challenge)
                     seasons.push(s);
-            })
-
+            });
         } else {
-            this.getUser().handicapSeasons.sort(function(a,b) {
+            var handicapSeasons = this.getUser().handicapSeasons.sort(function(a,b) {
                 return b.season.startDate.localeCompare(a.season.startDate);
             });
-            this.getUser().handicapSeasons.forEach(function(s) {
+            handicapSeasons.forEach(function(s) {
                 if (!s.season.active && !s.season.challenge)
                     seasons.push(s.season);
             })
         }
 
         seasons.forEach(function(s) {
-            var toggle = s.toggle == undefined ? this.props.params.seasonId == s.id : s.toggle;
+            if (seasonByYear[s.year] == undefined) {
+                seasonByYear[s.year] = [];
+            }
+            seasonByYear[s.year].push(s);
+        });
+        var years =  Object.keys(seasonByYear).sort(function(a,b){
+            return b.localeCompare(a);
+        });
+        years.forEach(function(year) {
+            if (this.state[year]== undefined) {
+                this.state[year] = false;
+            }
+            var toggle = this.state[year];
+            var seasons = seasonByYear[year];
+            var seasonNav = [];
+            seasons.forEach(function(s) {
+                var t = s.toggle == undefined ? false : !s.toggle;
+                seasonNav.push(
+                        <li key={s.id} >
+                            <a onClick={this.goToLeader(s)} href="#">{s.displayName}</a>
+                        </li>
+                )
+            }.bind(this));
+
             teamNav.push(
-                <li className={toggle ? "active dropdown" : "dropdown"} key={s.id}>
-                    <a onClick={this.goToLeader(s)} href="#">
-                        {s.displayName}
+                <li  className={toggle ? "active dropdown" : "dropdown"} key={year}>
+                    <a onClick={this.expandYear(year)} href="#">
+                        {year}
+                        <span className={"fa fa-caret-" + (toggle ? "down side-caret" : "left side-caret")}></span>
                     </a>
+                    <ul className={"nav nav-third-level collapse" + (toggle ? " selected in" : "")} aria-expanded="true">
+                        {seasonNav}
+                    </ul>
                 </li>
             );
         }.bind(this));
+        
+        /*
+        seasons.forEach(function(s) {
+            var toggle = s.toggle == undefined ? this.props.params.seasonId == s.id : s.toggle;
+            teamNav.push(
+                <li className={toggle ? "active dropdown" : "dropdown"} key={s.id}>
+         <a onClick={this.goToLeader(s)} href="#">
+         {s.displayName}
+         </a>
+                </li>
+            );
+        }.bind(this));
+        */
         var seasonCls = "";
         return(
             <li className={this.state.toggleSeason ? "selected dropdown " + seasonCls : seasonCls + " dropdown"}>
