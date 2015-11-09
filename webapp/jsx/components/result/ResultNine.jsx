@@ -36,6 +36,7 @@ var ResultNine = React.createClass({
             DataGridUtil.columns.race,
             DataGridUtil.columns.opponent,
             DataGridUtil.columns.opponentHandicap,
+            DataGridUtil.columns.opponentTeam,
             DataGridUtil.columns.teamMemberHandicap
         ];
 
