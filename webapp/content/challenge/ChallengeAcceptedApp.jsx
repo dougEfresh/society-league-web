@@ -30,7 +30,7 @@ var ChallengeAcceptedApp = React.createClass({
 
         return (
               <tr>
-                  <td className="datetime"> {m.format('MMM Do h:mm a')}</td>
+                  <td className="datetime"> {m.format('MMM Do h:mm')}</td>
                   <td className="user"> <UserLink user={opponent} season={this.props.challenge.season} /> </td>
                   <td className="challenge-actions">
                       <Link to={'/app/challenge/' + challenge.id + '/cancel'} >

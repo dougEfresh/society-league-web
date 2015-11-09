@@ -1,7 +1,15 @@
 var React = require('react/addons');
 var UserLink = require('../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../jsx/components/links/TeamLink.jsx');
+var Util = require('../jsx/util.jsx');
+var moment = require('moment');
 
+var nineBallRacks = [];
+var matchDates = [];
+
+for(var i = 0; i<12 ; i++) {
+    nineBallRacks.push(<option key={i} value={i}>{i}</option>);
+}
 
 var renderPlayer=function(v,data,cp) {
     cp.className="user";
@@ -13,13 +21,69 @@ var renderWinner=function(v,data,cp) {
     return <UserLink  user={data.winner} season={data.season} />
 };
 
+var renderHomeTeam = function(v,data,cp) {
+    cp.className="user";
+    if (data.season.challenge) {
+        if (data.playerHome) {
+            return <UserLink user={data.playerHome} season={data.season}/>
+        }
+        else {
+            return <UserLink user={data.challenger} season={data.season}/>
+        }
+    }
+    return <TeamLink team={data.home} />
+};
+
+var renderAwayTeam = function(v,data,cp) {
+    cp.className="user";
+    if (data.season.challenge) {
+        return <UserLink user={data.opponent} season={data.season}/>
+    }
+    return <TeamLink team={data.away} />
+};
+
+
+var renderHome = function(v,data,cp) {
+    cp.className="user";
+    if (data.season.challenge) {
+        if (data.playerHome) {
+            return <UserLink user={data.playerHome} season={data.season}/>
+        }
+        else {
+            return <UserLink user={data.challenger} season={data.season}/>
+        }
+    }
+    return <TeamLink team={data.home} />
+};
+
+var renderAway = function(v,data,cp) {
+    cp.className="user";
+    if (data.season.challenge) {
+        if (data.playerAway)
+            return <UserLink user={data.playerAway} season={data.season}/>
+        else
+            return <UserLink user={data.opponent} season={data.season}/>
+    }
+    return <TeamLink team={data.away} />
+};
+
 var renderLoser=function(v,data,cp) {
     cp.className="user";
     return <UserLink  user={data.loser} season={data.season} />
 };
+var renderChallenger=function(v,data,cp) {
+    cp.className="user";
+    return <UserLink  user={data.home} season={data.season} />
+};
+
+var renderChallengeOpponent=function(v,data,cp) {
+    cp.className="user";
+    return <UserLink  user={data.away} season={data.season} />
+};
+
 
 var renderOpponent=function(v,data,cp) {
-    cp.className="user";
+    cp.className="us00er";
     return <UserLink onClick={data.opponent.onClick} user={data.opponent} season={data.season} />};
 var renderOpponentTeam=function(v,data,cp) {
     cp.className="team";
@@ -68,8 +132,8 @@ var opponentTeam =
 };
 var team =
 {
-            name: 'team', title: 'Team', flex: 1, style: {minWidth: 100},  filterable: false,
-            render: renderTeam, sort: 'asc', number: false
+    name: 'team', title: 'Team', flex: 1, style: {minWidth: 100},  filterable: false,
+    render: renderTeam, sort: 'asc', number: false
 };
 
 var player =  {
@@ -82,8 +146,68 @@ var player =  {
     number: false
 };
 
+
+var home  = {
+    name: 'challenger', title: 'Challenger', flex: 1, style: {minWidth: 100},  filterable: false,
+    render: renderHome, sort: 'asc', number: false
+};
+
+var away  = {
+    name: 'challengeOpponent', title: 'Opponent', flex: 1, style: {minWidth: 100},  filterable: false,
+    render: renderAway, sort: 'asc', number: false
+};
+
+var challenger  = {
+    name: 'challenger', title: 'Challenger', flex: 1, style: {minWidth: 100},
+    render: renderHome
+};
+
+var challengeOpponent  = {
+    name: 'challengeOpponent', title: 'Opponent', flex: 1, style: {minWidth: 100},  filterable: false,
+    render: renderAway, sort: 'asc', number: false
+};
+
+var homeRacksAdmin = {
+    name: 'homeRacks', title: 'R', flex: 1, style: {minWidth: 70}, width: 70,
+    render: function(v,data) {
+        if (data.onChange) {
+            return (
+                <select ref='racks'
+                        onChange={data.onChange(data,'homeRacks')}
+                        className="form-control"
+                        value={data.homeRacks}
+                        type={'select'}>
+                    {nineBallRacks}
+                </select>
+            )
+        }
+        return <span>{data.homeRacks}</span>
+    }
+};
+
+var awayRacksAdmin = {
+    name: 'awayRacks', title: 'R', flex: 1, style: {minWidth: 70}, width: 70,
+    render: function(v,data) {
+        if (data.onChange) {
+            return (
+                <select ref='racks'
+                        onChange={data.onChange(data,'awayRacks')}
+                        className="form-control"
+                        value={data.awayRacks}
+                        type={'select'}>
+                    {nineBallRacks}
+                </select>
+            )
+        }
+        return <span>{data.awayRacks}</span>
+    }
+};
+
+
 var columns = {
     'playerMatchDate': {name: 'date', title: 'Date', width: 60, filterable: false, sort: 'dsc', number: false},
+    'matchDate': {name: 'date', title: 'Date', width: 63, render: function(v,data) {return <span>{Util.formatDateTime(data.matchDate)}</span>} , filterable: false, sort: 'dsc', number: false},
+    'matchTime': {name: 'time', title: 'Time', width: 60, render: function(v,data) {return <span>{Util.formatTime(data.matchDate)}</span>} , filterable: false, sort: 'dsc', number: false},
     'rank' : {name: 'rank' , title: '#', width: 40, filterable: false, number: true, sort: 'asc', render: function(v,d,cp) {return <span>{d.rank ? d.rank : "0"}</span>}},
     'result': {
         name: 'result', title: 'W/L', width: 45,  filterable: false, render: function (v, data, cp) {
@@ -144,7 +268,19 @@ var columns = {
         render: function(v,data){return (<span>{data.matchPoints == undefined ? "" : data.matchPoints.calculation}</span>); }
     },
     'winner' : {name: 'winner', title: 'Victor', width: 100, style: {minWidth: 100}, filterable: false, render: renderWinner },
-    'loser' : {name: 'loser', title: 'Opponent', width: 100, style: {minWidth: 100}, filterable: false, render: renderLoser }
+    'loser' :  {name: 'loser', title: 'Opponent', width: 100, style: {minWidth: 100}, filterable: false, render: renderLoser },
+    'challenger' : challenger,
+    'homeTeam' : {name: 'Home', render: renderHomeTeam},
+    'awayTeam' : {name: 'Away', render: renderAwayTeam},
+    'challengeOpponent': challengeOpponent,
+    'homeRacksAdmin' : homeRacksAdmin,
+    'awayRacksAdmin' : awayRacksAdmin,
+    'deleteMatch' :  {name: 'matchDelete', title: '', width: 60, style: {minWidth: 60}, render: function(v,data) {
+        if (data.onDelete)
+            return (<a href='#' onClick={data.onDelete(data)}><span>X</span></a>);
+        else
+            return (<a href='#'><span>X</span></a>);
+    } },
 
 };
 

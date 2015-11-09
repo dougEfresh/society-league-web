@@ -104,6 +104,11 @@ function formatDateTime(dt) {
     return m.format('MMM Do');
 }
 
+function formatTime(dt) {
+    var m = moment(dt);
+    return m.format('h:mm');
+}
+
 function sendSomeData(options) {
         console.log(JSON.stringify(options.data));
         $.ajax({
@@ -224,5 +229,6 @@ module.exports = {
     formatDateTime: formatDateTime,
     getSomeData: getSomeData,
     postSomeData: postSomeData,
+    formatTime: formatTime,
     tableCls: 'table table-bordered table-condensed table-striped table-grid'
 };

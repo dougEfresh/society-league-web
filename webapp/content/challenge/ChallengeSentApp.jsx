@@ -103,16 +103,16 @@ var ChallengeSentApp =  React.createClass({
 
         return (
               <tr>
-    <td className="datetime">{slots}</td>
-    <td className="user"> <UserLink user={opponent} season={this.props.challenge.season} /> </td>
+                  <td className="datetime">{slots}</td>
+                  <td className="user"> <UserLink user={opponent} season={this.props.challenge.season} /> </td>
                   <td className="challenge-actions">
-        <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
-            <button type="button" className="btn btn-sm btn-danger btn-responsive challenge-sent-decline-button">
-                <span className="glyphicon glyphicon-remove"></span>
-            </button>
-        </Link>
-    </td>
-  </tr>);
+                      <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
+                          <button type="button" className="btn btn-sm btn-danger btn-responsive challenge-sent-decline-button">
+                              <span className="glyphicon glyphicon-remove"></span>
+                          </button>
+                      </Link>
+                  </td>
+              </tr>);
     }
 });
 

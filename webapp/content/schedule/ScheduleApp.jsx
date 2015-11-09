@@ -208,7 +208,7 @@ var UpcomingMatches = React.createClass({
                     <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-11 p-title">
-                              Upcoming Matches
+                              <i className="fa fa-calendar"></i> Upcoming Matches
                             </div>
                             <div className="col-xs-2 col-md-1 caret-title">
                                 <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>

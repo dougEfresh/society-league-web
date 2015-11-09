@@ -79,10 +79,7 @@ var ChallengePendingApp =  React.createClass({
         })
     },
     valid: function() {
-        if (this.state.challenge.slots.length == 0) {
-            return true;
-        }
-        return this.state.challenge.acceptedSlot  != undefined && this.state.challenge.acceptedSlot.id != "-1";
+        return this.state.challenge.acceptedSlot  != null;
     },
     render: function() {
         if (this.state.challenge == undefined) {
@@ -91,6 +88,13 @@ var ChallengePendingApp =  React.createClass({
         if (this.state.challenge.status != Status.PENDING) {
             return null;
         }
+
+        if (this.state.challenge != null  && this.state.challenge != undefined) {
+            if (this.state.challenge.slots.length == 1) {
+                this.state.challenge.acceptedSlot = this.state.challenge.slots[0];
+            }
+        }
+
         var challenge = this.state.challenge;
         var opponent = challenge.userOpponent;
         if (opponent.id == this.getUser().id) {

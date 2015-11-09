@@ -25,7 +25,7 @@ var ChallengeApp = React.createClass({
         }
     },
     componentWillReceiveProps: function(n){
-        if (this.state.refresh) {
+        if (n.location.query.refresh != undefined || this.state.refresh) {
             Util.getSomeData({
                 url: '/api/challenge/user/' + this.getUser().id,
                 callback: function(d) {this.setState({challenges: d})}.bind(this),
