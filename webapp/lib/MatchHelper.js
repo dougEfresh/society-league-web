@@ -85,12 +85,15 @@ MatchHelper.prototype.getUpcoming = function() {
     return this.upcoming;
 };
 
+MatchHelper.prototype.getPlayed = function() {
+    return this.played;
+};
+
 MatchHelper.prototype.handleDelete = function(d) {
     console.log('Deleting '  + d.id);
 };
 
 MatchHelper.prototype.getTeamSelect = function(type) {
-
     var c = {};
     c.name = type;
     c.title = type;

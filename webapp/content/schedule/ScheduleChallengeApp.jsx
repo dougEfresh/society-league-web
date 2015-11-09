@@ -41,10 +41,12 @@ var ScheduleApp = React.createClass({
     render: function() {
         //
         //<PendingMatches params={this.props.params} />
+        //
         return (
             <div id="schedule-app">
                 <PendingMatches params={this.props.params} matchHelper={this.state.matchHelper} />
-                <MatchResults   params={this.props.params} matchHelper={this.state.matchHelper} />
+                <Upcoming params={this.props.params} matchHelper={this.state.matchHelper}/>
+                <MatchResults  params={this.props.params} matchHelper={this.state.matchHelper} />
             </div>
         );
     }
@@ -53,7 +55,7 @@ var ScheduleApp = React.createClass({
 var MatchResults = React.createClass({
     getMatches: function() {
         var rows = [];
-        var matches = this.props.matchHelper.getUpcoming();
+        var matches = this.props.matchHelper.getPlayed();
         if (matches == null)
             return rows;
         Object.keys(matches).forEach(function(md) {
@@ -86,7 +88,7 @@ var MatchResults = React.createClass({
                     <div className={"panel-heading"}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-7 p-title">
-                              <span className="fa fa-trophy"></span><span>Results<span></span></span>
+                              <span className="fa fa-trophy"></span><span> Results<span></span></span>
                             </div>
                         </div>
                     </div>
@@ -169,57 +171,11 @@ var Results = React.createClass({
     }
 });
 
-var PendingMatches = React.createClass({
+var Upcoming = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
         return {
         }
-    },
-    handleUpdate: function(tm,type) {
-
-
-    },
-    handleDelete: function(d) {
-        util.getSomeData({
-            url: '/api/teammatch/admin/delete/' + d.id,
-            callback: function(data) {this.getData(d.season.id)}.bind(this),
-            module: 'DeleteTeamMatch'
-        });
-    },
-    handleAdd: function(e) {
-        e.preventDefault();
-    },
-    getData: function(id) {
-        Util.getSomeData({
-            url: '/api/teammatch/season/' + id + '/pending',
-            callback: function (d) {
-                var pending = [];
-                Object.keys(d).forEach(function(a){
-                    pending = pending.concat(d[a]);
-                });
-                pending = pending.sort(function(a,b) {
-                    return a.matchDate.localeCompare(b.matchDate);
-                });
-                pending.forEach(function(p) {
-                    p.onDelete = function(d) {
-                        return function(e) {
-                            e.preventDefault();
-                            this.handleDelete(d);
-                        }.bind(this);
-                    }.bind(this);
-                    p.onChange = function(d,type) {
-                        return function(e) {
-                            e.preventDefault();
-                            d[type] = e.target.value;
-                            this.handleUpdate(d,type);
-                            this.forceUpdate();
-                        }.bind(this);
-                    }.bind(this);
-                }.bind(this));
-                this.setState({pending: pending});
-            }.bind(this),
-            module: 'ChallengePendingMatches'
-        });
     },
     componentDidMount: function () {
         //this.getData(this.props.params.seasonId);
@@ -232,9 +188,9 @@ var PendingMatches = React.createClass({
             DataGridUtil.columns.deleteMatch,
             DataGridUtil.columns.matchDate,
             DataGridUtil.columns.matchTime,
-            this.props.matchHelper.getTeamSelect('homeTeam'),
+            DataGridUtil.columns.challenger,
             DataGridUtil.columns.homeRacksAdmin,
-            this.props.matchHelper.getTeamSelect('awayTeam'),
+            DataGridUtil.columns.challengeOpponent,
             DataGridUtil.columns.awayRacksAdmin,
             DataGridUtil.columns.race
         ];
@@ -242,8 +198,100 @@ var PendingMatches = React.createClass({
             columns = [
             DataGridUtil.columns.matchDate,
             DataGridUtil.columns.matchTime,
-            DataGridUtil.columns.challenger,
+                DataGridUtil.columns.challenger,
             DataGridUtil.columns.challengeOpponent,
+            DataGridUtil.columns.race
+            ]
+        }
+        var upcoming = this.props.matchHelper.getUpcoming();
+        if (upcoming == null)
+            return null;
+
+        var matches = [];
+        Object.keys(upcoming).forEach(function(m){
+            matches = matches.concat(upcoming[m]);
+        });
+        if (matches.length == 0) {
+            return null;
+        }
+        var hide = !this.getUser().admin ? " hide" : " ";
+       return (
+           <div className="row" >
+               <div className="col-xs-12 col-md-7" >
+                   <div className="panel panel-default panel-challenge ">
+                    <div className={"panel-heading"}>
+                        <div className="row panel-title">
+                            <div className="col-xs-10 col-md-7 p-title">
+                                <i className="fa fa-calendar"></i><span> Upcoming</span><span> </span>
+                                <Link className={"team-match-add " +  hide}   to={"/app/schedule/add/" + this.props.params.seasonId} >
+                                <button type="button" className="btn btn-sm  btn-primary">
+                                    <span className={"glyphicon glyphicon-plus"}></span>
+                                </button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                       <div className={"panel-body panel-animate panel-challenge-results panel-results-body"} >
+                           <DataGrid
+                        idProperty='id'
+                        dataSource={matches}
+                        columns={columns}
+                        style={{height: ((matches.length) * 50 < 500 ? (matches.length ) * 50 : 500)}}
+                        rowHeight={40}
+                        showCellBorders={true}
+                        filterable={false}
+                        columnMinWidth={50}
+                        cellPadding={'5px 5px'}
+                        headerPadding={'5px 5px'}
+                        filterIconColor={'#6EB8F1'}
+                        menuIconColor={'#6EB8F1'}
+                        loadMaskOverHeader={false}
+                        cellEllipsis={false}
+                        liveFilter={false}
+                        styleAlternateRowsCls={'datagrid-alt-row'}
+                        menuIcon={false}
+                        filterIcon={false}
+                        scrollbarSize={(matches.length) * 50 < 500 ? 0 : 20}
+                        //onColumnOrderChange={this.handleColumnOrderChange}
+                        />
+                </div>
+                   </div>
+               </div>
+           </div>);
+
+    }
+});
+
+
+var PendingMatches = React.createClass({
+    mixins: [UserContextMixin],
+    getInitialState: function() {
+        return {
+        }
+    },
+    componentDidMount: function () {
+        //this.getData(this.props.params.seasonId);
+    },
+    componentWillReceiveProps: function (n) {
+        //this.getData(n.params.seasonId);
+    },
+    render: function() {
+        var columns = [
+            DataGridUtil.columns.deleteMatch,
+            DataGridUtil.columns.matchDate,
+            DataGridUtil.columns.matchTime,
+            DataGridUtil.columns.challenger,
+            DataGridUtil.columns.homeRacksAdmin,
+            DataGridUtil.columns.challengeOpponent,
+            DataGridUtil.columns.awayRacksAdmin,
+            DataGridUtil.columns.race
+        ];
+        if (!this.getUser().admin) {
+            columns = [
+            DataGridUtil.columns.matchDate,
+            DataGridUtil.columns.matchTime,
+                DataGridUtil.columns.challenger,
+                DataGridUtil.columns.challengeOpponent,
             DataGridUtil.columns.race
             ]
         }
@@ -258,7 +306,7 @@ var PendingMatches = React.createClass({
                     <div className={"panel-heading"}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-7 p-title">
-                                <span>Pending</span>
+                                <i className="fa fa-exclamation-triangle"></i><span> Pending</span>
                             </div>
                         </div>
                     </div>

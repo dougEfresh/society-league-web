@@ -83,9 +83,9 @@ var PendingMatches = React.createClass({
             DataGridUtil.columns.deleteMatch,
             DataGridUtil.columns.matchDate,
             DataGridUtil.columns.matchTime,
-            this.props.matchHelper.getTeamSelect('homeTeam'),
+            DataGridUtil.columns.challenger,
             DataGridUtil.columns.homeRacksAdmin,
-            this.props.matchHelper.getTeamSelect('awayTeam'),
+            DataGridUtil.columns.challengeOpponent,
             DataGridUtil.columns.awayRacksAdmin,
             DataGridUtil.columns.race
         ];
