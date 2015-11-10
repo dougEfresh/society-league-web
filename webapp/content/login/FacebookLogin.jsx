@@ -49,22 +49,30 @@ var LoginApp = React.createClass({
         }
         return (
             <div id="login-app" className="container fluid container-fluid wrap">
-            <div className="login-container well col-md-5 col-sm-6">
+            <div className="login-container well col-md-5 col-sm-5">
                 <form name="fb_signin" id="fb_signin" action="/signin/facebook" method="POST">
                         <h2 className="form-signin-heading">Please Log In</h2>
                         <div className="row">
-                             <div className="btn-group col-md-3 col-xs-6 login-options">
+                             <div className="btn-group col-lg-6 col-md-7 col-sm-12 col-xs-12 login-options">
                                  <input type="hidden" name="scope" value="public_profile,email,user_friends"></input>
                                  <input type="hidden" value="true" name="springRememberMe" />
-                                 <button className="btn btn-block btn-social btn-facebook" type="submit">
+                                 <button className="btn btn-sm  btn-facebook btn-responsive" type="submit">
                                      <i className="fa fa-facebook"></i>
-                                     Facebook
+                                     <span> Facebook</span>
                                  </button>
                              </div>
-                            <div style={{float: 'right'}} className="col-md-3 col-xs-6">
+                            <div className="col-lg-6 col-md-5 col-sm-12 col-xs-12">
+
                                 <Link to='/legacy'>
-                                    <button type="button" className="btn btn-sm btn-default btn-responsive pull-right">
+                                    <button type="button" className="btn btn-sm btn-default btn-responsive">
                                         <b>Username</b>
+                                    </button>
+                                </Link>
+                                <Link to='/help'>
+                                    <button className="btn btn-sm btn-default btn-responsive pull-right">
+                                        <b>Help </b>
+                                        <span className="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+
                                     </button>
                                 </Link>
                             </div>

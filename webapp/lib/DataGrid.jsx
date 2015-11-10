@@ -54,14 +54,22 @@ var DataGrid = React.createClass({
                         sortIcon = <span className="glyphicon  glyphicon-sort-by-order-alt"></span>
                 }
             }
-            rows.push(
-                <th key={cnt++} style={style}>
-                    <a style={{color: 'black', cursor: 'pointer'}}
-                       onClick={this.defaultSort(c)}>
-                        {c.title + " "}
-                        <div style={{display: 'inline'}} className="sort-icon">{sortIcon}</div>
-                    </a>
-                </th>);
+            if (c.sort != undefined) {
+                rows.push(
+                    <th key={cnt++} style={style}>
+                        <a style={{color: 'black', cursor: 'pointer'}}
+                           onClick={this.defaultSort(c)}>
+                            {c.title + " "}
+                            <div style={{display: 'inline'}} className="sort-icon">{sortIcon}</div>
+                        </a>
+                    </th>);
+            } else {
+                 rows.push(
+                    <th key={cnt++} style={style}>
+                            {c.title + " "}
+                            <div style={{display: 'inline'}} className="sort-icon">{sortIcon}</div>
+                    </th>);
+            }
         }.bind(this));
         return (<tr>{rows}</tr>);
     },

@@ -65,18 +65,19 @@ var LoginApp = React.createClass({
                             {errorMsg}
                         </div>
                         <div className="row">
-                            <div className="btn-group col-lg-6 col-md-7 col-xs-6 login-options">
+                            <div className="btn-group col-lg-6 col-md-7 col-xs-5 login-options">
                                 <button onKeyDown={this.handleSubmit} id="submit" type="button"   onClick={this.handleSubmit} className="btn btn-sm btn-primary btn-responsive">
                                     <b>Login</b>
                                 </button>
                             </div>
-                            <div className="col-lg-6 col-md-5 col-xs-6">
+                            <div className="col-lg-6 col-md-5 col-xs-5">
                                 <Link to='/reset'>
                                     <button type="button" className="btn btn-sm btn-default btn-responsive pull-right">
                                         <b>Forgot Password?</b>
                                     </button>
                                 </Link>
                             </div>
+
                         </div>
             </div>
             </div>

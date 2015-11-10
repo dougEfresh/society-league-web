@@ -182,7 +182,7 @@ ul.nav {
 }
 
 .btn-facebook {
-    width: 125px;
+    width: 100%;
 }
 
 .ReactModal__Overlay {
@@ -360,4 +360,16 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
     margin: 11px;
     max-width:500px
 
+}
+
+@media (min-width: 760px) {
+    .username-button, .help-button {
+        margin-top: 10px;
+    }
+}
+
+.btn-responsive {
+	white-space: normal;
+    width: 100%;
+	margin-top: 10px;
 }
