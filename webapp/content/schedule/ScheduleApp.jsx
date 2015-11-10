@@ -130,6 +130,7 @@ var PendingMatches = React.createClass({
 });
 
 var UpcomingWeeklyMatch = React.createClass({
+    mixins: [UserContextMixin],
     renderMatches: function() {
         var rows = [];
         var tId = this.props.team == undefined ? "0" : this.props.team.id;
@@ -149,12 +150,19 @@ var UpcomingWeeklyMatch = React.createClass({
             )}.bind(this));
         return rows;
     },
+
     render: function() {
+        var season = this.props.matches[0].season.legacyId;
+        var nm = this.props.matches[0].matchNumber;
+        var scoresheets = (<a className={this.getUser().admin ? "" : "hide"}
+                              href={"https://leagues.societybilliards.com/demo/admin/sheets/sheets-season.php?season_id=" + season + "&week=" + nm}>
+            <button className="btn btn-sm btn-primary">Scoresheets</button>
+        </a>);
         return (
             <div className="col-xs-12 col-md-4">
           <div className="panel panel-default panel-schedule-week">
               <div className="panel-heading panel-schedule-week-title">
-                  {Util.formatDateTime(this.props.date)}
+                  {Util.formatDateTime(this.props.date) } {scoresheets}
               </div>
               <div className={"panel-body panel-animate"} >
                   <div className="table-responsive">
@@ -180,8 +188,9 @@ var UpcomingMatches = React.createClass({
     },
     getUpcoming: function() {
         var rows = [];
+        var cnt = 0;
         Object.keys(this.props.matches).forEach(function(md) {
-            rows.push(<UpcomingWeeklyMatch team={this.props.team} key={md} date={md} matches={this.props.matches[md]} />);
+            rows.push(<UpcomingWeeklyMatch week={++cnt} params={this.props.params} team={this.props.team} key={md} date={md} matches={this.props.matches[md]} />);
         }.bind(this));
         return (
             rows

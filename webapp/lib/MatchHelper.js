@@ -153,6 +153,15 @@ MatchHelper.prototype.handleDelete = function(d) {
             return m.id != d.id;
         });
     }.bind(this));
+
+     Object.keys(this.played).forEach(function(md) {
+        this.played[md] = this.played[md].filter(function(m) {
+            return m.id != d.id;
+        });
+    }.bind(this));
+    this.pending = this.pending.filter(function(m) {
+        return m.id != d.id;
+    });
     Util.getSomeData({
         url: '/api/teammatch/admin/delete/' + d.id,
         callback: function(d) {this.component.forceUpdate()}.bind(this),
@@ -165,6 +174,7 @@ MatchHelper.prototype.getTeamSelect = function(type) {
     c.name = type;
     c.title = type;
     c.width = 140;
+    c.style = {minWidth: 130};
     c.render = function(v,data,cp) {
         return (
             <select ref={type}
@@ -184,6 +194,7 @@ MatchHelper.prototype.getDateSelect = function() {
     c.name = 'date';
     c.title = 'date';
     c.width = 110;
+    c.style = {minWidth: 130};
     c.render = function(v,data,cp) {
         var d = data.matchDate.split('T')[0];
         return (
@@ -206,6 +217,7 @@ MatchHelper.prototype.getTimeSelect = function() {
     c.name = 'time';
     c.title = 'time';
     c.width = 100;
+    c.style = {minWidth: 100};
     c.render = function(v,data,cp) {
         var d = data.matchDate.split('T')[1];
         return (

@@ -63,10 +63,10 @@ var ScheduleTeamMatchAdd = React.createClass({
                         <div className="panel panel-default panel-challenge">
                             <div className={"panel-heading"}>
                                 <div className="row panel-title">
-                                    <div className="col-xs-10 col-md-7 p-title">
+                                    <div className="col-xs-7 col-md-7 p-title">
                                         <span>New Matches</span>
                                     </div>
-                                    <div className="float-right col-xs-10 col-md-4 p-title">
+                                    <div className="float-right col-xs-4 col-md-4 p-title">
                                         <button onClick={this.addNew}type="button" className="btn btn-sm  btn-primary">
                                             <span className={"glyphicon glyphicon-plus"}></span>
                                         </button>

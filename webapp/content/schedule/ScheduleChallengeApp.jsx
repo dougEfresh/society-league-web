@@ -189,9 +189,7 @@ var Upcoming = React.createClass({
             DataGridUtil.columns.matchDate,
             DataGridUtil.columns.matchTime,
             DataGridUtil.columns.challenger,
-            DataGridUtil.columns.homeRacksAdmin,
             DataGridUtil.columns.challengeOpponent,
-            DataGridUtil.columns.awayRacksAdmin,
             DataGridUtil.columns.race
         ];
         if (!this.getUser().admin) {

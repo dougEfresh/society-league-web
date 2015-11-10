@@ -64,8 +64,11 @@ var DataGrid = React.createClass({
             var d = this.state.dataSource[i];
             this.props.columns.forEach(function(c) {
                 var style={};
-                if (c.width != undefined) {
+                if (c.width != undefined ) {
                     style.width = c.width;
+                }
+                if (c.style != undefined) {
+                    style = c.style;
                 }
                 var cp={className: ""};
                 if (c.render){
