@@ -43,6 +43,7 @@ var UserApp  = require('./content/user/UserApp.jsx');
 var TeamMatchResultsApp = require('./content/schedule/TeamMatchrResults.jsx');
 var ScheduleAddTeamMatch = require('./content/schedule/ScheduleAddTeamMatch.jsx');
 var HelpApp = require('./content/Help.jsx');
+var ResetNotification = require('./content/RestNotification.jsx');
 
 var App = React.createClass({
     render: function () {
@@ -73,6 +74,7 @@ var routes = (
         <Route  path="error" component={ErrorApp} />
         <Route  path="logout" component={LogoutApp} />
         <Route  path="help" component={HelpApp} />
+        <Route  path="notification" component={ResetNotification} />
         <Route  path="app" component={NavApp}>
             <Route path="loading" component={LoadingApp} />
             <Route path="home" component={HomeApp}/>
