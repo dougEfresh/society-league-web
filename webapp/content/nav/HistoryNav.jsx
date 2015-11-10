@@ -109,7 +109,7 @@ var HistoryNav = React.createClass({
                 </li>
             );
         }.bind(this));
-        
+
         /*
         seasons.forEach(function(s) {
             var toggle = s.toggle == undefined ? this.props.params.seasonId == s.id : s.toggle;

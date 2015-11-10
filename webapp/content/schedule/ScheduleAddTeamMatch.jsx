@@ -48,13 +48,12 @@ var ScheduleTeamMatchAdd = React.createClass({
         //<PendingMatches params={this.props.params} matchHelper={this.state.matchHelper} />
           var columns = [
             DataGridUtil.columns.deleteMatch,
-            DataGridUtil.columns.matchDate,
-              DataGridUtil.columns.matchTime,
+              this.state.matchHelper.getDateSelect(),
+              this.state.matchHelper.getTimeSelect(),
               this.state.matchHelper.getTeamSelect('home'),
             DataGridUtil.columns.homeRacksAdmin,
-            DataGridUtil.columns.challengeOpponent,
-            DataGridUtil.columns.awayRacksAdmin,
-            DataGridUtil.columns.race
+              this.state.matchHelper.getTeamSelect('away'),
+            DataGridUtil.columns.awayRacksAdmin
         ];
         var matches = this.state.matchHelper.getNew();
         return (

@@ -277,7 +277,7 @@ var columns = {
     'awayRacksAdmin' : awayRacksAdmin,
     'deleteMatch' :  {name: 'matchDelete', title: '', width: 60, style: {minWidth: 60}, render: function(v,data) {
         if (data.onDelete)
-            return (<button type="button" className="btn btn-sm btn-danger btn-responsive team-match-delete">
+            return (<button onClick={data.onDelete(data)} type="button" className="btn btn-sm btn-danger btn-responsive team-match-delete">
                     <span className="glyphicon glyphicon-remove"></span>
                 </button>
             );

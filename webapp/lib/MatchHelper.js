@@ -17,11 +17,37 @@ function MatchHelper(component,seasonId) {
             this.teams = d;
             this.teams.forEach(function(t) {
                 this.teamOptions.push(<option key={t.id} value={t.id} >{t.name}</option>);
+                this.component.forceUpdate();
             }.bind(this));
         }.bind(this),
         module: 'Teams'
     });
+    this.dateOptions = [];
+    this.timeOptions = [];
+    var dt;
+    var dates = [];
+    for(var i = 0; i<9; i++) {
+        dt = moment().subtract(i,'days').format('YYYY-MM-DD');
+        //this.dateOptions.push(<option key={dt} value={dt}>{dt}</option>)
+        dates.push(dt);
+    }
 
+    for(var i = 1; i<31; i++) {
+        dt = moment().add(i,'days').format('YYYY-MM-DD');
+        //
+        dates.push(dt);
+    }
+
+    dates = dates.sort();
+    dates.forEach(function(d) {
+        this.dateOptions.push(<option key={d} value={d}>{d}</option>)
+    }.bind(this));
+
+    this.timeOptions.push(<option key={'11:00'} value={'11:00'}>{'11:00'}</option>);
+    this.timeOptions.push(<option key={'12:00'} value={'12:00'}>{'12:00'}</option>);
+    for (var i = 1; i<7;i ++) {
+        this.timeOptions.push(<option key={i + ':00'} value={ (i + 12) + ':00'}>{i+':00'}</option>);
+    }
 }
 
 MatchHelper.prototype.receiveMatches = function() {
@@ -113,6 +139,7 @@ MatchHelper.prototype.createNew = function() {
                     this.upcoming[d.matchDate] = [];
                 }
                 this.upcoming[d.matchDate].push(d);
+                this.processResults(this.upcoming);
                 this.component.forceUpdate();
             }.bind(this),
             module: 'TeamMatchAdd'
@@ -121,6 +148,16 @@ MatchHelper.prototype.createNew = function() {
 
 MatchHelper.prototype.handleDelete = function(d) {
     console.log('Deleting '  + d.id);
+    Object.keys(this.upcoming).forEach(function(md) {
+        this.upcoming[md] = this.upcoming[md].filter(function(m) {
+            return m.id != d.id;
+        });
+    }.bind(this));
+    Util.getSomeData({
+        url: '/api/teammatch/admin/delete/' + d.id,
+        callback: function(d) {this.component.forceUpdate()}.bind(this),
+        module: 'TeamMatchDelete'
+    });
 };
 
 MatchHelper.prototype.getTeamSelect = function(type) {
@@ -129,28 +166,65 @@ MatchHelper.prototype.getTeamSelect = function(type) {
     c.title = type;
     c.width = 140;
     c.render = function(v,data,cp) {
-        if (data.new) {
-            return (
-                <select ref={type}
-                        onChange={data.onChange(data,type,cp)}
-                        className="form-control"
-                        value={data[type].id}
-                        type={'select'}>
-                    {this.teamOptions}
-                </select>
-            )
-        } else {
-            if (DataGridUtil.columns[type]) {
-                return DataGridUtil.columns[type].render(v,data,cp);
-            }
-        }
+        return (
+            <select ref={type}
+                    onChange={data.onChange(data,type)}
+                    className="form-control"
+                    value={data[type].id}
+                    type={'select'}>
+                {this.teamOptions}
+            </select>
+        )
     }.bind(this);
     return c;
 };
 
+MatchHelper.prototype.getDateSelect = function() {
+    var c = {};
+    c.name = 'date';
+    c.title = 'date';
+    c.width = 110;
+    c.render = function(v,data,cp) {
+        var d = data.matchDate.split('T')[0];
+        return (
+            <select ref={'date'}
+                    onChange={data.onChange(data,'date')}
+                    className="form-control"
+                    value={d}
+                    type={'select'}>
+                {this.dateOptions}
+            </select>
+        )
+    }.bind(this);
+    return c;
+};
+
+
+
+MatchHelper.prototype.getTimeSelect = function() {
+    var c = {};
+    c.name = 'time';
+    c.title = 'time';
+    c.width = 100;
+    c.render = function(v,data,cp) {
+        var d = data.matchDate.split('T')[1];
+        return (
+            <select ref={'time'}
+                    onChange={data.onChange(data,'time')}
+                    className="form-control"
+                    value={d}
+                    type={'select'}>
+                {this.timeOptions}
+            </select>
+        )
+    }.bind(this);
+    return c;
+};
+
+
+
 MatchHelper.prototype.handleUpdate = function(d,newValue,type) {
     console.log('changing  '  + d.id  + ' ' + type);
-    d.new = false;
     if (type == 'homeRacks') {
         d.homeRacks = newValue;
         Util.getSomeData({
@@ -169,6 +243,42 @@ MatchHelper.prototype.handleUpdate = function(d,newValue,type) {
             module: 'AwayRacks'
         });
         return;
+    }
+
+    if (type =='home' || type == 'away') {
+        this.teams.forEach(function(t){
+            if (t.id == newValue) {
+                d[type] = t;
+            }
+        });
+        Util.getSomeData({
+            url: '/api/teammatch/admin/change/' + type + '/' + d.id + '/' + d[type].id,
+            callback: function(r) {this.component.forceUpdate()}.bind(this),
+            module: 'Change' +type
+        });
+        return;
+    }
+
+    if (type =='date' ) {
+        var dt = d.matchDate.split('T');
+        dt[0] = newValue;
+        d.matchDate = dt[0] + 'T' + dt[1];
+          Util.getSomeData({
+            url: '/api/teammatch/admin/change/date/' + d.id + '?date=' +  d.matchDate,
+            callback: function(r) {this.component.forceUpdate()}.bind(this),
+            module: 'Change' +type
+        });
+    }
+
+    if (type =='time' ) {
+        var dt = d.matchDate.split('T');
+        dt[1] = newValue;
+        d.matchDate = dt[0] + 'T' + dt[1];
+          Util.getSomeData({
+            url: '/api/teammatch/admin/change/date/' + d.id + '?date=' +  d.matchDate,
+            callback: function(r) {this.component.forceUpdate()}.bind(this),
+            module: 'Change' +type
+        });
     }
 
 };
