@@ -14,7 +14,7 @@ var sortFn = function(column,data){
                 }
             })
       return;
-        }
+  }
 
     if (column.name == 'date') {
         data.sort(function(a,b){

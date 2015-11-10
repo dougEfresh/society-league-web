@@ -7,7 +7,7 @@ var DataGrid = React.createClass({
         return {limit: 100};
     },
     getInitialState: function() {
-        return {dataSource : this.props.dataSource, sortColumn: this.props.defaultSortColumn}
+        return {loading: false, dataSource : this.props.dataSource, sortColumn: this.props.defaultSortColumn}
     },
     componentWillReceiveProps: function(n){
         this.setState({dataSource: n.dataSource});
@@ -17,8 +17,17 @@ var DataGrid = React.createClass({
             e.preventDefault();
             if (this.props.sortFn && c.sort != undefined) {
                 c.sort = c.sort == 'asc' ? 'dsc' :'asc';
-                this.props.sortFn(c, this.state.dataSource);
-                this.setState({sortColumn: c.name});
+                var ds = this.state.dataSource;
+                this.setState({loading: true, dataSource: []});
+                setTimeout(
+                    function(){
+                        var start = Date.now();
+                        this.props.sortFn(c, ds);
+                        console.log(' Sorting took ' + (Date.now() - start) + ' ' + JSON.stringify(c));
+                        this.setState({loading: false, dataSource: ds, sortColumn: c.name });
+                        }.bind(this),
+                    700
+                );
             }
         }.bind(this);
     },
@@ -93,8 +102,7 @@ var DataGrid = React.createClass({
     },
     render: function() {
         var cls = this.props.cls ? this.props.cls : "";
-
-        if (this.props.loading) {
+        if (this.props.loading || this.state.loading) {
             return (
                 <div style={{height: 200}} className="text-center loading">
                     <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>

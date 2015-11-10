@@ -211,7 +211,7 @@ var columns = {
     'matchTime': {name: 'time', title: 'Time', width: 60, render: function(v,data) {return <span>{Util.formatTime(data.matchDate)}</span>} , filterable: false, sort: 'dsc', number: false},
     'rank' : {name: 'rank' , title: '#', width: 45, filterable: false, number: true, sort: 'asc', render: function(v,d,cp) {return <span>{d.rank ? d.rank + " ": "0 "}</span>}},
     'result': {
-        name: 'result', title: 'W/L', width: 45,  filterable: false, render: function (v, data, cp) {
+        name: 'result', title: 'W/L', width: 55,  filterable: false, render: function (v, data, cp) {
             if (data.win) {
                 cp.className = cp.className + " win-result";
             }
@@ -227,24 +227,24 @@ var columns = {
             return <span>{data.score}</span>
         }
     },
-    'race': {name: 'race', title: 'Race', width: 55,filterable: false},
-    'teamRank': {name: 'rank', title: '#', width: 50,filterable: false, render: function(v,d) {return <span>{d.team.rank +" "}</span>}},
+    'race': {name: 'race', title: 'Race', width: 55},
+    'teamRank': {name: 'rank', title: '#', width: 50,render: function(v,d) {return <span>{d.team.rank +" "}</span>}},
     'opponent': opponent,
     'opponentTeam': opponentTeam,
     'team': team,
-    'opponentHandicap': {name: 'opponentHandicap', title: 'Op. HC', width: 65, filterable: false, sort: 'asc', number: false},
+    'opponentHandicap': {name: 'opponentHandicap', title: 'Op. HC', width: 72, filterable: false, sort: 'asc', number: false},
     'opponentPartnerHandicap': {name: 'opponentPartnerHandicap', title: 'Op. Pr. HC', width: 65, filterable: false},
-    'partnerHandicap': {name: 'partnerHandicap', title: 'Pr. HC', width: 65, filterable: false},
+    'partnerHandicap': {name: 'partnerHandicap', title: 'Pr. HC', width: 72, filterable: false},
     'handicap' : {name: 'handicap', title: 'HC', width: 45 , sort: 'asc', number: false, filterable: false},
     'player' : player,
     'partner': partner,
     'opponentPartner': opponentPartner,
 
     'teamMemberHandicap': {name: 'teamMemberHandicap', title: 'HC', width: 45, filterable: false },
-    'wins': {name: 'wins', title: 'W', width: 40, filterable: false , sort: 'asc', number: true},
-    'loses': {name: 'loses', title: 'L', width: 40, filterable: false , sort: 'asc', number: true },
-    'racksWon': {name: 'racksWon', title: 'RW', width: 45, filterable: false , sort: 'asc', number: true },
-    'racksLost': {name: 'racksLost', title: 'RL', width: 40, filterable: false , sort: 'asc', number: true },
+    'wins': {name: 'wins', title: 'W', width: 50, filterable: false , sort: 'asc', number: true},
+    'loses': {name: 'loses', title: 'L', width: 50, filterable: false , sort: 'asc', number: true },
+    'racksWon': {name: 'racksWon', title: 'RW', width: 50, filterable: false , sort: 'asc', number: true },
+    'racksLost': {name: 'racksLost', title: 'RL', width: 50, filterable: false , sort: 'asc', number: true },
     'setWins': {name: 'setWins', title: 'SW', width: 50, filterable: false },
     'setLoses': {name: 'setLoses', title: 'SL', width: 50, filterable: false },
     'winPct': {name: 'winPct', title: 'PCT', width: 55, filterable: false , render: function(v,data){return (<span>{data.winPct.toFixed(3)}</span>); }},
