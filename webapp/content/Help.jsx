@@ -95,8 +95,8 @@ var HelpApp = React.createClass({
                               <li><strong>My Team(s)</strong>
                                   <ul>
                                       <li>Standings  - the division standings (1st,2nd, wins/losses)</li>
-                                      <li>Schedule & matches - displays team match results and upcoming matches</li>
-                                      <li>Division leaders  - display a ranking of all players in the league</li>
+                                      <li>Schedule & Matches - displays team match results and upcoming matches</li>
+                                      <li>Division Leaders  - display a ranking of all players in the league</li>
                                   </ul>
                               </li>
                            <li><strong>Top Gun</strong>
