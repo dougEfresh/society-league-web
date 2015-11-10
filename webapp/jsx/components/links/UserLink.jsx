@@ -60,6 +60,10 @@ var UserLink = React.createClass({
                 <div className="user-profile">{img}<a style={{cursor: 'pointer'}} onTouchStart={this.props.onClick} onClick={this.props.onClick}><span>{name}</span></a></div>
             );
         }
+        var location = window.location.pathname;
+        if (location.indexOf("display/") > 0) {
+
+        }
         if (this.props.season) {
             return (
                 <div className="user-profile">

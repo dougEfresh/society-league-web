@@ -86,7 +86,7 @@ var UserDisplay = React.createClass({
                         <span className={"float-right fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
                     </div>
             </div>
-            body = <UserResults onUserClick={this.changeUser} results={this.state.results} user={this.state.stats.user} season={this.state.stats.season} />
+            body = <UserResults params={this.props.params} onUserClick={this.changeUser} results={this.state.results} user={this.state.stats.user} season={this.state.stats.season} />
         }
         return (
             <div className={"row"} >

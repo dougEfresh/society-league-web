@@ -10,9 +10,6 @@ var ResetApp = React.createClass({
     handleSubmit: function(e){
         e.preventDefault();
         var url = '/api/reset/request';
-        if (this.getQuery().register != undefined) {
-            url =  '/api/reset/register';
-        }
         $.ajax({
             async: true,
             processData: false,
@@ -22,7 +19,7 @@ var ResetApp = React.createClass({
             data: JSON.stringify({id: 0, login:  React.findDOMNode(this.refs.username).value.toLowerCase()}),
             method: 'post',
             success: function (d) {
-                this.transitionTo('reset', null, {passwordReset: 'true'});
+                window.location = '#/reset?passwordRequest=true';
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('authenticate', status, err.toString());
@@ -78,19 +75,6 @@ var ResetApp = React.createClass({
         );
     },
     render: function () {
-        /*
-        var q = this.getQuery();
-        if (q.passwordReset != undefined) {
-            return this.renderSentReset();
-        }
-        if (q.token != undefined) {
-            return this.renderReset();
-        }
-         var title = q.changePassword == undefined ? 'Reset Password' : 'Change Password';
-        if (q.register != undefined) {
-            title = "Register";
-        }
-        */
         var title =  'Reset Password';
         return (
             <div id="reset-app" className="login-container well col-md-5 col-xs-12">

@@ -345,5 +345,19 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
     float: right;
 }
 
+#help {
+    background-color: white;
+    color: black;
+    min-height: 1000px;
+    margin: 10px;
+    padding: 15px;
+}
+.help-section {
+    border-size: 2px;
+    border-style: solid;
+    border-color: black;
+    padding: 5px;
+    margin: 11px;
+    max-width:500px
 
-
+}

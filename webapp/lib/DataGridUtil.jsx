@@ -119,6 +119,7 @@ var opponent =
             name: 'opponent', title: 'Opponent', flex: 1, style: {minWidth: 100}, filterable: false,
             render: renderOpponent, sort: 'asc', number: false
 };
+
 var partner =
 {
     name: 'partner', title: 'Partner', flex: 1, style: {minWidth: 100}, filterable: false,
@@ -138,7 +139,7 @@ var team =
 
 var player =  {
     name: 'player',
-    title: <span> Player </span>, flex: 1,
+    title: ' Player ', flex: 1,
     //title: <span className="">Player</span>, flex: 1,
     style: {minWidth: 100}, filterable: false,
     render: renderPlayer,
@@ -208,7 +209,7 @@ var columns = {
     'playerMatchDate': {name: 'date', title: 'Date', width: 60, filterable: false, sort: 'dsc', number: false},
     'matchDate': {name: 'date', title: 'Date', width: 63, render: function(v,data) {return <span>{Util.formatDateTime(data.matchDate)}</span>} , filterable: false, sort: 'dsc', number: false},
     'matchTime': {name: 'time', title: 'Time', width: 60, render: function(v,data) {return <span>{Util.formatTime(data.matchDate)}</span>} , filterable: false, sort: 'dsc', number: false},
-    'rank' : {name: 'rank' , title: '#', width: 40, filterable: false, number: true, sort: 'asc', render: function(v,d,cp) {return <span>{d.rank ? d.rank : "0"}</span>}},
+    'rank' : {name: 'rank' , title: '#', width: 45, filterable: false, number: true, sort: 'asc', render: function(v,d,cp) {return <span>{d.rank ? d.rank + " ": "0 "}</span>}},
     'result': {
         name: 'result', title: 'W/L', width: 45,  filterable: false, render: function (v, data, cp) {
             if (data.win) {
@@ -227,7 +228,7 @@ var columns = {
         }
     },
     'race': {name: 'race', title: 'Race', width: 55,filterable: false},
-    'teamRank': {name: 'rank', title: '#', width: 50,filterable: false, render: function(v,d) {return <span>{d.team.rank}</span>}},
+    'teamRank': {name: 'rank', title: '#', width: 50,filterable: false, render: function(v,d) {return <span>{d.team.rank +" "}</span>}},
     'opponent': opponent,
     'opponentTeam': opponentTeam,
     'team': team,

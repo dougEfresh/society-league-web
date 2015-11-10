@@ -49,7 +49,7 @@ var DataGrid = React.createClass({
                 <th key={cnt++} style={style}>
                     <a style={{color: 'black', cursor: 'pointer'}}
                        onClick={this.defaultSort(c)}>
-                        {c.title}
+                        {c.title + " "}
                         <div style={{display: 'inline'}} className="sort-icon">{sortIcon}</div>
                     </a>
                 </th>);

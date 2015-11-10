@@ -43,7 +43,9 @@ var UserResults = React.createClass({
 
         return (
             <div id="user-results" className={cls}>
-                <SeasonResults limit={this.props.limit}
+                <SeasonResults
+                    params={this.props.params}
+                    limit={this.props.limit}
                                stats={this.state.stats}
                                season={this.state.season}
                                results={this.state.results}
