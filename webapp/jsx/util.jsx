@@ -38,7 +38,8 @@ function getData(url, callback, unauthCallback, module) {
                         unauthCallback();
                         return;
                     }
-                    window.location = '/#/login?expired=true'
+
+                    //window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
@@ -66,6 +67,9 @@ function getSomeData(options) {
                     if (options.unAuthCallback) {
                         options.unAuthCallback();
                         return;
+                    }
+                    if (options.router) {
+                        options.router.pushState(null,'/login',{expired:'true'});
                     }
                     //window.location = '/#/login?expired=true'
                 }.bind(this)
@@ -122,8 +126,12 @@ function sendSomeData(options) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
+                     if (options.router) {
+                        options.router.pushState(null,'/login',{expired:'true'});
+                    }
                     //window.location = '/#/login?expired=true'
                 }.bind(this)
+
             },
             success: function (d) {
                 console.log("Got " + JSON.stringify(d) + " back from server");
