@@ -42,6 +42,7 @@
 
 .challenge-upcoming-decline-button , .challenge-sent-decline-button {
     float:right;
+    margin-top: 0;
 }
 
 .challenge-form-time {
