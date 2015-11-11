@@ -67,7 +67,7 @@ function getSomeData(options) {
                         options.unAuthCallback();
                         return;
                     }
-                    window.location = '/#/login?expired=true'
+                    //window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
@@ -122,7 +122,7 @@ function sendSomeData(options) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    window.location = '/#/login?expired=true'
+                    //window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
@@ -157,7 +157,7 @@ function sendData(url, data, callback,errCallback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    window.location = '/#/login?expired=true'
+                    //window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
@@ -188,7 +188,7 @@ function postSomeData(options) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    window.location = '/#/login?expired=true'
+                    //window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
@@ -198,7 +198,7 @@ function postSomeData(options) {
             error: function (xhr, status, err) {
                 console.warn(options.url, xhr.responseText);
                 if (xhr.responseText.indexOf("Invalid remember-me token") >= 0) {
-                    window.location = '/#/login?expired=true'
+                    //window.location = '/#/login?expired=true'
                     return;
                 }
                 if (options.errCallback) {
@@ -215,8 +215,8 @@ function defaultErrorHandler(router,xhr) {
         return;
     if (router)
         router.pushState(null, '/error', {err: xhr.responseText});
-    else
-        window.location = '#/login';
+    //else
+        //window.location = '#/login';
 }
 
 
