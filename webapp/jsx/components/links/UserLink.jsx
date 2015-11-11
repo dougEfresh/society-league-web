@@ -42,7 +42,7 @@ var UserLink = React.createClass({
         }
         var user = this.props.user;
         var img = <span></span>;
-        if (user.profile && user.profile.imageUrl != undefined) {
+        if (user.userProfile && user.userProfile.imageUrl) {
             var query = '?';
             if (this.props.height)
                 query += 'height=' + this.props.height + '&';

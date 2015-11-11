@@ -89,7 +89,7 @@ var NavApp = React.createClass({
             return null;
         }
         var profilePic = <i className="fa fa-user profile"></i>;
-        if (this.getUser().profile && this.getUser().profile.imageUrl != undefined) {
+        if (this.getUser().userProfile && this.getUser().userProfile.imageUrl) {
             profilePic = <img className="profile" src={this.getUser().userProfile.imageUrl + '?width=25&height=25'}> </img>
         }
         return (
