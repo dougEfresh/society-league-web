@@ -40,10 +40,14 @@ var UpcomingMatches = React.createClass({
             if (md.isBefore(now)) {
                 return;
             }
+            if (m.season.challenge) {
+                return ;
+            }
             cnt++;
             if (cnt > 3) {
                 return;
             }
+
             rows.push(
                 <tr key={m.id}>
                     <td>

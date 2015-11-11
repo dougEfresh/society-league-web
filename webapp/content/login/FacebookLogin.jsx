@@ -16,28 +16,7 @@ var LoginApp = React.createClass({
             loggedIn: false
         };
     },
-    handleSubmitFB: function(e){
-        e.preventDefault();
-        $.ajax({
-            async: true,
-            processData: true,
-            url: '/connect/facebook',
-            method: 'post',
-            data: {scope: 'public_profile,email,user_friends'},
-            success: function (d) {
-                DataStore.setUser(d);
-                if (this.context.location.pathname == "/" || this.context.location.pathname == "/login") {
-                    this.history.replaceState(null, '/app/home');
-                    return;
-                }
-                this.history.replaceState(null, this.context.location.pathname,this.context.location.query);
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('authenticate', status, err.toString());
-                this.history.pushState(null, '/login', {error: 'true'});
-            }.bind(this)
-        });
-    },
+
     render: function () {
         var errorMsg = null;
         if (this.context.location.query.error == 'true') {
