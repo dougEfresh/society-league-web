@@ -80,10 +80,16 @@ var HelpApp = React.createClass({
                                </img>
                            </div>
                           <p>Click the username button on the login page</p>
+                          <p> Next click on the <strong>Forgot Password </strong> button</p>
+                          <div style={{maxWidth: 330, padding:10}}>
+                              <img style={{height: 110}}  className="img-responsive" src={'/img/username.png'}>
+                              </img>
+                          </div>
                             <div style={{maxWidth: 330, padding:10}}>
                                <img style={{height: 110}}  className="img-responsive" src={'/img/reset.png'}>
                                </img>
                            </div>
+
                       <p>Enter the <strong>email </strong>you gave to society and click the button. An email should appear in your email in a minute or two</p>
                       </div>
                       <div className="help-section">

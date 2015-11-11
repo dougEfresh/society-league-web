@@ -134,10 +134,10 @@ var HomeApp = React.createClass({
                     <div className="panel panel-default panel-leaders">
                         <div className="panel-heading">
                             <i className="fa fa-sitemap"></i>
-                            <span> Top Players</span> <span style={{float: 'right'}} >{s.shortName}</span>
+                            <Link style={{color: 'whitesmoke'}} to={'/app/season/' + s.id + '/leaders'}> <span> Top Players</span> <span style={{float: 'right'}} >{s.shortName}</span></Link>
                         </div>
                         <div className="panel-body panel-animate">
-                            <SeasonLeaders onTeamClick={this.goToTeam} onUserClick={this.goToLeaders(s)} params={{seasonId: s.id}} limit={5} />
+                            <SeasonLeaders onUserClick={this.goToLeaders(s)} params={{seasonId: s.id}} limit={5} />
                         </div>
                     </div>
                 </div>
