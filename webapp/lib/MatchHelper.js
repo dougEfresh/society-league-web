@@ -74,7 +74,13 @@ MatchHelper.prototype.receiveMatches = function() {
     Util.getSomeData({
         url: '/api/teammatch/season/' + this.seasonId + '/played',
         callback: function (d) {
-            this.played = d;
+            this.played = {};
+             var orderd = Object.keys(d).sort(function(a,b){
+                 return b.localeCompare(a);
+             });
+            orderd.forEach(function(dt){
+                this.played[dt] = d[dt];
+            }.bind(this));
             this.processResults(d);
             this.component.forceUpdate();
         }.bind(this),
