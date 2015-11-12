@@ -26,36 +26,37 @@ var ScheduleTeamMatchAdd = React.createClass({
     getInitialState: function() {
         return {
             loading: false,
-            matchHelper: new MatchHelper(this,this.props.params.seasonId)
+          //  matchHelper: new MatchHelper(this,this.props.params.seasonId)
         }
     },
     componentDidMount: function () {
-        this.state.matchHelper.createNew();
+        //this.props.matchHelper.createNew();
     },
     componentDidUnmount: function() {
         console.log('Unmount');
-        delete this.state.matchHelper;
+        //delete this.props.matchHelper;
     },
     componentWillReceiveProps: function (n) {
     },
     addNew: function(e) {
         e.preventDefault();
-        this.state.matchHelper.createNew();
+        this.props.matchHelper.createNew();
     },
     render: function() {
         //<MatchResults  params={this.props.params} matches={this.state.results} />
         //<PendingMatches params={this.props.params} />
-        //<PendingMatches params={this.props.params} matchHelper={this.state.matchHelper} />
+        //<PendingMatches params={this.props.params} matchHelper={this.props.matchHelper} />
           var columns = [
-            DataGridUtil.columns.deleteMatch,
-              this.state.matchHelper.getDateSelect(),
-              this.state.matchHelper.getTimeSelect(),
-              this.state.matchHelper.getTeamSelect('home'),
+              DataGridUtil.columns.submit,
+              DataGridUtil.columns.deleteMatch,
+              this.props.matchHelper.getDateSelect(),
+              this.props.matchHelper.getTimeSelect(),
+              this.props.matchHelper.getTeamSelect('home'),
             DataGridUtil.columns.homeRacksAdmin,
-              this.state.matchHelper.getTeamSelect('away'),
+              this.props.matchHelper.getTeamSelect('away'),
             DataGridUtil.columns.awayRacksAdmin
         ];
-        var matches = this.state.matchHelper.getNew();
+        var matches = this.props.matchHelper.getNewMatches();
         return (
             <div id="schedule-app">
                 <div className="row">
@@ -103,5 +104,7 @@ var ScheduleTeamMatchAdd = React.createClass({
         );
     }
 });
+
+
 
 module.exports = ScheduleTeamMatchAdd;

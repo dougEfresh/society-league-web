@@ -10,6 +10,7 @@ var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var LoadingApp = require('../../jsx/components/LoadingApp.jsx');
 var moment = require('moment');
 var Handicap = require('../../lib/Handicap');
+var ScheduleAddTeamMatch = require('./ScheduleAddTeamMatch.jsx');
 
 var teamOptions = [];
 var options=[];
@@ -42,8 +43,13 @@ var ScheduleApp = React.createClass({
         //
         //<PendingMatches params={this.props.params} />
         //
+        var add =     <ScheduleAddTeamMatch  matchHelper={this.state.matchHelper} params={this.props.params}/>;
+        if (!this.getUser().admin) {
+            add = null;
+        }
         return (
             <div id="schedule-app">
+                {add}
                 <PendingMatches params={this.props.params} matchHelper={this.state.matchHelper} />
                 <Upcoming params={this.props.params} matchHelper={this.state.matchHelper}/>
                 <MatchResults  params={this.props.params} matchHelper={this.state.matchHelper} />

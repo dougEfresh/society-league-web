@@ -23,6 +23,7 @@ function MatchHelper(component,seasonId) {
         module: 'Teams'
     });
     this.dateOptions = [];
+    this.newMatches = [];
     this.timeOptions = [];
     var dt;
     var dates = [];
@@ -92,6 +93,14 @@ MatchHelper.prototype.receiveMatches = function() {
 MatchHelper.prototype.processResults = function(data) {
     Object.keys(data).forEach(function(md) {
        data[md].forEach(function(m) {
+            m.onSubmit = function(d) {
+               return function(e) {
+                   e.preventDefault();
+                   this.handleSubmit(d);
+                   this.component.forceUpdate();
+               }.bind(this);
+           }.bind(this);
+
            m.onDelete = function(d) {
                return function(e) {
                    e.preventDefault();
@@ -123,48 +132,38 @@ MatchHelper.prototype.getPlayed = function() {
     return this.played;
 };
 
-MatchHelper.prototype.getNew = function() {
-    var m = this.upcoming;
-    var matches = [];
-    if (m == null)
-        return [];
-    Object.keys(m).forEach(function(md) {
-        matches = matches.concat(m[md]);
-    });
-    return matches;
-};
-
 MatchHelper.prototype.createNew = function() {
      Util.getSomeData({
             url: '/api/teammatch/admin/add/' + this.seasonId,
             callback: function(d) {
-                if (this.upcoming == null) {
-                    this.upcoming = {};
-                }
-                if (this.upcoming[d.matchDate] == undefined) {
-                    this.upcoming[d.matchDate] = [];
-                }
-                this.upcoming[d.matchDate].push(d);
-                this.processResults(this.upcoming);
+                this.newMatches.push(d);
+                this.processResults({blah: this.newMatches});
                 this.component.forceUpdate();
             }.bind(this),
             module: 'TeamMatchAdd'
         });
 };
 
+MatchHelper.prototype.getNewMatches= function() {
+    return this.newMatches;
+}
+
 MatchHelper.prototype.handleDelete = function(d) {
     console.log('Deleting '  + d.id);
-    Object.keys(this.upcoming).forEach(function(md) {
-        this.upcoming[md] = this.upcoming[md].filter(function(m) {
-            return m.id != d.id;
-        });
-    }.bind(this));
-
-     Object.keys(this.played).forEach(function(md) {
-        this.played[md] = this.played[md].filter(function(m) {
-            return m.id != d.id;
-        });
-    }.bind(this));
+    if (this.upcoming != null) {
+        Object.keys(this.upcoming).forEach(function (md) {
+            this.upcoming[md] = this.upcoming[md].filter(function (m) {
+                return m.id != d.id;
+            });
+        }.bind(this));
+    }
+    if (this.played != null) {
+        Object.keys(this.played).forEach(function (md) {
+            this.played[md] = this.played[md].filter(function (m) {
+                return m.id != d.id;
+            });
+        }.bind(this));
+    }
     this.pending = this.pending.filter(function(m) {
         return m.id != d.id;
     });
@@ -239,27 +238,55 @@ MatchHelper.prototype.getTimeSelect = function() {
     return c;
 };
 
+MatchHelper.prototype.handleSubmit = function(d) {
+    //console.log(JSON.stringify(d));
+    var submitData = {};
+    submitData.id = d.id;
+    submitData.home = {id: d.home.id};
+    submitData.away = {id: d.away.id};
+    submitData.racksWon = d.racksWon;
+    submitData.racksLost = d.racksLost;
+    submitData.racksWon = d.racksWon;
+    submitData.setHomeWins = d.setHomeWins;
+    submitData.setAwayWins = d.setAwayWins;
+    submitData.matchDate = d.matchDate;
 
+    Util.postSomeData({
+        url: '/api/teammatch/admin/modify',
+        data: submitData,
+        router: this.component.props.history,
+        callback: function(data) {
+            this.newMatches = this.newMatches.filter(function(a){
+                return a.id != data.id;
+            });
+            this.receiveMatches();
+        }.bind(this)
+    })
+};
 
 MatchHelper.prototype.handleUpdate = function(d,newValue,type) {
     console.log('changing  '  + d.id  + ' ' + type);
     if (type == 'homeRacks') {
         d.homeRacks = newValue;
+        /*
         Util.getSomeData({
             url: '/api/teammatch/racks/' + d.id + '/' + d.home.id + '/' + newValue,
             callback: function(r) { console.log('HomeRacks now ' + r.homeRacks); this.component.forceUpdate()}.bind(this),
             module: 'HomeRacks'
         });
+        */
         return ;
     }
 
     if (type == 'awayRacks') {
         d.awayRacks = newValue;
+        /*
         Util.getSomeData({
             url: '/api/teammatch/racks/' + d.id + '/' + d.away.id + '/' + d.awayRacks,
             callback: function(r) {console.log('AwayRacks now ' + r.awayRacks) ; this.component.forceUpdate()}.bind(this),
             module: 'AwayRacks'
         });
+        */
         return;
     }
 
@@ -269,36 +296,42 @@ MatchHelper.prototype.handleUpdate = function(d,newValue,type) {
                 d[type] = t;
             }
         });
+        /*
         Util.getSomeData({
             url: '/api/teammatch/admin/change/' + type + '/' + d.id + '/' + d[type].id,
             callback: function(r) {this.component.forceUpdate()}.bind(this),
             module: 'Change' +type
         });
+        */
         return;
     }
 
     if (type =='date' ) {
+
         var dt = d.matchDate.split('T');
         dt[0] = newValue;
         d.matchDate = dt[0] + 'T' + dt[1];
+        /*
           Util.getSomeData({
             url: '/api/teammatch/admin/change/date/' + d.id + '?date=' +  d.matchDate,
             callback: function(r) {this.component.forceUpdate()}.bind(this),
             module: 'Change' +type
         });
+        */
     }
 
     if (type =='time' ) {
         var dt = d.matchDate.split('T');
         dt[1] = newValue;
         d.matchDate = dt[0] + 'T' + dt[1];
+        /*
           Util.getSomeData({
             url: '/api/teammatch/admin/change/date/' + d.id + '?date=' +  d.matchDate,
             callback: function(r) {this.component.forceUpdate()}.bind(this),
             module: 'Change' +type
         });
+        */
     }
-
 };
 
 

@@ -17,6 +17,8 @@ var ScheduleChallengeApp  = require('./content/schedule/ScheduleChallengeApp.jsx
 
 var NavApp = require('./content/nav/NavApp.jsx');
 var ResetApp = require('./jsx/../content/ResetApp.jsx');
+var ResetPasswordApp = require('./jsx/../content/ResetPasswordApp.jsx');
+
 var RegisterApp = require('./jsx/../content/RegisterApp.jsx');
 var LoginApp = require('./jsx/../content/login/LoginApp.jsx');
 var FacebookLogin = require('./jsx/../content/login/FacebookLogin.jsx');
@@ -70,6 +72,7 @@ var routes = (
         <Route  path="facebook/signup" component={FacebookSignUp} />
         <Route  path="fb/signup" component={FacebookSignUp} />
         <Route  path="reset" component={ResetApp} />
+        <Route  path="reset/:token" component={ResetPasswordApp} />
         <Route  path="register" component={RegisterApp} />
         <Route  path="error" component={ErrorApp} />
         <Route  path="logout" component={LogoutApp} />

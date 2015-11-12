@@ -288,8 +288,20 @@ var columns = {
                     <span className="glyphicon glyphicon-remove"></span>
                 </button>
             );
-    } },
-
+    }
+    },
+    'submit' : {name: 'submit', title: '', width: 60, style: {minWidth: 60},  render: function(v,data) {
+        if (data.onSubmit) {
+             return (
+                 <button onClick={data.onSubmit(data)} type="button" className="btn btn-sm btn-success btn-responsive">
+                    <span className="glyphicon glyphicon-ok-sign"></span>
+                 </button>
+             );
+        } else {
+            return null;
+        }
+    }
+    },
 };
 
 
