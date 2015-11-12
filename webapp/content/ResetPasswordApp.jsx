@@ -35,7 +35,7 @@ var ResetApp = React.createClass({
             processData: false,
             dataType: 'json',
             contentType: 'application/json',
-            url: '/api/reset/password/' + this.props.params.token,
+            url: '/api/user/reset/password/' + this.props.params.token,
             data: JSON.stringify({login: user, password: password}),
             method: 'post',
             success: function (d) {
