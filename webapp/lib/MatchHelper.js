@@ -264,7 +264,7 @@ MatchHelper.prototype.handleSubmit = function(d) {
 };
 
 MatchHelper.prototype.handleUpdate = function(d,newValue,type) {
-    console.log('changing  '  + d.id  + ' ' + type);
+    console.log('changing  '  + d.id  + ' ' + type + ' ' + newValue);
     if (type == 'homeRacks') {
         d.homeRacks = newValue;
         /*
