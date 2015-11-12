@@ -105,7 +105,7 @@ var TeamMatchResults = React.createClass({
                         </td>
                         <td className="racks hc loser-hc">{Handicap.formatHandicap(m.loserTeamHandicap)}</td>
                         <td className={"score " +  hill }>{m.winnerTeamRacks + '-' + m.loserTeamRacks}</td>
-                        <td className="racks race">{Handicap.race(m.winnerTeamHandicap, m.loserTeamHandicap)}</td>
+                        <td className="racks race">{m.race}</td>
                     </tr>
                 )
             });

@@ -78,12 +78,13 @@ var renderChallenger=function(v,data,cp) {
 
 var renderChallengeOpponent=function(v,data,cp) {
     cp.className="user";
+
     return <UserLink  user={data.away} season={data.season} />
 };
 
 
 var renderOpponent=function(v,data,cp) {
-    cp.className="us00er";
+    cp.className="user";
     return <UserLink onClick={data.opponent.onClick} user={data.opponent} season={data.season} />};
 var renderOpponentTeam=function(v,data,cp) {
     cp.className="team";
