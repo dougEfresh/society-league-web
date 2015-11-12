@@ -39,7 +39,7 @@ var ResetApp = React.createClass({
             data: JSON.stringify({login: user, password: password}),
             method: 'post',
             success: function (d) {
-                this.props.history.pushState('legacy', null, null);
+                this.props.history.pushState(null,'legacy', null);
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('reset', status, err.toString());
