@@ -43,7 +43,7 @@ var ScheduleApp = React.createClass({
         //
         //<PendingMatches params={this.props.params} />
         //
-        var add =     <ScheduleAddTeamMatch  matchHelper={this.state.matchHelper} params={this.props.params}/>;
+        var add = <ScheduleAddTeamMatch  matchHelper={this.state.matchHelper} params={this.props.params}/>;
         if (!this.getUser().admin) {
             add = null;
         }
@@ -123,13 +123,14 @@ var Results = React.createClass({
         if (this.getUser().admin) {
             columns = [
             //DataGridUtil.columns.playerMatchDate,
-                DataGridUtil.columns.deleteMatch,
+                DataGridUtil.columns.submit,
                 DataGridUtil.columns.challenger,
                 DataGridUtil.columns.homeRacksAdmin,
                 DataGridUtil.columns.challengeOpponent,
                 DataGridUtil.columns.awayRacksAdmin,
                 DataGridUtil.columns.score,
-                DataGridUtil.columns.race
+                DataGridUtil.columns.race,
+                DataGridUtil.columns.deleteMatch,
                 //DataGridUtil.columns.opponent,
                 //DataGridUtil.columns.opponentHandicap
             ];
@@ -191,20 +192,20 @@ var Upcoming = React.createClass({
     },
     render: function() {
         var columns = [
-            DataGridUtil.columns.deleteMatch,
             DataGridUtil.columns.matchDate,
             DataGridUtil.columns.matchTime,
             DataGridUtil.columns.challenger,
             DataGridUtil.columns.challengeOpponent,
-            DataGridUtil.columns.race
+            DataGridUtil.columns.race,
+            DataGridUtil.columns.deleteMatch
         ];
         if (!this.getUser().admin) {
             columns = [
-            DataGridUtil.columns.matchDate,
-            DataGridUtil.columns.matchTime,
+                DataGridUtil.columns.matchDate,
+                DataGridUtil.columns.matchTime,
                 DataGridUtil.columns.challenger,
-            DataGridUtil.columns.challengeOpponent,
-            DataGridUtil.columns.race
+                DataGridUtil.columns.challengeOpponent,
+                DataGridUtil.columns.race
             ]
         }
         var upcoming = this.props.matchHelper.getUpcoming();

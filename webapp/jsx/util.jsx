@@ -39,7 +39,7 @@ function getData(url, callback, unauthCallback, module) {
                         return;
                     }
 
-                    //window.location = '/#/login?expired=true'
+                    window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
@@ -71,7 +71,7 @@ function getSomeData(options) {
                     if (options.router) {
                         options.router.pushState(null,'/login',{expired:'true'});
                     }
-                    //window.location = '/#/login?expired=true'
+                    window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
@@ -129,7 +129,7 @@ function sendSomeData(options) {
                      if (options.router) {
                         options.router.pushState(null,'/login',{expired:'true'});
                     }
-                    //window.location = '/#/login?expired=true'
+                    window.location = '/#/login?expired=true'
                 }.bind(this)
 
             },
@@ -165,7 +165,7 @@ function sendData(url, data, callback,errCallback) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    //window.location = '/#/login?expired=true'
+                    window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
@@ -196,17 +196,17 @@ function postSomeData(options) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                    //window.location = '/#/login?expired=true'
+                    window.location = '/#/login?expired=true'
                 }.bind(this)
             },
             success: function (d) {
-                console.log("Got " + JSON.stringify(d) + " back from server");
+                //console.log("Got " + JSON.stringify(d) + " back from server");
                 options.callback(d);
             }.bind(this),
             error: function (xhr, status, err) {
                 console.warn(options.url, xhr.responseText);
                 if (xhr.responseText.indexOf("Invalid remember-me token") >= 0) {
-                    //window.location = '/#/login?expired=true'
+                    window.location = '/#/login?expired=true'
                     return;
                 }
                 if (options.errCallback) {
@@ -224,7 +224,7 @@ function defaultErrorHandler(router,xhr) {
     if (router)
         router.pushState(null, '/error', {err: xhr.responseText});
     //else
-        //window.location = '#/login';
+      //  window.location = '#/login';
 }
 
 

@@ -31,7 +31,7 @@ var ErrorApp = React.createClass({
             <div className="panel-heading">
                 Error
             </div>
-            {errMsg}
+            {this.getUser().admin ? errMsg : "Error"}
         </div>
         );
     }
