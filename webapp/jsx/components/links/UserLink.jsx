@@ -19,7 +19,7 @@ var UserLink = React.createClass({
         return this.props.user.name;
     },
     render: function() {
-        if (this.props.user == null || !(this.props.user instanceof Object)) {
+        if (this.props.user == null || this.props.user == undefined || !(this.props.user instanceof Object)) {
             return null;
         }
         var hc = "";
@@ -27,10 +27,12 @@ var UserLink = React.createClass({
         if (mobile){
             name = this.props.user.firstName + " " + this.props.user.lastName.substr(0,1) + ".";
         }
+
+
         //TODO speed up
         if (this.props.handicap != undefined) {
             hc = this.props.handicap;
-        } else if (this.props.season != undefined) {
+        } else if (this.props.season != undefined && this.props.user.handicapSeasons != undefined) {
             this.props.user.handicapSeasons.forEach(function(hs){
                 if (hs.season.id == this.props.season) {
                     hc = hs.handicap;

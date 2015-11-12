@@ -224,6 +224,9 @@ var columns = {
             if (data.hill) {
                 cp.className = cp.className + " hill";
             }
+            if (data.score == undefined) {
+                return <span>{data.winnerRacks + '-' + data.loserRacks}</span>
+            }
             return <span>{data.score}</span>
         }
     },
