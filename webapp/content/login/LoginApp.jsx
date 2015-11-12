@@ -12,7 +12,7 @@ var LoginApp = React.createClass({
     },
     getInitialState: function () {
         return {
-            error: false,
+            error: this.props.location.query.error == 'true',
             loggedIn: false
         };
     },
@@ -21,6 +21,7 @@ var LoginApp = React.createClass({
             return ;
         }
         e.preventDefault();
+        this.setState({error: false});
         var user = React.findDOMNode(this.refs.username).value.toLowerCase();
         var password = React.findDOMNode(this.refs.password).value;
         console.log('Logging in: ' + user);
@@ -36,17 +37,17 @@ var LoginApp = React.createClass({
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error('authenticate', status, err.toString());
-                this.history.pushState(null, '/login', {error: 'true'});
+                this.setState({error: true});
             }.bind(this)
         });
     },
     render: function () {
         var errorMsg = null;
-        if (this.context.location.query.error == 'true') {
+        if (this.state.error) {
             errorMsg = <div className="form-group alert alert-danger" role="alert">Your username or password was incorrect.</div>;
         }
 
-        if (this.context.location.query.expired == 'true') {
+        if (this.props.location.query.expired == 'true') {
             errorMsg = <div className="form-group alert alert-danger" role="alert">Session Expired. Please login again.</div>;
         }
         return (
