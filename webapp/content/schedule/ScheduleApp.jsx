@@ -155,7 +155,7 @@ var UpcomingWeeklyMatch = React.createClass({
         var season = this.props.matches[0].season.legacyId;
         var nm = this.props.matches[0].matchNumber;
         var scoresheets = (<a className={this.getUser().admin ? "" : "hide"}
-                              href={"https://leagues.societybilliards.com/demo/admin/sheets/sheets-season.php?season_id=" + season + "&week=" + nm}>
+                              href={"https://admin.societybilliards.com/demo/admin/sheets/sheets-season.php?season_id=" + season + "&week=" + nm}>
             <button className="btn btn-sm btn-primary">Scoresheets</button>
         </a>);
         return (
