@@ -26,54 +26,6 @@ var ResetApp = React.createClass({
             }.bind(this)
         });
     },
-    handlePasswordReset: function(e){
-        e.preventDefault();
-        var user = React.findDOMNode(this.refs.username).value.toLowerCase();
-        var password = React.findDOMNode(this.refs.password).value;
-        $.ajax({
-            async: true,
-            processData: false,
-            dataType: 'json',
-            contentType: 'application/json',
-            url: '/api/reset/password/' + this.getQuery().token,
-            data: JSON.stringify({login: user, password: password}),
-            method: 'post',
-            success: function (d) {
-                this.transitionTo('login', null, null);
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error('reset', status, err.toString());
-            }.bind(this)
-        });
-    },
-    renderReset: function() {
-        return (
-            <div id="login-reset-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
-                <form id='login' className="login-form form-signin">
-                    <h2 className="form-signin-heading">Reset Password</h2>
-                    <div className="form-field form-group">
-                        <div className="form-group">
-                            <input id="username" ref='username' type='input' name='username' className="form-control" placeholder='enter email'> </input>
-                        </div>
-                        <div className="form-group">
-                            <input className="form-control" id="password" ref='password' type='password' name='password' placeholder='enter password'> </input>
-                        </div>
-                        <div className="form-group">
-                            <input className="form-control" id="confirm-password" ref='confirm-password' type='password' name='confirm-password' placeholder='re-enter password'> </input>
-                        </div>
-                    </div>
-                    <button id='submit' className="btn btn-default" onClick={this.handlePasswordReset}>Reset</button>
-                </form>
-            </div>
-        );
-    },
-    renderSentReset: function() {
-        return (
-            <div id="reset-sent-app" className="login-container well col-lg-5 col-md-5 col-sm-6">
-                <h4>See email for a password reset link</h4>
-            </div>
-        );
-    },
     render: function () {
         var title =  'Reset Password';
         if (this.props.location.query.resetPassword) {
