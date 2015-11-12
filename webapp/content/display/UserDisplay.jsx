@@ -27,19 +27,26 @@ var UserDisplay = React.createClass({
     componentDidMount: function() {
         if (this.props.params.userId) {
             this.setState({loading: true, hide: false});
-            this.getData(this.props.params);
+            this.getData(this.props);
         }
     },
-    getData: function(params) {
-        if (params.userId) {
+    getData: function(props) {
+        if (props.params.userId) {
             Util.getSomeData({
-                    url: '/api/playerresult/user/' + params.userId + '/'+ params.seasonId,
+                    url: '/api/playerresult/user/' + props.params.userId + '/'+ props.params.seasonId,
                     callback: function(d,t) {
+                        if (props.onUserClick) {
+                            d.results.forEach(function(m) {
+                                m.opponent.onClick = props.onUserClick(m.opponent);
+                            }.bind(this));
+
+                        }
                         if (t < 900) {
                             setTimeout(function() {
                                 this.setState({stats: d.stats, results: d.results, loading: false});
                             }.bind(this),800);
                         }
+
                     }.bind(this),
                     module: 'UserDisplayStats'
                 }
@@ -54,7 +61,7 @@ var UserDisplay = React.createClass({
 
         if (this.props.params.userId == undefined || n.params.userId != this.props.params.userId) {
             this.setState({loading: true, hide: false, stats: null, results: []});
-            this.getData(n.params);
+            this.getData(n);
         }
     },
     toggleUser: function(e) {
@@ -86,7 +93,7 @@ var UserDisplay = React.createClass({
                         <span className={"float-right fa fa-caret-" + (this.state.toggleUser ? "down" : "left")}></span>
                     </div>
             </div>
-            body = <UserResults params={this.props.params} onUserClick={this.changeUser} results={this.state.results} user={this.state.stats.user} season={this.state.stats.season} />
+            body = <UserResults params={this.props.params} onUserClick={this.props.onUserClick} results={this.state.results} user={this.state.stats.user} season={this.state.stats.season} />
         }
         return (
             <div className={"row"} >

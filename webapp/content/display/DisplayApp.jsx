@@ -170,6 +170,7 @@ var DisplayApp = React.createClass({
         }.bind(this);
 
     },
+
     toggleUser: function(e) {
         e.preventDefault();
         this.setState({toggleUser: !this.state.toggleUser});
@@ -246,7 +247,7 @@ var DisplayApp = React.createClass({
                             </div>
                         </div>
                     </div>
-                    <UserDisplay params={this.props.params} />
+                    <UserDisplay onUserClick={this.changeUser} params={this.props.params} />
                 </div>
             );
     }
