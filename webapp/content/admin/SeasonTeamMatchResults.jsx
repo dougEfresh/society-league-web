@@ -101,7 +101,7 @@ var ScheduleApp = React.createClass({
                                 </div>
                             </div>
                         <div className={"panel-body panel-animate"} >
-                            <SeasonStandings notitle={true} params={this.props.params} season={this.state.season} />;
+                            <SeasonStandings admin={true} notitle={true} params={this.props.params} season={this.state.season} />;
                         </div>
                     </div>
                 </div>

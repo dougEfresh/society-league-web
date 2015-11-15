@@ -42,7 +42,12 @@ var SeasonStandings = React.createClass({
             );
     },
     componentWillMount: function() {
-        TeamMatchStore.addListener('MATCHES',this._onChange);
+        if (this.props.admin)
+            TeamMatchStore.addListener('MATCHES',this._onChange);
+    },
+    componentDidUmount: function() {
+        if (this.props.admin)
+            TeamMatchStore.remove('MATCHES',this._onChange);
     },
     componentDidMount: function () {
         if (this.props.season != undefined && this.props.season != null)
