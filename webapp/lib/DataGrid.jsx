@@ -83,7 +83,6 @@ var DataGrid = React.createClass({
             var d = this.state.dataSource[i];
             this.props.columns.forEach(function(c) {
                 if (c == undefined) {
-                    debugger;
                     console.log('Warning... no columns for datasource');
                     return;
                 }

@@ -42,12 +42,16 @@ var SeasonStandings = React.createClass({
             );
     },
     componentWillMount: function() {
-        if (this.props.admin)
-            TeamMatchStore.addListener('MATCHES',this._onChange);
+        if (this.props.admin) {
+            TeamMatchStore.addListener('MATCHES', this._onChange);
+            TeamMatchStore.addListener('loading', this._onChange);
+        }
     },
     componentDidUmount: function() {
-        if (this.props.admin)
-            TeamMatchStore.remove('MATCHES',this._onChange);
+        if (this.props.admin) {
+            TeamMatchStore.remove('loading', this._onChange);
+            TeamMatchStore.remove('MATCHES', this._onChange);
+        }
     },
     componentDidMount: function () {
         if (this.props.season != undefined && this.props.season != null)
@@ -67,6 +71,30 @@ var SeasonStandings = React.createClass({
         }
     },
     render: function() {
+        if (this.props.admin && TeamMatchStore.isLoading()) {
+            var header = <div className="col-xs-10 col-md-11 p-title">Loading...</div>;
+        var body = <div style={{height: 200}} className="text-center loading">
+            <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+        </div>;
+            return (
+                <div className={"row"} >
+                    <div className={"col-xs-12 col-md-6 "} >
+                        <div className={"panel panel-default panel-user-results "}>
+                            <a href="#"  >
+                            <div className={"panel-heading"}>
+                                <div className={"row panel-title"}>
+                                    {header}
+                                </div>
+                            </div>
+                        </a>
+                        <div className={"panel-body panel-animate"}>
+                            {body}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            )
+        }
         if (this.state.seasonStats.length == 0)
             return null;
 

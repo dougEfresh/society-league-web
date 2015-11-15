@@ -6,10 +6,12 @@ var season = null;
 var matches;
 var teams;
 var teamOptions;
+var React = require('react/addons');
 
 var defaultState = function() {
     matches = null;
     teams = [];
+    teamOptions = [];
 };
 
 var TeamMatchStore = assign({}, EventEmitter.prototype, {
@@ -31,9 +33,9 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
             callback: function (d) {
                 teams = d;
                 this.emitChange('loading');
-                //for (var i = 0; i< teams.length; i++){
-                  //  teamOptions.push(<option key={i} value={teams[i].id}>{teams[i].name}</option>);
-                //}
+                for (var i = 0; i< teams.length; i++){
+                    teamOptions.push(<option key={i} value={teams[i].id}>{teams[i].name}</option>);
+                }
             }.bind(this),
             module: 'Teams'
         });
@@ -83,6 +85,9 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
             this.handleUpdate(d,e.target.value,type);
         }.bind(this)
     },
+    getTeamsOptions: function() {
+        return teamOptions;
+    },
     handleUpdate: function(d,newValue,type) {
         console.log('updating '  + type  + ' '+ newValue);
         var m = null;
@@ -125,10 +130,35 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                 dt[1] = newValue;
                 m.matchDate = dt[0] + 'T' + dt[1];
                 break;
+            case 'gameType':
+                m.division = newValue;
+                break;
         }
         this.emitChange(m.status);
     },
-
+    addNew : function(seasonId) {
+        this.emitChange('loading');
+        Util.getSomeData({
+            url: '/api/teammatch/admin/add/' + seasonId,
+            callback: function(d) {
+                this.init(seasonId);
+            }.bind(this),
+            module: 'TeamMatchAdd'
+        });
+    },
+    handleDelete: function(d){
+        return function(e) {
+            e.preventDefault();
+            this.emitChange('loading');
+            Util.getSomeData({
+                url: '/api/teammatch/admin/delete/' + d.id,
+                callback: function(data) {
+                    this.init(d.season.id)
+                }.bind(this),
+                module: 'TeamMatchDelete'
+            });
+        }.bind(this);
+    },
     handleSubmit: function(d) {
         return function(e) {
             e.preventDefault();
@@ -141,8 +171,9 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
             submitData.setHomeWins = d.setHomeWins;
             submitData.setAwayWins = d.setAwayWins;
             submitData.matchDate = d.matchDate;
+            submitData.division = d.division;
             matches = null;
-            this.emitChange('MATCHES');
+            this.emitChange('loading');
             setTimeout(function () {
                 Util.postSomeData({
                     url: '/api/teammatch/admin/modify',
@@ -151,7 +182,7 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                         this.init(d.home.season.id);
                     }.bind(this)
                 })
-            }.bind(this), 900);
+            }.bind(this), 500);
         }.bind(this)
     }
 });

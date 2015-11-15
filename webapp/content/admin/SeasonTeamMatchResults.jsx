@@ -89,7 +89,7 @@ var ScheduleApp = React.createClass({
             )
         }
 
-        //<ScheduleAddTeamMatch season={this.state.season}  matchHelper={this.state.matchHelper} params={this.props.params}/>;
+        //
         return (
             <div id="schedule-app">
                 <div className="row">
@@ -101,14 +101,14 @@ var ScheduleApp = React.createClass({
                                 </div>
                             </div>
                         <div className={"panel-body panel-animate"} >
-                            <SeasonStandings admin={true} notitle={true} params={this.props.params} season={this.state.season} />;
+                            <SeasonStandings admin={true} notitle={true} params={this.props.params} season={this.state.season} />
                         </div>
                     </div>
                 </div>
                 </div>
                 <MatchResults season={this.state.season}  params={this.props.params} type={Status.PENDING} />
-                <MatchResults season={this.state.season}  params={this.props.params} type={Status.COMPLETE} />
                 <MatchResults season={this.state.season}  params={this.props.params} type={Status.UPCOMING}  />
+                <MatchResults season={this.state.season}  params={this.props.params} type={Status.COMPLETE} />
             </div>
         );
     }
@@ -149,6 +149,10 @@ var MatchResults = React.createClass({
         console.log('Updating ' + this.props.type);
          this.forceUpdate();
     },
+    addNew: function(e) {
+        e.preventDefault();
+        TeamMatchStore.addNew(this.props.params.seasonId);
+    },
     render: function() {
         if (TeamMatchStore.isLoading()) {
             var header = <div className="col-xs-10 col-md-11 p-title">Loading...</div>;
@@ -182,14 +186,23 @@ var MatchResults = React.createClass({
         if (this.props.type == Status.PENDING) {
             title = ' Pending  ' + this.props.season.displayName;
         }
+        var add =  <div className="float-right col-xs-4 col-md-4 p-title">
+                                        <button onClick={this.addNew}type="button" className="btn btn-sm  btn-primary">
+                                            <span className={"glyphicon glyphicon-plus"}></span>
+                                        </button>
+                                    </div>;
+        if (this.props.type != Status.UPCOMING) {
+            add = null;
+        }
         return (
             <div className="row">
-                <div className="col-xs-12 col-md-7">
+                <div className="col-xs-12 col-md-12">
                     <div className={"panel panel-default panel-challenge"}>
                     <div className={"panel-heading"}>
                         <div className="row panel-title">
                             <div className="col-xs-10 col-md-7 p-title">
                                 <span>{title}</span>
+                                {add}
                             </div>
                         </div>
                     </div>
@@ -216,9 +229,10 @@ var Results = React.createClass({
 
         if (this.props.type == Status.PENDING)
             css = 'panel-danger';
-        var columns = DataGridUtil.adminColumns(this.props.season);
+        var columns = DataGridUtil.adminColumns(this.props.season,TeamMatchStore.getTeamsOptions());
         if (columns[0] == undefined) {
             console.warn('No columns');
+            return null;
         }
         return (
             <div className="row" >

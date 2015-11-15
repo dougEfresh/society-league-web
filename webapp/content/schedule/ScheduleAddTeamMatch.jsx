@@ -32,22 +32,56 @@ var ScheduleTeamMatchAdd = React.createClass({
         }
     },
     componentDidMount: function () {
-        //TeamMatchStore.init(this.props.params.seasonId);
+    },
+    componentWillMount: function() {
+        TeamMatchStore.addListener('loading',this._onChange);
+        TeamMatchStore.addListener('MATCHES',this._onChange);
     },
     componentDidUnmount: function() {
         console.log('Unmount');
-        //delete this.props.matchHelper;
+        TeamMatchStore.remove('loading',this._onChange);
+        TeamMatchStore.remove('MATCHES',this._onChange);
     },
-    componentWillReceiveProps: function (n) {
+    _onChange: function() {
+        this.forceUpdate();
     },
     addNew: function(e) {
-
-        this.props.matchHelper.createNew();
+        e.preventDefault();
+        TeamMatchStore.addNew();
+        //this.props.matchHelper.createNew();
     },
     render: function() {
+
+         return (
+            <div id="schedule-app">
+                <div className="row">
+                    <div className="col-xs-12 col-md-7">
+                        <div className="panel panel-default panel-challenge">
+                            <div className={"panel-heading"}>
+                                <div className="row panel-title">
+                                    <div className="col-xs-7 col-md-7 p-title">
+                                        <span>New Matches  </span>
+                                        <span>{this.props.season.displayName} </span>
+                                    </div>
+                                    <div className="float-right col-xs-4 col-md-4 p-title">
+                                        <button onClick={this.addNew}type="button" className="btn btn-sm  btn-primary">
+                                            <span className={"glyphicon glyphicon-plus"}></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={"panel-body panel-animate panel-challenge-results panel-results-body"} >
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
         //<MatchResults  params={this.props.params} matches={this.state.results} />
         //<PendingMatches params={this.props.params} />
         //<PendingMatches params={this.props.params} matchHelper={this.props.matchHelper} />
+        /*
           var columns = [
               DataGridUtil.columns.submit,
               this.props.matchHelper.getDateSelect(),
@@ -105,6 +139,7 @@ var ScheduleTeamMatchAdd = React.createClass({
                 </div>
             </div>
         );
+        */
     }
 });
 

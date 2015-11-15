@@ -5,11 +5,13 @@ var Util = require('../jsx/util.jsx');
 var moment = require('moment');
 var TeamMatchStore = require('../jsx/stores/TeamMatchStore.jsx');
 var admin = false;
-
+var moment = require('moment');
 var nineBallRacks = [];
 var matchDates = [];
 var setWins = [];
-
+var gameType = [];
+gameType.push(<option key='8' value = 'MIXED_EIGHT'>{'8'}</option>);
+gameType.push(<option key='9' value = 'MIXED_NINE'>{'9'}</option>);
 for(var i = 0; i<6 ; i++) {
     setWins.push(<option key={i} value={i}>{i}</option>);
 }
@@ -272,9 +274,6 @@ var columns = {
             if (data.hill) {
                 cp.className = cp.className + " hill";
             }
-            if (data.score == undefined) {
-                return <span>{data.winnerRacks + '-' + data.loserRacks}</span>
-            }
             return <span>{data.score}</span>
         }
     },
@@ -370,8 +369,8 @@ var columns = {
     'setHomeWins' : setHomeWins,
     'setAwayWins' : setAwayWins,
     'deleteMatch' :  {name: 'matchDelete', title: '', width: 60, style: {minWidth: 60}, render: function(v,data) {
-        if (data.onDelete)
-            return (<button onClick={data.onDelete(data)} type="button" className="btn btn-xs btn-danger btn-responsive team-match-delete">
+        if (admin)
+            return (<button onClick={TeamMatchStore.handleDelete(data)} type="button" className="btn btn-xs btn-danger btn-responsive team-match-delete">
                     <span className="glyphicon glyphicon-remove"></span>
                 </button>
             );
@@ -395,25 +394,127 @@ var columns = {
         }
     }
     },
+    'gameType' : {name: 'gameType', title: 'Game', width: 80, style: {minWidth: 80} , render: function(v,data) {
+        var gt = "8";
+        if (data.division == 'MiXED_NINE') {
+            gt = "9";
+        }
+        if (admin) {
+         return  <select ref='gameType'
+                        onChange={TeamMatchStore.onChange(data,'gameType')}
+                        className="form-control"
+                        value={data.division}
+                        type={'select'}>
+                {gameType}
+                </select>
+        }
+        return <span>{gt}</span>
+
+    }}
 };
 
+var dateOptions = [];
+var timeOptions = [];
+var dt;
+var dates = [];
+for(var i = 0; i<91; i++) {
+    dt = moment().subtract(i,'days').format('YYYY-MM-DD');
+    //this.dateOptions.push(<option key={dt} value={dt}>{dt}</option>)
+    dates.push(dt);
+}
 
-var adminColumns = function adminColumns(s) {
+for(var i = 1; i<90; i++) {
+    dt = moment().add(i,'days').format('YYYY-MM-DD');
+    //
+    dates.push(dt);
+}
+
+dates = dates.sort();
+dates.forEach(function(d) {
+    dateOptions.push(<option key={d} value={d}>{d}</option>)
+});
+
+timeOptions.push(<option key={'11:00'} value={'11:00:00'}>{'11:00'}</option>)
+timeOptions.push(<option key={'12:00'} value={'12:00:00'}>{'12:00'}</option>)
+
+for (var i = 1; i<7;i ++) {
+    timeOptions.push(<option key={i + ':00'} value={ (i + 12) + ':00:00'}>{i+':00'}</option>)
+}
+
+var timeColumn = {};
+    timeColumn.name = 'time';
+    timeColumn.title = 'time';
+    timeColumn.width = 100;
+    timeColumn.style = {minWidth: 100};
+    timeColumn.render = function(v,data,cp) {
+        var time = data.matchDate.split('T')[1];
+        return (
+            <select ref={'time'}
+                    onChange={TeamMatchStore.onChange(data,'time')}
+                    className="form-control"
+                    value={time}
+                    type={'select'}>
+                {timeOptions}
+            </select>
+        )
+    }.bind(this);
+
+var dateColumn = {};
+    dateColumn.name = 'date';
+    dateColumn.title = 'date';
+    dateColumn.width = 130;
+    dateColumn.style = {minWidth: 130};
+    dateColumn.render = function(v,data,cp) {
+        var time = data.matchDate.split('T')[0];
+        return (
+            <select ref={'time'}
+                    onChange={TeamMatchStore.onChange(data,'date')}
+                    className="form-control"
+                    value={time}
+                    type={'select'}>
+                {dateOptions}
+            </select>
+        )
+    }.bind(this);
+
+var adminColumns = function adminColumns(s,teams) {
+    var homeTeam =  {name: 'home', title: 'Home', width: 100, style: {minWidth: 100},render: function(v,data) {
+        return (
+            <select ref={'homeTeam'}
+                onChange={TeamMatchStore.onChange(data,'homeTeam')}
+                className="form-control"
+                value={data.home.id}
+                type={'select'}>
+            {teams}
+        </select>)
+    }};
+    var awayTeam =  {name: 'away', title: 'Away', width: 100, style: {minWidth: 100},render: function(v,data) {
+        return (<select ref={'awayTeam'}
+                onChange={TeamMatchStore.onChange(data,'awayTeam')}
+                className="form-control"
+                value={data.away.id}
+                type={'select'}>
+            {teams}
+        </select>);
+    }};
+
         var c = [
              columns.submit,
-                columns.homeTeam,
+            dateColumn,
+                homeTeam,
                 columns.homeRacks,
-                columns.awayTeam,
+                awayTeam,
                 columns.awayRacks,
                 columns.deleteMatch
             ];
         if (s.nine) {
             c = [
                 columns.submit,
-                columns.homeTeam,
+                dateColumn,
+                homeTeam,
                 columns.homeRacks,
                 columns.setHomeWins,
-                columns.awayTeam,
+                awayTeam,
                 columns.awayRacks,
                 columns.setAwayWins,
                 columns.deleteMatch
@@ -422,24 +523,26 @@ var adminColumns = function adminColumns(s) {
         if (s.challenge) {
             c = [
                  columns.submit,
-                columns.challenger,
+                dateColumn,
+                timeColumn,
+                homeTeam,
                 columns.homeRacks,
-                columns.challengeOpponent,
+                awayTeam,
                 columns.awayRacks,
                 columns.score,
                 columns.race,
-                columns.deleteMatch,
+                columns.deleteMatch
             ];
         }
         if (s.scramble) {
             c = [
-                 columns.submit,
-                columns.challenger,
+                columns.submit,
+                dateColumn,
+                homeTeam,
                 columns.homeRacks,
-                columns.challengeOpponent,
+                awayTeam,
                 columns.awayRacks,
-                columns.score,
-                columns.race,
+                columns.gameType,
                 columns.deleteMatch
             ];
         }
