@@ -21,16 +21,18 @@ for(var i = 0; i<10 ; i++) {
     options.push(<option key={i} value={i}>{i}</option>);
 }
 
+var TeamMatchStore = require('../../jsx/stores/TeamMatchStore.jsx');
+
 var ScheduleTeamMatchAdd = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
         return {
-            loading: false,
+            loading: true,
           //  matchHelper: new MatchHelper(this,this.props.params.seasonId)
         }
     },
     componentDidMount: function () {
-        //this.props.matchHelper.createNew();
+        //TeamMatchStore.init(this.props.params.seasonId);
     },
     componentDidUnmount: function() {
         console.log('Unmount');
@@ -39,7 +41,7 @@ var ScheduleTeamMatchAdd = React.createClass({
     componentWillReceiveProps: function (n) {
     },
     addNew: function(e) {
-        e.preventDefault();
+
         this.props.matchHelper.createNew();
     },
     render: function() {
@@ -51,9 +53,9 @@ var ScheduleTeamMatchAdd = React.createClass({
               this.props.matchHelper.getDateSelect(),
               this.props.matchHelper.getTimeSelect(),
               this.props.matchHelper.getTeamSelect('home'),
-            DataGridUtil.columns.homeRacksAdmin,
+            DataGridUtil.columns.homeRacks,
               this.props.matchHelper.getTeamSelect('away'),
-            DataGridUtil.columns.awayRacksAdmin,
+            DataGridUtil.columns.awayRacks,
               DataGridUtil.columns.deleteMatch
         ];
         var matches = this.props.matchHelper.getNewMatches();
@@ -65,7 +67,8 @@ var ScheduleTeamMatchAdd = React.createClass({
                             <div className={"panel-heading"}>
                                 <div className="row panel-title">
                                     <div className="col-xs-7 col-md-7 p-title">
-                                        <span>New Matches</span>
+                                        <span>New Matches  </span>
+                                        <span>{this.props.season.displayName} </span>
                                     </div>
                                     <div className="float-right col-xs-4 col-md-4 p-title">
                                         <button onClick={this.addNew}type="button" className="btn btn-sm  btn-primary">

@@ -373,3 +373,12 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
     width: 100%;
 	margin-top: 10px;
 }
+
+.team-match-delete {
+    margin-top: 0px;
+}
+
+
+.team-match-add {
+    margin-top: 0px;
+}

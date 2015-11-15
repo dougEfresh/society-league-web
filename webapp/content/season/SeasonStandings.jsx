@@ -9,6 +9,7 @@ var TeamLink = require('../../jsx/components/links/TeamLink.jsx');
 var Util = require('../../jsx/util.jsx');
 var DataGridUtil = require('../../lib/DataGridUtil.jsx');
 var DataGrid = require('../../lib/DataGrid.jsx');
+var TeamMatchStore = require('../../jsx/stores/TeamMatchStore.jsx');
 
 var SeasonStandings = React.createClass({
     mixins: [UserContextMixin],
@@ -17,6 +18,9 @@ var SeasonStandings = React.createClass({
              seasonStats: [],
              loading: false
          }
+    },
+    _onChange: function() {
+        this.getData(this.props.params.seasonId);
     },
     getData: function(id) {
         var cb =  function (d) {
@@ -36,6 +40,9 @@ var SeasonStandings = React.createClass({
                     router: this.props.history
                 }
             );
+    },
+    componentWillMount: function() {
+        TeamMatchStore.addListener('MATCHES',this._onChange);
     },
     componentDidMount: function () {
         if (this.props.season != undefined && this.props.season != null)

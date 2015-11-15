@@ -64,7 +64,6 @@ AppDispatcher.register(function(action) {
       //       DataStore.checkLogin();
              break;
          case 'CHALLENGE_SIGN_UP':
-             DataStore.challengeSignUp(action.id);
              break;
          default:
             //console.log('Unknown Action ' + JSON.stringify(action));

@@ -45,10 +45,13 @@ var TeamLink = React.createClass({
         if (!this.props.team.season.active) {
             return <span>{this.props.team.name}</span>
         }
+
         if (this.props.onClick != null && this.props.onClick != undefined) {
-            return (<div className="team-link"> <a onClick={this.props.onClick} href='#'>{name}</a></div>);
+        //    return (<div className="team-link"> <a onClick={this.props.onClick} href='#'>{name}</a></div>);
+            return (<div className="team-link"><Link to={'/app/display/' + this.props.team.season.id + '/' + this.props.team.id}>{name}</Link></div>);
         }
         return (<div className="team-link"><Link to={'/app/display/' + this.props.team.season.id + '/' + this.props.team.id}>{name}</Link></div>);
+
     }
 });
 

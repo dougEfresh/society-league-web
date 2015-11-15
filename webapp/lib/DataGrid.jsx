@@ -35,6 +35,8 @@ var DataGrid = React.createClass({
         var rows = [];
         var cnt =0;
         this.props.columns.forEach(function(c) {
+            if (c == undefined)
+                return;
             var style={};
             if (c.width != undefined) {
                 style.width = c.width;
@@ -80,6 +82,11 @@ var DataGrid = React.createClass({
 
             var d = this.state.dataSource[i];
             this.props.columns.forEach(function(c) {
+                if (c == undefined) {
+                    debugger;
+                    console.log('Warning... no columns for datasource');
+                    return;
+                }
                 var style={};
                 if (c.width != undefined ) {
                     style.width = c.width;
