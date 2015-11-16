@@ -26,7 +26,7 @@ var SeasonStandings = React.createClass({
         var cb =  function (d) {
                 if (this.props.onTeamClick) {
                     d.forEach(function(s) {
-                        s.onClick = this.props.onTeamClick(s.team);
+                        s.onClick = this.props.onTeamClick(s);
                     }.bind(this));
                 }
                 this.setState({seasonStats: d,loading: false})
