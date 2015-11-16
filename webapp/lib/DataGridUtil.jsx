@@ -352,7 +352,7 @@ var columns = {
     'loses': {name: 'loses', title: 'L', width: 50, filterable: false , sort: 'asc', number: true,
         render: function(v,data) {
         if (data.loses != undefined)
-            return <span>{data.wins}</span>;
+            return <span>{data.loses}</span>;
 
         return <span>{data.stats.loses}</span>
 
