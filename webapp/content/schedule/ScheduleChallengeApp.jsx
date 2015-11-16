@@ -40,16 +40,8 @@ var ScheduleApp = React.createClass({
     componentWillReceiveProps: function (n) {
     },
     render: function() {
-        //
-        //<PendingMatches params={this.props.params} />
-        //
-        var add = <ScheduleAddTeamMatch  matchHelper={this.state.matchHelper} params={this.props.params}/>;
-        if (!this.getUser().admin) {
-            add = null;
-        }
         return (
             <div id="schedule-app">
-                {add}
                 <PendingMatches params={this.props.params} matchHelper={this.state.matchHelper} />
                 <Upcoming params={this.props.params} matchHelper={this.state.matchHelper}/>
                 <MatchResults  params={this.props.params} matchHelper={this.state.matchHelper} />
@@ -178,8 +170,6 @@ var Results = React.createClass({
     }
 });
 
-
-
 var PendingMatches = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
@@ -258,4 +248,86 @@ var PendingMatches = React.createClass({
     }
 });
 
+var Upcoming = React.createClass({
+    mixins: [UserContextMixin],
+    getInitialState: function() {
+        return {
+        }
+    },
+    componentDidMount: function () {
+        //this.getData(this.props.params.seasonId);
+    },
+    componentWillReceiveProps: function (n) {
+        //this.getData(n.params.seasonId);
+    },
+    render: function() {
+        var columns = [
+            DataGridUtil.columns.matchDate,
+            DataGridUtil.columns.matchTime,
+            DataGridUtil.columns.challenger,
+            DataGridUtil.columns.challengeOpponent,
+            DataGridUtil.columns.race,
+            DataGridUtil.columns.deleteMatch
+        ];
+        if (this.props.matchHelper) {
+            return null;
+        }
+        var upcoming = this.props.matchHelper.getUpcoming();
+        if (upcoming == null)
+            return null;
+
+        var matches = [];
+        Object.keys(upcoming).forEach(function(m){
+            matches = matches.concat(upcoming[m]);
+        });
+        if (matches.length == 0) {
+            return null;
+        }
+        var hide = !this.getUser().admin ? " hide" : " ";
+       return (
+           <div className="row" >
+               <div className="col-xs-12 col-md-7" >
+                   <div className="panel panel-default panel-challenge ">
+                    <div className={"panel-heading"}>
+                        <div className="row panel-title">
+                            <div className="col-xs-10 col-md-7 p-title">
+                                <i className="fa fa-calendar"></i><span> Upcoming</span><span> </span>
+                                <Link className={"team-match-add " +  hide}   to={"/app/schedule/" + this.props.params.seasonId + '/add'} >
+                                    <button type="button" className="btn btn-sm  btn-primary">
+                                        <span className={"glyphicon glyphicon-plus"}></span>
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                       <div className={"panel-body panel-animate panel-challenge-results panel-results-body"} >
+                           <DataGrid
+                        idProperty='id'
+                        dataSource={matches}
+                        columns={columns}
+                        style={{height: ((matches.length) * 50 < 500 ? (matches.length ) * 50 : 500)}}
+                        rowHeight={40}
+                        showCellBorders={true}
+                        filterable={false}
+                        columnMinWidth={50}
+                        cellPadding={'5px 5px'}
+                        headerPadding={'5px 5px'}
+                        filterIconColor={'#6EB8F1'}
+                        menuIconColor={'#6EB8F1'}
+                        loadMaskOverHeader={false}
+                        cellEllipsis={false}
+                        liveFilter={false}
+                        styleAlternateRowsCls={'datagrid-alt-row'}
+                        menuIcon={false}
+                        filterIcon={false}
+                        scrollbarSize={(matches.length) * 50 < 500 ? 0 : 20}
+                        //onColumnOrderChange={this.handleColumnOrderChange}
+                        />
+                </div>
+                   </div>
+               </div>
+           </div>);
+
+    }
+});
 module.exports =  ScheduleApp;

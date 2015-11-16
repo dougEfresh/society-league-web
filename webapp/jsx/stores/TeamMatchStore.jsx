@@ -97,7 +97,6 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                 m = tm;
             }
         });
-
         switch (type) {
             case 'homeRacks':
                 m.homeRacks = newValue;

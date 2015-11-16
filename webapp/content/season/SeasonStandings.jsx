@@ -26,7 +26,7 @@ var SeasonStandings = React.createClass({
         var cb =  function (d) {
                 if (this.props.onTeamClick) {
                     d.forEach(function(s) {
-                        s.team.onClick = this.props.onTeamClick(s.team);
+                        s.onClick = this.props.onTeamClick(s.team);
                     }.bind(this));
                 }
                 this.setState({seasonStats: d,loading: false})
@@ -48,10 +48,8 @@ var SeasonStandings = React.createClass({
         }
     },
     componentDidUmount: function() {
-        if (this.props.admin) {
-            TeamMatchStore.remove('loading', this._onChange);
-            TeamMatchStore.remove('MATCHES', this._onChange);
-        }
+        TeamMatchStore.remove('loading', this._onChange);
+        TeamMatchStore.remove('MATCHES', this._onChange);
     },
     componentDidMount: function () {
         if (this.props.season != undefined && this.props.season != null)
@@ -121,7 +119,7 @@ var SeasonStandings = React.createClass({
             ];
         }
         var rowStyle= function(d,cls,style) {
-            if (this.props.activeTeam && d.team.id == this.props.activeTeam.id) {
+            if (this.props.activeTeam && d.id == this.props.activeTeam.id) {
                 cls.className = "selected";
             }
         }.bind(this);

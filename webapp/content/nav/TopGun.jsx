@@ -65,9 +65,6 @@ var TopGunNav = React.createClass({
                     <li className={"challenge-nav"} >
                         <a onClick={this.goToChallenge(s)} href="#">Challenge</a>
                     </li>
-                    <li className="">
-                        <a onClick={this.goToSchedule(s)} href="#">Schedule & Matches</a>
-                    </li>
                     <li >
                         <a onClick={this.goToStandings(s)}href="#">Standings</a>
                     </li>
@@ -76,5 +73,9 @@ var TopGunNav = React.createClass({
         );
     }
 });
-
+/*
+<li className="">
+    <a onClick={this.goToSchedule(s)} href="#">Schedule & Matches</a>
+</li>
+*/
 module.exports = TopGunNav;

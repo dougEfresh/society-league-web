@@ -97,7 +97,7 @@ var UserDisplay = React.createClass({
         }
         return (
             <div className={"row"} >
-                <div className={"col-xs-12 col-md-6 "} >
+                <div className={"col-xs-12 col-md-9 "} >
                     <div className={"panel panel-default panel-user-results "}>
                         <a href="#" onClick={this.toggleUser} >
                             <div className={"panel-heading" + (this.state.toggleUser ? "" : " panel-closed")}>

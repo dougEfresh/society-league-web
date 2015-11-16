@@ -11,14 +11,14 @@ var TeamStandings = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
          return {
-             statTeam: {},
+             statTeam: null,
              statTeamMembers: [],
         }
     },
     getData: function(id) {
         Util.getSomeData(
             {
-                url: '/api/stat/team/' + id ,
+                url: '/api/team/' + id ,
                 callback: function(d){this.setState({statTeam: d});}.bind(this),
                 module: 'TeamStandings',
                 router: this.props.history
@@ -58,10 +58,9 @@ var TeamStandings = React.createClass({
     },
     render: function() {
         var stat = this.state.statTeam;
-        if (stat.team == undefined && this.state.statTeamMembers.length == 0)
+        if (stat == null || this.state.statTeamMembers.length == 0)
             return null;
-        var s = stat.team.season;
-
+        var s = stat.season;
         var columns = [
             DataGridUtil.columns.rank,
             DataGridUtil.columns.player,

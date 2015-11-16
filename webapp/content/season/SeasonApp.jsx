@@ -90,7 +90,7 @@ var SeasonApp = React.createClass({
         return (
             <div id="season-leaders">
                 <div className="row">
-                <div className="col-xs-12 col-md-9">
+                <div className="col-xs-12 col-md-11">
                     <div className="panel panel-default panel-leaders">
                         <a onClick={this.toggleHeading} href='#'>
                             <div className={panelHeadingCls}>

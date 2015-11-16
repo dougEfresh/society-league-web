@@ -2,16 +2,25 @@ var React = require('react/addons');
 var UserLink = require('../jsx/components/links/UserLink.jsx');
 var TeamLink = require('../jsx/components/links/TeamLink.jsx');
 var Util = require('../jsx/util.jsx');
-var moment = require('moment');
 var TeamMatchStore = require('../jsx/stores/TeamMatchStore.jsx');
+var PlayerMatchStore = require('../jsx/stores/PlayerMatchStore.jsx');
 var admin = false;
 var moment = require('moment');
 var nineBallRacks = [];
 var matchDates = [];
 var setWins = [];
 var gameType = [];
+var Router = require('react-router')
+    , Route = Router.Route
+    , Link = Router.Link;
+
 gameType.push(<option key='8' value = 'MIXED_EIGHT'>{'8'}</option>);
 gameType.push(<option key='9' value = 'MIXED_NINE'>{'9'}</option>);
+
+var matchNumberOptions = [];
+for(var i = 1; i<30 ; i++) {
+    matchNumberOptions.push(<option key={i} value={i} >{i}</option>)
+}
 for(var i = 0; i<6 ; i++) {
     setWins.push(<option key={i} value={i}>{i}</option>);
 }
@@ -102,9 +111,9 @@ var renderOpponentTeam=function(v,data,cp) {
 var renderTeam=function(v,data,cp) {
     cp.className = "team";
     if (data.team != undefined && data.team.onClick != undefined)
-        return <TeamLink onClick={data.team.onClick} team={data.team}/>
+        return <TeamLink onClick={data.team.onClick} team={data.team}/>;
     else
-        return <TeamLink onClick={data} team={data}/>
+        return <TeamLink onClick={data.onClick} team={data}/>;
 };
 
 
@@ -186,11 +195,12 @@ var homeRacks = {
     name: 'homeRacks', title: 'R', flex: 1, style: {minWidth: 70}, width: 70,
     render: function(v,data) {
         if (admin) {
+            var racks = data.homeRacks;
             return (
                 <select ref='racks'
                         onChange={TeamMatchStore.onChange(data,'homeRacks')}
                         className="form-control"
-                        value={data.homeRacks}
+                        value={racks}
                         type={'select'}>
                     {nineBallRacks}
                 </select>
@@ -199,6 +209,26 @@ var homeRacks = {
         return <span>{data.homeRacks}</span>
     }
 };
+
+var playerHomeRacks = {
+    name: 'homeRacks', title: 'R', flex: 1, style: {minWidth: 70}, width: 70,
+    render: function(v,data) {
+        if (admin) {
+            var racks =  data.homeRacks;
+            return (
+                <select ref='racks'
+                        onChange={PlayerMatchStore.onChange(data,'homeRacks')}
+                        className="form-control"
+                        value={racks}
+                        type={'select'}>
+                    {data.season.nine ? nineBallRacks : nineBallRacks.slice(0,2)}
+                </select>
+            )
+        }
+        return <span>{data.playerHomeRacks}</span>
+    }
+};
+
 
 var setHomeWins = {
     name: 'setHomeWins', title: 'SW', flex: 1, style: {minWidth: 70}, width: 70,
@@ -240,11 +270,12 @@ var awayRacks = {
     name: 'awayRacks', title: 'R', flex: 1, style: {minWidth: 70}, width: 70,
     render: function(v,data) {
         if (admin) {
+            var racks = data.awayRacks != undefined ? data.awayRacks : data.playerAwayRacks;
             return (
                 <select ref='racks'
                         onChange={TeamMatchStore.onChange(data,'awayRacks')}
                         className="form-control"
-                        value={data.awayRacks}
+                        value={racks}
                         type={'select'}>
                     {nineBallRacks}
                 </select>
@@ -254,6 +285,25 @@ var awayRacks = {
     }
 };
 
+
+var playerAwayRacks = {
+    name: 'awayRacks', title: 'R', flex: 1, style: {minWidth: 70}, width: 70,
+    render: function(v,data) {
+        if (admin) {
+            var racks =  data.awayRacks;
+            return (
+                <select ref='racks'
+                        onChange={PlayerMatchStore.onChange(data,'awayRacks')}
+                        className="form-control"
+                        value={racks}
+                        type={'select'}>
+                    k{data.season.nine ? nineBallRacks : nineBallRacks.slice(0,2)}
+                </select>
+            )
+        }
+        return <span>{data.awayRacks}</span>
+    }
+};
 
 var columns = {
     'playerMatchDate': {name: 'date', title: 'Date', width: 60, filterable: false, sort: 'dsc', number: false},
@@ -353,7 +403,21 @@ var columns = {
         render: function(v,data){return (<span>{data.matchPoints == undefined ? 0 : data.matchPoints.weightedAvg.toFixed(3)}</span>); }
     },
     'matchNum':  {name: 'matchNum', title: '#', width: 50, filterable: false ,
-        render: function(v,data){return (<span>{data.matchPoints == undefined ? "" : data.matchPoints.matchNum}</span>); }
+        render: function(v,data){
+            if (admin) {
+                  return  <select ref='matchNum'
+                        onChange={PlayerMatchStore.onChange(data,'matchNumber')}
+                        className="form-control"
+                        value={data.matchNumber}
+                        type={'select'}>
+                      {matchNumberOptions}
+                </select>
+            }
+            if (data.matchNumber != undefined){
+                return (<span>{data.matchNumber}</span>);
+            }
+            return (<span>{data.matchPoints == undefined ? "" : data.matchPoints.matchNum}</span>);
+        }
     },
     'calculation':  {name: 'calculation', title: ' ', width: 95, filterable: false ,
         render: function(v,data){return (<span>{data.matchPoints == undefined ? "" : data.matchPoints.calculation}</span>); }
@@ -380,6 +444,12 @@ var columns = {
                     <span className="glyphicon glyphicon-remove"></span>
                 </button>
             );
+    }},
+    'deletePlayerMatch' :  {name: 'matchDelete', title: '', width: 60, style: {minWidth: 60}, render: function(v,data) {
+        return (<button onClick={PlayerMatchStore.handleDelete(data)} type="button" className="btn btn-xs btn-danger btn-responsive team-match-delete">
+                <span className="glyphicon glyphicon-remove"></span>
+            </button>
+        );
     }
     },
     'submit' : {name: 'submit', title: '', width: 60, style: {minWidth: 60},  render: function(v,data) {
@@ -392,6 +462,18 @@ var columns = {
         } else {
             return null;
         }
+    }
+    },
+    'playerResults' : {name: 'results', title: 'Results', width: 60, style: {minWidth: 60},  render: function(v,data) {
+        return (
+            <div className={!data.hasResults ?  "hide" : ""}>
+            <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
+             <button  type="button" className="btn btn-xs btn-success btn-responsive btn-default  team-match-add">
+                 <span> See Results </span>
+             </button>
+            </Link>
+            </div>
+        )
     }
     },
     'gameType' : {name: 'gameType', title: 'Game', width: 80, style: {minWidth: 80} , render: function(v,data) {
@@ -477,6 +559,70 @@ var dateColumn = {};
         )
     }.bind(this);
 
+var adminPlayerColumns = function (teamMatch,members) {
+      var homeTeam =  {name: 'home', title: 'Home', width: 100, style: {minWidth: 100},render: function(v,data) {
+        return (
+            <select ref={'homeTeam'}
+                onChange={PlayerMatchStore.onChange(data,'playerHome')}
+                className="form-control"
+                value={data.playerHome.id}
+                type={'select'}>
+                {members.home}
+        </select>)
+    }};
+    var awayTeam =  {name: 'away', title: 'Away', width: 100, style: {minWidth: 100},render: function(v,data) {
+        return (<select ref={'awayTeam'}
+                onChange={PlayerMatchStore.onChange(data,'playerAway')}
+                className="form-control"
+                value={data.playerAway.id}
+                type={'select'}>
+            {members.away}
+        </select>);
+    }};
+
+    var homePartner =  {name: 'homeHomePartner', title: 'Partner', width: 100, style: {minWidth: 100},render: function(v,data) {
+        return (
+            <select ref={'playerHome'}
+                onChange={PlayerMatchStore.onChange(data,'playerHomePartner')}
+                className="form-control"
+                value={data.playerHomePartner == null ? '-1' : data.playerHomePartner.id}
+                type={'select'}>
+                {members.home}
+        </select>)
+    }};
+    var awayPartner =  {name: 'playerAwayPartner', title: 'Partner Away', width: 100, style: {minWidth: 100},render: function(v,data) {
+        return (<select ref={'playerAwayPartner'}
+                onChange={PlayerMatchStore.onChange(data,'playerAwayPartner')}
+                className="form-control"
+                value={data.playerAwayPartner == null ? '-1' : data.playerAway.id}
+                type={'select'}>
+            {members.away}
+        </select>);
+    }};
+
+    var c = [
+        columns.matchNum,
+        homeTeam,
+        playerHomeRacks,
+        awayTeam,
+        playerAwayRacks,
+        columns.deletePlayerMatch
+    ];
+
+    if (teamMatch.season.scramble) {
+        c = [ columns.matchNum,
+            homeTeam,
+            homePartner,
+            playerHomeRacks,
+            awayTeam,
+            awayPartner,
+            playerAwayRacks,
+            columns.deletePlayerMatch
+        ];
+    }
+    return c;
+};
+
 var adminColumns = function adminColumns(s,teams) {
     var homeTeam =  {name: 'home', title: 'Home', width: 100, style: {minWidth: 100},render: function(v,data) {
         return (
@@ -499,17 +645,19 @@ var adminColumns = function adminColumns(s,teams) {
     }};
 
         var c = [
-             columns.submit,
+            columns.submit,
+            columns.playerResults,
             dateColumn,
-                homeTeam,
-                columns.homeRacks,
-                awayTeam,
-                columns.awayRacks,
-                columns.deleteMatch
-            ];
+            homeTeam,
+            columns.homeRacks,
+            awayTeam,
+            columns.awayRacks,
+            columns.deleteMatch
+        ];
         if (s.nine) {
             c = [
                 columns.submit,
+                columns.playerResults,
                 dateColumn,
                 homeTeam,
                 columns.homeRacks,
@@ -537,6 +685,7 @@ var adminColumns = function adminColumns(s,teams) {
         if (s.scramble) {
             c = [
                 columns.submit,
+                columns.playerResults,
                 dateColumn,
                 homeTeam,
                 columns.homeRacks,
@@ -550,5 +699,5 @@ var adminColumns = function adminColumns(s,teams) {
 }
 
 var adminMode = function() {admin = true};
-module.exports = {columns : columns, adminColumns: adminColumns, adminMode: adminMode};
+module.exports = {columns : columns, adminColumns: adminColumns, adminPlayerColumns: adminPlayerColumns, adminMode: adminMode};
 

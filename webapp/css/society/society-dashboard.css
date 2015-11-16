@@ -378,6 +378,11 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
     margin-top: 0px;
 }
 
+.player-match-submit {
+    max-width: 90px;
+    width: 90px;
+    margin-left: 12px;
+}
 
 .team-match-add {
     margin-top: 0px;
