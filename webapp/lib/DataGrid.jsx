@@ -101,7 +101,7 @@ var DataGrid = React.createClass({
                 else {
                     td.push(<td style={style} key={c.name}>{d[c.name]}</td>);
                 }
-            });
+            }.bind(this));
 
             if (this.props.rowStyle) {
                 var style={};

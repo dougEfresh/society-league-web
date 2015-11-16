@@ -382,6 +382,12 @@ var columns = {
 
             return <span>{data.stats.setWins}</span>;
     }},
+    'setLoses': {name: 'setLoses', title: 'SL', width: 55, filterable: false , render: function(v,data){
+            if (data.setLoses)
+                return  <span>{data.setLoses}</span>;
+
+            return <span>{data.stats.setLoses}</span>;
+    }},
     'winPct': {name: 'winPct', title: 'PCT', width: 55, filterable: false , render: function(v,data){return (<span>{data.winPct.toFixed(3)}</span>); }},
     'rackPct': {name: 'rackPct', title: 'PCT', width: 60, filterable: false ,
         render: function(v,data){

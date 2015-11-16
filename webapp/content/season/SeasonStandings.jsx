@@ -96,25 +96,36 @@ var SeasonStandings = React.createClass({
         if (this.state.seasonStats.length == 0)
             return null;
 
-        var columns = [
-            DataGridUtil.columns.teamRank,
-            DataGridUtil.columns.team,
-            DataGridUtil.columns.wins,
-            DataGridUtil.columns.loses,
-            DataGridUtil.columns.setWins,
-            DataGridUtil.columns.setLoses,
-            DataGridUtil.columns.racksWon,
-            DataGridUtil.columns.racksLost,
-            DataGridUtil.columns.rackPct
-        ];
-        if (!this.state.seasonStats[0].season.nine){
+        if (!this.state.seasonStats[0].season.nine) {
+            var columns = [
+                DataGridUtil.columns.teamRank,
+                DataGridUtil.columns.team,
+                DataGridUtil.columns.wins,
+                DataGridUtil.columns.loses,
+                DataGridUtil.columns.setWins,
+                DataGridUtil.columns.setLoses,
+                DataGridUtil.columns.racksWon,
+                DataGridUtil.columns.racksLost,
+                DataGridUtil.columns.rackPct
+            ];
+        } else if (this.state.seasonStats[0].season.challenge){
+          columns = [
+              DataGridUtil.columns.teamRank,
+                DataGridUtil.columns.team,
+                DataGridUtil.columns.wins,
+                DataGridUtil.columns.loses,
+                DataGridUtil.columns.racksWon,
+                DataGridUtil.columns.racksLost,
+                DataGridUtil.columns.rackPct
+              ];
+        } else {
             columns = [
                 DataGridUtil.columns.teamRank,
                 DataGridUtil.columns.team,
                 DataGridUtil.columns.wins,
                 DataGridUtil.columns.loses,
-            DataGridUtil.columns.racksWon,
-            DataGridUtil.columns.racksLost,
+                DataGridUtil.columns.racksWon,
+                DataGridUtil.columns.racksLost,
                 DataGridUtil.columns.rackPct
             ];
         }

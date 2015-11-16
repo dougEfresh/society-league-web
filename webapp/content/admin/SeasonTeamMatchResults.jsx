@@ -113,8 +113,6 @@ var ScheduleApp = React.createClass({
         );
     }
 });
-//                <PendingMatches season={this.state.season} params={this.props.params} />
-//
 
 var MatchResults = React.createClass({
     getInitialState: function() {
@@ -230,10 +228,6 @@ var Results = React.createClass({
         if (this.props.type == Status.PENDING)
             css = 'panel-danger';
         var columns = DataGridUtil.adminColumns(this.props.season,TeamMatchStore.getTeamsOptions());
-        if (columns[0] == undefined) {
-            console.warn('No columns');
-            return null;
-        }
         return (
             <div className="row" >
                 <div className="col-xs-12 col-md-12" >
