@@ -96,7 +96,7 @@ var SeasonStandings = React.createClass({
         if (this.state.seasonStats.length == 0)
             return null;
 
-        if (!this.state.seasonStats[0].season.nine) {
+        if (this.state.seasonStats[0].season.nine) {
             var columns = [
                 DataGridUtil.columns.teamRank,
                 DataGridUtil.columns.team,
