@@ -114,10 +114,9 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
             case 'away':
                 teams.forEach(function (t) {
                     if (t.id == newValue) {
-                        d[type] = t;
+                        m[type] = t;
                     }
                 });
-                return;
                 break;
             case 'date':
                 var dt = m.matchDate.split('T');
