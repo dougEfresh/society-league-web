@@ -627,7 +627,7 @@ var adminColumns = function adminColumns(s,teams) {
     var homeTeam =  {name: 'home', title: 'Home', width: 100, style: {minWidth: 100},render: function(v,data) {
         return (
             <select ref={'homeTeam'}
-                onChange={TeamMatchStore.onChange(data,'homeTeam')}
+                onChange={TeamMatchStore.onChange(data,'home')}
                 className="form-control"
                 value={data.home.id}
                 type={'select'}>
@@ -636,7 +636,7 @@ var adminColumns = function adminColumns(s,teams) {
     }};
     var awayTeam =  {name: 'away', title: 'Away', width: 100, style: {minWidth: 100},render: function(v,data) {
         return (<select ref={'awayTeam'}
-                onChange={TeamMatchStore.onChange(data,'awayTeam')}
+                onChange={TeamMatchStore.onChange(data,'away')}
                 className="form-control"
                 value={data.away.id}
                 type={'select'}>
