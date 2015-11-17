@@ -394,7 +394,10 @@ var columns = {
             if (data.rackPct)
                 return  <span>{data.rackPct.toFixed(3)}</span>;
 
-            return <span>{data.stats.rackPct.toFixed(3)}</span>;
+            if (data.stats && data.stats.rackPct)
+                return <span>{data.stats.rackPct.toFixed(3)}</span>;
+
+            return <span>0</span>;
         }
     },
     'points': {name: 'points', title: 'P', width: 50, filterable: false ,
