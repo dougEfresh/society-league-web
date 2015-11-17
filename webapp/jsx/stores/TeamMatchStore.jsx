@@ -179,15 +179,14 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                     url: '/api/teammatch/admin/modify/list',
                     data: matchData,
                     callback: function (data) {
-                        Object.keys(matches).forEach(function(md) {
-                            for(var i = 0; i < matches[md].length; i++) {
-                                data.forEach(function(d) {
-                                    if (matches[md][i].id == d.id) {
-                                        matches[md][i] = d;
-                                    }
-                                });
-                            }
-                        }.bind(this));
+                        for(var i = 0 ; i < matches.length ; i++) {
+                            data.forEach(function (d) {
+                                if (matches[i].id == d.id) {
+                                    console.log('Updating ' + d.home.name + ' ' + d.hasResults);
+                                    matches[i] = d;
+                                }
+                            });
+                        }
                         var dates = {};
                         data.forEach(function(d) {
                             dates[d.matchDate.split('T')[0]] = 1;

@@ -487,12 +487,26 @@ var columns = {
             )
         }
         if (data.hasResults && data.hasPlayerResults) {
+            
             return (
                 <div >
                     <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
                         <button type="button"
                                 className="btn btn-xs btn-success btn-responsive  team-match-add">
                             <span> Results </span>
+                        </button>
+                    </Link>
+                </div>
+            )
+        }
+
+        if (data.hasResults) {
+             return (
+                <div >
+                    <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
+                        <button type="button"
+                                className="btn btn-xs btn-danger btn-responsive  team-match-add">
+                            <span>!! Enter Results !!</span>
                         </button>
                     </Link>
                 </div>
