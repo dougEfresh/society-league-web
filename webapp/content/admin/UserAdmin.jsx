@@ -15,7 +15,8 @@ var UserAdminApp = React.createClass({
             update: Date.now(),
             users : [],
             seasons: [],
-            handicaps: []
+            handicaps: [],
+            user: null,
         }
     },
     componentWillMount: function () {
@@ -28,7 +29,7 @@ var UserAdminApp = React.createClass({
     onChange: function (e) {
         e.preventDefault();
         if (e.target.value == '-1') {
-            this.history.pushState(null, '/app/admin/users');
+            this.setState({user: null});
             return;
         }
         var user = null;
@@ -37,10 +38,7 @@ var UserAdminApp = React.createClass({
                 user = u;
             }
         });
-        var q = this.props.location.query;
-        q.user = Qs.stringify(user);
-
-        this.history.pushState(null, '/app/admin/users',q);
+        this.setState({user: user});
     },
     getData: function() {
         Util.getData('/api/user/all', function(d){
@@ -57,6 +55,12 @@ var UserAdminApp = React.createClass({
         var now = Date.now();
         if (now - this.state.update > 1000*60)
             this.getData();
+    },
+    onSubmit: function(u) {
+        this.getData();
+        this.setState({
+            user: u
+        });
     },
     render: function () {
         if (!this.getUser().admin){
@@ -75,15 +79,15 @@ var UserAdminApp = React.createClass({
         users.forEach(function(u) {
             options.push(<option key={u.id} value={u.id}>{u.name}</option>);
         });
-        var selectedUser = Qs.parse(this.props.location.query.user);
         var select = (
             <select ref='user' onChange={this.onChange}
                     className="form-control"
-                    value={selectedUser !=  undefined ? selectedUser.id : '-1' }
+                    value={this.state.user != null ? this.state.user.id : '-1' }
                     type={'select'}>
                 {options}
             </select>);
 
+        /*
         if (this.props.location.query.submitted == 'true') {
             var q = this.props.location.query;
             q.submitted = 'false';
@@ -100,144 +104,127 @@ var UserAdminApp = React.createClass({
                     </div>
                 );
         }
-        return (
-            <div id="user-admin-app">
-                {select}
-                <UserModifyApp  seasons={this.state.seasons} user={selectedUser} handicaps={handicaps}/>
-            </div>
-        );
-    }
+        */
+            return (
+                <div id="user-admin-app">
+                    {select}
+                    <UserModifyApp onSubmit={this.onSubmit} seasons={this.state.seasons} user={this.state.user ==  null  ? {} : this.state.user} handicaps={handicaps}/>
+                </div>
+            );
+        }
 });
 
 var UserModifyApp = React.createClass({
     mixins: [UserContextMixin,History],
     getInitialState: function() {
-        var u = this.props.user;
         return {
-            id: u.id,
-            firstName: u.firstName,
-            lastName: u.lastName,
-            email: u.email,
-            reset: false
+            user: this.props.user,
+            loading: false
         }
     },
     componentWillReceiveProps: function (n) {
-        if (this.state.id != n.user.id) {
+        if (this.state.user.id != n.user.id) {
             this.setState({
-                id: n.user.id,
-                firstName: n.user.firstName,
-                lastName: n.user.lastName,
-                email: n.user.email
+                user: n.user
             })
         }
     },
     handleCreate: function() {
         this.handleSubmit('create');
     },
-    handleModify: function() {
-        this.handleSubmit('modify');
-    },
-    handleSubmit: function(type) {
-        var u = this.props.user;
-        u.firstName =  React.findDOMNode(this.refs.firstName).value.length > 1 ? React.findDOMNode(this.refs.firstName).value : u.firstName;
-        u.lastName =  React.findDOMNode(this.refs.lastName).value.length > 1 ? React.findDOMNode(this.refs.lastName).value : u.lastName;
-        u.email =  React.findDOMNode(this.refs.email).value .length > 1 ?  React.findDOMNode(this.refs.email).value : u.email;
-
-        if (u.handicapSeasons == undefined) {
-            u.handicapSeasons = [];
-        }
-        var handicapSeasons = [];
-        u.handicapSeasons.forEach(function(hs){
-            if (hs.handicap != 'NA') {
-                hs.season = {id: hs.season.id};
-                hs.handicapDisplay = null;
-                handicapSeasons.push(hs);
-            }
-        });
-        u.handicapSeasons = handicapSeasons;
-        Util.sendData('/api/user/admin/' + type,u, function(d){
-            var query = {user: Qs.stringify(d),submitted:true};
-            this.history.pushState(null, '/app/admin/users', query);
-        }.bind(this), function() {
-            this.history.pushState(null, '/app/error');
-        }.bind(this));
-    },
-    handicapChange: function(e) {
+    handleModify: function(e) {
         e.preventDefault();
-        var u = this.props.user;
-        u.handicapSeasons.forEach(function(hs) {
-            if (this.refs['handicap-' + hs.season.id] == undefined) {
-                return ;
-            }
-            var handicapSeasonRef = React.findDOMNode(this.refs['handicap-' + hs.season.id]);
-            if (handicapSeasonRef == undefined) {
-                return;
-            }
-            var handicap = handicapSeasonRef.value.split("-")[0];
-            var seasonId = handicapSeasonRef.value.split("-")[1];
-            if (hs.season.id == seasonId) {
-                hs.handicap = handicap;
-            }
-        }.bind(this));
-        var query = {user: Qs.stringify(u)};
-        this.history.pushState(null, '/app/admin/users', query);
+        var hs = [];
+        this.state.user.handicapSeasons.forEach(function(h){
+            if (h.handicap != 'NA')
+                hs.push(h);
+        });
+        this.state.user.handicapSeasons = hs;
+        this.setState({loading: true});
+        setTimeout(function() {
+            Util.postSomeData({
+                url: '/api/user/admin/modify',
+                data: this.state.user,
+                callback: function (d) {
+                    this.setState({user: d, loading: false});
+                    if (this.props.onSubmit) {
+                        this.props.onSubmit(d);
+                    }
+                }.bind(this),
+                module: 'UserAdminApp'
+            })
+        }.bind(this),500);
+    },
+    handicapChange: function(hs) {
+        return function(e) {
+            e.preventDefault();
+            var u = this.state.user;
+            var newHandicap = e.target.value;
+            u.handicapSeasons.forEach(function (old) {
+                if (old.season.id == hs.season.id) {
+                    old.handicap = newHandicap;
+                }
+            }.bind(this));
+
+            this.forceUpdate();
+        }.bind(this);
     },
     statusChange: function(e) {
         e.preventDefault();
-        var u = this.props.user;
+        var u = this.state.user;
         u.status =  React.findDOMNode(this.refs.status).value;
-        var query = {user: Qs.stringify(u)};
-        this.history.pushState(null, '/app/admin/users', query);
+        this.forceUpdate();
     },
     roleChange: function(e) {
         e.preventDefault();
-        var u = this.props.user;
+        var u = this.state.user;
         u.role =  React.findDOMNode(this.refs.role).value;
-        var query = {user: Qs.stringify(u)};
-        this.history.pushState(null, '/app/admin/users', query);
+        this.forceUpdate();
     },
     getHandicaps: function() {
         var seasons = [];
-        if (this.props.user.handicapSeasons == undefined) {
-            this.props.user.handicapSeasons = [];
+        if (this.state.user == null)
+            return seasons;
+
+        if (this.state.user.handicapSeasons == undefined) {
+            this.state.user.handicapSeasons = [];
         }
         this.props.seasons.forEach(function(s){
             if (!s.active)
                 return;
 
             var found = false;
-            this.props.user.handicapSeasons.forEach(function (hs) {
+            this.state.user.handicapSeasons.forEach(function (hs) {
                 if (hs.season.id == s.id) {
                     found = true;
                 }
             });
             if (found)
                 return;
-
-            this.props.user.handicapSeasons.push({handicap: 'NA', season: s});
+            this.state.user.handicapSeasons.push({handicap: 'NA', season: s});
         }.bind(this));
 
-        this.props.user.handicapSeasons.forEach(function(hs) {
+        this.state.user.handicapSeasons.forEach(function(hs) {
             if (!hs.season.active) {
                 return;
             }
             var options = [];
             var s = hs.season;
-            options.push(<option key={'NA-' + s.id} value={'NA-' + s.id}>{'NA'}</option>);
+            options.push(<option key={'NA-' + s.id} value={'NA'}>{'NA'}</option>);
             this.props.handicaps.forEach(function(h) {
-                options.push(<option key={h + '-' + s.id} value={h + '-' + s.id}>{h}</option>);
+                options.push(<option key={h + '-' + s.id} value={h}>{h}</option>);
             });
             var select = (
-                <select ref={'handicap-'+ s.id} onChange={this.handicapChange}
+                <select ref={'handicap-'+ s.id} onChange={this.handicapChange(hs)}
                         className="form-control"
-                        value={hs.handicap + '-' + s.id}
+                        value={hs.handicap}
                         type={'select'}>
                     {options}
                 </select>);
 
              seasons.push(
                  <div key={s.id} className="form-group">
-                     <label htmlFor="season" className="col-sm-2 control-label">{s.name.split(',')[2]}</label>
+                     <label htmlFor="season" className="col-sm-2 control-label">{s.displayName}</label>
                      <div className="col-sm-10">
                          {select}
                      </div>
@@ -250,24 +237,35 @@ var UserModifyApp = React.createClass({
         e.preventDefault();
         var firstName =  React.findDOMNode(this.refs.firstName).value;
         var lastName =  React.findDOMNode(this.refs.lastName).value;
-        var email =  React.findDOMNode(this.refs.email).value;
-        this.setState({
-            firstName: firstName,
-            lastName: lastName,
-            email: email
-        })
-
+        var login =  React.findDOMNode(this.refs.email).value;
+        this.state.user.firstName = firstName;
+        this.state.user.lastName =  lastName;
+        this.state.user.login = login;
     },
     reset: function() {
-        Util.sendData("/api/user/reset/request",{id: this.props.user.id},function(){
-            this.setState({
-                reset: true
-            })
-        }.bind(this));
+        var url = '/api/user/reset/request';
+        $.ajax({
+            async: true,
+            processData: false,
+              dataType: 'json',
+              contentType: 'application/json',
+            url: url,
+            data: JSON.stringify({id: 0, login:  this.props.user.login}),
+            method: 'post',
+            success: function (d) {
+                window.location = '#/notification';
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error('authenticate', status, err.toString());
+            }.bind(this)
+        });
     },
     render: function () {
-        var u = this.props.user;
-        if (u == undefined) {
+        if (this.state.loading) {
+            return <h2>Loading</h2>
+        }
+        var u = this.state.user;
+        if (u == null) {
             u = {}
         }
         if (this.state.reset) {
@@ -288,7 +286,7 @@ var UserModifyApp = React.createClass({
            <div id="modify-user" className="panel panel-default">
                <div className="panel-heading">
                    <h2><span className={userType}></span>{u.name}</h2>
-                   <button type="button" className="btn btn-sm btn-primary btn-responsive" onClick={this.reset}>Send Password Reset</button>
+                   <button type="button" className="btn btn-sm btn-primary btn-responsive btn-send-reset" onClick={this.reset}>Send Password Reset</button>
                </div>
                <div className="panel-body">
                    <form id='login' className="login-form form-signin form-horizontal">
@@ -297,7 +295,7 @@ var UserModifyApp = React.createClass({
                            <div className="col-sm-10">
                                <input ref='firstName' id="firstname"
                                       type="input" name="firstName"
-                                      value = {this.state.firstName} onChange={this.onChange}
+                                      value = {this.state.user.firstName} onChange={this.onChange}
                                       className="form-control" />
                            </div>
                        </div>
@@ -305,7 +303,7 @@ var UserModifyApp = React.createClass({
                            <label htmlFor="lastName" className="col-sm-2 control-label">Last Name</label>
                            <div className="col-sm-10">
                                <input ref='lastName' id="lastname" type="input" name="lastName"
-                                      value = {this.state.lastName} onChange={this.onChange}
+                                      value = {this.state.user.lastName} onChange={this.onChange}
                                       className="form-control" />
                            </div>
                        </div>
@@ -313,7 +311,7 @@ var UserModifyApp = React.createClass({
                            <label htmlFor="email" className="col-sm-2 control-label">Email</label>
                            <div className="col-sm-10">
                                <input ref='email' id="email" type="input" name="email"
-                                      value = {this.state.email}
+                                      value = {this.state.user.login}
                                       onChange={this.onChange}
                                       className="form-control" />
                            </div>
@@ -339,10 +337,7 @@ var UserModifyApp = React.createClass({
                        {this.getHandicaps()}
                        <div className="form-group">
                            <div className="col-sm-offset-2 col-sm-10">
-                                <button style={{display: u.id == undefined ? 'inline' : 'none'}} id="create" type="button" onClick={this.handleCreate} className="btn btn-sm btn-primary btn-responsive">
-                                   <b>Create</b>
-                               </button>
-                               <button  style={{display: u.id == undefined ? 'none' : 'inline'}} id="submit" type="button" onClick={this.handleModify} className="btn btn-sm btn-primary btn-responsive">
+                               <button id="submit" type="button" onClick={this.handleModify} className="btn btn-sm btn-primary btn-responsive">
                                    <b>Modify</b>
                                </button>
                            </div>

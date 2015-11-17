@@ -27,6 +27,12 @@ var AdminNav = React.createClass({
         e.preventDefault();
         this.setState({toggleAdmin: !this.state.toggleAdmin});
     },
+    goToUsers: function(e){
+          this.setState({toggleSide: false});
+          e.preventDefault();
+          this.props.toggleSide(e);
+          this.props.history.pushState(null,'/app/admin/users');
+    },
     goToSchedule: function(s){
         return function(e){
             this.setState({toggleSide: false});
@@ -91,6 +97,7 @@ var AdminNav = React.createClass({
                     <li className={leaderClass} >
                         <a onClick={this.goToLeader(s)} href="#">Division Leaders</a>
                     </li>
+
                     </ul>
                 </li>
             );
@@ -103,6 +110,12 @@ var AdminNav = React.createClass({
                     <span className={"fa fa-caret-" + (this.state.toggleAdmin ? "down side-caret" : "left side-caret")} ></span>
                 </a>
                 <ul className={"nav nav-second-level collapse " + (this.state.toggleAdmin ? " selected in"  : "")}>
+                    <li>
+                        <a onClick={this.goToUsers} href="#">
+                            <i className="fa fa-users"></i> Users
+                        </a>
+                    </li>
+
                     {seasonNav}
                 </ul>
             </li>
