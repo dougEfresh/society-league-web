@@ -13,6 +13,7 @@ var defaultState = function() {
     teams = [];
     teamOptions = [];
 };
+require('events').EventEmitter.prototype._maxListeners = 110;
 
 var TeamMatchStore = assign({}, EventEmitter.prototype, {
     init: function(seasonId) {
@@ -70,6 +71,9 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
         }.bind(this));
         return results;
     },
+    getMatches: function() {
+      return matches;
+    },
     getPending: function() {
         return this.getType('PENDING');
     },
@@ -122,17 +126,19 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                 var dt = m.matchDate.split('T');
                 dt[0] = newValue;
                 m.matchDate = dt[0] + 'T' + dt[1];
+                m.dateChange = true;
                 break;
             case 'time':
                 var dt = m.matchDate.split('T');
                 dt[1] = newValue;
                 m.matchDate = dt[0] + 'T' + dt[1];
+                m.dateChange = true;
                 break;
             case 'gameType':
                 m.division = newValue;
                 break;
         }
-        this.emitChange(m.status);
+        this.emitChange(m.matchDate.split('T')[0]);
     },
     addNew : function(seasonId) {
         this.emitChange('loading');
@@ -157,30 +163,77 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
             });
         }.bind(this);
     },
+    submitWeek: function(matches) {
+        var matchData = [];
+        matches.forEach(function(m) {
+            matchData.push(this.processSubmit(m));
+        }.bind(this));
+        var dates = {};
+        matches.forEach(function(d) {
+            dates[d.matchDate.split('T')[0]] = 1;
+        }.bind(this));
+        Object.keys(dates).forEach(function(d){
+            this.emitChange(d.split('T')[0] + '-loading');
+        }.bind(this));
+        Util.postSomeData({
+                    url: '/api/teammatch/admin/modify/list',
+                    data: matchData,
+                    callback: function (data) {
+                        Object.keys(matches).forEach(function(md) {
+                            for(var i = 0; i < matches[md].length; i++) {
+                                data.forEach(function(d) {
+                                    if (matches[md][i].id == d.id) {
+                                        matches[md][i] = d;
+                                    }
+                                });
+                            }
+                        }.bind(this));
+                        var dates = {};
+                        data.forEach(function(d) {
+                            dates[d.matchDate.split('T')[0]] = 1;
+                        }.bind(this));
+                        Object.keys(dates).forEach(function(d){
+                            this.emitChange(d.split('T')[0]);
+                        }.bind(this));
+                        this.emitChange('SUBMITTED');
+                    }.bind(this)
+
+                })
+
+    },
+    processSubmit: function(d) {
+        var submitData = {};
+        submitData.id = d.id;
+        submitData.home = {id: d.home.id};
+        submitData.away = {id: d.away.id};
+        submitData.homeRacks = d.homeRacks;
+        submitData.awayRacks = d.awayRacks;
+        submitData.setHomeWins = d.setHomeWins;
+        submitData.setAwayWins = d.setAwayWins;
+        submitData.matchDate = d.matchDate;
+        submitData.division = d.division;
+        return submitData;
+    },
     handleSubmit: function(d) {
         return function(e) {
             e.preventDefault();
-            var submitData = {};
-            submitData.id = d.id;
-            submitData.home = {id: d.home.id};
-            submitData.away = {id: d.away.id};
-            submitData.homeRacks = d.homeRacks;
-            submitData.awayRacks = d.awayRacks;
-            submitData.setHomeWins = d.setHomeWins;
-            submitData.setAwayWins = d.setAwayWins;
-            submitData.matchDate = d.matchDate;
-            submitData.division = d.division;
-            matches = null;
+            var submitData = this.processSubmit(d);
             this.emitChange('loading');
-            setTimeout(function () {
-                Util.postSomeData({
+            Util.postSomeData({
                     url: '/api/teammatch/admin/modify',
                     data: submitData,
                     callback: function (data) {
-                        this.init(d.home.season.id);
+                        Object.keys(matches).forEach(function(md) {
+                            for(var i = 0; i < matches[md].length; i++) {
+                                if (matches[md][i].id == data.id) {
+                                    matches[md][i] = data;
+                                }
+                            }
+                        }.bind(this));
+                        this.init(data.season.id);
                     }.bind(this)
+
                 })
-            }.bind(this), 500);
         }.bind(this)
     }
 });

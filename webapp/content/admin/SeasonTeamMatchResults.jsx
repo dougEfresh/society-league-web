@@ -107,8 +107,6 @@ var ScheduleApp = React.createClass({
                 </div>
                 </div>
                 <MatchResults season={this.state.season}  params={this.props.params} type={Status.PENDING} />
-                <MatchResults season={this.state.season}  params={this.props.params} type={Status.UPCOMING}  />
-                <MatchResults season={this.state.season}  params={this.props.params} type={Status.COMPLETE} />
             </div>
         );
     }
@@ -122,7 +120,7 @@ var MatchResults = React.createClass({
     },
     getMatches: function() {
         var rows = [];
-        var matches = TeamMatchStore.getType(this.props.type);
+        var matches = TeamMatchStore.getMatches();
         if (matches == null)
             return rows;
         Object.keys(matches).forEach(function(md) {
@@ -132,14 +130,12 @@ var MatchResults = React.createClass({
         return ( rows );
     },
     componentWillMount: function() {
-        TeamMatchStore.addListener(this.props.type,this._onChange);
         TeamMatchStore.addListener('loading',this._onChange);
         TeamMatchStore.addListener('MATCHES',this._onChange);
     },
     componentDidMount: function() {
     },
     componentDidUnmount: function() {
-        TeamMatchStore.remove(this.props.type,this._onChange);
         TeamMatchStore.remove('MATCHES',this._onChange);
         TeamMatchStore.remove('loading',this._onChange);
     },
@@ -178,20 +174,11 @@ var MatchResults = React.createClass({
         }
 
         var title = ' Results '  + this.props.season.displayName;
-        if (this.props.type == Status.UPCOMING) {
-            title = ' Upcoming  ' + this.props.season.displayName;
-        }
-        if (this.props.type == Status.PENDING) {
-            title = ' Pending  ' + this.props.season.displayName;
-        }
         var add =  <div className="float-right col-xs-4 col-md-4 p-title">
-                                        <button onClick={this.addNew}type="button" className="btn btn-sm  btn-primary">
-                                            <span className={"glyphicon glyphicon-plus"}></span>
-                                        </button>
-                                    </div>;
-        if (this.props.type != Status.UPCOMING) {
-            add = null;
-        }
+            <button onClick={this.addNew}type="button" className="btn btn-sm  btn-primary">
+                <span className={"glyphicon glyphicon-plus"}></span>
+            </button>
+        </div>;
         return (
             <div className="row">
                 <div className="col-xs-12 col-md-12">
@@ -216,17 +203,69 @@ var MatchResults = React.createClass({
 
 var Results = React.createClass({
     mixins: [UserContextMixin],
+      getInitialState: function() {
+        return {
+            loading: false
+        }
+    },
+    componentWillMount: function() {
+        TeamMatchStore.addListener(this.props.date,this._onChange);
+        TeamMatchStore.addListener(this.props.date+ '-loading',this._onLoading);
+        TeamMatchStore.addListener('MATCHES',this._onChange);
+    },
+    componentDidMount: function() {
+    },
+    componentDidUnmount: function() {
+        TeamMatchStore.remove(this.props.date,this._onChange);
+        TeamMatchStore.remove(this.props.date + '-loading',this._onLoading);
+        TeamMatchStore.remove('MATCHES',this._onChange);
+    },
+    _onLoading: function() {
+        this.setState({
+            loading: !this.state.loading
+        });
+    },
+    _onChange: function(){
+         this.setState({
+            loading: false
+        });
+    },
+    submit: function(e){
+        e.preventDefault();
+        TeamMatchStore.submitWeek(this.props.matches);
+    },
     render: function() {
-        if (this.props.season == null) {
-            debugger;
+        if (this.state.loading) {
+            var header = <div className="col-xs-10 col-md-11 p-title">Loading...</div>;
+            var body = <div style={{height: 200}} className="text-center loading">
+                <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+            </div>;
+            return (
+                <div className={"row"} >
+                    <div className={"col-xs-12 col-md-6 "} >
+                        <div className={"panel panel-default panel-user-results "}>
+                            <a href="#"  >
+                            <div className={"panel-heading"}>
+                                <div className={"row panel-title"}>
+                                    {header}
+                                </div>
+                            </div>
+                        </a>
+                        <div className={"panel-body panel-animate"}>
+                            {body}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        if (this.props.matches  == null || this.props.matches == undefined || this.props.matches.length == 0) {
             return null;
         }
+        var matches = this.props.matches.sort(function(a,b){
+            return a.home.name.localeCompare(b.home.name);
+        });
         var css = 'panel-primary';
-        if (this.props.type == Status.UPCOMING)
-            css = 'panel-warning';
-
-        if (this.props.type == Status.PENDING)
-            css = 'panel-danger';
         var columns = DataGridUtil.adminColumns(this.props.season,TeamMatchStore.getTeamsOptions());
         return (
             <div className="row" >
@@ -235,16 +274,19 @@ var Results = React.createClass({
                         <div className={"panel-heading"}>
                             <div className="row panel-title">
                                 <div className="col-xs-10 col-md-7 p-title">
-                                    <span>{this.props.date}</span>
+                                    <span>{this.props.date} </span>
+                                    <button onClick={this.submit} type="button" className="btn btn-xs btn-default btn-responsive player-match-submit">
+                                        <span className="glyphicon glyphicon-ok-sign"> Submit</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                         <div className={"panel-body panel-animate panel-challenge-results panel-results-body "} >
                             <DataGrid
                                 idProperty='id'
-                                dataSource={this.props.matches}
+                                dataSource={matches}
                                 columns={columns}
-                                style={{height: ((this.props.matches.length) * 50 < 500 ? (this.props.matches.length ) * 50 : 500)}}
+                                style={{height: ((matches.length) * 50 < 500 ? (this.props.matches.length ) * 50 : 500)}}
                                 rowHeight={40}
                                 showCellBorders={true}
                                 filterable={false}

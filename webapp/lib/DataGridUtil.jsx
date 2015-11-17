@@ -462,7 +462,7 @@ var columns = {
         if (admin) {
              return (
                  <button onClick={TeamMatchStore.handleSubmit(data)} type="button" className="btn btn-xs btn-success btn-responsive team-match-add">
-                    <span className="glyphicon glyphicon-ok-sign"></span>
+                    <span className="glyphicon glyphicon-ok-sign"></span><span> Change Date</span>
                  </button>
              );
         } else {
@@ -471,15 +471,33 @@ var columns = {
     }
     },
     'playerResults' : {name: 'results', title: 'Results', width: 60, style: {minWidth: 60},  render: function(v,data) {
+        if (data.hasResults && !data.hasPlayerResults) {
+            return (
+                <div >
+                    <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
+                        <button type="button"
+                                className="btn btn-xs btn-danger btn-responsive  team-match-add">
+                            <span>!! Enter Results !!</span>
+                        </button>
+                    </Link>
+                </div>
+            )
+        }
+        if (data.hasResults && data.hasPlayerResults) {
+            return (
+                <div >
+                    <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
+                        <button type="button"
+                                className="btn btn-xs btn-success btn-responsive  team-match-add">
+                            <span> Results </span>
+                        </button>
+                    </Link>
+                </div>
+            )
+        }
         return (
-            <div className={!data.hasResults ?  "hide" : ""}>
-            <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
-             <button  type="button" className="btn btn-xs btn-success btn-responsive btn-default  team-match-add">
-                 <span> See Results </span>
-             </button>
-            </Link>
-            </div>
-        )
+            null
+        );
     }
     },
     'gameType' : {name: 'gameType', title: 'Game', width: 80, style: {minWidth: 80} , render: function(v,data) {

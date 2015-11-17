@@ -44,10 +44,12 @@ var SeasonStandings = React.createClass({
     componentWillMount: function() {
         if (this.props.admin) {
             TeamMatchStore.addListener('MATCHES', this._onChange);
+            TeamMatchStore.addListener('SUBMITTED', this._onChange);
             TeamMatchStore.addListener('loading', this._onChange);
         }
     },
     componentDidUmount: function() {
+        TeamMatchStore.addListener('SUBMITED', this._onChange);
         TeamMatchStore.remove('loading', this._onChange);
         TeamMatchStore.remove('MATCHES', this._onChange);
     },
