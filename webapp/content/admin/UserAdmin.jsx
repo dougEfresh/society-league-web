@@ -241,6 +241,7 @@ var UserModifyApp = React.createClass({
         this.state.user.firstName = firstName;
         this.state.user.lastName =  lastName;
         this.state.user.login = login;
+        this.forceUpdate();
     },
     reset: function() {
         var url = '/api/user/reset/request';
