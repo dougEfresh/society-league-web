@@ -143,33 +143,34 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
                 m.setAwayWins = newValue;
                 break;
             case 'playerHome':
-                members.home.forEach(function(tm){
-                    if (tm.id == newValue) {
-                        m.playerHome = tm;
+                members.home.forEach(function(t){
+                    if (t.id == newValue) {
+                        m.playerHome = t;
                     }
                 });
                 break;
             case 'playerHomePartner':
-                members.home.forEach(function(tm){
-                    if (tm.id == newValue) {
-                        m.playerHomePartner = tm;
+                members.home.forEach(function(t){
+                    if (t.id == newValue) {
+                        m.playerHomePartner = t;
                     }
                 });
                 break;
             case 'playerAway':
-                members.away.forEach(function(tm){
-                    if (tm.id == newValue) {
-                        m.playerAway = tm;
+                members.away.forEach(function(t){
+                    if (t.id == newValue) {
+                        m.playerAway = t;
                     }
                 });
                 break;
             case 'playerAwayPartner':
-                debugger;
-                members.away.forEach(function(tm){
-                    if (tm.id == newValue) {
-                        m.playerAwayPartner = tm;
+                members.away.forEach(function(t){
+                    if (t.id == newValue) {
+                        m.playerAwayPartner = t;
+                        console.log('Away Partner :' +  m.playerAwayPartner.name );
                     }
                 });
+
                 break;
         }
         this.emitChange('MATCHES');

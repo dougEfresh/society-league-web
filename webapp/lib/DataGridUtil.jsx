@@ -635,7 +635,7 @@ var adminPlayerColumns = function (teamMatch,members) {
         return (<select ref={'playerAwayPartner'}
                 onChange={PlayerMatchStore.onChange(data,'playerAwayPartner')}
                 className="form-control"
-                value={data.playerAwayPartner == null ? '-1' : data.playerAway.id}
+                value={data.playerAwayPartner == null ? '-1' : data.playerAwayPartner.id}
                 type={'select'}>
             {members.away}
         </select>);
