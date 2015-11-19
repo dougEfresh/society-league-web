@@ -82,6 +82,12 @@ var SeasonPlayerMatchResults = React.createClass({
                 }
             }
         });
+        var handicapScore = 0;
+        if (tm.homeRacks > tm.awayRacks) {
+            handicapScore = tm.homeRacks - homeWins;
+        } else {
+            handicapScore = tm.awayRacks - awayWins;
+        }
         return (
            <div className="row" >
                 <div className="col-xs-12 col-md-12" >
@@ -102,6 +108,9 @@ var SeasonPlayerMatchResults = React.createClass({
                                     </div>
                                     <div>
                                         <span stlye={{float: 'right'}} >{' Away Player Wins ' + awayWins }</span>
+                                    </div>
+                                     <div>
+                                        <span stlye={{float: 'right'}} >{' Handicap Racks ' + handicapScore }</span>
                                     </div>
                                 </div>
                             </div>
