@@ -73,6 +73,14 @@ var SeasonPlayerMatchResults = React.createClass({
         PlayerMatchStore.getPlayed().forEach(function(p){
             homeWins += parseInt(p.homeRacks);
             awayWins += parseInt(p.awayRacks);
+            if (p.scotch) {
+                if (p.homeRacks > p.awayRacks) {
+                    homeWins++;
+                }
+                if (p.awayRacks > p.homeRacks) {
+                    awayWins++;
+                }
+            }
         });
         return (
            <div className="row" >
