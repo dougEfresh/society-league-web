@@ -123,7 +123,14 @@ var MatchResults = React.createClass({
         var matches = TeamMatchStore.getMatches();
         if (matches == null)
             return rows;
+        var m = moment().subtract(60,'days');
         Object.keys(matches).forEach(function(md) {
+            if (this.props.season.challenge)  {
+                var momentDate = moment(md);
+                if (momentDate.isBefore(m)) {
+                    return;
+                }
+            }
             rows.push(<Results season={this.props.season} type={this.props.type} key={md} date={md} matches={matches[md]} />);
         }.bind(this));
 

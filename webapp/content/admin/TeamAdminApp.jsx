@@ -39,19 +39,19 @@ var TeamAdminApp = React.createClass({
     getData: function() {
         Util.getSomeData({
             url: '/api/season',
-            callback: function(d){this.setState({seasons: d})}.bind(this)
+            callback: function(d){this.setState({seasons: d})}.bind(this),
             module: 'TeamAdminApp',
             router: this.props.router
         });
         Util.getSomeData({
             url: '/api/team/active',
-            callback: function(d){this.setState({teams: d})}.bind(this)
+            callback: function(d){this.setState({teams: d})}.bind(this),
             module: 'TeamAdminApp',
             router: this.props.router
         });
         Util.getSomeData({
             url: '/api/user/active',
-            callback: function(d){this.setState({users: d})}.bind(this)
+            callback: function(d){this.setState({users: d})}.bind(this),
             module: 'TeamAdminApp',
             router: this.props.router
         });

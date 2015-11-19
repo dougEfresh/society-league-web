@@ -164,6 +164,7 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
                 });
                 break;
             case 'playerAwayPartner':
+                debugger;
                 members.away.forEach(function(tm){
                     if (tm.id == newValue) {
                         m.playerAwayPartner = tm;
