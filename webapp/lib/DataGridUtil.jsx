@@ -474,6 +474,9 @@ var columns = {
     }
     },
     'playerResults' : {name: 'results', title: 'Results', width: 60, style: {minWidth: 60},  render: function(v,data) {
+        if (data.forfeit) {
+            return null;
+        }
         if (data.hasResults && !data.hasPlayerResults) {
             return (
                 <div >
@@ -533,6 +536,9 @@ var columns = {
         }
         return <span>{gt}</span>
 
+    }
+    }, 'forfeit': {name: 'forfeit', title: 'Forfeit' , width: 80, render: function(v,data) {
+        return null;
     }}
 };
 
@@ -693,6 +699,7 @@ var adminColumns = function adminColumns(s,teams) {
             columns.homeRacks,
             awayTeam,
             columns.awayRacks,
+            //columns.forfeit,
             columns.deleteMatch
         ];
         if (s.nine) {

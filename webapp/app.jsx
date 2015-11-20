@@ -11,7 +11,7 @@ var ChallengeCancelApp= require('./content/challenge/ChallengeCancelApp.jsx');
 
 var UserAdminApp = require('./content/admin/UserAdmin.jsx');
 var SeasonAdminApp = require('./content/admin/SeasonAdmin.jsx');
-var TeamAdminApp = require('./content/admin/SeasonAdmin.jsx');
+var TeamAdminApp = require('./content/admin/TeamAdminApp.jsx');
 var ScheduleApp = require('./content/schedule/ScheduleApp.jsx');
 var ScheduleChallengeApp  = require('./content/schedule/ScheduleChallengeApp.jsx');
 

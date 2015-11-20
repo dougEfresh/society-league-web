@@ -13,9 +13,8 @@ var TeamAdminApp = React.createClass({
     mixins: [UserContextMixin,History],
     getInitialState: function() {
         return {
-            update: Date.now(),
-            seasons: [],
-            teams: []
+            teams: [],
+            selectedTeam: {id: '-1', name: 'New Team'}
         }
     },
     componentWillMount: function () {
@@ -26,90 +25,65 @@ var TeamAdminApp = React.createClass({
         this.getData();
     },
     componentWillReceiveProps: function (o, n) {
-        var now = Date.now();
-        if (now - this.state.update > 1000*60)
-            this.getData();
     },
     onChange: function (e) {
         e.preventDefault();
-        var q = this.props.location.query;
-        q.season = {id: e.target.value};
-        this.history.pushState(null, '/app/admin/seasons',q);
+        var t = null;
+        this.state.teams.forEach(function(team){
+            if (team.id == e.target.value) {
+                t = team;
+            }
+        });
+        this.setState({selectedTeam: t});
     },
     getData: function() {
         Util.getSomeData({
-            url: '/api/season',
-            callback: function(d){this.setState({seasons: d})}.bind(this),
-            module: 'TeamAdminApp',
-            router: this.props.router
-        });
-        Util.getSomeData({
             url: '/api/team/active',
-            callback: function(d){this.setState({teams: d})}.bind(this),
+            callback: function(d){
+                this.setState({teams: d.filter(function(e){ return !e.season.challenge})})}.bind(this),
             module: 'TeamAdminApp',
-            router: this.props.router
+            router: this.props.history
         });
-        Util.getSomeData({
-            url: '/api/user/active',
-            callback: function(d){this.setState({users: d})}.bind(this),
-            module: 'TeamAdminApp',
-            router: this.props.router
-        });
-
     },
     render: function () {
-        var seasons = this.state.seasons;
-        if (seasons.length == 0) {
+        var teams = this.state.teams;
+        if (teams.length == 0) {
             return null;
         }
         var options = [];
-        options.push(<option key={'-1'} value={'-1'}>{'New Season'}</option>);
-        seasons  = seasons.sort(function(a,b){
-            return b.startDate.localeCompare(a.startDate);
+        options.push(<option key={'-1'} value={'-1'}>{'New Team'}</option>);
+        teams  = teams.sort(function(a,b){
+            return a.name.localeCompare(b.name);
         });
-        seasons.forEach(function(s) {
+        teams.forEach(function(s) {
             options.push(<option key={s.id} value={s.id}>{s.name}</option>);
         });
-        var selectedSeason = this.props.location.query.season;
-        if (selectedSeason == undefined) {
-            selectedSeason = {id: '-1'}
-        }
-        this.state.seasons.forEach(function(s){
-            if (s.id == selectedSeason.id) {
-                selectedSeason = s;
-            }
-        });
+
         var select = (
             <select ref='season' onChange={this.onChange}
                     className="form-control"
-                    value={selectedSeason.id}
+                    value={this.state.selectedTeam.id}
                     type={'select'}>
                 {options}
             </select>);
         return (
             <div id="season-admin-app">
                 {select}
-                <SeasonModifyApp season={selectedSeason} divisions={this.state.divisions} />
+                <TeamModifyApp team={this.state.selectedTeam} />
             </div>
         );
     }
 });
 
-var SeasonModifyApp = React.createClass({
+var TeamModifyApp = React.createClass({
     mixins: [UserContextMixin,History],
     getInitialState: function() {
-        var s = this.props.season;
         return {
-            season : s,
-            submitted: false
+            team : this.props.team
         }
     },
     componentWillReceiveProps: function (n) {
-        if (n.season != undefined && n.season.id  != this.state.season.id) {
-            this.setState({
-                season: n.season
-            })
-        }
+        this.setState({team: n.team});
     },
     handleCreate: function() {
         if (this.state.season.id == undefined || this.state.season.id == '-1') {
@@ -144,63 +118,44 @@ var SeasonModifyApp = React.createClass({
         }.bind(this)
     },
     render: function () {
-        if (!this.getUser().admin){
+        if (!this.getUser().admin) {
             return (
                 <div className="alert alert-error" role="alert">
                     <h3>Go away you plebian</h3>
-                </div>);
-        }
-        var s = this.state.season;
-        var startDates = [];
-        var now = moment();
-        if (s.startDate == undefined) {
-            s.startDate = now.format('YYYY-MM-DDThh:mm:ss');
-        }
-        if (s.year == undefined) {
-            s.year = now.format('YYYY-MM-DD');
-        }
-        if (s.status == undefined) {
-            s.status = 'INACTIVE';
-        }
-        startDates.push(<option key={s.startDate} value={s.startDate}>{s.startDate.split('T')[0]}</option>);
-        for(var i = 1; i< 45; i++) {
-            var future = now.add(1,'days').format();
-            startDates.push(<option key={future} value={future}>{future.split('T')[0]}</option>);
-        }
-        var divisionOptions = [];
-        divisionOptions.push(<option key={'UNKNOWN'} value={'UNKONWN'}>Choose Division</option>);
-        this.props.divisions.forEach(function(d){
-            divisionOptions.push(<option key={d} value={d}>{d}</option>);
-        });
-        var header =  <h2><span className="fa fa-user-plus"></span>{s.name}</h2>;
-        if (this.state.submitted) {
-            setTimeout(function () {
-                this.setState({
-                    submitted: false
-                })
-            }.bind(this), 2000);
-            header =  (
-                <div className="alert alert-success" role="alert">
-                    {'Modified Season! ' + s.name}
                 </div>
             );
         }
         return (
            <div id="modify-user" className="panel panel-default">
                <div className="panel-heading">
-                   {header}
                </div>
                <div className="panel-body">
                    <form id='login' className="login-form form-signin form-horizontal">
                        <div className="form-group">
-                           <label htmlFor="year" className="col-sm-2 control-label">Year</label>
+                            <label htmlFor="firstName" className="col-sm-2 control-label">Name</label>
                            <div className="col-sm-10">
-                               <select ref='year' onChange={this.onChange('year')} className="form-control" value={s.year}  type={'select'}>
-                                   <option key={'2016'} value={'2016'}>2016</option>
-                                   <option key={'2015'} value={'2015'}>2015</option>
-                               </select>
+                               <input ref='name' id="name"
+                                      type="input" name="name"
+                                      value={this.state.team.name}
+                                      className="form-control" >
+                               </input>
                            </div>
                        </div>
+                       <div className="form-group">
+                           <div className="col-sm-offset-2 col-sm-10">
+                                <button id="create" type="button" onClick={this.handleCreate} className="btn btn-sm btn-primary btn-responsive">
+                                   <b>Create/Modify</b>
+                               </button>
+                           </div>
+                       </div>
+                   </form>
+               </div>
+           </div>
+           )
+       }
+});
+
+/*
                        <div className="form-group">
                            <label htmlFor="division" className="col-sm-2 control-label">Division</label>
                            <div className="col-sm-10">
@@ -238,22 +193,7 @@ var SeasonModifyApp = React.createClass({
                                </select>
                            </div>
                        </div>
-
-                       <div className="form-group">
-                           <div className="col-sm-offset-2 col-sm-10">
-                                <button id="create" type="button" onClick={this.handleCreate} className="btn btn-sm btn-primary btn-responsive">
-                                   <b>Create/Modify</b>
-                               </button>
-
-                           </div>
-                       </div>
-                   </form>
-               </div>
-           </div>
-           )
-       }
-});
-
+ */
 
 module.exports = TeamAdminApp;
 
