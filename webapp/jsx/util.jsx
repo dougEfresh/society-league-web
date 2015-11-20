@@ -1,6 +1,7 @@
 var moment = require('moment');
 var DataStore = require('./stores/DataStore.jsx');
 var Handicap = require('../lib/Handicap');
+var Qs = require('qs');
 
 /**
  * Figure out the next challenge day (which is Sunday)
@@ -38,7 +39,6 @@ function getData(url, callback, unauthCallback, module) {
                         unauthCallback();
                         return;
                     }
-
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
@@ -48,6 +48,7 @@ function getData(url, callback, unauthCallback, module) {
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
                 console.log('Redirecting to error');
+                defaultErrorHandler(null,xhr);
                 //this.redirect('error');
             }.bind(this)
         });
@@ -68,9 +69,6 @@ function getSomeData(options) {
                         options.unAuthCallback();
                         return;
                     }
-                    if (options.router) {
-                        options.router.pushState(null,'/login',{expired:'true'});
-                    }
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
@@ -81,7 +79,7 @@ function getSomeData(options) {
                 console.error(options.url, status, err.toString());
                 console.log('Redirecting to error');
                 if (options.errorCallBack) {
-                    options.errorCallBack(zhr,status,err);
+                    options.errorCallBack(xhr,status,err);
                     return;
                 }
                 defaultErrorHandler(options.router,xhr);
@@ -126,9 +124,6 @@ function sendSomeData(options) {
             statusCode: {
                 401: function () {
                     console.log('I Need to Authenticate');
-                     if (options.router) {
-                        options.router.pushState(null,'/login',{expired:'true'});
-                    }
                     window.location = '/#/login?expired=true'
                 }.bind(this)
 
@@ -139,10 +134,6 @@ function sendSomeData(options) {
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(options.url,url, status, err.toString());
-                if (xhr.responseText.indexOf("Invalid remember-me token") >= 0) {
-                    window.location = '/#/login?expired=true';
-                    return;
-                }
                 if (options.errCallback) {
                     options.errCallback();
                     return;
@@ -152,36 +143,6 @@ function sendSomeData(options) {
         })
     }
 
-function sendData(url, data, callback,errCallback) {
-        console.log("Sending data: " + JSON.stringify(data));
-        $.ajax({
-            async: true,
-            processData: false,
-            url: url,
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(data),
-            method: 'post',
-            statusCode: {
-                401: function () {
-                    console.log('I Need to Authenticate');
-                    window.location = '/#/login?expired=true'
-                }.bind(this)
-            },
-            success: function (d) {
-                console.log("Got " + JSON.stringify(d) + " back from server");
-                callback(d);
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error(url, status, err.toString());
-                if (errCallback) {
-                    errCallback();
-                }
-
-                //this.redirect('error');
-            }.bind(this)
-        })
-    }
 
 function postSomeData(options) {
         console.log("Sending data: " + JSON.stringify(options.data));
@@ -205,10 +166,6 @@ function postSomeData(options) {
             }.bind(this),
             error: function (xhr, status, err) {
                 console.warn(options.url, xhr.responseText);
-                if (xhr.responseText.indexOf("Invalid remember-me token") >= 0) {
-                    window.location = '/#/login?expired=true'
-                    return;
-                }
                 if (options.errCallback) {
                     options.errCallback();
                     return;
@@ -219,19 +176,20 @@ function postSomeData(options) {
 }
 
 function defaultErrorHandler(router,xhr) {
+    if (xhr.responseText.indexOf("Invalid remember-me token") >= 0) {
+        window.location = '/#/login?expired=true';
+        return;
+    }
+
     if (window.location.hash.indexOf("/error") >= 0)
         return;
-    if (router)
-        router.pushState(null, '/error', {err: xhr.responseText});
-    //else
-      //  window.location = '#/login';
+
 }
 
 
 module.exports = {
     nextChallengeDate: getNextChallengeDay,
     getData: getData,
-    sendData: sendData,
     getChallengeDates: getChallengeDates,
     getHandicap: getHandicap,
     formatDateTime: formatDateTime,
