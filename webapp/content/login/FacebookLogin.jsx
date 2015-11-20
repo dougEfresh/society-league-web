@@ -56,6 +56,9 @@ var LoginApp = React.createClass({
                                 </Link>
                             </div>
                         </div>
+                    <div style:{{marginTop: 10}}>
+                        {errorMsg}
+                    </div>
                 </form>
             </div>
             </div>
