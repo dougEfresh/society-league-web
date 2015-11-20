@@ -22,22 +22,31 @@ var ChallengeAcceptedApp = React.createClass({
             return null;
         }
         var challenge = this.state.challenge;
-        var m = moment(challenge.date);
+        var m = moment(challenge.acceptedSlot.timeStamp);
         var opponent = challenge.userOpponent;
         if (opponent.id == this.getUser().id) {
             opponent = challenge.userChallenger;
         }
-
+        var hc = "N/A";
+        opponent.handicapSeasons.forEach(function(hs){
+            if (hs.season.challenge) {
+                hc = Handicap.formatHandicap(hs.handicap);
+            }
+        });
         return (
               <tr>
                   <td className="datetime"> {m.format('MMM Do h:mm')}</td>
                   <td className="user"> <UserLink user={opponent} season={this.props.challenge.season} /> </td>
+                  <td className="handicap">
+                      {hc}
+                  </td>
                   <td className="challenge-actions">
                       <Link to={'/app/challenge/' + challenge.id + '/cancel'} >
                           <button type="button" className="btn btn-sm btn-danger btn-responsive challenge-upcoming-decline-button">
                               <span className="glyphicon glyphicon-remove"></span>
                           </button>
                       </Link>
+
                   </td>
               </tr>
         );
