@@ -181,9 +181,7 @@ function defaultErrorHandler(router,xhr) {
         return;
     }
 
-    if (window.location.hash.indexOf("/error") >= 0)
-        return;
-
+    window.location = '/#/login?expired=true';
 }
 
 
