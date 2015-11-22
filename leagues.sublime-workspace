@@ -3,10 +3,38 @@
 	{
 		"selected_items":
 		[
+			[
+				"list",
+				"list-style-type"
+			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "webapp/content/home/HomeApp.jsx",
+			"settings":
+			{
+				"buffer_size": 2579,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "webapp/css/society.css",
+			"settings":
+			{
+				"buffer_size": 13403,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "webapp/css/bootstrap-theme.css.map",
+			"settings":
+			{
+				"buffer_size": 43339,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -40,12 +68,17 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/jared/Desktop/Society/society-leagues-web/webapp"
+		"/Users/jared/Desktop/Society/society-leagues-web/webapp",
+		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content",
+		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/home",
+		"/Users/jared/Desktop/Society/society-leagues-web/webapp/css"
 	],
 	"file_history":
 	[
-		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/home/RecentMatches.jsx",
+		"/Users/jared/Desktop/Society/society-leagues-web/webapp/css/society.css",
+		"/Users/jared/Desktop/Society/society-leagues-web/webapp/home.html",
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/index.html",
+		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/home/RecentMatches.jsx",
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/challenge/sent/ChallengeSentApp.jsx",
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/home/HomeApp.jsx",
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/nav/ChallengeNav.jsx",
@@ -54,12 +87,11 @@
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/home/UpcomingChallenges.jsx",
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/challenge/group/GroupAction.jsx",
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/content/challenge/pending/ChallengePendingApp.jsx",
-		"/Users/jared/Desktop/Society/society-leagues-web/webapp/css/society.css",
 		"/Users/jared/Desktop/Society/society-leagues-web/webapp/css/font-awesome.min.css"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -73,6 +105,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"label",
+			"label-lose",
 			"request",
 			"@media"
 		],
@@ -92,8 +126,95 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "webapp/content/home/HomeApp.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2579,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2380,
+								2380
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 300.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "webapp/css/society.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13403,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1234,
+								1234
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 436.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "webapp/css/bootstrap-theme.css.map",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 43339,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -174,7 +295,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 324.0,
+	"side_bar_width": 267.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
