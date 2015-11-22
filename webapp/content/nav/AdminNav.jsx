@@ -33,6 +33,12 @@ var AdminNav = React.createClass({
           this.props.toggleSide(e);
           this.props.history.pushState(null,'/app/admin/users');
     },
+    goToTeams: function(e){
+          this.setState({toggleSide: false});
+          e.preventDefault();
+          this.props.toggleSide(e);
+          this.props.history.pushState(null,'/app/admin/teams');
+    },
     goToSchedule: function(s){
         return function(e){
             this.setState({toggleSide: false});
@@ -113,6 +119,9 @@ var AdminNav = React.createClass({
                     <li>
                         <a onClick={this.goToUsers} href="#">
                             <i className="fa fa-users"></i> Users
+                        </a>
+                         <a onClick={this.goToTeams} href="#">
+                            <i className="fa fa-users"></i> Teams
                         </a>
                     </li>
 

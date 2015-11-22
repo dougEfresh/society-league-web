@@ -8,13 +8,15 @@ var Router = require('react-router')
 var UserContextMixin = require('../../jsx/mixins/UserContextMixin.jsx');
 var Util = require('../../jsx/util.jsx');
 var firstBy = require('../../lib/FirstBy.js');
+var Select = require('react-super-select');
 
 var TeamAdminApp = React.createClass({
     mixins: [UserContextMixin,History],
     getInitialState: function() {
         return {
             teams: [],
-            selectedTeam: {id: '-1', name: 'New Team'}
+            users : [],
+            selectedTeam: {id: '-1', name: 'New Team', season: {id: '-1'}}
         }
     },
     componentWillMount: function () {
@@ -44,10 +46,17 @@ var TeamAdminApp = React.createClass({
             module: 'TeamAdminApp',
             router: this.props.history
         });
+          Util.getSomeData({
+            url: '/api/user/all',
+            callback: function(d){
+                this.setState({users: d})}.bind(this),
+            module: 'TeamAdminApp',
+            router: this.props.history
+        });
     },
     render: function () {
         var teams = this.state.teams;
-        if (teams.length == 0) {
+        if (teams.length == 0 || this.state.users.length == 0) {
             return null;
         }
         var options = [];
@@ -69,53 +78,92 @@ var TeamAdminApp = React.createClass({
         return (
             <div id="season-admin-app">
                 {select}
-                <TeamModifyApp team={this.state.selectedTeam} />
+                <TeamModifyApp users={this.state.users} team={this.state.selectedTeam} />
             </div>
         );
     }
 });
 
+
+
 var TeamModifyApp = React.createClass({
     mixins: [UserContextMixin,History],
     getInitialState: function() {
         return {
-            team : this.props.team
+            team : this.props.team,
+            members: [],
+            modifiedMembers: [],
+            users: this.props.users
         }
     },
     componentWillReceiveProps: function (n) {
+        if (n.team.id != '-1')
+         Util.getSomeData(
+            { url: '/api/stat/team/' + n.team.id + '/members',
+                callback: function(d) {this.setState({members: d})}.bind(this),
+                module: 'TeamStandings',
+                router: this.props.history}
+        );
         this.setState({team: n.team});
     },
+    componentDidMount: function() {
+        if (this.state.team && this.state.team.id != '-1')
+         Util.getSomeData(
+            { url: '/api/stat/team/' + this.state.team.id + '/members',
+                callback: function(d) {this.setState({members: d})}.bind(this),
+                module: 'TeamAdmin',
+                router: this.props.history}
+        );
+    },
     handleCreate: function() {
-        if (this.state.season.id == undefined || this.state.season.id == '-1') {
-            this.state.season.id = null;
-            this.handleSubmit('create');
-            return;
-        }
-        this.handleSubmit('modify');
+        this.handleSubmit();
     },
-    handleSubmit: function(type) {
-        var s = this.props.season;
-        Util.sendData('/api/season/admin/' + type,s,function(d){
-            this.setState({
-                season: d,
-                submitted: true
+    handleSubmit: function() {
+        var t = {
+            id: this.state.team.id,
+            name: this.state.team.name,
+            season: {id: this.state.team.season.id},
+            members : {id: null, captain: null, members: []}
+        };
+        this.state.modifiedMembers.forEach(function(m) {
+            t.members.members.push({id: m.id});
+        }.bind(this));
+        Util.postSomeData(
+            {url: '/api/team/admin/modify',data: t,callback: function(d){this.setState({team: d}) ; this.componentDidMount()}.bind(this)
             });
-        }.bind(this),
-            function () { this.history.pushState(null, '/app/error');}
-        ).bind(this);
     },
-    onChange: function(type){
-        return function() {
-            if (!this.refs.hasOwnProperty(type)) {
-                console.warn('Could not find prop ' + type + ' on refs');
+    onChange: function(e){
+        e.preventDefault();
+        this.state.team.name = e.target.value;
+        this.forceUpdate();
+    },
+    getData: function() {
+        var sel = [];
+        this.props.users.forEach(function(m){
+            if (!m.active)
                 return;
-            }
-            this.state.season[type] = React.findDOMNode(this.refs[type]).value;
-            this.setState({
-                season:  this.state.season,
-                changed: true
-            });
-        }.bind(this)
+            var hasSeason = false;
+            m.handicapSeasons.forEach(function(hs) {
+                if (hs.season.id == this.props.team.season.id)
+                hasSeason = true;
+            }.bind(this));
+
+            if (hasSeason && m.id != undefined )
+                sel.push({id: m.id, name: m.name, size:"small"});
+        }.bind(this));
+        return sel;
+    },
+    getMembers: function() {
+        var mem = [];
+      this.state.members.forEach(function(m) {
+          if (m.user.real)
+              mem.push({id: m.user.id, name: m.user.name, size: "small"});
+      }.bind(this));
+        return mem;
+    },
+    handleChange: function(option) {
+        this.setState({modifiedMembers: option});
+        console.log(JSON.stringify(option));
     },
     render: function () {
         if (!this.getUser().admin) {
@@ -125,6 +173,11 @@ var TeamModifyApp = React.createClass({
                 </div>
             );
         }
+        var sel = <Select placeholder="Users"
+                          dataSource={this.getData()}
+                          initialValue={this.getMembers()}
+                          tags={true}
+                          onChange={this.handleChange}   />;
         return (
            <div id="modify-user" className="panel panel-default">
                <div className="panel-heading">
@@ -137,10 +190,12 @@ var TeamModifyApp = React.createClass({
                                <input ref='name' id="name"
                                       type="input" name="name"
                                       value={this.state.team.name}
+                                      onChange={this.onChange}
                                       className="form-control" >
                                </input>
                            </div>
                        </div>
+                       {sel}
                        <div className="form-group">
                            <div className="col-sm-offset-2 col-sm-10">
                                 <button id="create" type="button" onClick={this.handleCreate} className="btn btn-sm btn-primary btn-responsive">
