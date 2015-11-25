@@ -91,7 +91,7 @@ var ScheduleApp = React.createClass({
             </div>
             )
         }
-
+        var pendingMatches = TeamMatchStore.getPending();
         //
         return (
             <div id="schedule-app">
@@ -111,6 +111,7 @@ var ScheduleApp = React.createClass({
                 </div>
                 <MatchResults season={this.state.season}  params={this.props.params} history={this.props.history} type={Status.PENDING} />
                 <PlayerMatchResults season={this.state.season} params={this.props.params} history={this.props.history}  />
+                <PendingMatches matches={pendingMatches} />
             </div>
         );
     }
@@ -352,5 +353,101 @@ var Results = React.createClass({
         );
     }
 });
+
+var PendingMatches = React.createClass({
+    getInitialState: function() {
+        return {
+            toggle: true
+        }
+    },
+    getPending: function() {
+        var rows = [];
+        if (!this.state.toggle) {
+            return null;
+        }
+        Object.keys(this.props.matches).forEach(function(md) {
+            rows.push(<UpcomingWeeklyMatch key={md} date={md} matches={this.props.matches[md]}/>);
+        }.bind(this));
+        return rows;
+    },
+    render: function() {
+        if (this.props.matches == null)
+            return null;
+        var toggleHeading = function(e) {e.preventDefault() ;this.setState({toggle: !this.state.toggle})}.bind(this);
+        return (
+        <div className="panel panel-default panel-schedule">
+                <a onClick={toggleHeading} href='#'>
+                    <div className={"panel-heading" +(this.state.toggle ? "" : " panel-closed")}>
+                        <div className="row panel-title">
+                            <div className="col-xs-10 col-md-11 p-title">
+                                <span className="fa fa-exclamation-triangle pending-schedule-warning" ></span> <span> Pending Matches</span>
+                            </div>
+                            <div className="col-xs-2 col-md-1 caret-title">
+                                <span className={"fa fa-caret-" + (this.state.toggle ? "down" : "left")}></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div className={"panel-body panel-schedule-body" + (this.state.toggle ? "" : " hide")} >
+                    <div className="row schedule-row">
+                        {this.getPending()}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+});
+var UpcomingWeeklyMatch = React.createClass({
+    mixins: [UserContextMixin],
+    renderMatches: function() {
+        var rows = [];
+        var tId = this.props.team == undefined ? "0" : this.props.team.id;
+        this.props.matches.forEach(function(m) {
+            rows.push(
+                <tr key={m.id}>
+                    <td className={"schedule-home " + (tId == m.home.id ? " team-active" : "")}>
+                        <TeamLink team={m.home}/>
+                    </td>
+                    <td className="schedule-vs">
+                        <span className="vs"> Vs. </span>
+                    </td>
+                    <td className={"schedule-away " + (tId == m.away.id ? " team-active" : "")}>
+                        <TeamLink team={m.away}/>
+                    </td>
+                </tr>
+            )}.bind(this));
+        return rows;
+    },
+
+    render: function() {
+        var season = this.props.matches[0].season.legacyId;
+        var nm = this.props.matches[0].matchNumber;
+        var scoresheets = (<a className={this.getUser().admin ? "" : "hide"}
+                              href={"https://admin.societybilliards.com/demo/admin/sheets/sheets-season.php?season_id=" + season + "&week=" + nm}>
+            <button className="btn btn-sm btn-primary">Scoresheets</button>
+        </a>);
+        return (
+            <div className="col-xs-12 col-md-4">
+          <div className="panel panel-default panel-schedule-week">
+              <div className="panel-heading panel-schedule-week-title">
+                  {Util.formatDateTime(this.props.date) } {scoresheets}
+              </div>
+              <div className={"panel-body panel-animate"} >
+                  <div className="table-responsive">
+                      <table className="table schedule-table schedule-table-upcoming" >
+                          <thead></thead>
+                          <tbody>
+                          {this.renderMatches()}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+            </div>
+        );
+    }
+});
+
+
 
 module.exports =  ScheduleApp;
