@@ -24,12 +24,14 @@ for(var i = 0; i<10 ; i++) {
 }
 
 var TeamMatchStore = require('../../jsx/stores/TeamMatchStore.jsx');
+var PlayerMatchResults = require('./SeasonPlayerMatchResults.jsx');
 
 var ScheduleApp = React.createClass({
     mixins: [UserContextMixin],
     getInitialState: function() {
         return {
             loading: true,
+            selectedDate : this.props.params.date,
             //matchHelper: new MatchHelper(this,this.props.params.seasonId),
             season: null
         }
@@ -51,7 +53,8 @@ var ScheduleApp = React.createClass({
         TeamMatchStore.remove('loading',this._onLoadingChange);
     },
     componentWillReceiveProps: function (n) {
-        if (n.params.seasonId != this.props.seasonId) {
+        if (n.params.seasonId != this.props.params.seasonId) {
+            debugger;
             TeamMatchStore.init(n.params.seasonId);
             Util.getSomeData({
                 url: '/api/season/' + n.params.seasonId,
@@ -93,7 +96,7 @@ var ScheduleApp = React.createClass({
         return (
             <div id="schedule-app">
                 <div className="row">
-                <div className="col-xs-12 col-md-9 col-lg-10">
+                <div className="col-xs-12 col-md-7 col-lg-6">
                     <div className="panel panel-default panel-leaders">
                             <div className={"panel-heading"}>
                                 <div className="row panel-title">
@@ -106,7 +109,8 @@ var ScheduleApp = React.createClass({
                     </div>
                 </div>
                 </div>
-                <MatchResults season={this.state.season}  params={this.props.params} type={Status.PENDING} />
+                <MatchResults season={this.state.season}  params={this.props.params} history={this.props.history} type={Status.PENDING} />
+                <PlayerMatchResults season={this.state.season} params={this.props.params} history={this.props.history}  />
             </div>
         );
     }
@@ -115,26 +119,28 @@ var ScheduleApp = React.createClass({
 var MatchResults = React.createClass({
     getInitialState: function() {
         return {
-            matches: null
+            matches: null,
+            selectedDate: this.props.params.date
         }
     },
     getMatches: function() {
-        var rows = [];
         var matches = TeamMatchStore.getMatches();
         if (matches == null)
-            return rows;
-        var m = moment().subtract(60,'days');
-        Object.keys(matches).forEach(function(md) {
-            if (this.props.season.challenge)  {
-                var momentDate = moment(md);
-                if (momentDate.isBefore(m)) {
-                    return;
-                }
-            }
-            rows.push(<Results season={this.props.season} type={this.props.type} key={md} date={md} matches={matches[md]} />);
-        }.bind(this));
+            return null;
+        var m = matches[this.state.selectedDate];
+        if (m == null || m == undefined)
+            return null;
 
-        return ( rows );
+        return <Results season={this.props.season}
+                               type={this.props.type}
+                               key={this.state.selectedDate}
+                               date={this.state.selectedDate}
+                        selected={this.props.params.teamMatchId}
+                               matches={matches[this.state.selectedDate]} />;
+
+    },
+    componentWillReceiveProps: function (n) {
+        this.setState({selectedDate: n.params.date});
     },
     componentWillMount: function() {
         TeamMatchStore.addListener('loading',this._onChange);
@@ -153,6 +159,10 @@ var MatchResults = React.createClass({
     addNew: function(e) {
         e.preventDefault();
         TeamMatchStore.addNew(this.props.params.seasonId);
+    },
+    changeDate: function(e) {
+        e.preventDefault();
+        this.props.history.pushState(null,'/app/season/' + this.props.params.seasonId + '/team/results/' +  e.target.value);
     },
     render: function() {
         if (TeamMatchStore.isLoading()) {
@@ -179,6 +189,13 @@ var MatchResults = React.createClass({
                 </div>
             )
         }
+        if (!this.state.selectedDate) {
+            this.state.selectedDate = Object.keys(TeamMatchStore.getMatches())[0];
+        }
+        var dateOptions = [];
+        Object.keys(TeamMatchStore.getMatches()).forEach(function(md) {
+            dateOptions.push(<option key={md} value={md}>{md}</option>);
+        });
 
         var title = ' Results '  + this.props.season.displayName;
         var add =  <div className="float-right col-xs-4 col-md-4 p-title">
@@ -186,14 +203,27 @@ var MatchResults = React.createClass({
                 <span className={"glyphicon glyphicon-plus"}></span>
             </button>
         </div>;
+
+        var selectDate = <select ref='racks'
+                        onChange={this.changeDate}
+                        className="form-control"
+                        value={this.state.selectedDate}
+                        type={'select'}>
+                    {dateOptions}
+                </select>;
         return (
             <div className="row">
                 <div className="col-xs-12 col-md-12">
                     <div className={"panel panel-default panel-challenge"}>
                     <div className={"panel-heading"}>
                         <div className="row panel-title">
-                            <div className="col-xs-10 col-md-7 p-title">
+                            <div className="col-xs-12 col-md-4 p-title">
                                 <span>{title}</span>
+                            </div>
+                            <div className="col-xs-12 col-md-5 p-title">
+                                {selectDate}
+                            </div>
+                            <div className="col-xs-12 col-md-3 p-title">
                                 {add}
                             </div>
                         </div>
@@ -269,9 +299,12 @@ var Results = React.createClass({
         if (this.props.matches  == null || this.props.matches == undefined || this.props.matches.length == 0) {
             return null;
         }
+        this.props.matches.forEach(function(m) {
+            m.selected = this.props.selected == m.id;
+        }.bind(this));
         var matches = this.props.matches.sort(function(a,b){
             return a.home.name.localeCompare(b.home.name);
-        });
+        }.bind(this));
         var css = 'panel-primary';
         var columns = DataGridUtil.adminColumns(this.props.season,TeamMatchStore.getTeamsOptions());
         return (

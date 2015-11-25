@@ -105,6 +105,12 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
             case 'homeRacks':
                 m.homeRacks = newValue;
                 break;
+             case 'homeForfeits':
+                m.homeForfeits = newValue;
+                break;
+            case 'awayForfeits':
+                m.awayForfeits = newValue;
+                break;
             case 'awayRacks':
                 m.awayRacks = newValue;
                 break;

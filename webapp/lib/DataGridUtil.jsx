@@ -18,7 +18,7 @@ gameType.push(<option key='8' value = 'MIXED_EIGHT'>{'8'}</option>);
 gameType.push(<option key='9' value = 'MIXED_NINE'>{'9'}</option>);
 
 var matchNumberOptions = [];
-for(var i = 1; i<30 ; i++) {
+for(var i = 1; i<39 ; i++) {
     matchNumberOptions.push(<option key={i} value={i} >{i}</option>)
 }
 for(var i = 0; i<6 ; i++) {
@@ -439,6 +439,31 @@ var columns = {
     'challengeOpponent': challengeOpponent,
     'homeRacks' : homeRacks,
     'awayRacks' : awayRacks,
+    'homeForfeits' :  {name: 'homeForfeits', title: 'H Forfeits ', width: 85, filterable: false ,
+        render:  function(v,data){
+            return (<select ref='racks'
+                        onChange={TeamMatchStore.onChange(data,'homeForfeits')}
+                        className="form-control"
+                        value={data.homeForfeits}
+                        type={'select'}>
+                    {nineBallRacks}
+                </select>);
+        }
+    },
+    'awayForfeits' :  {name: 'awayForfeits', title: 'A Forfeits ', width: 85, filterable: false ,
+          render:  function(v,data){
+            return (<select ref='racks'
+                        onChange={TeamMatchStore.onChange(data,'awayForfeits')}
+                        className="form-control"
+                        value={data.awayForfeits}
+                        type={'select'}>
+                    {nineBallRacks}
+                </select>);
+        }
+    },
+    'handicapRacks' :  {name: 'handicapRacks', title: 'HC Racks ', width: 85, filterable: false ,
+        render: function(v,data){return (<span>{data.handicapRacks}</span>); }
+    },
     'setHomeWins' : setHomeWins,
     'setAwayWins' : setAwayWins,
     'deleteMatch' :  {name: 'matchDelete', title: '', width: 60, style: {minWidth: 60}, render: function(v,data) {
@@ -464,7 +489,7 @@ var columns = {
     'submit' : {name: 'submit', title: '', width: 60, style: {minWidth: 60},  render: function(v,data) {
         if (admin) {
              return (
-                 <button onClick={TeamMatchStore.handleSubmit(data)} type="button" className="btn btn-xs btn-success btn-responsive team-match-add">
+                 <button onClick={TeamMatchStore.handleSubmit(data)} type="button" className="btn btn-xs btn-primary btn-responsive team-match-add">
                     <span className="glyphicon glyphicon-ok-sign"></span><span> Change Date</span>
                  </button>
              );
@@ -480,7 +505,7 @@ var columns = {
         if (data.hasResults && !data.hasPlayerResults) {
             return (
                 <div >
-                    <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
+                    <Link to={'/app/season/' + data.season.id + '/team/results/'  + moment(data.matchDate).format('YYYY-MM-DD')  +'/playerresults/' +data.id}>
                         <button type="button"
                                 className="btn btn-xs btn-danger btn-responsive  team-match-add">
                             <span>!! Enter Results !!</span>
@@ -490,12 +515,15 @@ var columns = {
             )
         }
         if (data.hasResults && data.hasPlayerResults) {
-            
+            var btn = "btn-primary";
+            if (data.selected)  {
+                btn = "btn-success";
+            }
             return (
                 <div >
-                    <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
+                    <Link to={'/app/season/' + data.season.id + '/team/results/' + moment(data.matchDate).format('YYYY-MM-DD')  +'/playerresults/' +data.id}>
                         <button type="button"
-                                className="btn btn-xs btn-success btn-responsive  team-match-add">
+                                className={"btn btn-xs " + btn + " btn-responsive  team-match-add"}>
                             <span> Results </span>
                         </button>
                     </Link>
@@ -506,7 +534,7 @@ var columns = {
         if (data.hasResults) {
              return (
                 <div >
-                    <Link to={'/app/season/' + data.season.id + '/results/' + data.id}>
+                    <Link to={'/app/season/' + data.season.id + '/team/results/'  + moment(data.matchDate).format('YYYY-MM-DD')  +'/playerresults/' +data.id}>
                         <button type="button"
                                 className="btn btn-xs btn-danger btn-responsive  team-match-add">
                             <span>!! Enter Results !!</span>
@@ -697,9 +725,12 @@ var adminColumns = function adminColumns(s,teams) {
             dateColumn,
             homeTeam,
             columns.homeRacks,
+            columns.homeForfeits,
             awayTeam,
             columns.awayRacks,
+            columns.awayForfeits,
             //columns.forfeit,
+            columns.handicapRacks,
             columns.deleteMatch
         ];
         if (s.nine) {

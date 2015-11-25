@@ -109,6 +109,8 @@ var routes = (
             <Route path="season/:seasonId/leaders" component={SeasonApp} ></Route>
             <Route path="season/:seasonId/leaders/:userId" component={SeasonApp} ></Route>
             <Route path="season/:seasonId/team/results" component={SeasonTeamMatchResults} ></Route>
+            <Route path="season/:seasonId/team/results/:date" component={SeasonTeamMatchResults} ></Route>
+            <Route path="season/:seasonId/team/results/:date/playerresults/:teamMatchId" component={SeasonTeamMatchResults} ></Route>
             <Route path="season/:seasonId/results/:teamMatchId" component={SeasonPlayerMatchResults} ></Route>
 
             <Route path="schedule/:seasonId" component={ScheduleApp} ></Route>

@@ -35,8 +35,10 @@ var SeasonPlayerMatchResults = React.createClass({
         }
     },
     componentDidMount: function () {
-        PlayerMatchStore.init(this.props.params.teamMatchId);
-        DataGridUtil.adminMode();
+        if (this.props.params.teamMatchId) {
+            PlayerMatchStore.init(this.props.params.teamMatchId);
+            DataGridUtil.adminMode();
+        }
     },
     componentWillMount: function() {
         PlayerMatchStore.addListener('loading',this._onChange);
@@ -48,7 +50,7 @@ var SeasonPlayerMatchResults = React.createClass({
         PlayerMatchStore.remove('loading',this._onChange);
     },
     componentWillReceiveProps: function (n) {
-        if (n.params.teamMatchId != this.props.params.teamMatchId) {
+        if (n.params.teamMatchId != undefined && n.params.teamMatchId != this.props.params.teamMatchId) {
             PlayerMatchStore.init(n.params.teamMatchId);
         }
     },
@@ -64,6 +66,9 @@ var SeasonPlayerMatchResults = React.createClass({
         PlayerMatchStore.addNew();
     },
     render: function() {
+        if (!this.props.params.teamMatchId) {
+            return null;
+        }
         if (PlayerMatchStore.isLoading()) {
             return <h2>Loading....</h2>
         }
@@ -82,12 +87,18 @@ var SeasonPlayerMatchResults = React.createClass({
                 }
             }
         });
-        var handicapScore = 0;
-        if (tm.homeRacks > tm.awayRacks) {
-            handicapScore = tm.homeRacks - homeWins;
-        } else {
-            handicapScore = tm.awayRacks - awayWins;
-        }
+        var matches =  PlayerMatchStore.getPlayed().sort(function(a,b) {
+            if (a.matchNumber == b.matchNumber )
+                return 0;
+            if (a.matchNumber > b.matchNumber) {
+                return 1;
+            } else {
+                return -1
+            }
+        });
+        var handicapScore = tm.handicapRacks;
+        var homeFeits = tm.homeForfeits;
+        var awayFeits = tm.awayForfeits;
 
         return (
            <div className="row" >
@@ -108,20 +119,23 @@ var SeasonPlayerMatchResults = React.createClass({
                                         <span>{'Home Player Wins ' + homeWins }</span>
                                     </div>
                                     <div>
-                                        <span stlye={{float: 'right'}} >{' Away Player Wins ' + awayWins }</span>
-                                    </div>
-                                     <div>
-                                        <span stlye={{float: 'right'}} >{' Handicap Racks ' + handicapScore }</span>
+                                        <span stlye={{float: 'right'}} >{' Home Got Forfeits ' + homeFeits }</span>
                                     </div>
                                     <div>
-                                        <span stlye={{float: 'right'}} >{' Forfeits ' + tm.forfeits }</span>
+                                        <span stlye={{float: 'right'}} >{' Away Player Wins ' + awayWins }</span>
+                                    </div>
+                                    <div>
+                                        <span stlye={{float: 'right'}} >{' Away Got Forfeits ' + awayFeits }</span>
+                                    </div>
+                                    <div>
+                                        <span stlye={{float: 'right'}} >{' Handicap Racks ' + handicapScore }</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className={"panel-body panel-animate panel-challenge-results panel-results-body "} >
                             <DataGrid
-                                dataSource={PlayerMatchStore.getPlayed()}
+                                dataSource={matches}
                                 columns={DataGridUtil.adminPlayerColumns(tm,PlayerMatchStore.getMemberOptions())}
                                 columnMinWidth={50}
                                 //onColumnOrderChange={this.handleColumnOrderChange}

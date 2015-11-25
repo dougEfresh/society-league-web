@@ -7,6 +7,7 @@ var matches = [];
 var members;
 var memberOptions;
 var React = require('react/addons');
+var TeamMatchStore = require('./TeamMatchStore.jsx');
 
 var defaultState = function() {
     matches = [];
@@ -104,7 +105,7 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
         Util.postSomeData({
             url: '/api/playerresult/admin/modify',
             data: data,
-            callback: function(d) {this.init(matches[0].teamMatch.id)}.bind(this)
+            callback: function(d) {this.init(matches[0].teamMatch.id) ; TeamMatchStore.init(d[0].season.id);}.bind(this)
         });
     },
     handleUpdate: function(d,newValue,type) {
@@ -193,6 +194,7 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
                 url: '/api/playerresult/admin/delete/' + d.id,
                 callback: function(data) {
                     this.init(d.teamMatch.id);
+                    TeamMatchStore.init(this.getTeamMatch().season.id);
                 }.bind(this),
                 module: 'TeamMatchDelete'
             });
