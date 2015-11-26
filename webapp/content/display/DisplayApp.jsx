@@ -187,19 +187,6 @@ var DisplayApp = React.createClass({
         if (this.state.activeSeason == null)
             return null;
         var ss = <SeasonStandings onTeamClick={this.changeTeam} activeTeam={this.state.activeTeam} notitle={true} season={this.state.activeSeason} />;
-        /*
-        if (!this.state.toggleSeason) {
-            setTimeout(function(e){
-                this.setState({hideSeasonStandings: true});
-            },2040)
-        } else {
-            this.state.hideSeasonStandings = false;
-        }
-
-        if (this.state.hideSeasonStandings){
-            ss = null;
-        }
-        */
         var loading = this.state.showLoading;
         if (this.state.showLoading ) {
             this.state.showLoading = false;

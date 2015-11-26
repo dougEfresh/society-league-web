@@ -33,7 +33,6 @@ var ResultEight = React.createClass({
             DataGridUtil.columns.opponentTeam,
             DataGridUtil.columns.teamMemberHandicap
         ];
-
         if (this.state.results.length == 0) {
             return (
                 <div className="table-responsive">

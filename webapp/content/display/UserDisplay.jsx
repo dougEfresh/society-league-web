@@ -44,9 +44,10 @@ var UserDisplay = React.createClass({
                         if (t < 900) {
                             setTimeout(function() {
                                 this.setState({stats: d.stats, results: d.results, loading: false});
-                            }.bind(this),800);
+                            }.bind(this),500);
+                        } else {
+                            this.setState({stats: d.stats, results: d.results, loading: false});
                         }
-
                     }.bind(this),
                     module: 'UserDisplayStats'
                 }
@@ -58,7 +59,6 @@ var UserDisplay = React.createClass({
             this.setState({hide: true});
             return;
         }
-
         if (this.props.params.userId == undefined || n.params.userId != this.props.params.userId) {
             this.setState({loading: true, hide: false, stats: null, results: []});
             this.getData(n);
@@ -76,7 +76,6 @@ var UserDisplay = React.createClass({
         var body = <div style={{height: 200}} className="text-center loading">
             <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
         </div>;
-
         if (!this.state.loading) {
             header =
                 <div>

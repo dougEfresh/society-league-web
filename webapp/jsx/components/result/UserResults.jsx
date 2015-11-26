@@ -68,7 +68,7 @@ var SeasonResults =  React.createClass({
         } else if (this.props.season.scramble) {
             return <ResultScramble stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />;
         }
-        return <ResultEight stats={this.props.stats} season={this.props.season} results={this.props.results}limit={this.props.limit}  />;
+        return <ResultEight stats={this.props.stats} season={this.props.season} results={this.props.results} limit={this.props.limit}  />;
     }
 });
 
