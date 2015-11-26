@@ -14,6 +14,7 @@ var ScheduleAddTeamMatch = require('../schedule/ScheduleAddTeamMatch.jsx');
 var SeasonStandings = require('../season/SeasonStandings.jsx');
 var teamOptions = [];
 var options=[];
+var SeasonLeaders = require('../season/SeasonLeaders.jsx');
 
 var DataGrid = require('../../lib/DataGrid.jsx');
 var DataGridUtil = require('../../lib/DataGridUtil.jsx');
@@ -66,6 +67,14 @@ var ScheduleApp = React.createClass({
     _onLoadingChange : function() {
         this.setState({loading: TeamMatchStore.isLoading()})
     },
+    changeUser: function(u) {
+        return function(e){
+            e.preventDefault();
+            console.log('Changing to ' + u.name);
+            this.state.toggleLeaders = false;
+            this.props.history.pushState(null,'/app/season/' + this.props.params.seasonId + '/leaders/' + u.id)
+        }.bind(this)
+    },
     render: function() {
         if (this.state.season == null) {
             var header = <div className="col-xs-10 col-md-11 p-title">Loading...</div>;
@@ -93,6 +102,10 @@ var ScheduleApp = React.createClass({
         }
         var pendingMatches = TeamMatchStore.getPending();
         //
+        var ss = <SeasonStandings admin={true} notitle={true} params={this.props.params} season={this.state.season} />
+        if (this.state.season.challenge) {
+            ss = <SeasonLeaders onUserClick={this.changeUser} params={this.props.params}/>;
+        }
         return (
             <div id="schedule-app">
                 <div className="row">
@@ -104,7 +117,7 @@ var ScheduleApp = React.createClass({
                                 </div>
                             </div>
                         <div className={"panel-body panel-animate"} >
-                            <SeasonStandings admin={true} notitle={true} params={this.props.params} season={this.state.season} />
+                            {ss}
                         </div>
                     </div>
                 </div>

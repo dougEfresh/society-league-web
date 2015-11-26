@@ -23,7 +23,6 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
             url: '/api/teammatch/season/' + seasonId  + '/all',
             callback: function (d) {
                 matches = d;
-                this.emitChange('loading');
                 this.emitChange('MATCHES');
             }.bind(this),
             module: 'Upcoming'
@@ -201,8 +200,8 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                             this.emitChange(d.split('T')[0]);
                         }.bind(this));
                         this.emitChange('SUBMITTED');
+                        this.emitChange('MATCHES');
                     }.bind(this)
-
                 })
 
     },

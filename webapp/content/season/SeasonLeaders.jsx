@@ -12,6 +12,7 @@ var Handicap = require('../../lib/Handicap');
 var SortUtil = require('../../lib/SortUtil');
 var DataGridUtil = require('../../lib/DataGridUtil.jsx');
 var DataGrid = require('../../lib/DataGrid.jsx');
+var TeamMatchStore = require('../../jsx/stores/TeamMatchStore.jsx');
 
 var SeasonLeaders = React.createClass({
     mixins: [UserContextMixin],
@@ -27,6 +28,9 @@ var SeasonLeaders = React.createClass({
             loading: true,
             toggleLeaders: true
         }
+    },
+    _onChange: function() {
+        this.getData(this.props.params.seasonId);
     },
     getData: function(id) {
         var cb = function (d) {
@@ -45,6 +49,14 @@ var SeasonLeaders = React.createClass({
             module: 'SeasonLeaders',
             router: this.props.history
         })
+    },
+    componentDidMount: function() {
+        TeamMatchStore.addListener('MATCHES', this._onChange);
+        TeamMatchStore.addListener('SUBMITTED', this._onChange);
+    },
+    componentDidUmount: function() {
+        TeamMatchStore.remove('SUBMITTED', this._onChange);
+        TeamMatchStore.remove('MATCHES', this._onChange);
     },
     componentDidMount: function () {
         this.getData(this.props.params.seasonId);
