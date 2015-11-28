@@ -136,8 +136,8 @@ var UserModifyApp = React.createClass({
         e.preventDefault();
         var hs = [];
         this.state.user.handicapSeasons.forEach(function(h){
-            if (h.handicap != 'NA')
-                hs.push(h);
+            //if (h.handicap != 'NA')
+            hs.push(h);
         });
         this.state.user.handicapSeasons = hs;
         this.setState({loading: true});
