@@ -258,16 +258,16 @@ var Results = React.createClass({
         }
     },
     componentWillMount: function() {
-        TeamMatchStore.addListener(this.props.date,this._onChange);
-        TeamMatchStore.addListener(this.props.date+ '-loading',this._onLoading);
+        TeamMatchStore.addListener('loading',this._onLoading);
         TeamMatchStore.addListener('MATCHES',this._onChange);
+        TeamMatchStore.addListener('SUBMITTED',this._onChange);
     },
     componentDidMount: function() {
     },
     componentDidUnmount: function() {
-        TeamMatchStore.remove(this.props.date,this._onChange);
-        TeamMatchStore.remove(this.props.date + '-loading',this._onLoading);
+        TeamMatchStore.remove('loading',this._onLoading);
         TeamMatchStore.remove('MATCHES',this._onChange);
+        TeamMatchStore.remove('SUBMITTED',this._onChange);
     },
     _onLoading: function() {
         this.setState({

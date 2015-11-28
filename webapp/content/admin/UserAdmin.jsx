@@ -210,9 +210,9 @@ var UserModifyApp = React.createClass({
             }
             var options = [];
             var s = hs.season;
-            options.push(<option key={'NA-' + s.id} value={'NA'}>{'NA'}</option>);
+            options.push(<option key={'NA'} value={'NA'}>{'NA'}</option>);
             this.props.handicaps.forEach(function(h) {
-                options.push(<option key={h + '-' + s.id} value={h}>{h}</option>);
+                options.push(<option key={h} value={h}>{h}</option>);
             });
             var select = (
                 <select ref={'handicap-'+ s.id} onChange={this.handicapChange(hs)}

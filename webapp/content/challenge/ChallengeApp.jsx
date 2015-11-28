@@ -12,6 +12,7 @@ var ChallengePendingApp = require('../challenge/ChallengePendingApp.jsx');
 var ChallengeAcceptedApp = require('../challenge/ChallengeAcceptedApp.jsx');
 var UpcomingChallenges = require('../home/UpcomingChallenges.jsx');
 var SeasonStandings = require('../season/SeasonStandings.jsx');
+var ChallengeMatches = require('./ScheduleChallengeApp.jsx');
 
 var ChallengeApp = React.createClass({
     mixins: [UserContextMixin],
@@ -157,6 +158,7 @@ var ChallengeApp = React.createClass({
 
                 </div>
                 <UpcomingChallenges data={this.state.challenges} refresh={refresh}/>
+                <ChallengeMatches params={this.props.params} />
             </div>
         );
     }
