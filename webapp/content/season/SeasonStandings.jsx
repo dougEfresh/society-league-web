@@ -20,7 +20,11 @@ var SeasonStandings = React.createClass({
          }
     },
     _onChange: function() {
+        console.log('Realoding stats');
         this.getData(this.props.params.seasonId);
+    },
+     _onLoading: function() {
+        this.setState({loading: true});
     },
     getData: function(id) {
         var cb =  function (d) {
@@ -44,12 +48,13 @@ var SeasonStandings = React.createClass({
     componentWillMount: function() {
         TeamMatchStore.addListener('MATCHES', this._onChange);
         TeamMatchStore.addListener('SUBMITTED', this._onChange);
-        TeamMatchStore.addListener('loading', this._onChange);
+        TeamMatchStore.addListener('loading', this._onLoading);
     },
-    componentDidUmount: function() {
+
+    componentDidUnmount: function() {
         TeamMatchStore.remove('SUBMITTED', this._onChange);
         TeamMatchStore.remove('loading', this._onChange);
-        TeamMatchStore.remove('MATCHES', this._onChange);
+        TeamMatchStore.remove('MATCHES', this._onLoading);
     },
     componentDidMount: function () {
         if (this.props.season != undefined && this.props.season != null)
@@ -69,7 +74,7 @@ var SeasonStandings = React.createClass({
         }
     },
     render: function() {
-        if (this.props.admin && TeamMatchStore.isLoading()) {
+        if (this.state.loading || (this.props.admin && TeamMatchStore.isLoading())) {
             var header = <div className="col-xs-10 col-md-11 p-title">Loading...</div>;
         var body = <div style={{height: 200}} className="text-center loading">
             <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>

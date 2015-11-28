@@ -99,7 +99,11 @@ var SeasonPlayerMatchResults = React.createClass({
         var handicapScore = tm.handicapRacks;
         var homeFeits = tm.homeForfeits;
         var awayFeits = tm.awayForfeits;
-
+        var fourthMatch = function(d,clsStyle) {
+            if (d.matchNumber != 0 && d.matchNumber % 4 == 0) {
+                clsStyle.className = 'fourth-match';
+            }
+        };
         return (
            <div className="row" >
                 <div className="col-xs-12 col-md-12" >
@@ -138,6 +142,7 @@ var SeasonPlayerMatchResults = React.createClass({
                                 dataSource={matches}
                                 columns={DataGridUtil.adminPlayerColumns(tm,PlayerMatchStore.getMemberOptions())}
                                 columnMinWidth={50}
+                                rowStyle={fourthMatch}
                                 //onColumnOrderChange={this.handleColumnOrderChange}
                                 />
                         </div>

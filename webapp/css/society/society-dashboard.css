@@ -812,3 +812,16 @@ div.z-row.z-odd.z-over ,div.z-row.z-odd, .z-odd {
   color: #000;
   background-color: #eee;
 }
+
+.table-striped>tbody>tr:nth-of-type(odd).fourth-match , tr.fourth-match{
+    border-color: black; !important;
+    background-color: black; !important;
+    border-bottom-style: double;
+    border-bottom-width: thick;
+}
+
+table > tbody > tr .fourth-match {
+    border-color: black; !important;
+    background-color: black; !important;
+}
+

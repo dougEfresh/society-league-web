@@ -122,7 +122,7 @@ var ScheduleApp = React.createClass({
                     </div>
                 </div>
                 </div>
-                <MatchResults season={this.state.season}  params={this.props.params} history={this.props.history} type={Status.PENDING} />
+                <MatchResults season={this.state.season}  params={this.props.params} history={this.props.history} />
                 <PlayerMatchResults season={this.state.season} params={this.props.params} history={this.props.history}  />
                 <PendingMatches matches={pendingMatches} />
             </div>
@@ -146,7 +146,6 @@ var MatchResults = React.createClass({
             return null;
 
         return <Results season={this.props.season}
-                               type={this.props.type}
                                key={this.state.selectedDate}
                                date={this.state.selectedDate}
                         selected={this.props.params.teamMatchId}
@@ -167,7 +166,6 @@ var MatchResults = React.createClass({
         TeamMatchStore.remove('loading',this._onChange);
     },
     _onChange: function() {
-        console.log('Updating ' + this.props.type);
          this.forceUpdate();
     },
     addNew: function(e) {

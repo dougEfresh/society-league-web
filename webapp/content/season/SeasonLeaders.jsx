@@ -100,7 +100,7 @@ var SeasonLeaders = React.createClass({
         if (!s.nine) {
             columns = [
                 DataGridUtil.columns.rank,
-            DataGridUtil.columns.player,
+                DataGridUtil.columns.player,
             DataGridUtil.columns.handicap,
             DataGridUtil.columns.wins,
             DataGridUtil.columns.loses,

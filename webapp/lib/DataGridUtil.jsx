@@ -110,10 +110,13 @@ var renderOpponentTeam=function(v,data,cp) {
 
 var renderTeam=function(v,data,cp) {
     cp.className = "team";
-    if (data.team != undefined && data.team.onClick != undefined)
+    if (data.team &&  data.team.onClick != undefined)
         return <TeamLink onClick={data.team.onClick} team={data.team}/>;
-    else
-        return <TeamLink onClick={data.onClick} team={data}/>;
+
+    if (data.team) {
+        return <TeamLink team={data.team}/>;
+    }
+    return <TeamLink onClick={data.onClick} team={data}/>;
 };
 
 
@@ -422,10 +425,13 @@ var columns = {
                       {matchNumberOptions}
                 </select>
             }
-            if (data.matchNumber != undefined){
-                return (<span>{data.matchNumber}</span>);
+
+            if (data.matchPoints) {
+                return (<span>{data.matchPoints.matchNum}</span>);
             }
-            return (<span>{data.matchPoints == undefined ? "" : data.matchPoints.matchNum}</span>);
+
+        if (data.matchNumber != undefined)
+            return (<span>{data.matchNumber}</span>);
         }
     },
     'calculation':  {name: 'calculation', title: ' ', width: 95, filterable: false ,
@@ -636,6 +642,9 @@ var dateColumn = {};
 
 var adminPlayerColumns = function (teamMatch,members) {
       var homeTeam =  {name: 'home', title: 'Home', width: 100, style: {minWidth: 100},render: function(v,data) {
+          if (data.playerHome.id != '-1') {
+              console.log(data.matchNumber + ' ' + data.playerHome.id);
+          }
         return (
             <select ref={'homeTeam'}
                 onChange={PlayerMatchStore.onChange(data,'playerHome')}
