@@ -598,11 +598,13 @@ dates.forEach(function(d) {
 });
 
 timeOptions.push(<option key={'11:00'} value={'11:00:00'}>{'11:00'}</option>)
+timeOptions.push(<option key={'11:30:00'} value={'11:30:00'}>{'11:30'}</option>)
 timeOptions.push(<option key={'12:00'} value={'12:00:00'}>{'12:00'}</option>)
+timeOptions.push(<option key={'12:30'} value={'12:30:00'}>{'12:30'}</option>)
 
 for (var i = 1; i<10;i ++) {
     timeOptions.push(<option key={i + ':00'} value={ (i + 12) + ':00:00'}>{i+':00'}</option>)
-    timeOptions.push(<option key={i + ':00'} value={ (i + 12) + ':30:00'}>{i+':30'}</option>)
+    timeOptions.push(<option key={i + ':00:30'} value={ (i + 12) + ':30:00'}>{i+':30'}</option>)
 }
 
 var timeColumn = {};
