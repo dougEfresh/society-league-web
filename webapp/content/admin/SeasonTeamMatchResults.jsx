@@ -134,6 +134,7 @@ var MatchResults = React.createClass({
     getInitialState: function() {
         return {
             matches: null,
+            loading: false,
             selectedDate: this.props.params.date
         }
     },
@@ -156,17 +157,16 @@ var MatchResults = React.createClass({
         this.setState({selectedDate: n.params.date});
     },
     componentWillMount: function() {
-        TeamMatchStore.addListener('loading',this._onChange);
         TeamMatchStore.addListener('MATCHES',this._onChange);
     },
     componentDidMount: function() {
     },
     componentDidUnmount: function() {
-        TeamMatchStore.remove('MATCHES',this._onChange);
-        TeamMatchStore.remove('loading',this._onChange);
+        TeamMatchStore.addListener('MATCHES',this._onChange);
     },
     _onChange: function() {
-         this.forceUpdate();
+        this.setState({loading: true});
+        setTimeout(function(){this.setState({loading: false})}.bind(this),800);
     },
     addNew: function(e) {
         e.preventDefault();
@@ -177,7 +177,7 @@ var MatchResults = React.createClass({
         this.props.history.pushState(null,'/app/season/' + this.props.params.seasonId + '/team/results/' +  e.target.value);
     },
     render: function() {
-        if (TeamMatchStore.isLoading()) {
+        if (this.state.loading || TeamMatchStore.isLoading()) {
             var header = <div className="col-xs-10 col-md-11 p-title">Loading...</div>;
             var body = <div style={{height: 200}} className="text-center loading">
                 <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>

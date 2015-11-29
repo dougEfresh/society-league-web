@@ -177,9 +177,7 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
         matches.forEach(function(d) {
             dates[d.matchDate.split('T')[0]] = 1;
         }.bind(this));
-        Object.keys(dates).forEach(function(d){
-            this.emitChange(d.split('T')[0] + '-loading');
-        }.bind(this));
+        this.emitChange('loading');
         Util.postSomeData({
                     url: '/api/teammatch/admin/modify/list',
                     data: matchData,
@@ -192,18 +190,10 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                                 }
                             });
                         }
-                        var dates = {};
-                        data.forEach(function(d) {
-                            dates[d.matchDate.split('T')[0]] = 1;
-                        }.bind(this));
-                        Object.keys(dates).forEach(function(d){
-                            this.emitChange(d.split('T')[0]);
-                        }.bind(this));
                         this.emitChange('SUBMITTED');
                         this.emitChange('MATCHES');
                     }.bind(this)
-                })
-
+        })
     },
     processSubmit: function(d) {
         var submitData = {};
