@@ -83,6 +83,9 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
         this.emitChange('loading');
         var data = [];
         matches.forEach(function(d){
+            if (d.homeRacks + d.awayRacks <= 0) {
+                return;
+            }
             var submitData = {};
             submitData.id = d.id;
             submitData.teamMatch = {id : d.teamMatch.id};

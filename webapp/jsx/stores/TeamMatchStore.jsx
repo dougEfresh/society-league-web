@@ -143,7 +143,7 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                 m.division = newValue;
                 break;
         }
-        this.emitChange(m.matchDate.split('T')[0]);
+        this.emitChange('CHANGE');
     },
     addNew : function(seasonId) {
         this.emitChange('loading');

@@ -261,6 +261,7 @@ var Results = React.createClass({
         TeamMatchStore.addListener('loading',this._onLoading);
         TeamMatchStore.addListener('MATCHES',this._onChange);
         TeamMatchStore.addListener('SUBMITTED',this._onChange);
+        TeamMatchStore.addListener('CHANGE',this._onChange);
     },
     componentDidMount: function() {
     },
@@ -268,6 +269,7 @@ var Results = React.createClass({
         TeamMatchStore.remove('loading',this._onLoading);
         TeamMatchStore.remove('MATCHES',this._onChange);
         TeamMatchStore.remove('SUBMITTED',this._onChange);
+        TeamMatchStore.remove('CHANGE',this._onChange);
     },
     _onLoading: function() {
         this.setState({
@@ -278,6 +280,7 @@ var Results = React.createClass({
          this.setState({
             loading: false
         });
+        this.forceUpdate();
     },
     submit: function(e){
         e.preventDefault();
