@@ -320,6 +320,12 @@ var Results = React.createClass({
         var matches = this.props.matches.sort(function(a,b){
             return a.home.name.localeCompare(b.home.name);
         }.bind(this));
+
+        if (this.props.season.challenge) {
+            matches = matches.sort(function(a,b){
+                return a.matchDate.localeCompare(b.matchDate);
+            }.bind(this));
+        }
         var css = 'panel-primary';
         var columns = DataGridUtil.adminColumns(this.props.season,TeamMatchStore.getTeamsOptions());
         return (

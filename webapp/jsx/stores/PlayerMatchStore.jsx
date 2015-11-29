@@ -63,6 +63,9 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
         return matches.length == 0 || members == null;
     },
     getPlayed: function() {
+        matches = matches.sort(function(a,b){
+            return a.matchDate.localeCompare(b.matchDate);
+        });
         return matches;
     },
     getTeamMatch: function() {
