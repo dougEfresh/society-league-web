@@ -102,7 +102,7 @@ var ScheduleApp = React.createClass({
         }
         var pendingMatches = TeamMatchStore.getPending();
         //
-        var ss = <SeasonStandings admin={true} notitle={true} params={this.props.params} season={this.state.season} />
+        var ss = <SeasonStandings admin={true} notitle={true} params={this.props.params} season={this.state.season} />;
         if (this.state.season.challenge) {
             ss = <SeasonLeaders onUserClick={this.changeUser} params={this.props.params}/>;
         }
