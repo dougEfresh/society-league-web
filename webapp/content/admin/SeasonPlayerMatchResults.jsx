@@ -104,6 +104,7 @@ var SeasonPlayerMatchResults = React.createClass({
                 clsStyle.className = 'fourth-match';
             }
         };
+
         return (
            <div className="row" >
                 <div className="col-xs-12 col-md-12" >

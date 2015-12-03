@@ -20,6 +20,7 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
         defaultState();
         this.emitChange('loading');
           Util.getSomeData({
+              module: 'PlayerMatchResults',
             url: '/api/playerresult/teammatch/' + id,
             callback: function(d) {
                 matches = d;
@@ -87,7 +88,7 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
         this.emitChange('loading');
         var data = [];
         matches.forEach(function(d){
-            if (d.homeRacks + d.awayRacks <= 0) {
+            if (!d.changed) {
                 return;
             }
             var submitData = {};
@@ -181,6 +182,7 @@ var PlayerMatchStore = assign({}, EventEmitter.prototype, {
 
                 break;
         }
+        m.changed = true;
         this.emitChange('MATCHES');
     },
     addNew : function() {
