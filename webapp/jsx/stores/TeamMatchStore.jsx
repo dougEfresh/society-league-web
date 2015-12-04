@@ -143,6 +143,7 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
                 m.division = newValue;
                 break;
         }
+        m.changed = true;
         this.emitChange('CHANGE');
     },
     addNew : function(seasonId) {
@@ -200,6 +201,8 @@ var TeamMatchStore = assign({}, EventEmitter.prototype, {
         submitData.id = d.id;
         submitData.home = {id: d.home.id};
         submitData.away = {id: d.away.id};
+        submitData.homeForfeits = {id: d.homeForfeits};
+        submitData.awayForfeits = {id: d.awayForfeits};
         submitData.homeRacks = d.homeRacks;
         submitData.awayRacks = d.awayRacks;
         submitData.setHomeWins = d.setHomeWins;
