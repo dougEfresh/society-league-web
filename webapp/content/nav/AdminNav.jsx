@@ -111,22 +111,8 @@ var AdminNav = React.createClass({
 
         return (
              <li className={this.state.toggleAdmin ? "selected dropdown " + cls : cls + " dropdown"}>
-                <a onClick={this.toggleAdmin} href="#">
-                    <i className="fa fa-cogs"></i> Admin
-                    <span className={"fa fa-caret-" + (this.state.toggleAdmin ? "down side-caret" : "left side-caret")} ></span>
+		<a href="/admin/home">Admin 
                 </a>
-                <ul className={"nav nav-second-level collapse " + (this.state.toggleAdmin ? " selected in"  : "")}>
-                    <li>
-                        <a onClick={this.goToUsers} href="#">
-                            <i className="fa fa-users"></i> Users
-                        </a>
-                         <a onClick={this.goToTeams} href="#">
-                            <i className="fa fa-users"></i> Teams
-                        </a>
-                    </li>
-
-                    {seasonNav}
-                </ul>
             </li>
         );
     }
