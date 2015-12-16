@@ -13,6 +13,7 @@ var gameType = [];
 var Router = require('react-router')
     , Route = Router.Route
     , Link = Router.Link;
+var Handicap = require('../lib/Handicap');
 
 gameType.push(<option key='8' value = 'MIXED_EIGHT'>{'8'}</option>);
 gameType.push(<option key='9' value = 'MIXED_NINE'>{'9'}</option>);
@@ -336,15 +337,28 @@ var columns = {
     'opponent': opponent,
     'opponentTeam': opponentTeam,
     'team': team,
-    'opponentHandicap': {name: 'opponentHandicap', title: 'Op. HC', width: 72, filterable: false, sort: 'asc', number: false},
-    'opponentPartnerHandicap': {name: 'opponentPartnerHandicap', title: 'Op. Pr. HC', width: 65, filterable: false},
-    'partnerHandicap': {name: 'partnerHandicap', title: 'Pr. HC', width: 72, filterable: false},
-    'handicap' : {name: 'handicap', title: 'HC', width: 45 , sort: 'asc', number: false, filterable: false},
+    'opponentHandicap': {name: 'opponentHandicap', title: 'Op. HC', width: 72, filterable: false, sort: 'asc', number: false,
+        render: function(v,d) {
+            return Handicap.formatHandicap(d.opponentHandicap);
+    }},
+    'opponentPartnerHandicap': {name: 'opponentPartnerHandicap', title: 'Op. Pr. HC', width: 65, filterable: false,
+        render: function(v,d) {
+            return Handicap.formatHandicap(d.opponentPartnerHandicap);
+    }},
+    'partnerHandicap': {name: 'partnerHandicap', title: 'Pr. HC', width: 72, filterable: false,    render: function(v,d) {
+            return Handicap.formatHandicap(d.partnerHandicap);
+    }},
+    'handicap' : {name: 'handicap', title: 'HC', width: 45 , sort: 'asc', number: false, filterable: false,    render: function(v,d) {
+            return Handicap.formatHandicap(d.handicap);
+    }},
     'player' : player,
     'partner': partner,
     'opponentPartner': opponentPartner,
 
-    'teamMemberHandicap': {name: 'teamMemberHandicap', title: 'HC', width: 45, filterable: false },
+    'teamMemberHandicap': {name: 'teamMemberHandicap', title: 'HC', width: 45, filterable: false ,
+     render: function(v,d) {
+            return Handicap.formatHandicap(d.teamMemberHandicap);
+    }},
     'wins': {name: 'wins', title: 'W', width: 50, filterable: false , sort: 'asc', number: true , render: function(v,data) {
         if (data.wins != undefined)
             return <span>{data.wins}</span>;
