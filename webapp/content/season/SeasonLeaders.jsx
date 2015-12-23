@@ -107,6 +107,17 @@ var SeasonLeaders = React.createClass({
             DataGridUtil.columns.team];
         }
 
+        if (s.scramble) {
+            columns = [
+                DataGridUtil.columns.rank,
+                DataGridUtil.columns.player,
+                DataGridUtil.columns.game,
+                DataGridUtil.columns.handicap,
+                DataGridUtil.columns.wins,
+                DataGridUtil.columns.loses,
+                DataGridUtil.columns.team];
+        }
+
 
         return (<DataGrid defaultSortColumn={'rank'} sortFn={SortUtil.sortFn} limit={this.props.limit} dataSource={this.state.stats} columns={columns} loading={this.state.loading} cls="table-users" />);
 

@@ -82,7 +82,6 @@ var TeamStandings = React.createClass({
                 return a.user.name.localeCompare(b.user.name);
             });
             columns = [
-                DataGridUtil.columns.rank,
                 DataGridUtil.columns.player,
                 DataGridUtil.columns.game,
                 DataGridUtil.columns.handicap,
