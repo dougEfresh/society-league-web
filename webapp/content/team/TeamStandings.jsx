@@ -72,15 +72,26 @@ var TeamStandings = React.createClass({
             DataGridUtil.columns.rackPct
         ];
         if (!s.nine) {
+
+        }
+        if (s.scramble) {
+            this.state.statTeamMembers = this.state.statTeamMembers.sort(function(a,b) {
+                if (a.user.name == b.user.name) {
+                    return a.type.localeCompare(b.type);
+                }
+                return a.user.name.localeCompare(b.user.name);
+            });
             columns = [
                 DataGridUtil.columns.rank,
                 DataGridUtil.columns.player,
+                DataGridUtil.columns.game,
                 DataGridUtil.columns.handicap,
                 DataGridUtil.columns.wins,
                 DataGridUtil.columns.loses,
                 DataGridUtil.columns.winPct
             ];
         }
+
 
          var rowStyle= function(d,cls,style) {
             if (this.props.activeUser && d.user.id == this.props.activeUser.id) {

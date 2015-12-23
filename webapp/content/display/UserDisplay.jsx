@@ -82,10 +82,10 @@ var UserDisplay = React.createClass({
                     <div className="col-xs-5 col-md-9 p-title">
                         {this.state.stats.user.shortName + ' (' + Handicap.formatHandicap(this.state.stats.handicap) + ')'}
                     </div>
-                    <div className="col-xs-2 col-md-1 p-title">
+                    <div className={"col-xs-2 col-md-1 p-title " + (this.state.stats.season.scramble ? " hide" : "")}>
                         <span className="float-right">{'W:' + this.state.stats.wins}</span>
                     </div>
-                    <div className="col-xs-2 col-md-1 p-title">
+                    <div className={"col-xs-2 col-md-1 p-title"  + (this.state.stats.season.scramble ? " hide" : "")}>
                         <span className="float-right">{'L:' + this.state.stats.loses}</span>
                     </div>
                     <div className="float-right col-xs-2 col-md-1 caret-title">

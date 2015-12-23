@@ -568,6 +568,13 @@ var columns = {
         );
     }
     },
+    'game' : {name: 'gameType', title: 'Game', width: 80, style: {minWidth: 80} , render: function(v,data) {
+        var gt = "8";
+        if (data.type == 'MIXED_NINE') {
+            gt = "9";
+        }
+         return <span>{gt}</span>;
+    }},
     'gameType' : {name: 'gameType', title: 'Game', width: 80, style: {minWidth: 80} , render: function(v,data) {
         var gt = "8";
         if (data.division == 'MiXED_NINE') {
