@@ -38,7 +38,11 @@ function getData(url, callback, unauthCallback, module) {
                     if (unauthCallback) {
                         unauthCallback();
                         return;
-                    }
+                    }  
+  	        if (window.location.hash.indexOf('reset') > 0 || window.location.hash.indexOf('notification') > 0) {
+		            return;
+                    }	
+
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
@@ -69,9 +73,10 @@ function getSomeData(options) {
                         options.unAuthCallback();
                         return;
                     }
-		    if (window.location.hash.indexOf('reset/') > 0) {
-		       return;
-		    }
+		     if (window.location.hash.indexOf('reset') > 0 || window.location.hash.indexOf('notification') > 0) {
+		            return;
+                    }			
+
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
@@ -159,7 +164,7 @@ function postSomeData(options) {
             method: 'post',
             statusCode: {
                 401: function () {
-                    console.log('I Need to Authenticate');
+                    console.log('I Need to Authenticate');		    
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
@@ -179,6 +184,10 @@ function postSomeData(options) {
 }
 
 function defaultErrorHandler(router,xhr) {
+   if (window.location.hash.indexOf('reset') > 0 || window.location.hash.indexOf('notification') > 0) {
+       return;
+   }
+
     if (xhr.responseText.indexOf("Invalid remember-me token") >= 0) {
         window.location = '/#/login?expired=true';
         return;
