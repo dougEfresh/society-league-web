@@ -69,6 +69,9 @@ function getSomeData(options) {
                         options.unAuthCallback();
                         return;
                     }
+		    if (window.location.hash.indexOf('reset/') > 0) {
+		       return;
+		    }
                     window.location = '/#/login?expired=true'
                 }.bind(this)
             },
