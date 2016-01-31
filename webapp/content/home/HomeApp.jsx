@@ -130,11 +130,11 @@ var HomeApp = React.createClass({
             }
             seasonLeaders.push(
 	    <div className="row" key={s.id} >
-                <div className="col-xs-12 col-md-8">
+                <div className="col-xs-12 col-md-8 col-lg-10">
                     <div className="panel panel-default panel-leaders">
                         <div className="panel-heading">
                             <i className="fa fa-sitemap"></i>
-                            <Link style={{color: 'whitesmoke'}} to={'/app/season/' + s.id + '/leaders'}> <span> Top Players</span> <span style={{float: 'right'}} >{s.shortName}</span></Link>
+                            <Link style={{color: 'whitesmoke'}} to={'/app/season/' + s.id + '/leaders'}> <span className="top-players-header"> Top Players</span> <span className="league-home-header" style={{float: 'right'}} >{s.shortName}</span></Link>
                         </div>
                         <div className="panel-body panel-animate">
                             <SeasonLeaders onUserClick={this.goToLeaders(s)} params={{seasonId: s.id}} limit={5} />
@@ -152,7 +152,7 @@ var HomeApp = React.createClass({
                 </div>
                 <div className="welcome-name"><h4><p>{'Welcome ' + this.getUser().firstName} </p></h4></div>
                 <div className="row">
-                    <div className="col-xs-12 col-md-3">
+                    <div className="col-xs-12 col-md-8 col-lg-10">
                         <div className="panel panel-default panel-upcoming">
                             <div className={"panel-heading"}>
                                 <i className="fa fa-bell fa-fw"></i> Upcoming Matches
