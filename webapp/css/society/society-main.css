@@ -29,7 +29,7 @@ body {
 .welcome {
 	background: rgb(0,0,0);
 	background: rgba(0,0,0,.7);
-	padding: 15px 30px;
+	padding: 10px 30px 15px 30px;
 	margin-bottom: 15px;
 }
 .welcome h3 {
@@ -82,7 +82,7 @@ text-decoration: none!important;
 	}
 	.welcome-name {
 	color: #fff;
-	margin: 20px 0px;
+	margin: 20px 0px 0px 0px;
 	text-align:right;
 }
 }
