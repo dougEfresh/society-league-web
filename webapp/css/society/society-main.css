@@ -1,3 +1,23 @@
+/*
+red
+======
+#7c0606;
+rgba(124,6,6,1);
+*/
+body {
+	font-family: 'helvetica';
+}
+.logo {
+    width: 240px;
+    height: 58px;
+    background-image: url(../../img/sbb-logo-mobile.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.navbar{ 
+	border:0px;
+	border-bottom: 1px #fff solid;
+}
 #page-wrapper {
 	background: url('/img/break2.jpg') no-repeat center center fixed; 
 	-webkit-background-size: cover;
@@ -6,13 +26,24 @@
 	background-size: cover;
 	min-height: 1200px!important;
 }
+.welcome {
+	background: rgb(0,0,0);
+	background: rgba(0,0,0,.7);
+	padding: 15px 30px;
+	margin-bottom: 15px;
+}
 .welcome h3 {
 	color:#fff;
+	width:auto;
 	text-transform: uppercase;
+	font-weight: bold;
+	text-shadow: 1px 1px black;
+	font-size: 26px;
 }
 .welcome-name {
 	color: #fff;
-	margin: 20px 0px;
+	margin: 0px 0px;
+	text-align:left;
 }
 .panel {
 	border-radius:0px;
@@ -21,7 +52,7 @@
 .panel-heading {
     border-radius: 10px;
     background-color: rgb(0,0,0);
-    font-size:20px;
+    font-size:18px;
 }
 .panel-upcoming>.panel-heading,
 .panel-leaders>.panel-heading, 
@@ -31,8 +62,27 @@
 
 .panel-heading a span.top-players-header:hover,
 .panel-heading a span.league-home-header:hover {
-	color: #9c302d;
+	color: #7c0606;
 }
 .panel-heading a {
 text-decoration: none!important;
+}
+#side-menu > li > a {
+    color: #fff;
+}
+#side-menu li a:focus , #side-menu li a:hover {
+    background-color:rgba(124,6,6,1);
+}
+@media (min-width: 768px) {
+	.sidebar {
+	    margin-top: 59px;
+	}
+	.welcome h3 {
+		font-size: 30px;
+	}
+	.welcome-name {
+	color: #fff;
+	margin: 20px 0px;
+	text-align:right;
+}
 }

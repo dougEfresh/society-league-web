@@ -147,10 +147,12 @@ var HomeApp = React.createClass({
 
         return (
             <div id='home-app'>
-                <div className="welcome" align="center">
-                    <h3>Society Billiards Leagues</h3>
+                <div className="col-xs-12 col-md-12 col-lg-12 welcome" align="center">
+                    <div className="col-xs-12 col-md-8 col-lg-9">
+                        <h3>Society Leagues</h3>
+                    </div>
+                     <div className="col-xs-12 col-md-4 col-lg-3 welcome-name"><h4>{'Welcome ' + this.getUser().firstName} </h4></div>
                 </div>
-                <div className="welcome-name"><h4><p>{'Welcome ' + this.getUser().firstName} </p></h4></div>
                 <div className="row">
                     <div className="col-xs-12 col-md-8 col-lg-10">
                         <div className="panel panel-default panel-upcoming">
